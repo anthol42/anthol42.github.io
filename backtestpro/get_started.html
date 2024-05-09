@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+  <link rel="icon" type="image/x-icon" href="/backtestpro/assets/favicon.ico">
+  <link href='/backtestpro/assets/bootstrap.min.css' rel='stylesheet', type='text/css'>
+  <link href="/backtestpro/assets/style.css" rel="stylesheet" type="text/css">
+  <link href="/backtestpro/assets/python_code.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" crossorigin="anonymous" />
+  <script src="/backtestpro/assets/bootstrap.min.js"></script>
+  <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+  <title>Get Started</title>
+  <meta name="description" content="Installation and example" />
+</head>
+<body>
+  <nav class="navbar navbar-light navbar-expand bg-light fixed-top shadow-sm" id="navbar-main">
+    <div class="navbar-container" style="padding-left: 20px">
+            <a class="navbar-brand logo" href="/backtestpro">
+                <img alt="Logo image" class="logo__image only-light" src="/backtestpro/assets/logo_light.svg">
+            </a>
+            <div class="col-lg-9 navbar">
+                <div class="mr-auto" id="navbar-center">
+
+                    <div class="navbar-center-item">
+                        <ul class="navbar-nav" id="navbar-main-elements">
+                            <li class="toctree-l1 nav-item">
+                                <a class="reference internal nav-link " href="/backtestpro">
+                                    Home
+                                </a>
+                            </li>
+
+                            <li class="toctree-l1 nav-item">
+                                <a class="reference internal nav-link active" href="/backtestpro/get_started.html">
+                                    Get Started
+                                </a>
+                            </li>
+
+                            <li class="toctree-l1 nav-item">
+                                <a class="reference internal nav-link" href="/backtestpro/tutorials">
+                                    Tutorials
+                                </a>
+                            </li>
+
+                            <li class="toctree-l1 nav-item">
+                                <a class="reference internal nav-link" href="/backtestpro/docs/backtest">
+                                    Documentation
+                                </a>
+                            </li>
+
+
+                            <li class="nav-item">
+                                <a class="nav-link nav-external " href="/backtestpro/about.html">About</a>
+                            </li>
+
+                        </ul>
+                    </div>
+
+                </div>
+
+                <div id="navbar-end">
+
+                    <div class="navbar-end-item">
+                        <code class="navbar-version">v0.0.1</code>
+                    </div>
+
+                    <div class="navbar-end-item">
+                        <ul aria-label="Icon Links" class="navbar-nav" id="navbar-icon-links">
+                            <li class="nav-item">
+                                <a class="nav-link" href="https://github.com/anthol42/backtestPro" rel="noopener" target="_blank"
+                                   title="GitHub"><img alt="GitHub" class="icon-link" src="/backtestpro/assets/github-mark.svg"
+                                                       style="height: 1.2em; margin: 0px; padding: 0px;"></a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+    </div>
+</nav>
+    <div class="row" style="margin-right: 0;">
+    <!-- Table of Contents Section -->
+    <div id="tableOfContents" class="col-md-3" style="width: 300px">
+        <nav id="toc">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="#install">Install</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#build-from-source">Build from source</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#Example">Example</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <div class="toc-doc">
+        <div class="col-md-9" style="padding-left: 20px">
+            <div id="install" class="section">
+                <h2>Install</h2>
+                <p class="code-header">The easiest way to install it is with pip:</p>
+                <div class="shell-box">
+                    <pre><code>pip install backtestPro</code></pre>
+                    <div class="copy-button-container">
+                        <button class="copy-button" onclick="copyToClipboard(this)"><i class='fas'>&#xf0c5;</i></button>
+                    </div>
+                </div>
+                <p class="code-header">There are a lot of dependencies that are optionals, but useful to have:</p>
+                <ul class="list-group list-group-flush" style="margin-bottom: 15px;">
+                    <li class="list-group-item list-group-item-action"><strong>TA-Lib</strong>: A technical analysis
+                        library that is used to calculate technical indicators.
+                    </li>
+                    <li class="list-group-item list-group-item-action"><strong>Plotly</strong>: A plotting library that
+                        is used to render charts during the production of reports.
+                    </li>
+                    <li class="list-group-item list-group-item-action"><strong>WeasyPrint</strong>: A library that
+                        converts html to pdf. It is used to render the reports in pdf format.
+                    </li>
+                    <li class="list-group-item list-group-item-action"><strong>kaleido</strong>: An optional library of
+                        Plotly that is used to render the charts in the reports.
+                    </li>
+                    <li class="list-group-item list-group-item-action"><strong>schedule</strong>: A library that is used
+                        to schedule the run of the strategy in production.
+                    </li>
+                    <li class="list-group-item list-group-item-action"><strong>python-crontab</strong>: A library that
+                        is used to schedule the run of the strategy in production.
+                    </li>
+                </ul>
+                <p class="code-header">To install all the optional dependencies with backtest-pro, you can run the
+                    following command:</p>
+                <div class="shell-box">
+                    <pre><code>pip install backtest-pro[optional]</code></pre>
+                    <div class="copy-button-container">
+                        <button class="copy-button" onclick="copyToClipboard(this)"><i class='fas'>&#xf0c5;</i></button>
+                    </div>
+                </div>
+            </div>
+            <div id="build-from-source" class="section">
+                <h2>Build from source</h2>
+                <p>To get access to the latest features of the framework, you can build it from source. Note that it is
+                    not recommended to do this for a production project as the api might change without warning and some
+                    features might be unstable.</p>
+                <p class="code-header">To install <b>backtest-pro</b> from source, you can clone the repository and
+                    install it using pip:</p>
+                <div class="shell-box">
+                    <pre><code>git clone https://github.com/anthol42/backtestPro.git</code></pre>
+                    <div class="copy-button-container">
+                        <button class="copy-button" onclick="copyToClipboard(this)"><i class='fas'>&#xf0c5;</i></button>
+                    </div>
+                </div>
+                <p class="code-header">Move to the cloned repository:</p>
+                <div class="shell-box">
+                    <pre><code>cd backtestPro</code></pre>
+                    <div class="copy-button-container">
+                        <button class="copy-button" onclick="copyToClipboard(this)"><i class='fas'>&#xf0c5;</i></button>
+                    </div>
+                </div>
+                <p class="code-header">Then, install the package:</p>
+                <div class="shell-box">
+                    <pre><code>pip install .</code></pre>
+                    <div class="copy-button-container">
+                        <button class="copy-button" onclick="copyToClipboard(this)"><i class='fas'>&#xf0c5;</i></button>
+                    </div>
+                </div>
+            </div>
+            <div id="Example" class="section">
+                <h2>Example</h2>
+                <p class="code-header">This example shows how to backtest a simple strategy based on technical analysis.
+                The strategy buys long when the MACD crosses over the signal line and sells when the MACD crosses under it.
+                It is also required that the MACD is below 0 to trigger a buy.  All default backtest parameters are used.
+                The backtest is executed on the Magnificent 7 stocks from 2010 to 2020.</p>
+                <div class="code-container">
+                    <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">backtest</span> <span class="kn">import</span> <span class="n">Strategy</span><span class="p">,</span> <span class="n">Backtest</span>
+<span class="kn">from</span> <span class="nn">backtest.indicators</span> <span class="kn">import</span> <span class="n">IndicatorSet</span><span class="p">,</span> <span class="n">TA</span>
+<span class="kn">from</span> <span class="nn">backtest.data</span> <span class="kn">import</span> <span class="n">FetchCharts</span><span class="p">,</span> <span class="n">ToTSData</span><span class="p">,</span> <span class="n">Cache</span><span class="p">,</span> <span class="n">PadNan</span>
+<span class="kn">import</span> <span class="nn">backtest.engine.functional</span> <span class="k">as</span> <span class="nn">F</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="k">class</span> <span class="nc">MyStrategy</span><span class="p">(</span><span class="n">Strategy</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">timestep</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">ticker</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">tickers</span><span class="p">:</span>
+            <span class="n">chart</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">main</span><span class="p">[</span><span class="n">ticker</span><span class="p">]</span><span class="o">.</span><span class="n">chart</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">chart</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">F</span><span class="o">.</span><span class="n">crossover</span><span class="p">(</span><span class="n">chart</span><span class="p">[</span><span class="s2">&quot;MACD&quot;</span><span class="p">],</span> <span class="n">chart</span><span class="p">[</span><span class="s2">&quot;MACD_SIGNAL&quot;</span><span class="p">])</span> <span class="ow">and</span> <span class="n">chart</span><span class="p">[</span><span class="s2">&quot;MACD&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">ticker</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">broker</span><span class="o">.</span><span class="n">portfolio</span><span class="o">.</span><span class="n">long</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">broker</span><span class="o">.</span><span class="n">buy_long</span><span class="p">(</span><span class="n">ticker</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">ticker</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">broker</span><span class="o">.</span><span class="n">portfolio</span><span class="o">.</span><span class="n">long</span> <span class="ow">and</span> <span class="n">F</span><span class="o">.</span><span class="n">crossunder</span><span class="p">(</span><span class="n">chart</span><span class="p">[</span><span class="s2">&quot;MACD&quot;</span><span class="p">],</span> <span class="n">chart</span><span class="p">[</span><span class="s2">&quot;MACD_SIGNAL&quot;</span><span class="p">]):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">broker</span><span class="o">.</span><span class="n">sell_long</span><span class="p">(</span><span class="n">ticker</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+
+<span class="c1"># The magnificent 7 tickers</span>
+<span class="n">TICKERS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;META&quot;</span><span class="p">,</span> <span class="s2">&quot;AMZN&quot;</span><span class="p">,</span> <span class="s2">&quot;AAPL&quot;</span><span class="p">,</span> <span class="s2">&quot;NVDA&quot;</span><span class="p">,</span> <span class="s2">&quot;GOOGL&quot;</span><span class="p">,</span> <span class="s2">&quot;MSFT&quot;</span><span class="p">,</span> <span class="s2">&quot;TSLA&quot;</span><span class="p">]</span>
+<span class="n">data_pipeline</span> <span class="o">=</span> <span class="n">FetchCharts</span><span class="p">(</span><span class="n">TICKERS</span><span class="p">,</span> <span class="n">auto_adjust</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">|</span> <span class="n">PadNan</span><span class="p">()</span> <span class="o">|</span> <span class="n">ToTSData</span><span class="p">()</span> <span class="o">|</span> <span class="n">Cache</span><span class="p">()</span>
+<span class="n">bt</span> <span class="o">=</span> <span class="n">Backtest</span><span class="p">(</span><span class="n">data_pipeline</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2010</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+              <span class="n">strategy</span><span class="o">=</span><span class="n">MyStrategy</span><span class="p">(),</span>
+              <span class="n">indicators</span><span class="o">=</span><span class="n">IndicatorSet</span><span class="p">(</span><span class="n">TA</span><span class="o">.</span><span class="n">MACD</span><span class="p">()))</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">bt</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+</pre></div>
+
+                     <div class="copy-button-container">
+                        <button class="copy-button" onclick="copyToClipboardText(this, 'code_example')"><i class='fas'>&#xf0c5;</i></button>
+                    </div>
+                </div>
+                <p>For more examples, please check our <a href="tutorials">Tutorials section.</a></p>
+            </div>
+        </div>
+    </div>
+     <script>
+        const codeTexts = {
+            "code_example": 'from backtest import Strategy, Backtest\nfrom backtest.indicators import IndicatorSet, TA\nfrom backtest.data import FetchCharts, ToTSData, Cache, PadNan\nimport backtest.engine.functional as F\nfrom datetime import datetime\n\nclass MyStrategy(Strategy):\n    def run(self, data, timestep):\n        for ticker in data.main.tickers:\n            chart = data.main[ticker].chart\n            if len(chart) > 2 and F.crossover(chart["MACD"], chart["MACD_SIGNAL"]) and chart["MACD"].iloc[-1] < 0:\n                if ticker not in self.broker.portfolio.long:\n                    self.broker.buy_long(ticker, 500)\n            if ticker in self.broker.portfolio.long and F.crossunder(chart["MACD"], chart["MACD_SIGNAL"]):\n                self.broker.sell_long(ticker, 500)\n\n# The magnificent 7 tickers\nTICKERS = ["META", "AMZN", "AAPL", "NVDA", "GOOGL", "MSFT", "TSLA"]\ndata_pipeline = FetchCharts(TICKERS, auto_adjust=False) | PadNan() | ToTSData() | Cache()\nbt = Backtest(data_pipeline.get(datetime(2010, 1, 1), datetime(2020, 1, 1)),\n              strategy=MyStrategy(),\n              indicators=IndicatorSet(TA.MACD()))\nresults = bt.run()\nprint(results)\n'
+        };
+     </script>
+</div>
+  <div class="divider"></div>
+  <footer id="footer">
+    <div id="footer_container">
+    <p><b>Author</b>: Anthony Lavertu (2024)</p>
+    <p><b>Generated by</b> <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</div>
+</footer>
+</body>
+  <script>
+function copyToClipboard(button) {
+      var preElement = button.parentNode.previousElementSibling;
+      var codeElement = preElement.querySelector('code');
+      var codeText = codeElement.textContent || codeElement.innerText;
+
+      navigator.clipboard.writeText(codeText).then(function() {
+        button.innerHTML = '<i class="far fa-check-circle"></i>';
+        button.classList.add('copied');
+
+        setTimeout(function() {
+          button.innerHTML = '<i class="far fa-copy"></i>';
+          button.classList.remove('copied');
+        }, 3000);
+      }).catch(function(error) {
+        console.error('Failed to copy: ', error);
+      });
+    }
+    function copyToClipboardText(button, id) {
+    const codeText = codeTexts[id];
+    navigator.clipboard.writeText(codeText).then(function() {
+        button.innerHTML = '<i class="far fa-check-circle"></i>';
+        button.classList.add('copied');
+
+        setTimeout(function() {
+          button.innerHTML = '<i class="far fa-copy"></i>';
+          button.classList.remove('copied');
+        }, 3000);
+      }).catch(function(error) {
+        console.error('Failed to copy: ', error);
+      });
+    }
+        document.addEventListener('DOMContentLoaded', function() {
+      // Get all section links
+      const sectionLinks = document.querySelectorAll('#toc a');
+
+      // Function to handle scroll synchronization
+      function syncScroll() {
+        const fromTop = window.scrollY;
+        sectionLinks.forEach(link => {
+          const section = document.querySelector(link.hash);
+          if (section.offsetTop <= fromTop + 100 && section.offsetTop + section.offsetHeight > fromTop + 100) {
+            link.classList.add('active-section');
+          } else {
+            link.classList.remove('active-section');
+          }
+        });
+      }
+
+      // Add scroll event listener to sync scroll position
+      window.addEventListener('scroll', syncScroll);
+
+      // Add click event listeners to section links to smoothly scroll to the respective section
+      sectionLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          const targetId = this.hash;
+          const targetSection = document.querySelector(targetId);
+          window.scrollTo({
+            top: targetSection.offsetTop - 100, // Adjust as needed for any fixed headers
+            behavior: 'smooth'
+          });
+        });
+      });
+    });
+  </script>
+</html>

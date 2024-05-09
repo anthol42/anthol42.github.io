@@ -1,0 +1,1239 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+  <link rel="icon" type="image/x-icon" href="/backtestpro/assets/favicon.ico">
+  <link href='/backtestpro/assets/bootstrap.min.css' rel='stylesheet', type='text/css'>
+  <link href="/backtestpro/assets/style.css" rel="stylesheet" type="text/css">
+  <link href="/backtestpro/assets/notebook.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" crossorigin="anonymous" />
+  <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+  <script src="/backtestpro/assets/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+  <title>Data Pipelines</title>
+  <meta name="description" content="A tutorial on how to use the BacktestPro Framework." />
+    <!-- Load mathjax -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS_CHTML-full,Safe"></script>
+    <!-- MathJax configuration -->
+    <script type="text/x-mathjax-config">
+        init_mathjax = function() {
+            if (window.MathJax) {
+            // MathJax loaded
+                MathJax.Hub.Config({
+                    TeX: {
+                        equationNumbers: {
+                        autoNumber: "AMS",
+                        useLabelIds: true
+                        }
+                    },
+                    tex2jax: {
+                        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                        processEscapes: true,
+                        processEnvironments: true
+                    },
+                    displayAlign: 'center',
+                    CommonHTML: {
+                        linebreaks: {
+                        automatic: true
+                        }
+                    },
+                    messageStyle: "none"
+                });
+
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+            }
+        }
+        init_mathjax();
+    </script>
+    <!-- End of mathjax configuration -->
+    <script type="module">
+        document.addEventListener("DOMContentLoaded", async () => {
+          const diagrams = document.querySelectorAll(".jp-Mermaid > pre.mermaid");
+          // do not load mermaidjs if not needed
+          if (!diagrams.length) {
+            return;
+          }
+          const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.7.0/mermaid.esm.min.mjs")).default;
+          const parser = new DOMParser();
+
+          mermaid.initialize({
+            maxTextSize: 100000,
+            maxEdges: 100000,
+            startOnLoad: false,
+            fontFamily: window
+              .getComputedStyle(document.body)
+              .getPropertyValue("--jp-ui-font-family"),
+            theme: document.querySelector("body[data-jp-theme-light='true']")
+              ? "default"
+              : "dark",
+          });
+
+          let _nextMermaidId = 0;
+
+          function makeMermaidImage(svg) {
+            const img = document.createElement("img");
+            const doc = parser.parseFromString(svg, "image/svg+xml");
+            const svgEl = doc.querySelector("svg");
+            const { maxWidth } = svgEl?.style || {};
+            const firstTitle = doc.querySelector("title");
+            const firstDesc = doc.querySelector("desc");
+
+            img.setAttribute("src", `data:image/svg+xml,${encodeURIComponent(svg)}`);
+            if (maxWidth) {
+              img.width = parseInt(maxWidth);
+            }
+            if (firstTitle) {
+              img.setAttribute("alt", firstTitle.textContent);
+            }
+            if (firstDesc) {
+              const caption = document.createElement("figcaption");
+              caption.className = "sr-only";
+              caption.textContent = firstDesc.textContent;
+              return [img, caption];
+            }
+            return [img];
+          }
+
+          async function makeMermaidError(text) {
+            let errorMessage = "";
+            try {
+              await mermaid.parse(text);
+            } catch (err) {
+              errorMessage = `${err}`;
+            }
+
+            const result = document.createElement("details");
+            result.className = 'jp-RenderedMermaid-Details';
+            const summary = document.createElement("summary");
+            summary.className = 'jp-RenderedMermaid-Summary';
+            const pre = document.createElement("pre");
+            const code = document.createElement("code");
+            code.innerText = text;
+            pre.appendChild(code);
+            summary.appendChild(pre);
+            result.appendChild(summary);
+
+            const warning = document.createElement("pre");
+            warning.innerText = errorMessage;
+            result.appendChild(warning);
+            return [result];
+          }
+
+          async function renderOneMarmaid(src) {
+            const id = `jp-mermaid-\${_nextMermaidId++}`;
+            const parent = src.parentNode;
+            let raw = src.textContent.trim();
+            const el = document.createElement("div");
+            el.style.visibility = "hidden";
+            document.body.appendChild(el);
+            let results = null;
+            let output = null;
+            try {
+              let { svg } = await mermaid.render(id, raw, el);
+              svg = cleanMermaidSvg(svg);
+              results = makeMermaidImage(svg);
+              output = document.createElement("figure");
+              results.map(output.appendChild, output);
+            } catch (err) {
+              parent.classList.add("jp-mod-warning");
+              results = await makeMermaidError(raw);
+              output = results[0];
+            } finally {
+              el.remove();
+            }
+            parent.classList.add("jp-RenderedMermaid");
+            parent.appendChild(output);
+          }
+
+
+          /**
+           * Post-process to ensure mermaid diagrams contain only valid SVG and XHTML.
+           */
+          function cleanMermaidSvg(svg) {
+            return svg.replace(RE_VOID_ELEMENT, replaceVoidElement);
+          }
+
+
+          /**
+           * A regular expression for all void elements, which may include attributes and
+           * a slash.
+           *
+           * @see https://developer.mozilla.org/en-US/docs/Glossary/Void_element
+           *
+           * Of these, only `<br>` is generated by Mermaid in place of `\n`,
+           * but _any_ "malformed" tag will break the SVG rendering entirely.
+           */
+          const RE_VOID_ELEMENT =
+            /<\s*(area|base|br|col|embed|hr|img|input|link|meta|param|source|track|wbr)\s*([^>]*?)\s*>/gi;
+
+          /**
+           * Ensure a void element is closed with a slash, preserving any attributes.
+           */
+          function replaceVoidElement(match, tag, rest) {
+            rest = rest.trim();
+            if (!rest.endsWith('/')) {
+              rest = `${rest} /`;
+            }
+            return `<${tag} ${rest}>`;
+          }
+
+          void Promise.all([...diagrams].map(renderOneMarmaid));
+        });
+    </script>
+</head>
+<body>
+  <nav class="navbar navbar-light navbar-expand bg-light fixed-top shadow-sm" id="navbar-main">
+    <div class="navbar-container" style="padding-left: 20px">
+            <a class="navbar-brand logo" href="/backtestpro">
+                <img alt="Logo image" class="logo__image only-light" src="/backtestpro/assets/logo_light.svg">
+            </a>
+            <div class="col-lg-9 navbar">
+                <div class="mr-auto" id="navbar-center">
+
+                    <div class="navbar-center-item">
+                        <ul class="navbar-nav" id="navbar-main-elements">
+                            <li class="toctree-l1 nav-item">
+                                <a class="reference internal nav-link" href="/backtestpro">
+                                    Home
+                                </a>
+                            </li>
+
+                            <li class="toctree-l1 nav-item">
+                                <a class="reference internal nav-link" href="/backtestpro/get_started.html">
+                                    Get Started
+                                </a>
+                            </li>
+
+                            <li class="toctree-l1 nav-item">
+                                <a class="reference internal nav-link active" href="/backtestpro/tutorials">
+                                    Tutorials
+                                </a>
+                            </li>
+
+                            <li class="toctree-l1 nav-item">
+                                <a class="reference internal nav-link" href="/backtestpro/docs/backtest">
+                                    Documentation
+                                </a>
+                            </li>
+
+
+                            <li class="nav-item">
+                                <a class="nav-link nav-external" href="/backtestpro/about.html">About</a>
+                            </li>
+
+                        </ul>
+                    </div>
+
+                </div>
+
+                <div id="navbar-end">
+
+                    <div class="navbar-end-item">
+                        <code class="navbar-version">v0.0.1</code>
+                    </div>
+
+                    <div class="navbar-end-item">
+                        <ul aria-label="Icon Links" class="navbar-nav" id="navbar-icon-links">
+                            <li class="nav-item">
+                                <a class="nav-link" href="https://github.com/anthol42/backtestPro" rel="noopener" target="_blank"
+                                   title="GitHub"><img alt="GitHub" class="icon-link" src="/backtestpro/assets/github-mark.svg"
+                                                       style="height: 1.2em; margin: 0px; padding: 0px;"></a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+    </div>
+</nav>
+    <div class="row" style="margin-right: 0;">
+    <!-- Table of Contents Section -->
+    <div id="tableOfContents" class="col-md-3" style="width: 300px">
+    <nav id="toc">
+        <ul class="nav flex-column">
+            <li class="nav-item nav-item-dynamic">
+                <a class="nav-link"  style="color: rgb(137, 137, 137)" href="/backtestpro/tutorials">Home</a>
+            </li>
+                <li class="nav-item nav-item-dynamic">
+                    <a class="nav-link" style="color: rgb(34, 34, 34)" href="/backtestpro/tutorials/Data_Pipelines.html">Data Pipelines</a>
+                </li>
+                <li class="nav-item nav-item-dynamic">
+                    <a class="nav-link" style="color: rgb(137, 137, 137)" href="/backtestpro/tutorials/How_to_Backtest.html">How To Backtest</a>
+                </li>
+        </ul>
+    </nav>
+    </div>
+    <div class="toc-doc">
+        <div class="notebook-container">
+            <main class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=73403c5e-5d90-47a9-9e34-3e58570b0d98">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h1 id="Data-Module">Data Module<a class="anchor-link" href="#Data-Module">¶</a></h1><p>The data module helps you build complex data pipeline simply. Simply means that the code is readable and easily maintainable. This is due to the modularity of the data pipeline built with this module.</p>
+<h2 id="Overview">Overview<a class="anchor-link" href="#Overview">¶</a></h2><p>The data pipeline builtd with this module can be built like a pipeline in the shell console.  They are composed of multiple sub-scripts that are agglomerated (piped) together with the pipe <code>|</code> operator.  This way, the sub-scripts can be reusable for multiple data pipes, and helps you build new data pipes quicker by composition of existing code.</p>
+<h2 id="Anatomy-of-a-data-pipeline">Anatomy of a data pipeline<a class="anchor-link" href="#Anatomy-of-a-data-pipeline">¶</a></h2><p>The root class of the data pipelines is <code>DataPipe</code>.  This class is a recursive and composable class.  This means that a single small script that does an elementary task is a <code>DataPipe</code>, and an agglomeration (composition) of multiple elementary scripts is also a <code>DataPipe</code>.  As it might be clear by now, a data pipeline is built by composition of multiple elementary pipes.  These elementary pipes are split into four categories: <code>Fetch</code>, <code>Process</code>, <code>Collate</code>, <code>Cache</code>. <code>Fetch</code> pipes fetch data from an external source.  It can be from the internet, from a database, from a file, etc.  <code>Process</code> pipes will transform the data from the upstream pipe.  It can be to change the datastructure, to impute nans, to filter the data, etc. <code>Collate</code> pipes are use to merge two branches of a pipeline.  For example, let's say you have a pipeline that fetch chart data from one data source, and another pipeline that fetch fundamental data formated as reports.  Each raw data needs to be processed differently, so they have their own subpipes.  However, they need to be agglomerated at the end to have a single dataset.  This is where a Collate pipe would comes in handy: it could align the two series together to merge the output of the two subpipes into one pipe.  Finally, the <code>Cache</code> pipe can cache the output of a data pipeline and prevent the wrapped pipeline section to run only when cache has been revalidated or expired.  Otherwise, it will return the cached data.  The default cache pipe supports multiple way of revalidating the cache.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=0cba1292-8945-4d8b-8e47-61babdedb05d">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Basic-Example">Basic Example<a class="anchor-link" href="#Basic-Example">¶</a></h2><p>The following example will show how to build a simple pipe that can fetch chart data based on a ticker and the yfinance api.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=c89fd877-ad65-44b0-ac2e-71182f554c9d">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Import the pipe</span>
+<span class="kn">from</span> <span class="nn">backtest.data</span> <span class="kn">import</span> <span class="n">FetchCharts</span>
+<span class="c1"># Build the pipe</span>
+<span class="n">pipe</span> <span class="o">=</span> <span class="n">FetchCharts</span><span class="p">([</span><span class="s2">"NVDA"</span><span class="p">])</span>
+<span class="c1"># Print the representation of the pipe to have a clear view of what it will do.</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pipe</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>┌ DataPipe(DataPipeType.FETCH, FetchCharts) ┐
+│                                           │
+│ FetchCharts                               │
+│                                           │
+└───────────────────────────────────────────┘
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=5dc306c8-1373-4ef4-bfa5-f3efc9178ee3">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>As we can see in the previous example, our pipe is constituted of a single elementary pipe which fetches the charts of the tickers given as parameters.  For now, the pipe is just built, it hasn't run.  To run it, we simply need to call the <code>get</code> method and pass the <code>frm</code> and <code>to</code> parameters, which are datetimes.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=84bcebd0-7287-446f-bd87-436f4f93a82b">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="n">my_charts</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">frm</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2022</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">to</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"The type of the output is:  </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">my_charts</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"The keys are:               </span><span class="si">{</span><span class="n">my_charts</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"The type of the values are: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">my_charts</span><span class="p">[</span><span class="s1">'NVDA'</span><span class="p">])</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>The type of the output is:  &lt;class 'dict'&gt;
+The keys are:               dict_keys(['NVDA'])
+The type of the values are: &lt;class 'pandas.core.frame.DataFrame'&gt;
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=b61d7ea8-62ee-4058-a5db-5d2eef33a934">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<hr/>
+<p>Let's complexify the example by adding elementary pipes to our pipe.  We will fetch the charts, ignore the charts that are None (Which means the asset didn't exist at the time requested), and impute the nan values with the previous value.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=0ebc289e-5811-42e1-a827-bd023ce377d1">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">backtest.data</span> <span class="kn">import</span> <span class="n">FilterNoneCharts</span><span class="p">,</span> <span class="n">CausalImpute</span>
+
+<span class="n">pipe</span> <span class="o">=</span> <span class="n">FetchCharts</span><span class="p">([</span><span class="s2">"NVDA"</span><span class="p">,</span> <span class="s2">"AAPL"</span><span class="p">,</span> <span class="s2">"TXYZ"</span><span class="p">])</span> <span class="o">|</span> <span class="n">FilterNoneCharts</span><span class="p">()</span> <span class="o">|</span> <span class="n">CausalImpute</span><span class="p">()</span>
+<span class="c1"># Let's see what the pipe is doing</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pipe</span><span class="p">)</span>
+
+<span class="c1"># Let's fetch the data</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">frm</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2022</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">to</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"The type of the output is:  </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"The keys are:               </span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"The type of the values are: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">'NVDA'</span><span class="p">])</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>TXYZ: No timezone found, symbol may be delisted
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>┌ DataPipe(DataPipeType.PROCESS, CausalImpute) ───┐
+│                                                 │
+│ FetchCharts -&gt; FilterNoneCharts -&gt; CausalImpute │
+│                                                 │
+└─────────────────────────────────────────────────┘
+The type of the output is:  &lt;class 'dict'&gt;
+The keys are:               dict_keys(['NVDA', 'AAPL'])
+The type of the values are: &lt;class 'pandas.core.frame.DataFrame'&gt;
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=2a9df322-ebb2-4061-87aa-bc38d797ba42">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<hr/>
+<p>As you can see, the pipe <code>FilterNoneCharts</code> ignored the 'TXYZ' asset because it doesn't exists, so it returned only the NVDA and AAPL charts.  If this elementary pipe wasn't there, the pipe would have return a key for 'TXYZ' that would map to a None.</p>
+<p><strong>Questions</strong><br/>
+1.1 - What is the type of the FetchCharts pipe in the four types presented earlier?<br/>
+1.2 - What is the type of the FilterNoneCharts pipe?</p>
+<p>Now, let's build a real-world pipe that you might find useful.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=b5d695b2-81fb-47a3-a637-501361902bcf">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">backtest.data</span> <span class="kn">import</span> <span class="n">PadNan</span><span class="p">,</span> <span class="n">ToTSData</span><span class="p">,</span> <span class="n">Cache</span>
+
+<span class="c1"># Build the pipe</span>
+<span class="n">pipe</span> <span class="o">=</span> <span class="n">FetchCharts</span><span class="p">([</span><span class="s2">"NVDA"</span><span class="p">,</span> <span class="s2">"AAPL"</span><span class="p">,</span> <span class="s2">"MSFT"</span><span class="p">])</span> <span class="o">|</span> <span class="n">FilterNoneCharts</span><span class="p">()</span> <span class="o">|</span> <span class="n">CausalImpute</span><span class="p">()</span> <span class="o">|</span> <span class="n">PadNan</span><span class="p">()</span> <span class="o">|</span> <span class="n">ToTSData</span><span class="p">()</span> <span class="o">|</span> <span class="n">Cache</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pipe</span><span class="p">)</span>
+
+<span class="c1"># Fetch the data</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">frm</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2022</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">to</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"The type of the output is:                     </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"The length of the list is:                     </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"The type of the element of the list is         </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"The keys of the inner dict is                  </span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"The type of the elements in the inner dict is: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">'NVDA'</span><span class="p">])</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>┌ DataPipe(DataPipeType.CACHE, Cache) ───────────────────────────────────────────┐
+│                                                                                │
+│ FetchCharts -&gt; FilterNoneCharts -&gt; CausalImpute -&gt; PadNan -&gt; ToTSData -&gt; Cache │
+│                                                                                │
+└────────────────────────────────────────────────────────────────────────────────┘
+The type of the output is:                     &lt;class 'list'&gt;
+The length of the list is:                     1
+The type of the element of the list is         &lt;class 'dict'&gt;
+The keys of the inner dict is                  dict_keys(['NVDA', 'AAPL', 'MSFT'])
+The type of the elements in the inner dict is: &lt;class 'backtest.engine.tsData.TSData'&gt;
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=414f9312-4023-45d3-b708-c60943a8f12f">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<hr/>
+<p>As you can see, we built a complex data structure with a single line of code.  As if it was not engough, it automatically cached the result, so we do not have to query the api anymore.  Now you might wonder what is this output data structure and why this pipe may be useful to you in the future.  Let's break it down!</p>
+<h4 id="The-output">The output<a class="anchor-link" href="#The-output">¶</a></h4><p>The final output is the data structure that the backtest object needs.  So, the output of this pipe is the input of the backtest.  More specifically, the backtest object needs the data to be formated as follow: A list of dictionnaries, where each index of the list correspond to a specific time resolution (our has a length of 1 because we only had a single time resolution which was 1 day, the default).  The dictionaries have string keys and TSData object values.  The keys are the tickers of the assets, and the values are the chart warpped by a TSData object which contains metadata information useful for the backtest engine.  Without the pipe, it would have been a tedious task to create a function that fetch the data, preprocess it, and format it in the good format.  However, building this pipeline with elementary pipes that are reusable is a charm!</p>
+<h4 id="The-pipes">The pipes<a class="anchor-link" href="#The-pipes">¶</a></h4><p>Let's break down what each pipe do.  The first three pipes have already been cover, so we will start with the 4th one.</p>
+<p><strong>PadNan</strong>: This pipe will ensure that every timeseries (charts in our case) have the same length.  It will pad the start of the shorter charts with nan to ensure this.  It is required by the backtest object that each series have the same length.<br/>
+<strong>ToTSData</strong>: This pipe converts a dictionary of DataFrames to the data structure presented above.  It is recommended to always use this pipe if the pipeline is meant to prepare the data for the backtest object.<br/>
+<strong>Cache</strong>: Finally, the cache pipe caches the output of the pipe on the first run.  On the following runs, it is this pipe that is called first, and it will check if there is a cache file associated with this data.  If yes, it will skip all of the other pipes (from FetchCharts to Cache) and return the cached data.  If some other pipes would have beed added after the cache pipe, their data wouldn't have been cached.  Because we didn't passed any parameters to the cache pipe, it will be cached indefinitely.  However, if you change the pipe structure, or you change some values in the pipe (for example add a ticker to the list of tickers), it will automatically detect those changes and perform a full revalidation of the whole pipe.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=17408c40-1535-4662-b6f8-596fe97d5bcf">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Complex-pipes">Complex pipes<a class="anchor-link" href="#Complex-pipes">¶</a></h2><p>It comes handy to have some prebuilt pipes for simple pipelines.  However, how can I build a complex pipeline fetching data from multiple sources, transforming each of them independently, and finally agglomerating everything together?  We'll see how to do this here.</p>
+<h3 id="Building-custom-elementary-pipes">Building custom elementary pipes<a class="anchor-link" href="#Building-custom-elementary-pipes">¶</a></h3><p>As said earlier, there are four types of pipes, and each of them has some particularities to keep in mind when building a custom elementary pipe.  In this section, you will see how to create those custom pipes with examples.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=c21552f6-bab1-433a-b6a3-4d7169a23150">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h4 id="Fetch">Fetch<a class="anchor-link" href="#Fetch">¶</a></h4><p>The fetch pipes are designed to fetch data from an external sources.  However, in this example, we will fetch the data from a global variable to simplify the examples.  There are two ways to build a custom fetch pipe.  The first one, and the simplest si from a decorator.  The second one is by deriving a class.  Here are the pros and cons of both methods:</p>
+<p><strong>Decorator</strong><br/>
+Pros:</p>
+<ul>
+<li>Functional approach</li>
+<li>Simpler</li>
+<li>Quicker to code, and less boiler plates</li>
+</ul>
+<p>Cons:</p>
+<ul>
+<li>Cannot receives parameters during initialization</li>
+<li>Cannot have a state.</li>
+</ul>
+<p><strong>Deriving a class</strong><br/>
+Pros:</p>
+<ul>
+<li>More flexibility</li>
+<li>Can receives parameters during initialization</li>
+<li>Can have a state</li>
+</ul>
+<p>Cons:</p>
+<ul>
+<li>More boiler plates</li>
+<li>Might be longer to code</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=aea9a6bf-b94c-425b-b327-41bc3fb8de2b">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>To make a custom pipe using the <strong>decorator</strong> technique, you only need to add the <code>@Fetch</code> at the top of your function.  Teh function must have a particular signature.  It must have as positional parameters the <code>frm</code> and <code>to</code> paramter, which are datetimes.  This means that your pipe should always fetch data between those two datetime to avoid unexepected results.  It pust also have the po parameters, which is a keyword parameter that receives a <code>PipeOutput</code>.  The PipeOuput objects corresponds to the output of the previous pipe.  If the current pipe is the first of the pipeline, the po parameter will be <code>None</code>.  You function must also take as parameters positional arguments that can be passed to the pipeline and keyword arguments.  That's why the <code>*args</code> and <code>**kwargs</code> are added.  It will be explained in more details later why this is required.  Finallym if we print the type of the function, we can find out it isn't a function, but a Fetch object.  We built a custom DataPipe!</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=5ada284e-b712-49a1-b0be-4580a0f3f436">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">backtest.data</span> <span class="kn">import</span> <span class="n">Fetch</span>
+
+<span class="n">MY_VALUES</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.618</span><span class="p">,</span> <span class="mf">2.71828</span><span class="p">,</span> <span class="mf">3.1416</span><span class="p">,</span> <span class="mf">42.</span><span class="p">]</span>
+
+<span class="nd">@Fetch</span>
+<span class="k">def</span> <span class="nf">FetchDec</span><span class="p">(</span><span class="n">frm</span><span class="p">,</span> <span class="n">to</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">po</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">MY_VALUES</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"The type of FetchDec is: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">FetchDec</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">FetchDec</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>The type of FetchDec is: &lt;class 'backtest.data.pipes.Fetch'&gt;
+
+┌ DataPipe(DataPipeType.FETCH, FetchDec) ┐
+│                                        │
+│ FetchDec                               │
+│                                        │
+└────────────────────────────────────────┘
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=8ffb8514-11cf-4a41-9626-9fa22f90a0bb">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<hr/>
+<p>Now, we will build a custom pipe using the <strong>class derivation</strong> technique.  To do so, you need to derive a class from the DataPipe base class (The fetch is only made as a decorator, and it isn't recommended to derive from it).  To do so, we need to override the constructor and the fetch method.  The constructor can take as many parameters as we like.  We also need to initialize the super class by passing the pipe type and the name of the pipe. It is recommended to use the same name as the name of the class.  Then, we can override the fetch method and implement the logic there, like we did with the decorator technique.  However, it must return a PipeOutput, not any object like in the decorator technique.  In addition, the pipe output must be refrence to the current object 'self'.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=6b3e763e-b4bf-4352-8d58-ae1730eca286">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">backtest.data</span> <span class="kn">import</span> <span class="n">DataPipe</span><span class="p">,</span> <span class="n">DataPipeType</span><span class="p">,</span> <span class="n">PipeOutput</span>
+
+<span class="k">class</span> <span class="nc">FetchClf</span><span class="p">(</span><span class="n">DataPipe</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">my_param</span><span class="o">=</span><span class="s2">"I can receive params!"</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">DataPipeType</span><span class="o">.</span><span class="n">FETCH</span><span class="p">,</span> <span class="s2">"FetchClf"</span><span class="p">)</span>    <span class="c1"># PipeType, Pipe Name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">my_param</span> <span class="o">=</span> <span class="n">my_param</span>
+
+    <span class="k">def</span> <span class="nf">fetch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frm</span><span class="p">,</span> <span class="n">to</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">po</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">my_param</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">PipeOutput</span><span class="p">(</span><span class="n">MY_VALUES</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"The type of FetchClf is: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">FetchClf</span><span class="p">())</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">FetchClf</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>The type of FetchClf is: &lt;class '__main__.FetchClf'&gt;
+
+┌ DataPipe(DataPipeType.FETCH, FetchClf) ┐
+│                                        │
+│ FetchClf                               │
+│                                        │
+└────────────────────────────────────────┘
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=3df1ec8e-a06a-49d1-8f04-986b3a182d2a">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h4 id="Process">Process<a class="anchor-link" href="#Process">¶</a></h4><p>To make custom process pipes, it is the same as Fetch pipes, but using the Process decorator, or the Process data pipe type and overriding the process method instead of the fetch for the class deriving method.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=db5fc82c-7228-4987-b25c-e1fb4907cdc4">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h4 id="Collate">Collate<a class="anchor-link" href="#Collate">¶</a></h4><p>There is still two ways to make a custom collate pipe.  The first one is the <strong>decorator</strong>.  It is similar to the Fetch and the Process sunthax, but it takes two pipe output as input: <code>po1</code>, <code>po2</code>.  In the following example, we make a Collate pipe that assumes that the values of the pipe outputs are lists and concatenate them.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=c5eb3df5-f371-41a0-985b-3f40324f3b08">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">backtest.data</span> <span class="kn">import</span> <span class="n">Collate</span>
+
+<span class="nd">@Collate</span>
+<span class="k">def</span> <span class="nf">CollateDec</span><span class="p">(</span><span class="n">frm</span><span class="p">,</span> <span class="n">to</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">po1</span><span class="p">,</span> <span class="n">po2</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">po1</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="n">po2</span><span class="o">.</span><span class="n">value</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"The type of CollateDec is: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">CollateDec</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">CollateDec</span><span class="p">(</span><span class="n">FetchDec</span><span class="p">(),</span> <span class="n">FetchClf</span><span class="p">()))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>The type of CollateDec is: &lt;class 'backtest.data.pipes.Collate'&gt;
+
+┌ DataPipe(DataPipeType.COLLATE, CollateDec) ┐
+│                                            │
+│ FetchDec -&gt; ┐                              │
+│             │ -&gt; CollateDec                │
+│ FetchClf -&gt; ┘                              │
+│                                            │
+└────────────────────────────────────────────┘
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=c184b9da-b970-4263-9941-ed6243021394">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<hr/>
+<p>The <strong>class derivation</strong> method is trickier because we need to manually handle the pipe ids, which we haven't seen yet.  So, we will make an example, and there is a part of the code that will be explained later on. Like for a Fetch pipe, we need to derive from the DataPipe class and initialize the super class.  We need to use the COLLATE data pipe type.  We also need to register the two branches in a list of two pipe called <code>_pipes</code>.  It must be called like this.  With this line, the DataPipe will be able to handle both branches under the hood and pass their output to the collate method.  Finally, we can override the collate method and implement it like with the decorator technique.  However, note that it must return a PipeOutput referenced to the current object ('self').</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=2d77f9ee-d070-4cfb-8502-8c79e8f91656">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">CollateClf</span><span class="p">(</span><span class="n">DataPipe</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pipe1</span><span class="p">,</span> <span class="n">pipe2</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">DataPipeType</span><span class="o">.</span><span class="n">COLLATE</span><span class="p">,</span> <span class="s2">"CollateClf"</span><span class="p">)</span>
+        <span class="c1"># We register the two branches in order for the DataPipe to handle them.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pipes</span> <span class="o">=</span> <span class="p">[</span><span class="n">pipe1</span><span class="p">,</span> <span class="n">pipe2</span><span class="p">]</span>
+        
+        <span class="c1"># Technical line explained later</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pipe_id</span> <span class="o">=</span> <span class="n">pipe2</span><span class="o">.</span><span class="n">_increment_id</span><span class="p">(</span><span class="n">pipe1</span><span class="o">.</span><span class="n">_pipe_id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">collate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frm</span><span class="p">,</span> <span class="n">to</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">po1</span><span class="p">,</span> <span class="n">po2</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">PipeOutput</span><span class="p">(</span><span class="n">po1</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="n">po2</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"The type of CollateClf is: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">CollateClf</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">CollateClf</span><span class="p">(</span><span class="n">FetchDec</span><span class="p">(),</span> <span class="n">FetchClf</span><span class="p">()))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>The type of CollateClf is: &lt;class 'abc.ABCMeta'&gt;
+
+┌ DataPipe(DataPipeType.COLLATE, CollateClf) ┐
+│                                            │
+│ FetchDec -&gt; ┐                              │
+│             │ -&gt; CollateClf                │
+│ FetchClf -&gt; ┘                              │
+│                                            │
+└────────────────────────────────────────────┘
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=19127135-7199-44c4-974d-68db1d7edb64">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h4 id="Putting-everythng-together">Putting everythng together<a class="anchor-link" href="#Putting-everythng-together">¶</a></h4><p>In the following example, we will see how our implementation using the decorator technique and the class derivation techniques gives the same result.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=72dcb9ea-759b-4739-a46d-1cfe676a812e">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">pipe_dec</span> <span class="o">=</span> <span class="n">CollateDec</span><span class="p">(</span><span class="n">FetchDec</span><span class="p">(),</span> <span class="n">FetchDec</span><span class="p">())</span>
+<span class="n">dec_out</span> <span class="o">=</span> <span class="n">pipe_dec</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pipe_dec</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="s2">"="</span><span class="o">*</span><span class="mi">100</span> <span class="o">+</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">pipe_clf</span> <span class="o">=</span> <span class="n">CollateClf</span><span class="p">(</span><span class="n">FetchClf</span><span class="p">(),</span> <span class="n">FetchClf</span><span class="p">())</span>
+<span class="n">clf_out</span> <span class="o">=</span> <span class="n">pipe_clf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pipe_clf</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="s2">"="</span><span class="o">*</span><span class="mi">100</span> <span class="o">+</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Decorator: </span><span class="si">{</span><span class="n">dec_out</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Class derivation: </span><span class="si">{</span><span class="n">clf_out</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>┌ DataPipe(DataPipeType.COLLATE, CollateDec) ┐
+│                                            │
+│ FetchDec -&gt; ┐                              │
+│             │ -&gt; CollateDec                │
+│ FetchDec -&gt; ┘                              │
+│                                            │
+└────────────────────────────────────────────┘
+
+====================================================================================================
+
+I can receive params!
+I can receive params!
+┌ DataPipe(DataPipeType.COLLATE, CollateClf) ┐
+│                                            │
+│ FetchClf -&gt; ┐                              │
+│             │ -&gt; CollateClf                │
+│ FetchClf -&gt; ┘                              │
+│                                            │
+└────────────────────────────────────────────┘
+
+====================================================================================================
+
+Decorator: [1.618, 2.71828, 3.1416, 42.0, 1.618, 2.71828, 3.1416, 42.0]
+Class derivation: [1.618, 2.71828, 3.1416, 42.0, 1.618, 2.71828, 3.1416, 42.0]
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=abca7535-23e9-427c-9401-d2b6c1bec176">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<hr/>
+<p>In the previous example, we can see that both methods gives the same results.  We can see the string 'I can receive params!' printed two times because the FetchClf object is called twice, and we built the pipe in a way to print this each time it is called.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=23d1ad30-769c-4c24-b8ee-ff1eda054397">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Deep-dive-into-Caching">Deep dive into Caching<a class="anchor-link" href="#Deep-dive-into-Caching">¶</a></h2><p>Implementing robust caching techniques from scratch can be tedious.  This is why the datapipe api comes with a prebuilt caching support.  It can support by default simple caching and revalidating mechanism, and can be extended to handle any arbitrarly complex caching and revalidating mecanism.  There is again two ways to extend the caching mechanism.  The first one is the simplest, but the less elegant: using a combination of decorator and callbacks.  If it is what you want to do, I recommend you to take a look at the example in the docs (Cache object).  The other way is by deriving the class.  We won't enter into the technical details on how to make a custom caching mecanism in this tutorial since most people won't need to do so.  If you need to understand those mecanism, I suggest you to read the docs on the Cache object and check the implementation of the JSONCache object in the source code.  I believe it is well documented and can be a great example.</p>
+<p>Now, coming back to the tutorial, we take a look at the two prebuilt caching pipes.  We will look at how to use them, and a brief overview of how they work under the hood.</p>
+<h3 id="How-to-interprete-a-pipe-using-caching">How to interprete a pipe using caching<a class="anchor-link" href="#How-to-interprete-a-pipe-using-caching">¶</a></h3><p>When a cache pipe is added to a datapipe, it automatically wraps everything to the left of of it.  This means that this pipe
+<code>fetch() | process() | cache()</code> is equivalent to do this in a functional notation: <code>cache(process(fetch()))</code>.  In this example, the output of the process is cached and the process and fetch pipes will not be run again will the cache is still valid.</p>
+<h3 id="Cache-and-JSONCache">Cache and JSONCache<a class="anchor-link" href="#Cache-and-JSONCache">¶</a></h3><p>There is two types of prebuilt cache pipes: <code>Cache</code> and <code>JSONCache</code>.  The first one caches the data in a pickle format.  It is more flexible than  JSON and can result in a smaller file size for big objects.  However, it is harder to inspect the file and understand what data is stored compared to a text file such as JSON.  This is why there is another cache pipe that stores the cache in JSON: <code>JSONCache</code>.  By default, JSON is pretty limited to basic datatypes such as float, strings, bool, etc.  This is why we extended the JSON serializing mechanism to handle more complex datatypes and be easily extendable to other datatypes.  It supports py default multiple complex datatype that you could use such as pandas DataFrames and numpy arrays.  Most objects are also serializable by default.  However, if you want a specific way to serialize your custum object, check out this example:</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=e0be0bfd-599e-4867-82a4-50d31d026502">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">backtest.data</span> <span class="kn">import</span> <span class="n">json_extension</span> <span class="k">as</span> <span class="n">je</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="k">class</span> <span class="nc">MyClass</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="n">a</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="n">b</span>
+    
+    <span class="k">def</span> <span class="nf">__tojson__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">"a"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="s2">"b"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">}</span>
+    
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">__fromjson__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">"a"</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="s2">"b"</span><span class="p">])</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">"MyClass(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="si">}</span><span class="s2">)"</span>
+    
+<span class="n">je</span><span class="o">.</span><span class="n">add_types</span><span class="p">(</span><span class="n">MyClass</span><span class="p">)</span>
+<span class="n">obj</span> <span class="o">=</span> <span class="n">MyClass</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">je</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="p">))</span>
+<span class="c1"># To deserialize the object</span>
+<span class="n">d</span> <span class="o">=</span> <span class="s1">'{"__TYPE__": "MyClass", "data": {"a": 1, "b": 2}}'</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">je</span><span class="o">.</span><span class="n">JSONDecoder</span><span class="p">))</span>
+<span class="c1"># To unregister a type, use the remove_types function</span>
+<span class="n">je</span><span class="o">.</span><span class="n">remove_types</span><span class="p">(</span><span class="n">MyClass</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">()</span> <span class="c1"># For spacing in th output</span>
+<span class="c1"># However, in this case, it wasn't necessary to implement a custom serializer because the serializer can handle it by default:</span>
+<span class="k">class</span> <span class="nc">MyClass2</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="n">a</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="n">b</span>
+    
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">"MyClass2(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="si">}</span><span class="s2">)"</span>
+
+<span class="n">obj</span> <span class="o">=</span> <span class="n">MyClass2</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">je</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="p">))</span>
+<span class="c1"># To deserialize the object</span>
+<span class="n">d</span> <span class="o">=</span> <span class="s1">'{"__TYPE__": "MyClass2", "data": {"a": 1, "b": 2}}'</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">je</span><span class="o">.</span><span class="n">JSONDecoder</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>{"__TYPE__": "MyClass", "data": {"a": 1, "b": 2}}
+MyClass(1, 2)
+
+{"__TYPE__": "MyClass2", "data": {"a": 1, "b": 2}}
+MyClass2(1, 2)
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=84d649a3-900d-43f0-a613-e09d28328057">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<hr/>
+<p>The following shows an example of registering a custom class with the JSONCache pipe.  Its basically the same synthax.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=286b2a96-63d8-45d8-8d35-da37e23effc1">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">backtest.data</span> <span class="kn">import</span> <span class="n">Fetch</span><span class="p">,</span> <span class="n">JSONCache</span>
+
+<span class="c1"># Register the class.  (Usually not necessary, but we show it for the pupose of the tutorial)</span>
+<span class="n">je</span><span class="o">.</span><span class="n">add_types</span><span class="p">(</span><span class="n">MyClass</span><span class="p">)</span>
+
+<span class="n">OBJ</span> <span class="o">=</span> <span class="n">MyClass</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="nd">@Fetch</span>
+<span class="k">def</span> <span class="nf">FetchNum</span><span class="p">(</span><span class="n">frm</span><span class="p">,</span> <span class="n">to</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">po</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">OBJ</span>
+
+<span class="n">pipe</span> <span class="o">=</span> <span class="n">FetchNum</span><span class="p">()</span> <span class="o">|</span> <span class="n">JSONCache</span><span class="p">()</span>
+
+<span class="c1"># Fisrt run, it isn't cache</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pipe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+
+<span class="n">OBJ</span> <span class="o">=</span> <span class="n">MyClass</span><span class="p">(</span><span class="mi">42</span><span class="p">,</span> <span class="mi">42</span><span class="p">)</span>
+
+<span class="c1"># Second run: It is cached and loaded fro cache</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pipe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>MyClass(1, 2)
+MyClass(1, 2)
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=5669ed2f-54cc-4be2-8547-33737428f273">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Overview-of-the-mecanism">Overview of the mecanism<a class="anchor-link" href="#Overview-of-the-mecanism">¶</a></h3><p>The great question: 'How does it work under the hood?'</p>
+<ul>
+<li>On the first run, it runs after the previous pipes and store the output in memory.  If the <code>store</code> parameter is set to True, it is stored on disk in a pickle file or a json file depending on the caching pipe you chose or with the <code>caching_cb</code> passed as parameter.</li>
+<li>On the following runs, the cache pipe is called first (before the pipes it is wrapping). If stored the cache is stored, it loads the cache from the disk using the default loading mecanism or the <code>loading_cb</code> if provided.  Then, it verifies if the cache is still valid.  By default, it will verify if the cache is not too old (Stored datetime + <code>timeout</code> parameter) or if it hasn't been hit more times than <code>max_requests</code>.  If a <code>revalidate_cb</code> is provided, it is called to determine of the cache is still valid.</li>
+<li>If the cache is not valid anymore, it is revalidated and the part of the pipe wrapped inside the cache object is run again.</li>
+<li>If the cache is still valid, it returns the cached data.</li>
+<li>If the pipe has changed: its structure or its pipe's parameters, the cache object will detect it and it will trigger a full revalidation.  This means  that every cache object will revalidate their cache.  In other words, all the cache will be revalidated.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=8928342c-c42e-4b40-97a6-9de17b4d52f7">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Technicality-of-DataPipe-and-Pipe-Ids">Technicality of DataPipe and Pipe Ids<a class="anchor-link" href="#Technicality-of-DataPipe-and-Pipe-Ids">¶</a></h2><p>This section explains the technicalities of how the datapipes are built under the hood.  During the build process, each elementary pipe is given a unique id that is unique inside the pipe.  However, because the pipe can be built in multiple steps, the given ids aren't fixed utils the pipe is run.  This means that while a pipe isn't run, any ids can be changed internally.  However, once the pipe is run, the ids becomes fixed and cannot be changed anymore.  We call this process a pipe forging.  This is because a pipe is flexible before it is run, but becomes fixed and cannot be changed after being run.  Also, during the forgin process, the pipe ids may change to become unique accross all pipes, not only the current pipe.  Let's see an example:</p>
+<div class="highlight"><pre><span></span><span class="n">pipe1</span> <span class="o">=</span> <span class="n">fetch</span><span class="p">()</span> <span class="o">|</span> <span class="n">process</span><span class="p">()</span>
+<span class="n">pipe1</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>    <span class="c1"># Forge the pipe to reserve the ids</span>
+<span class="n">pipe2</span> <span class="o">=</span> <span class="n">fetch</span><span class="p">()</span> <span class="o">|</span> <span class="n">process</span><span class="p">()</span>
+<span class="n">pipe2</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>    <span class="c1"># Forge the pipe to get the real ids</span>
+</pre></div>
+<p>In the previous code, the first pipe <em>could have</em> the following ids: (fetch: 1, process: 2) and the second (fetch: 3, process: 4).  It is precised 'could have' because it depends on what pipes were built previously.  Like in that example, even though both pipes are identical, they have different ids.  However, if the get method wouldn't have been called, their ids would have been the same <em>i.e.</em> (fetch: 1, process: 2).  This is because the pipe wouldn't have been forged and the ids would be unique for their pipe, but not for every pipes.</p>
+<h3 id="Why-it-matters?">Why it matters?<a class="anchor-link" href="#Why-it-matters?">¶</a></h3><p>Usually, you won't even need to bother with the pipe ids.  However, there might have some situation were it could be useful to understand the concept.  For example: when using caching in jupyter notebooks.  This is because the caching pipes uses their pipe_id to identify the cache file and revalidate its cache.  If the pipe_id of a cache pipe changes, it might use the cache of another pipe, which could cause bugs.  Usually, this would not happen because each pipe is built deterministically in the same order in a script thus inheriting deterministically the same pipe_id.  However, it is not the case in jupyter notebooks where cells can be run in different orders depending on the user's intentions.  This means that the same pipeline could inherit different ids depending on how the user run the notebook.  This can cause problem if the pipe uses caching.  To tackle this prolem, there is a method called <code>set_id</code> that will set the ids of the pipe and forge it in order to fix the ids.  Because they are not automatically assigned, there is no verification done to check if the ids are unique.  (They are unique inside the pipe, but could overlap with the ids of another pipe.)  This being said, you must make sure the assigned ids are unique.  A good thumb rule is to first run your notebook with automatically assigned ids, then specify the same ids in the <code>set_id</code> method.</p>
+<p><strong>Example</strong>:<br/>
+During the first run, we do not set any pipe ids.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=1e5cdb7e-848a-4b0f-9472-496bfc22e878">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">backtest.data</span> <span class="kn">import</span> <span class="n">PadNan</span><span class="p">,</span> <span class="n">ToTSData</span><span class="p">,</span> <span class="n">CausalImpute</span><span class="p">,</span> <span class="n">FilterNoneCharts</span><span class="p">,</span> <span class="n">FetchCharts</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="c1"># Build the pipe</span>
+<span class="n">pipe1</span> <span class="o">=</span> <span class="n">FetchCharts</span><span class="p">([</span><span class="s2">"NVDA"</span><span class="p">,</span> <span class="s2">"AAPL"</span><span class="p">,</span> <span class="s2">"MSFT"</span><span class="p">])</span> <span class="o">|</span> <span class="n">FilterNoneCharts</span><span class="p">()</span> <span class="o">|</span> <span class="n">CausalImpute</span><span class="p">()</span> <span class="o">|</span> <span class="n">PadNan</span><span class="p">()</span> <span class="o">|</span> <span class="n">ToTSData</span><span class="p">()</span>
+<span class="n">pipe1</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>   <span class="c1"># Run to forge the pipe</span>
+<span class="n">pipe2</span> <span class="o">=</span> <span class="n">FetchCharts</span><span class="p">([</span><span class="s2">"NVDA"</span><span class="p">,</span> <span class="s2">"AAPL"</span><span class="p">,</span> <span class="s2">"MSFT"</span><span class="p">])</span> <span class="o">|</span> <span class="n">FilterNoneCharts</span><span class="p">()</span> <span class="o">|</span> <span class="n">CausalImpute</span><span class="p">()</span> <span class="o">|</span> <span class="n">PadNan</span><span class="p">()</span> <span class="o">|</span> <span class="n">ToTSData</span><span class="p">()</span>
+<span class="n">pipe2</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>   <span class="c1"># Run to forge the pipe</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n\n</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pipe1</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">p</span><span class="o">.</span><span class="n">pipe_id</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pipe2</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">p</span><span class="o">.</span><span class="n">pipe_id</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
+
+
+FetchCharts: 0
+FilterNoneCharts: 1
+CausalImpute: 2
+PadNan: 3
+ToTSData: 4
+====================================================================================================
+FetchCharts: 5
+FilterNoneCharts: 6
+CausalImpute: 7
+PadNan: 8
+ToTSData: 9
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=a634b04d-5d90-487d-bf82-67c86801f289">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>Then, we change the cells to add the <code>set_id()</code> method call</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=9ab43523-1d5f-4bda-916f-569e75109cf3">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">backtest.data</span> <span class="kn">import</span> <span class="n">PadNan</span><span class="p">,</span> <span class="n">ToTSData</span><span class="p">,</span> <span class="n">CausalImpute</span><span class="p">,</span> <span class="n">FilterNoneCharts</span><span class="p">,</span> <span class="n">FetchCharts</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="c1"># Build the pipe</span>
+<span class="n">pipe1</span> <span class="o">=</span> <span class="n">FetchCharts</span><span class="p">([</span><span class="s2">"NVDA"</span><span class="p">,</span> <span class="s2">"AAPL"</span><span class="p">,</span> <span class="s2">"MSFT"</span><span class="p">])</span> <span class="o">|</span> <span class="n">FilterNoneCharts</span><span class="p">()</span> <span class="o">|</span> <span class="n">CausalImpute</span><span class="p">()</span> <span class="o">|</span> <span class="n">PadNan</span><span class="p">()</span> <span class="o">|</span> <span class="n">ToTSData</span><span class="p">()</span>
+<span class="n">pipe1</span><span class="o">.</span><span class="n">set_id</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>    <span class="c1"># Always pick the smallest id</span>
+<span class="n">pipe1</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>   <span class="c1"># Run to forge the pipe</span>
+<span class="n">pipe2</span> <span class="o">=</span> <span class="n">FetchCharts</span><span class="p">([</span><span class="s2">"NVDA"</span><span class="p">,</span> <span class="s2">"AAPL"</span><span class="p">,</span> <span class="s2">"MSFT"</span><span class="p">])</span> <span class="o">|</span> <span class="n">FilterNoneCharts</span><span class="p">()</span> <span class="o">|</span> <span class="n">CausalImpute</span><span class="p">()</span> <span class="o">|</span> <span class="n">PadNan</span><span class="p">()</span> <span class="o">|</span> <span class="n">ToTSData</span><span class="p">()</span>
+<span class="n">pipe2</span><span class="o">.</span><span class="n">set_id</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">pipe2</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>   <span class="c1"># Run to forge the pipe</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n\n</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pipe1</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">p</span><span class="o">.</span><span class="n">pipe_id</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pipe2</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">p</span><span class="o">.</span><span class="n">pipe_id</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
+
+
+FetchCharts: 0
+FilterNoneCharts: 1
+CausalImpute: 2
+PadNan: 3
+ToTSData: 4
+====================================================================================================
+FetchCharts: 5
+FilterNoneCharts: 6
+CausalImpute: 7
+PadNan: 8
+ToTSData: 9
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=e37e339e-90a8-46b8-a11e-d073038efae9">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<hr/>
+<p>Now, you can try to run mulitple time the first cell, you will see that the ids keep incrementing defining new pipes at every run.  However, in the second cell, no matters how many times you run the cell, the pipe ids will stay the same.  It won't create new pipes, it will just re-initialize the pipelines.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=8b3c6fdf-cf7f-4149-82f7-1fbe33da3a55">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Question-Answers">Question Answers<a class="anchor-link" href="#Question-Answers">¶</a></h2><p>1.1: Fetch<br/>
+1.2: Process</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+        </div>
+    </div>
+    </div>
+  <div class="divider"></div>
+  <footer id="footer">
+    <div id="footer_container">
+    <p><b>Author</b>: Anthony Lavertu (2024)</p>
+    <p><b>Generated by</b> <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</div>
+</footer>
+</body>
+  <script>
+function copyToClipboard(button) {
+      var preElement = button.parentNode.previousElementSibling;
+      var codeElement = preElement.querySelector('code');
+      var codeText = codeElement.textContent || codeElement.innerText;
+
+      navigator.clipboard.writeText(codeText).then(function() {
+        button.innerHTML = '<i class="far fa-check-circle"></i>';
+        button.classList.add('copied');
+
+        setTimeout(function() {
+          button.innerHTML = '<i class="far fa-copy"></i>';
+          button.classList.remove('copied');
+        }, 3000);
+      }).catch(function(error) {
+        console.error('Failed to copy: ', error);
+      });
+    }
+    function copyToClipboardText(button, id) {
+    const codeText = codeTexts[id];
+    navigator.clipboard.writeText(codeText).then(function() {
+        button.innerHTML = '<i class="far fa-check-circle"></i>';
+        button.classList.add('copied');
+
+        setTimeout(function() {
+          button.innerHTML = '<i class="far fa-copy"></i>';
+          button.classList.remove('copied');
+        }, 3000);
+      }).catch(function(error) {
+        console.error('Failed to copy: ', error);
+      });
+    }
+        document.addEventListener('DOMContentLoaded', function() {
+      // Get all section links
+      const sectionLinks = document.querySelectorAll('#toc a');
+    });
+  </script>
+</html>

@@ -10,8 +10,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" crossorigin="anonymous" />
   <script src="/backtestpro/assets/bootstrap.min.js"></script>
   <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
-  <title>home</title>
-  <meta name="description" content="Home Page" />
+  <title>about</title>
+  <meta name="description" content="About the framework" />
 </head>
 <body>
   <nav class="navbar navbar-light navbar-expand bg-light fixed-top shadow-sm" id="navbar-main">
@@ -25,7 +25,7 @@
                     <div class="navbar-center-item">
                         <ul class="navbar-nav" id="navbar-main-elements">
                             <li class="toctree-l1 nav-item">
-                                <a class="reference internal nav-link active" href="/backtestpro">
+                                <a class="reference internal nav-link " href="/backtestpro">
                                     Home
                                 </a>
                             </li>
@@ -50,7 +50,7 @@
 
 
                             <li class="nav-item">
-                                <a class="nav-link nav-external " href="/backtestpro/about.html">About</a>
+                                <a class="nav-link nav-external active" href="/backtestpro/about.html">About</a>
                             </li>
 
                         </ul>
@@ -79,114 +79,87 @@
     </div>
 </nav>
       <div id="home-header">
-      <img alt="Logo image" class="big-logo" src="/../anthol42.github.io/backtestpro/assets/logo_light.svg">
-      <h2 id="home-short-desc">Feature rich backtesting framework</h2>
+      <h2 id="about-short-desc">Backtestpro - The next generation open-source backtesting framework</h2>
   </div>
-  <div id="home-card-presentation" class="container" style="max-width: 1100px;">
-      <div class="row" style="display:flex; justify-content: space-between; margin: 15px;">
-      <div class="card shadow" style="width: 20rem; height: 15rem;">
-          <div class="card-body">
-              <h5 class="card-title>">End-to-End</h5>
-              <p class="card-text">Work with the same code and framework from data fetching and processing to algorithmic production release by passing through the backtesting step.</p>
-          </div>
-      </div>
-      <div class="card shadow" style="width: 20rem; height: 15rem;">
-          <div class="card-body">
-              <h5 class="card-title>">Easy</h5>
-              <p class="card-text">Build complex strategies that are tested in near real-world conditions in few lines of code</p>
-          </div>
-      </div>
-      <div class="card shadow" style="width: 20rem; height: 15rem;">
-          <div class="card-body">
-              <h5 class="card-title>">Customizable</h5>
-              <p class="card-text">If the default behavior isn't what you are expecting, you can customize a lot of parts to make your backtest as representative as possible.</p>
-          </div>
-      </div>
-      </div>
-      <div class="row" style="display:flex; justify-content: space-between; margin: 15px;">
-      <div class="card shadow" style="width: 20rem; height: 15rem;">
-          <div class="card-body">
-              <h5 class="card-title>">Event-Driven</h5>
-              <p class="card-text">An event-driven backtesting framework.</p>
-          </div>
-      </div>
-      <div class="card shadow" style="width: 20rem; height: 15rem;">
-          <div class="card-body">
-              <h5 class="card-title>">Representative</h5>
-              <p class="card-text">The open-source event-driven backtesting framework that is the most representative of real-world conditions</p>
-          </div>
-      </div>
-      <div class="card shadow" style="width: 20rem; height: 15rem;">
-          <div class="card-body">
-              <h5 class="card-title>">AI Friendly</h5>
-              <p class="card-text">It is really easy to implement a machine learning / deep learning model as a strategy.</p>
-          </div>
-      </div>
-      </div>
-  </div>
-  <div class="container">
-<p><strong>Note:</strong> It is currently in early alpha. The api might change without notice. Bugs are expected and
-    could make the
-    results of the backtest invalid. Always double-check the results with your own code. If you find a bug, please open
-    an issue on the github page.</p>
-<h1 class="underlined">KEY FEATURES & CAPABILITIES</h1>
-<p>Here are just a few of the features that <strong>backtest-pro</strong> offers:</p>
-      <div class="container" style="max-width: 1300px; margin-bottom: 80px;">
-      <div class="row" style="display:flex; justify-content: space-between; margin: 0px; margin-top: 15px; margin-bottom: 15px;">
-          <div class="card shadow" style="width: 25rem; height: 30rem;">
-          <div class="card-body">
-              <h5 class="card-title>">DataPipelines</h5>
-              <p class="card-text">Build complex datapipelines to fetch, transform and cache data from different sources in only few lines of code.</p>
-              <ul>
-            <li>An easy to use data pipeline api that makes building a data pipeline a breeze.</li>
-            <li>Easy to maintain and Easy to understand.</li>
-            <li>Support Caching for more efficient pipelines.</li>
-        </ul>
-          </div>
-        </div>
-          <div class="card shadow" style="width: 25rem; height: 30rem;">
-          <div class="card-body">
-              <h5 class="card-title>">Backtest</h5>
-              <p class="card-text">Backtest your strategies in environments looking as similar as possible to real-world environments.</p>
-        <ul>
-            <li>Backtest with a single or with multiple assets simultaneously</li>
-            <li>Feed a moving window to the strategy</li>
-            <li>Multiple time resolution simultaneously</li>
-            <li>Take into account:
-                <ul>
-                    <li>Trading fees</li>
-                    <li>Margin rates</li>
-                    <li>Margin calls</li>
-                    <li>Stock splits</li>
-                    <li>Dividends</li>
-                </ul>
-            </li>
-            <li>Records a lot of metrics for easier analysis and debugging.</li>
-        </ul>
-          </div>
-        </div>
-                    <div class="card shadow" style="width: 25rem; height: 30rem;">
-          <div class="card-body">
-              <h5 class="card-title>">Release</h5>
-              <p class="card-text">Release your strategy in production on a server, or locally on your computer in only a few lines of code.</p>
-              <ul>
-            <li>Use the same code used in the backtest in production.</li>
-            <li>Only a few lines of codes are necessary to build a production pipeline that can run on a server or
-                locally.
-            </li>
-            <li>Automatic reporting of the results using report builders. (HTML, PDF)</li>
-            <li>Easy integration with other services such as api for algorithmic trading.</li>
-        </ul>
-          </div>
-        </div>
-      </div>
-      </div>
-<h1 class="underlined">Getting started and installation</h1>
-<p>To install the module and see quick code example, check out our <a href="get_started.html">Get Started</a> page</p>
+<div class="container" style="justify-content: center; margin-top: 10px;">
+<div class="description-container">
+    <div class="paragraph">
+        <h2>Why another backtesting framework?</h2>
+        <p>There are a wide variety of open-source backtesting framework. This is due to the fact that everyone has its
+            own idea and preference on how a backtesting engine should work, so they make their own implementation. This
+            is kind of why I created this framework: I wanted to have something more flexible, and more complete than
+            what I found on the market. I wanted to have a framework that is designed to be as close as possible to the
+            real world, and that is designed to be as flexible as possible. I also wanted a framework that was well
+            integrated, and could spare most of the non-datascience development time. This means that the datascientist
+            or quant can invest more time at actually developing the strategy than setting up the code around to
+            strategy to fetch the data, make the backtest work, or deploy the strategy. This is why I created this
+            framework: A complete and flexible framework, the most realistic framework I found in the open-source, and
+            the one that gives you the best bang for your buck in productive time (based on my opinion).
+        </p>
+    </div>
 
-      <h1 class="underlined">Tutorials</h1>
-      <p>To learn how to use the api and become a pro of backtesting, check-out our <a href="tutorials">Tutorials</a>.</p>
-  </div>
+    <div class="paragraph">
+        <h2>What to expect</h2>
+        <p>
+            This framework was created by aiming to build a system that could test complex strategies that can work on
+            multiple assets types (stocks, crypto, derivatives, etc.) at multiple time-resolutions and simulate
+            conditions that looks as much as possible to the real world. This has been created for datascientists and
+            quants that designed their strategy with statistical or machine learning models, and that want to test them
+            in a realistic environment. This framework will provide accurate results on how a strategy would have
+            performed in the past. It will also facilitate the deployment of the strategy in a production environment.
+            In addition, the framework provides a module to facilitate the construction of complex data pipelines.
+            However, this framework hasn't been designed to be fast. In fact, it is quite slow compared to other
+            backtesting frameworks. This is due to the fact that it needs to make a lot of computation at every
+            time-steps to simulate real-world conditions (Handling splits, dividends, computing indicators, etc.).
+            However, if used correctly, it shouldn't be a problem. In fact, the backtest module of the framework was
+            designed to be the last step of a strategy development. At prior steps, the strategy can be optimized on
+            faster and simpler or vector-based backtesting framework (or even a simple loop over the data). Once we are
+            confident that the strategy should be good, then we can test it on this framework to see how it would have
+            performed in the past. This is the goal of this framework. If your strategy is used for high-frequency
+            trading, this framework is not for you, for now. If there is a big demand for it, it might be implemented in
+            the future.
+        </p>
+    </div>
+
+    <div class="paragraph">
+        <h2>Why integrate this framework in my strategy development workflow?</h2>
+        <p>
+            As said before, the backtest module of this framework is designed to be in the last steps of a strategy
+            development. It can provide you with powerful insights on how your strategy could perform in real-world
+            scenarios. It can be the last line of defence before deploying a strategy in production. It can give you
+            more confidence in your strategy, or help you find the flaws before deploying it. However, this framework
+            can be integrated at every step of the workflow. Inf act, it comes with a package that helps you build
+            complex data pipelines in a really intelligible way at the firsts steps of the workflow. This can save you a
+            lot of time in the long run and help the maintenance team to understand the code more easily and fix the
+            pipeline more quickly in production. Finally, it can help you deploy your strategy in only few lines of code
+            for the last step of the workflow. In addition, it is a project in active development ,so if you believe
+            some features are missing, you can contribute to the project and add them or add a feature request on
+            GitHub. This is the power of open-source.
+        </p>
+    </div>
+
+    <div class="paragraph">
+        <h2>Alternatives</h2>
+        <p>
+            If you read this, and you think that this framework doesn't fit your needs, or you want to use it and want
+            another framework for quicker computations, here are some alternatives that you can use:
+        </p>
+        <ul>
+            <li><a href="https://kernc.github.io/backtesting.py/">backtesting.py</a>: A <b>simple</b> and quick
+                backtesting framework that can be used for simple strategies. (Single stocks)
+            </li>
+            <li><a href="https://vectorbt.dev/">vectorbt</a>: A vectorized backtesting framework that can be used for
+                simple strategies. (Single stocks, but <b>really fast</b>)
+            </li>
+        </ul>
+        <p>
+            If you like the initiative, but the features you need aren't implemented yet, you can contribute to the
+            project or add a feature request on GitHub. We are open to any suggestions, and we will try to implement
+            them as soon as possible. Welcome to the community!
+        </p>
+    </div>
+</div>
+</div>
   <div class="divider"></div>
   <footer id="footer">
     <div id="footer_container">

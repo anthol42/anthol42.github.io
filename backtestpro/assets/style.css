@@ -1,0 +1,159 @@
+#tableOfContents {
+      position: fixed;
+      top: 0;
+      margin-top: 75px;
+      margin-left: 0;
+      left: 0;
+      height: 100%;
+      overflow-y: auto;
+      background-color: #f8f9fa; /* Change as needed */
+      border-right: 1px solid #dee2e6; /* Change as needed */
+      width: 350px;
+    }
+    /* Styling for the active section link */
+.active-section {
+  color: rgb(34, 34, 34) !important; /* Change as needed */
+}
+.toc-doc {
+    margin-top: 100px;
+    margin-left: 350px;
+    padding: 0px;
+    width: calc(100vw - 350px);
+}
+
+.notebook-container {
+    margin: auto;
+    max-width: 1000px;
+}
+
+@media screen and (min-width: 1350px) {
+    .notebook-container {
+        padding-right: 10%;
+    }
+}
+
+h2 {
+    margin-top: 34px;
+    margin-bottom: 24px;
+    font-size: 36px;
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+.container{
+    align-items: center;
+    margin-top: 100px;
+}
+.underlined {
+    margin-top: 40px;
+    border-bottom: 2px solid #000;
+    width: 80%;
+}
+
+#footer {
+font-size: .75em;
+padding: 5px 30px;
+border-top: 1px solid #ddd;
+text-align: right;
+margin-top: 80px;
+}
+#footer p {
+  margin: 0 0 0 1em;
+  display: inline-block;
+}
+#footer p:last-child {
+  margin-right: 30px;
+}
+
+#footer_container{
+    display: flex;
+    flex-direction: column;
+    justify-content: right;
+}
+
+/* NavBar*/
+#navbar-end{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.logo__image{
+    height: 45px;
+}
+
+.navbar-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+#navbar-end{
+
+    gap: 15px;
+
+}
+
+#home-header {
+  margin-top: 72px;
+  display: flex;
+  background-color: #f0f0f0;
+  padding: 10px;
+  height: 200px;
+  justify-content: center;
+  gap: 50px;
+  align-items: center;
+}
+#home-short-desc{
+  font-size: 3em;
+  font-weight: bold;
+}
+
+.big-logo {
+  height: 150px;
+}
+
+
+.description-container {
+  margin-top: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  max-width: 742px;
+  margin: auto;
+}
+.description-container .paragraph{
+  margin-top: 20px;
+}
+
+.paragraph h2{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.paragraph p{
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+#about-short-desc{
+  font-size: 3em;
+  font-weight: bold;
+  text-align: center;
+}
+
+.nav-item-dynamic:hover {
+    background-color: rgba(0, 0, 0, 0.1); /* Adjust the last value for transparency */
+}
+
+.navbar-version {
+    background: #f2f2f1;
+    padding: 1px 4px;
+    overflow-wrap: break-word;
+    font-size: 1em;
+}
