@@ -1,0 +1,749 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<link rel="icon" type="image/x-icon" href="/backtestpro/assets/favicon.ico">
+<link href='/backtestpro/assets/bootstrap.min.css' rel='stylesheet', type='text/css'>
+<link href="/backtestpro/assets/style.css" rel="stylesheet" type="text/css">
+<script src="/backtestpro/assets/bootstrap.min.js"></script>
+<script>
+function navigateToUrl(url) {
+// Navigate to the URL
+window.location.href = url;
+}
+</script>
+<title>backtest.serve.renderers API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}#lunr-search{width:100%;font-size:1em;padding:6px 9px 5px 9px;border:1px solid silver}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right;margin-top:4em}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){.module-list{min-height:100vh}#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:80px}.content-container{min-height:100vh}#content{width:70%;max-width:100ch;padding:3em 4em;margin-top:20px;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<nav class="navbar navbar-light navbar-expand bg-light fixed-top shadow-sm" id="navbar-main">
+<div class="navbar-container" style="padding-left: 20px">
+<a class="navbar-brand logo" href="/backtestpro">
+<img alt="Logo image" class="logo__image only-light" src="/backtestpro/assets/logo_light.svg">
+</a>
+<div class="col-lg-9 navbar">
+<div class="mr-auto" id="navbar-center">
+<div class="navbar-center-item">
+<ul class="navbar-nav" id="navbar-main-elements">
+<li class="toctree-l1 nav-item">
+<a class="reference internal nav-link" href="/backtestpro">
+Home
+</a>
+</li>
+<li class="toctree-l1 nav-item">
+<a class="reference internal nav-link" href="/backtestpro/get_started.html">
+Get Started
+</a>
+</li>
+<li class="toctree-l1 nav-item">
+<a class="reference internal nav-link" href="/backtestpro/tutorials">
+Tutorials
+</a>
+</li>
+<li class="toctree-l1 nav-item">
+<a class="reference internal nav-link active" href="/backtestpro/docs/backtest">
+Documentation
+</a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-external" href="/backtestpro/about.html">About</a>
+</li>
+</ul>
+</div>
+</div>
+<div id="navbar-end">
+<div class="navbar-end-item">
+<code class="navbar-version">v0.0.1</code>
+</div>
+<div class="navbar-end-item">
+<ul aria-label="Icon Links" class="navbar-nav" id="navbar-icon-links">
+<li class="nav-item">
+<a class="nav-link" href="https://github.com/anthol42/backtestPro" rel="noopener" target="_blank"
+title="GitHub"><img alt="GitHub" class="icon-link" src="/backtestpro/assets/github-mark.svg"
+style="height: 1.2em; margin: 0px; padding: 0px;"></a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</nav>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>serve</code></h1>
+</header>
+<div class="content-container">
+<section id="section-intro">
+</section>
+<section>
+<h2 class="section-title" id="header-submodules">Sub-modules</h2>
+<dl>
+<dt><code class="name"><a title="backtest.serve.renderers.email_renderer" href="email_renderer.html">backtest.serve.renderers.email_renderer</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="backtest.serve.renderers.html_renderer" href="html_renderer.html">backtest.serve.renderers.html_renderer</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="backtest.serve.renderers.json_renderer" href="json_renderer.html">backtest.serve.renderers.json_renderer</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="backtest.serve.renderers.log_renderer" href="log_renderer.html">backtest.serve.renderers.log_renderer</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="backtest.serve.renderers.markup_renderer" href="markup_renderer.html">backtest.serve.renderers.markup_renderer</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="backtest.serve.renderers.pdf_renderer" href="pdf_renderer.html">backtest.serve.renderers.pdf_renderer</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="backtest.serve.renderers.email_renderer.EmailRenderer"><code class="flex name class">
+<span>class <span class="ident">EmailRenderer</span></span>
+<span>(</span><span>style: str = 'light')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>It renders only the trading signals in a html file.
+As opposed to the HTMLRenderer which renders the performances,
+the portfolio and other useful stats, this renderer is more lightweight and is designed to be sent by email.
+This being said, it is designed to be viewed on mobile devices.
+It also looks good on desktop though.
+The three styles are:
+- light: A light theme
+- dark: A dark theme (Darcula style)
+- rich: Another dark theme with another color palette</p>
+<h2 id="args">Args:</h2>
+<p><strong><code>template_path</code></strong>: The path to the template directory.
+The directory should contain a file named main.htmlIt should also contain a directory named components that contains all the components that will be used in themain template.
+The css files used as themes should be in the main directory or in a styles subdirectory.
+Thenames of the files are used as the theme names.
+Same thing for the scripts.
+</p></div>
+<h3>Parent</h3>
+<ul class="hlist">
+<li><a title="backtest.serve.renderers.markup_renderer.MarkupRenderer" href="markup_renderer.html#backtest.serve.renderers.markup_renderer.MarkupRenderer">MarkupRenderer</a></li>
+</ul>
+</dd>
+<dt id="backtest.serve.renderers.html_renderer.HTMLRenderer"><code class="flex name class">
+<span>class <span class="ident">HTMLRenderer</span></span>
+<span>(</span><span>style: str = 'light')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>It expects that the tradeSignals object contains the index data, the tickers data and the main idx of the tickers
+data.
+Stats are calculated based on a year of data except when specified all-time.
+In that case, the stats are calculated
+from the first data point to the last.</p>
+<p>The three styles are:
+- light: A light theme
+- dark: A dark theme (Darcula style)
+- rich: Another dark theme with another color palette</p>
+<h2 id="args">Args:</h2>
+<p><strong><code>template_path</code></strong>: The path to the template directory.
+The directory should contain a file named main.htmlIt should also contain a directory named components that contains all the components that will be used in themain template.
+The css files used as themes should be in the main directory or in a styles subdirectory.
+Thenames of the files are used as the theme names.
+Same thing for the scripts.
+</p></div>
+<h3>Parent</h3>
+<ul class="hlist">
+<li><a title="backtest.serve.renderers.markup_renderer.MarkupRenderer" href="markup_renderer.html#backtest.serve.renderers.markup_renderer.MarkupRenderer">MarkupRenderer</a></li>
+</ul>
+</dd>
+<dt id="backtest.serve.renderers.json_renderer.JSONRenderer"><code class="flex name class">
+<span>class <span class="ident">JSONRenderer</span></span>
+<span>(</span><span>sub_dir: Union[pathlib.PurePath, str] = 'signals', store_portfolio: bool = False, store_broker: bool = False, store_account: bool = False)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This renderer render the signals in JSON format.
+You can also store the portfolio state, the broker state and the
+account state in the json.</p>
+<h2 id="args">Args:</h2>
+<p><strong><code>sub_dir</code></strong>: The sub directory where the json file will be stored.<br>
+<strong><code>store_portfolio</code></strong>: Whether to store the portfolio state in the json.<br>
+<strong><code>store_broker</code></strong>: Whether to store the broker state in the json.<br>
+<strong><code>store_account</code></strong>: Whether to store the account state in the json.
+</p></div>
+<h3>Parent</h3>
+<ul class="hlist">
+<li><a title="backtest.serve.renderer.Renderer" href="../renderer.html#backtest.serve.renderer.Renderer">Renderer</a></li>
+</ul>
+</dd>
+<dt id="backtest.serve.renderers.log_renderer.LogRenderer"><code class="flex name class">
+<span>class <span class="ident">LogRenderer</span></span>
+<span>(</span><span>sub_dir: Union[pathlib.PurePath, str] = 'signals')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Append signals to a log file. (csv format)
+The columns are:
+- timestamp
+- security
+- signal_type
+- price_lower_limit
+- price_upper_limit
+- n_shares
+- n_shares_borrowed
+- expiry</p></div>
+<h3>Parent</h3>
+<ul class="hlist">
+<li><a title="backtest.serve.renderer.Renderer" href="../renderer.html#backtest.serve.renderer.Renderer">Renderer</a></li>
+</ul>
+</dd>
+<dt id="backtest.serve.renderers.markup_renderer.MarkupObject"><code class="flex name class">
+<span>class <span class="ident">MarkupObject</span></span>
+<span>(</span><span>template: str, format_: str = '{{.*?}}')</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="args">Args:</h2>
+<p><strong><code>template</code></strong>: The template file as a string.
+Can be a full markup file or a component.<br>
+<strong><code>format_</code></strong>: This is a regex expression that should contain only one '.*?'.
+It corresponds to the key thatwill be replaced by the data when the render method is called.
+</p></div>
+<h3>Static methods</h3>
+<dl>
+<dt id="backtest.serve.renderers.markup_renderer.MarkupObject.extract_keys"><code class="name flex">
+<span>def <span class="ident">extract_keys</span></span>(<span>template: str, format_: str) ‑> Set[str]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Extracts the keys from the template</p>
+<h2 id="args">Args:</h2>
+<p><strong><code>template</code></strong>: string<br>
+<strong><code>format_</code></strong>: The format string that contains the key
+</p>
+<h2 id="returns">Returns:</h2>
+<p>A set of keys</p></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="backtest.serve.renderers.markup_renderer.MarkupObject.render"><code class="name flex">
+<span>def <span class="ident">render</span></span>(<span>self, data: Optional[Dict[str, str]] = None, **kwargs) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Render the template with the given data.
+If no data is provided, it will use the kwargs.
+If no kwargs are provided, it will use the data that was saved with the <strong>call</strong> method.</p>
+<h2 id="args">Args:</h2>
+<p><strong><code>data</code></strong>: The data to use to render the template<br>
+<strong><code>kwargs</code></strong>: It is also possible to pass the data as kwargs
+</p>
+<h2 id="returns">Returns:</h2>
+<dl>
+<dd>The rendered template as a string</dd>
+</dl>
+<h2 id="raises">Raises:</h2>
+<p><strong><code>RuntimeError</code></strong>: If a key is defined in the template, but not in the data
+</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="backtest.serve.renderers.markup_renderer.MarkupRenderer"><code class="flex name class">
+<span>class <span class="ident">MarkupRenderer</span></span>
+<span>(</span><span>template_path: pathlib.PurePath = PurePosixPath('/Users/alavertu/PycharmProjects/backtestPro/src/backtest/serve/renderers/html_templates'))</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Class designed to facilitate the creation of custom reports builder based on html.
+It includes a set of method that helps extract the relevant data from the state object and render components in a
+hierarchical manner.
+Note: This class is not as flexible and easy to use as I would like it to be so it may change in the near future.</p>
+<p>The class is designed to be derived from.
+The user should implement the render method to render the final report.</p>
+<p>Currently, this class can only build single file html reports(, or pdf with a pdf renderer.)</p>
+<p>How to use:
+1. Create a new class that inherits from this class.
+2. Implement the render method.</p>
+<p>Example:
+Check the html renderer or the email renderer for examples.</p>
+<h2 id="args">Args:</h2>
+<p><strong><code>template_path</code></strong>: The path to the template directory.
+The directory should contain a file named main.htmlIt should also contain a directory named components that contains all the components that will be used in themain template.
+The css files used as themes should be in the main directory or in a styles subdirectory.
+Thenames of the files are used as the theme names.
+Same thing for the scripts.
+</p></div>
+<h3>Parent</h3>
+<ul class="hlist">
+<li><a title="backtest.serve.renderer.Renderer" href="../renderer.html#backtest.serve.renderer.Renderer">Renderer</a></li>
+</ul>
+<h3>Static methods</h3>
+<dl>
+<dt id="backtest.serve.renderers.markup_renderer.MarkupRenderer.chart_builder"><code class="name flex">
+<span>def <span class="ident">chart_builder</span></span>(<span>portfolio_worth: numpy.ndarray, porfolio_timestamps: pandas.core.indexes.datetimes.DatetimeIndex, index_worth: numpy.ndarray, index_timestamps: pandas.core.indexes.datetimes.DatetimeIndex, dark_theme: bool = False, index_name: str = 'Index') ‑> plotly.graph_objs._figure.Figure</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Build a performance chart comparing the strategy performance with the index performance.</p>
+<h2 id="args">Args:</h2>
+<p><strong><code>portfolio_worth</code></strong>: An array of the portfolio worth<br>
+<strong><code>porfolio_timestamps</code></strong>: The corresponding timestamps<br>
+<strong><code>index_worth</code></strong>: An array of the index worth<br>
+<strong><code>index_timestamps</code></strong>: The corresponding timestamps<br>
+<strong><code>dark_theme</code></strong>: Whether to use a theme meant for dark backgrounds or not<br>
+<strong><code>index_name</code></strong>: The name of the index.
+Used as a label in the chart.
+</p>
+<h2 id="returns">Returns:</h2>
+<dl>
+<dd>The chart object.
+(plotly figure)</dd>
+</dl></div>
+</dd>
+<dt id="backtest.serve.renderers.markup_renderer.MarkupRenderer.get_ticker_info"><code class="name flex">
+<span>def <span class="ident">get_ticker_info</span></span>(<span>ticker: str, data: List[Dict[str, <a title="backtest.engine.tsData.TSData" href="../../engine/tsData.html#backtest.engine.tsData.TSData">TSData</a>]], main_idx: int) ‑> Dict[str, float]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Extracts performance data for a given ticker.
+It calculates the change in dollars, the change in percent and
+the current value.</p>
+<h2 id="returns">Returns:</h2>
+<p>The change in dollars, the change in percent and its current value</p></div>
+</dd>
+<dt id="backtest.serve.renderers.markup_renderer.MarkupRenderer.prepare_data"><code class="name flex">
+<span>def <span class="ident">prepare_data</span></span>(<span>state: <a title="backtest.serve.state_signals.StateSignals" href="../state_signals.html#backtest.serve.state_signals.StateSignals">StateSignals</a>) ‑> (typing.List[str], <class 'numpy.ndarray'>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Extracts the relevant up-to-date data (current timestep) from the state object and returns it as an array with
+the corresponding security names.</p>
+<h2 id="returns">Returns:</h2>
+<dl>
+<dd>The security names and the data as a numpy array.
+The data is in the shape (n, 4) where n is thenumber of securities and the 4 columns are the OHLC data.</dd>
+</dl></div>
+</dd>
+<dt id="backtest.serve.renderers.markup_renderer.MarkupRenderer.render_portfolio"><code class="name flex">
+<span>def <span class="ident">render_portfolio</span></span>(<span>position: <a title="backtest.engine.portfolio.Position" href="../../engine/portfolio.html#backtest.engine.portfolio.Position">Position</a>, ticker_info: Dict[str, float]) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Renders a position as a html row [str].
+The columns are: Ticker, Average_buy_price, Quantity, Change ($),
+Change (%), Unrealized P&amp;L ($), Unrealized P&amp;L (%)</p>
+<h2 id="args">Args:</h2>
+<p><strong><code>position</code></strong>: The position object<br>
+<strong><code>ticker_info</code></strong>: The performance data for the ticker
+</p>
+<h2 id="returns">Returns:</h2>
+<dl>
+<dd>The rendered row as a string</dd>
+</dl></div>
+</dd>
+<dt id="backtest.serve.renderers.markup_renderer.MarkupRenderer.render_signal"><code class="name flex">
+<span>def <span class="ident">render_signal</span></span>(<span>signal: <a title="backtest.engine.trade.TradeOrder" href="../../engine/trade.html#backtest.engine.trade.TradeOrder">TradeOrder</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Renders a signal as a html row [str]
+The columns are: Timestamp, Ticker, Signal type, Price limit low, Price limit high, Quantity, Quantity borrowed,
+Expiry.</p>
+<h2 id="args">Args:</h2>
+<p><strong><code>signal</code></strong>: The signal object
+</p>
+<h2 id="returns">Returns:</h2>
+<dl>
+<dd>The rendered row as a string</dd>
+</dl></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="backtest.serve.renderers.markup_renderer.MarkupRenderer.get_performance_data"><code class="name flex">
+<span>def <span class="ident">get_performance_data</span></span>(<span>self, state: <a title="backtest.serve.state_signals.StateSignals" href="../state_signals.html#backtest.serve.state_signals.StateSignals">StateSignals</a>, cutoff_delta: pandas._libs.tslibs.timedeltas.Timedelta = Timedelta('365 days 00:00:00')) ‑> Tuple[pandas.core.series.Series, pandas.core.series.Series, str]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Build a series of the portfolio worth and the index worth for easier comparison.</p>
+<h2 id="args">Args:</h2>
+<p><strong><code>state</code></strong>: The StateSignals object<br>
+<strong><code>cutoff_delta</code></strong>: The amount of time before which the data is not considered.
+</p>
+<h2 id="returns">Returns:</h2>
+<dl>
+<dd>The historical worth of the portfolio for the given period (cutoff_days) and the historical worth of theindex for the same period, the name of the index took.
+(In case there are more than 1, only one is used)</dd>
+</dl></div>
+</dd>
+<dt id="backtest.serve.renderers.markup_renderer.MarkupRenderer.get_script"><code class="name flex">
+<span>def <span class="ident">get_script</span></span>(<span>self, name: str) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Load any script that is in the 'template_path' main directory, or in a scripts subdirectory.</p>
+<h2 id="args">Args:</h2>
+<p><strong><code>name</code></strong>: The name of the file without the .js.
+It should be in the main directory or in the scripts subdirectory.
+</p>
+<h2 id="returns">Returns:</h2>
+<dl>
+<dd>The text in the file.</dd>
+</dl></div>
+</dd>
+<dt id="backtest.serve.renderers.markup_renderer.MarkupRenderer.get_style"><code class="name flex">
+<span>def <span class="ident">get_style</span></span>(<span>self, name: str) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Load any stylesheet that is in the 'template_path' main directory, or in a styles subdirectory.</p>
+<h2 id="args">Args:</h2>
+<p><strong><code>name</code></strong>: The name of the file without the .css.
+It should be in the main directory or in the styles subdirectory.
+</p>
+<h2 id="returns">Returns:</h2>
+<dl>
+<dd>The text in the file.</dd>
+</dl></div>
+</dd>
+<dt id="backtest.serve.renderers.markup_renderer.MarkupRenderer.prerender"><code class="name flex">
+<span>def <span class="ident">prerender</span></span>(<span>self, component: str, **kwargs) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Render the component with the given data.
+It stores internally the rendered component.
+By default, if a component depends on another component that hasn't been rendered, it is assumed that the
+component was optional, and it will be rendered as an empty string (ignored).</p>
+<h2 id="args">Args:</h2>
+<p><strong><code>component</code></strong>: The component name<br>
+<strong><code>kwargs</code></strong>: The data to render the component
+</p>
+<h2 id="returns">Returns:</h2>
+<dl>
+<dd>The rendered component (text)</dd>
+</dl></div>
+</dd>
+<dt id="backtest.serve.renderers.markup_renderer.MarkupRenderer.render_template"><code class="name flex">
+<span>def <span class="ident">render_template</span></span>(<span>self, **kwargs) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Render the main template with the given data.
+It will automatically map pre-rendered components to their
+corresponding tag in the template.
+By default, if a component is required to render the main template, but hasn't been rendered, the component will
+be rendered as an empty string (ignored).</p>
+<h2 id="args">Args:</h2>
+<p><strong><code>kwargs</code></strong>: The data to add that isn't in the components.
+</p>
+<h2 id="returns">Returns:</h2>
+<dl>
+<dd>The rendered template as a string.</dd>
+</dl></div>
+</dd>
+</dl>
+</dd>
+<dt id="backtest.serve.renderers.pdf_renderer.PDFDoc"><code class="flex name class">
+<span>class <span class="ident">PDFDoc</span></span>
+<span>(</span><span>header: Optional[<a title="backtest.serve.renderers.markup_renderer.MarkupObject" href="markup_renderer.html#backtest.serve.renderers.markup_renderer.MarkupObject">MarkupObject</a>], footer: Optional[<a title="backtest.serve.renderers.markup_renderer.MarkupObject" href="markup_renderer.html#backtest.serve.renderers.markup_renderer.MarkupObject">MarkupObject</a>], *args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Class representing a PDF document.
+It can contain multiple pages, a header and footer.
+It is possible to add a new page with the new_page method.
+The document can be rendered to a string with the render
+method.</p>
+<h2 id="args">Args:</h2>
+<p><strong><code>template</code></strong>: The template file as a string.
+Can be a full markup file or a component.<br>
+<strong><code>format_</code></strong>: This is a regex expression that should contain only one '.*?'.
+It corresponds to the key thatwill be replaced by the data when the render method is called.
+</p></div>
+<h3>Parent</h3>
+<ul class="hlist">
+<li><a title="backtest.serve.renderers.markup_renderer.MarkupObject" href="markup_renderer.html#backtest.serve.renderers.markup_renderer.MarkupObject">MarkupObject</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="backtest.serve.renderers.pdf_renderer.PDFDoc.new_page"><code class="name flex">
+<span>def <span class="ident">new_page</span></span>(<span>self, header: bool = False, footer: bool = False) ‑> <a title="backtest.serve.renderers.pdf_renderer.PDFPage" href="pdf_renderer.html#backtest.serve.renderers.pdf_renderer.PDFPage">PDFPage</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Creates a new page and returns a reference to it.</p>
+<h2 id="returns">Returns:</h2>
+<dl>
+<dd>The new page object</dd>
+</dl></div>
+</dd>
+</dl>
+</dd>
+<dt id="backtest.serve.renderers.pdf_renderer.PDFPage"><code class="flex name class">
+<span>class <span class="ident">PDFPage</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Class representing a page in a PDF document.
+It can contain multiple children objects.
+It is possible to append a component to the page with the append method.
+Once the page is built, it can be rendered
+to a string with the render method.</p>
+<h2 id="args">Args:</h2>
+<p><strong><code>template</code></strong>: The template file as a string.
+Can be a full markup file or a component.<br>
+<strong><code>format_</code></strong>: This is a regex expression that should contain only one '.*?'.
+It corresponds to the key thatwill be replaced by the data when the render method is called.
+</p></div>
+<h3>Parent</h3>
+<ul class="hlist">
+<li><a title="backtest.serve.renderers.markup_renderer.MarkupObject" href="markup_renderer.html#backtest.serve.renderers.markup_renderer.MarkupObject">MarkupObject</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="backtest.serve.renderers.pdf_renderer.PDFPage.append"><code class="name flex">
+<span>def <span class="ident">append</span></span>(<span>self, obj: <a title="backtest.serve.renderers.markup_renderer.MarkupObject" href="markup_renderer.html#backtest.serve.renderers.markup_renderer.MarkupObject">MarkupObject</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Append a child object to the page.
+The child objects must be pre-rendered before calling this method.
+Call the object and gives it the necessary data to render before appending it to the page.</p>
+<h2 id="args">Args:</h2>
+<p><strong><code>obj</code></strong>: The object to append to the page
+</p>
+<h2 id="returns">Returns:</h2>
+<dl>
+<dd>None</dd>
+</dl></div>
+</dd>
+</dl>
+</dd>
+<dt id="backtest.serve.renderers.pdf_renderer.PDFRenderer"><code class="flex name class">
+<span>class <span class="ident">PDFRenderer</span></span>
+<span>(</span><span>report_title: str = 'Financial Report', style: str = 'light')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Renders a report with the same information as the HTML renderer, but in a PDF format.
+The three styles are:
+- light: A light theme
+- dark: A dark theme (Darcula style)
+- rich: Another dark theme with another color palette</p>
+<h2 id="args">Args:</h2>
+<p><strong><code>report_title</code></strong>: The title of the report<br>
+<strong><code>style</code></strong>: The theme of the report.
+Can be "light", "dark" or "rich"
+</p></div>
+<h3>Parent</h3>
+<ul class="hlist">
+<li><a title="backtest.serve.renderers.markup_renderer.MarkupRenderer" href="markup_renderer.html#backtest.serve.renderers.markup_renderer.MarkupRenderer">MarkupRenderer</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</div>
+</article>
+<nav id="sidebar">
+<form>
+<input id="lunr-search" name="q" placeholder="🔎 Search ..." aria-label="Search"
+disabled minlength="2">
+</form>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/tingle/0.15.3/tingle.min.css" integrity="sha512-j1u8eUJ4f23xPPxwOrLUPQaCD2dwzNqqmDDcWS4deWsMv2ohLqmXXuP3hU7g8TyzbMSakP/mMqoNBYWj8AEIFg==" crossorigin>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tingle/0.15.3/tingle.min.js" integrity="sha512-plGUER9JkeEWPPqQBE4sdLqBoQug5Ap+BCGMc7bJ8BXkm+VVj6QzkpBz5Yv2yPkkq+cqg9IpkBaGCas6uDbW8g==" crossorigin></script>
+<style>
+.modal-box iframe {
+width: 100vw;
+height: calc(100vh - 80px);
+}
+@media screen and (min-width: 700px) {
+.modal-box iframe {
+width: 70vw;
+height: 80vh;
+}
+}
+.modal-box .tingle-modal-box {width: auto;}
+.modal-box .tingle-modal-box__content {padding: 0;}
+</style>
+<script>
+const input = document.getElementById('lunr-search');
+input.disabled = false;
+input.form.addEventListener('submit', (ev) => {
+ev.preventDefault();
+const url = new URL(window.location);
+url.searchParams.set('q', input.value);
+history.replaceState({}, null, url.toString());
+search(input.value);
+});
+const query = new URL(window.location).searchParams.get('q');
+if (query)
+search(query);
+function search(query) {
+const url = '../../../doc-search.html#' + encodeURIComponent(query);
+new tingle.modal({
+cssClass: ['modal-box'],
+onClose: () => {
+const url = new URL(window.location);
+url.searchParams.delete('q');
+history.replaceState({}, null, url.toString());
+setTimeout(() => input.focus(), 100);
+}
+}).setContent('<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="' + url + '"></iframe></div>').open();
+}
+</script>
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Path</h3>
+<ul>
+<li><code><div><a title="backtest" href="../../index.html">backtest</a>.<a title="backtest.serve" href="../index.html">serve</a>.<a title="backtest.serve.renderers" href="#backtest.serve.renderers">renderers</a></div></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-submodules">Sub-modules</a></h3>
+<ul>
+<li><code><a title="backtest.serve.renderers.email_renderer" href="email_renderer.html">backtest.serve.renderers.email_renderer</a></code></li>
+<li><code><a title="backtest.serve.renderers.html_renderer" href="html_renderer.html">backtest.serve.renderers.html_renderer</a></code></li>
+<li><code><a title="backtest.serve.renderers.json_renderer" href="json_renderer.html">backtest.serve.renderers.json_renderer</a></code></li>
+<li><code><a title="backtest.serve.renderers.log_renderer" href="log_renderer.html">backtest.serve.renderers.log_renderer</a></code></li>
+<li><code><a title="backtest.serve.renderers.markup_renderer" href="markup_renderer.html">backtest.serve.renderers.markup_renderer</a></code></li>
+<li><code><a title="backtest.serve.renderers.pdf_renderer" href="pdf_renderer.html">backtest.serve.renderers.pdf_renderer</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<div class="accordion" id="classes-accordion">
+<div class="accordion-item">
+<h4 class="accordion-header">
+<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_%3CClass+%27backtest.serve.renderers.email_renderer.EmailRenderer%27%3E" aria-expanded="false" aria-controls="collapse_%3CClass+%27backtest.serve.renderers.email_renderer.EmailRenderer%27%3E" onclick="navigateToUrl('email_renderer.html#backtest.serve.renderers.email_renderer.EmailRenderer')">
+<code>EmailRenderer</code>
+</button>
+</h4>
+<div id="collapse_%3CClass+%27backtest.serve.renderers.email_renderer.EmailRenderer%27%3E" class="accordion-collapse collapse" data-bs-parent="#classes-accordion">
+<div class="accordion-body">
+</div>
+</div>
+</div>
+<div class="accordion-item">
+<h4 class="accordion-header">
+<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_%3CClass+%27backtest.serve.renderers.html_renderer.HTMLRenderer%27%3E" aria-expanded="false" aria-controls="collapse_%3CClass+%27backtest.serve.renderers.html_renderer.HTMLRenderer%27%3E" onclick="navigateToUrl('html_renderer.html#backtest.serve.renderers.html_renderer.HTMLRenderer')">
+<code>HTMLRenderer</code>
+</button>
+</h4>
+<div id="collapse_%3CClass+%27backtest.serve.renderers.html_renderer.HTMLRenderer%27%3E" class="accordion-collapse collapse" data-bs-parent="#classes-accordion">
+<div class="accordion-body">
+</div>
+</div>
+</div>
+<div class="accordion-item">
+<h4 class="accordion-header">
+<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_%3CClass+%27backtest.serve.renderers.json_renderer.JSONRenderer%27%3E" aria-expanded="false" aria-controls="collapse_%3CClass+%27backtest.serve.renderers.json_renderer.JSONRenderer%27%3E" onclick="navigateToUrl('json_renderer.html#backtest.serve.renderers.json_renderer.JSONRenderer')">
+<code>JSONRenderer</code>
+</button>
+</h4>
+<div id="collapse_%3CClass+%27backtest.serve.renderers.json_renderer.JSONRenderer%27%3E" class="accordion-collapse collapse" data-bs-parent="#classes-accordion">
+<div class="accordion-body">
+</div>
+</div>
+</div>
+<div class="accordion-item">
+<h4 class="accordion-header">
+<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_%3CClass+%27backtest.serve.renderers.log_renderer.LogRenderer%27%3E" aria-expanded="false" aria-controls="collapse_%3CClass+%27backtest.serve.renderers.log_renderer.LogRenderer%27%3E" onclick="navigateToUrl('log_renderer.html#backtest.serve.renderers.log_renderer.LogRenderer')">
+<code>LogRenderer</code>
+</button>
+</h4>
+<div id="collapse_%3CClass+%27backtest.serve.renderers.log_renderer.LogRenderer%27%3E" class="accordion-collapse collapse" data-bs-parent="#classes-accordion">
+<div class="accordion-body">
+</div>
+</div>
+</div>
+<div class="accordion-item">
+<h4 class="accordion-header">
+<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_%3CClass+%27backtest.serve.renderers.markup_renderer.MarkupObject%27%3E" aria-expanded="false" aria-controls="collapse_%3CClass+%27backtest.serve.renderers.markup_renderer.MarkupObject%27%3E" onclick="navigateToUrl('markup_renderer.html#backtest.serve.renderers.markup_renderer.MarkupObject')">
+<code>MarkupObject</code>
+</button>
+</h4>
+<div id="collapse_%3CClass+%27backtest.serve.renderers.markup_renderer.MarkupObject%27%3E" class="accordion-collapse collapse" data-bs-parent="#classes-accordion">
+<div class="accordion-body">
+<ul class="">
+<li><code><a title="backtest.serve.renderers.markup_renderer.MarkupObject.extract_keys" href="markup_renderer.html#backtest.serve.renderers.markup_renderer.MarkupObject.extract_keys">extract_keys</a></code></li>
+<li><code><a title="backtest.serve.renderers.markup_renderer.MarkupObject.render" href="markup_renderer.html#backtest.serve.renderers.markup_renderer.MarkupObject.render">render</a></code></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="accordion-item">
+<h4 class="accordion-header">
+<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_%3CClass+%27backtest.serve.renderers.markup_renderer.MarkupRenderer%27%3E" aria-expanded="false" aria-controls="collapse_%3CClass+%27backtest.serve.renderers.markup_renderer.MarkupRenderer%27%3E" onclick="navigateToUrl('markup_renderer.html#backtest.serve.renderers.markup_renderer.MarkupRenderer')">
+<code>MarkupRenderer</code>
+</button>
+</h4>
+<div id="collapse_%3CClass+%27backtest.serve.renderers.markup_renderer.MarkupRenderer%27%3E" class="accordion-collapse collapse" data-bs-parent="#classes-accordion">
+<div class="accordion-body">
+<ul class="">
+<li><code><a title="backtest.serve.renderers.markup_renderer.MarkupRenderer.chart_builder" href="markup_renderer.html#backtest.serve.renderers.markup_renderer.MarkupRenderer.chart_builder">chart_builder</a></code></li>
+<li><code><a title="backtest.serve.renderers.markup_renderer.MarkupRenderer.get_performance_data" href="markup_renderer.html#backtest.serve.renderers.markup_renderer.MarkupRenderer.get_performance_data">get_performance_data</a></code></li>
+<li><code><a title="backtest.serve.renderers.markup_renderer.MarkupRenderer.get_script" href="markup_renderer.html#backtest.serve.renderers.markup_renderer.MarkupRenderer.get_script">get_script</a></code></li>
+<li><code><a title="backtest.serve.renderers.markup_renderer.MarkupRenderer.get_style" href="markup_renderer.html#backtest.serve.renderers.markup_renderer.MarkupRenderer.get_style">get_style</a></code></li>
+<li><code><a title="backtest.serve.renderers.markup_renderer.MarkupRenderer.get_ticker_info" href="markup_renderer.html#backtest.serve.renderers.markup_renderer.MarkupRenderer.get_ticker_info">get_ticker_info</a></code></li>
+<li><code><a title="backtest.serve.renderers.markup_renderer.MarkupRenderer.prepare_data" href="markup_renderer.html#backtest.serve.renderers.markup_renderer.MarkupRenderer.prepare_data">prepare_data</a></code></li>
+<li><code><a title="backtest.serve.renderers.markup_renderer.MarkupRenderer.prerender" href="markup_renderer.html#backtest.serve.renderers.markup_renderer.MarkupRenderer.prerender">prerender</a></code></li>
+<li><code><a title="backtest.serve.renderers.markup_renderer.MarkupRenderer.render_portfolio" href="markup_renderer.html#backtest.serve.renderers.markup_renderer.MarkupRenderer.render_portfolio">render_portfolio</a></code></li>
+<li><code><a title="backtest.serve.renderers.markup_renderer.MarkupRenderer.render_signal" href="markup_renderer.html#backtest.serve.renderers.markup_renderer.MarkupRenderer.render_signal">render_signal</a></code></li>
+<li><code><a title="backtest.serve.renderers.markup_renderer.MarkupRenderer.render_template" href="markup_renderer.html#backtest.serve.renderers.markup_renderer.MarkupRenderer.render_template">render_template</a></code></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="accordion-item">
+<h4 class="accordion-header">
+<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_%3CClass+%27backtest.serve.renderers.pdf_renderer.PDFDoc%27%3E" aria-expanded="false" aria-controls="collapse_%3CClass+%27backtest.serve.renderers.pdf_renderer.PDFDoc%27%3E" onclick="navigateToUrl('pdf_renderer.html#backtest.serve.renderers.pdf_renderer.PDFDoc')">
+<code>PDFDoc</code>
+</button>
+</h4>
+<div id="collapse_%3CClass+%27backtest.serve.renderers.pdf_renderer.PDFDoc%27%3E" class="accordion-collapse collapse" data-bs-parent="#classes-accordion">
+<div class="accordion-body">
+<ul class="">
+<li><code><a title="backtest.serve.renderers.pdf_renderer.PDFDoc.new_page" href="pdf_renderer.html#backtest.serve.renderers.pdf_renderer.PDFDoc.new_page">new_page</a></code></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="accordion-item">
+<h4 class="accordion-header">
+<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_%3CClass+%27backtest.serve.renderers.pdf_renderer.PDFPage%27%3E" aria-expanded="false" aria-controls="collapse_%3CClass+%27backtest.serve.renderers.pdf_renderer.PDFPage%27%3E" onclick="navigateToUrl('pdf_renderer.html#backtest.serve.renderers.pdf_renderer.PDFPage')">
+<code>PDFPage</code>
+</button>
+</h4>
+<div id="collapse_%3CClass+%27backtest.serve.renderers.pdf_renderer.PDFPage%27%3E" class="accordion-collapse collapse" data-bs-parent="#classes-accordion">
+<div class="accordion-body">
+<ul class="">
+<li><code><a title="backtest.serve.renderers.pdf_renderer.PDFPage.append" href="pdf_renderer.html#backtest.serve.renderers.pdf_renderer.PDFPage.append">append</a></code></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="accordion-item">
+<h4 class="accordion-header">
+<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_%3CClass+%27backtest.serve.renderers.pdf_renderer.PDFRenderer%27%3E" aria-expanded="false" aria-controls="collapse_%3CClass+%27backtest.serve.renderers.pdf_renderer.PDFRenderer%27%3E" onclick="navigateToUrl('pdf_renderer.html#backtest.serve.renderers.pdf_renderer.PDFRenderer')">
+<code>PDFRenderer</code>
+</button>
+</h4>
+<div id="collapse_%3CClass+%27backtest.serve.renderers.pdf_renderer.PDFRenderer%27%3E" class="accordion-collapse collapse" data-bs-parent="#classes-accordion">
+<div class="accordion-body">
+</div>
+</div>
+</div>
+</div>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<div id="footer_container">
+<p><b>Author</b>: Anthony Lavertu (2024)</p>
+<p><b>Generated by</b> <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</div>
+</footer>
+</body>
+</html>
