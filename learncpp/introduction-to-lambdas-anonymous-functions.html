@@ -1,0 +1,742 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Introduction to lambdas (anonymous functions) - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="introduction-to-lambdas-anonymous-functions"><a class="header" href="#introduction-to-lambdas-anonymous-functions">Introduction to lambdas (anonymous functions)</a></h1>
+<p>Consider this snippet of code that we introduced in lesson <a href="introduction-to-standard-library-algorithms.html">18.3 -- Introduction to standard library algorithms</a>:</p>
+<pre><code class="language-cpp">#include &lt;algorithm&gt;
+#include &lt;array&gt;
+#include &lt;iostream&gt;
+#include &lt;string_view&gt;
+
+// Our function will return true if the element matches
+bool containsNut(std::string_view str)
+{
+    // std::string_view::find returns std::string_view::npos if it doesn't find
+    // the substring. Otherwise it returns the index where the substring occurs
+    // in str.
+    return str.find("nut") != std::string_view::npos;
+}
+
+int main()
+{
+    constexpr std::array&lt;std::string_view, 4&gt; arr{ "apple", "banana", "walnut", "lemon" };
+
+    // Scan our array to see if any elements contain the "nut" substring
+    auto found{ std::find_if(arr.begin(), arr.end(), containsNut) };
+
+    if (found == arr.end())
+    {
+        std::cout &lt;&lt; "No nuts\n";
+    }
+    else
+    {
+        std::cout &lt;&lt; "Found " &lt;&lt; *found &lt;&lt; '\n';
+    }
+
+    return 0;
+}
+</code></pre>
+<p>This code searches through an array of strings looking for the first element that contains the substring “nut”. Thus, it produces the result:</p>
+<pre><code class="language-cpp">Found walnut
+</code></pre>
+<p>And while it works, it could be improved.</p>
+<p>The root of the issue here is that <code>std::find_if</code> requires that we pass it a function pointer. Because of that, we are forced to define a function that’s only going to be used once, that must be given a name, and that must be put in the global scope (because functions can’t be nested!). The function is also so short, it’s almost easier to discern what it does from the one line of code than from the name and comments.</p>
+<h2 id="lambdas-are-anonymous-functions"><a class="header" href="#lambdas-are-anonymous-functions">Lambdas are anonymous functions</a></h2>
+<p>A <strong>lambda expression</strong> (also called a <strong>lambda</strong> or <strong>closure</strong>) allows us to define an anonymous function inside another function. The nesting is important, as it allows us both to avoid namespace naming pollution, and to define the function as close to where it is used as possible (providing additional context).</p>
+<p>The syntax for lambdas is one of the weirder things in C++, and takes a bit of getting used to. Lambdas take the form:</p>
+<pre><code class="language-cpp">[ captureClause ] ( parameters ) -&gt; returnType
+{
+    statements;
+}
+</code></pre>
+<ul>
+<li>The capture clause can be empty if no captures are needed.</li>
+<li>The parameter list can be empty if no parameters are required. It can also be omitted entirely unless a return type is specified.</li>
+<li>The return type is optional, and if omitted, <code>auto</code> will be assumed (thus using type deduction used to determine the return type). While we previously noted that type deduction for function return types should be avoided, in this context, it’s fine to use (because these functions are typically so trivial).</li>
+</ul>
+<p>Also note that lambdas (being anonymous) have no name, so we don’t need to provide one.</p>
+<blockquote>
+<p><strong>As an aside…</strong></p>
+<p>This means a trivial lambda definition looks like this:</p>
+<pre><code>#include &lt;iostream&gt;
+
+int main()
+{
+  [] {}; // a lambda with an omitted return type, no captures, and omitted parameters.
+
+  return 0;
+}
+</code></pre>
+</blockquote>
+<p>Let’s rewrite the above example using a lambda:</p>
+<pre><code class="language-cpp">#include &lt;algorithm&gt;
+#include &lt;array&gt;
+#include &lt;iostream&gt;
+#include &lt;string_view&gt;
+
+int main()
+{
+  constexpr std::array&lt;std::string_view, 4&gt; arr{ "apple", "banana", "walnut", "lemon" };
+
+  // Define the function right where we use it.
+  auto found{ std::find_if(arr.begin(), arr.end(),
+                           [](std::string_view str) // here's our lambda, no capture clause
+                           {
+                             return str.find("nut") != std::string_view::npos;
+                           }) };
+
+  if (found == arr.end())
+  {
+    std::cout &lt;&lt; "No nuts\n";
+  }
+  else
+  {
+    std::cout &lt;&lt; "Found " &lt;&lt; *found &lt;&lt; '\n';
+  }
+
+  return 0;
+}
+</code></pre>
+<p>This works just like the function pointer case, and produces an identical result:</p>
+<pre><code class="language-cpp">Found walnut
+</code></pre>
+<p>Note how similar our lambda is to our <code>containsNut</code> function. They both have identical parameters and function bodies. The lambda has no capture clause (we’ll explain what a capture clause is in the next lesson) because it doesn’t need one. And we’ve omitted the trailing return type in the lambda (for conciseness), but since <code>operator!=</code> returns a <code>bool</code>, our lambda will return a <code>bool</code> too.</p>
+<div id="admonition-best-practices" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices"></a>
+</div>
+<div>
+<p>Following the best practice of defining things in the smallest scope and closest to first use, lambdas are preferred over normal functions when we need a trivial, one-off function to pass as an argument to some other function.</p>
+</div>
+</div>
+<h2 id="type-of-a-lambda"><a class="header" href="#type-of-a-lambda">Type of a lambda</a></h2>
+<p>In the above example, we defined a lambda right where it was needed. This use of a lambda is sometimes called a <strong>function literal</strong>.</p>
+<p>However, writing a lambda in the same line as it’s used can sometimes make code harder to read. Much like we can initialize a variable with a literal value (or a function pointer) for use later, we can also initialize a lambda variable with a lambda definition and then use it later. A named lambda along with a good function name can make code easier to read.</p>
+<p>For example, in the following snippet, we’re using <code>std::all_of</code> to check if all elements of an array are even:</p>
+<pre><code class="language-cpp">// Bad: We have to read the lambda to understand what's happening.
+return std::all_of(array.begin(), array.end(), [](int i){ return ((i % 2) == 0); });
+</code></pre>
+<p>We can improve the readability of this as follows:</p>
+<pre><code class="language-cpp">// Good: Instead, we can store the lambda in a named variable and pass it to the function.
+auto isEven{
+  [](int i)
+  {
+    return (i % 2) == 0;
+  }
+};
+
+return std::all_of(array.begin(), array.end(), isEven);
+</code></pre>
+<p>Note how well the last line reads: “return whether <em>all of</em> the elements in the <em>array</em> are <em>even</em>”</p>
+<blockquote>
+<p><strong>Key insight</strong></p>
+<p>Storing a lambda in a variable provides a way for us to give the lambda a useful name, which can help make our code more readable.</p>
+<p>Storing a lambda in a variable also provides us with a way to use that lambda more than once.</p>
+</blockquote>
+<p>But what is the type of lambda <code>isEven</code>?</p>
+<p>As it turns out, lambdas don’t have a type that we can explicitly use. When we write a lambda, the compiler generates a unique type just for the lambda that is not exposed to us.</p>
+<blockquote>
+<p><strong>For advanced readers</strong></p>
+<p>In actuality, lambdas aren’t functions (which is part of how they avoid the limitation of C++ not supporting nested functions). They’re a special kind of object called a functor. Functors are objects that contain an overloaded <code>operator()</code> that make them callable like a function.</p>
+</blockquote>
+<p>Although we don’t know the type of a lambda, there are several ways of storing a lambda for use post-definition. If the lambda has an empty capture clause (nothing between the hard brackets []), we can use a regular function pointer. <code>std::function</code> or type deduction via the <code>auto</code> keyword will also work (even if the lambda has a non-empty capture clause).</p>
+<pre><code class="language-cpp">#include &lt;functional&gt;
+
+int main()
+{
+  // A regular function pointer. Only works with an empty capture clause (empty []).
+  double (*addNumbers1)(double, double){
+    [](double a, double b) {
+      return a + b;
+    }
+  };
+
+  addNumbers1(1, 2);
+
+  // Using std::function. The lambda could have a non-empty capture clause (discussed next lesson).
+  std::function addNumbers2{ // note: pre-C++17, use std::function&lt;double(double, double)&gt; instead
+    [](double a, double b) {
+      return a + b;
+    }
+  };
+
+  addNumbers2(3, 4);
+
+  // Using auto. Stores the lambda with its real type.
+  auto addNumbers3{
+    [](double a, double b) {
+      return a + b;
+    }
+  };
+
+  addNumbers3(5, 6);
+
+  return 0;
+}
+</code></pre>
+<p>The only way of using the lambda’s actual type is by means of <code>auto</code>. <code>auto</code> also has the benefit of having no overhead compared to <code>std::function</code>.</p>
+<p>What if we want to pass a lambda to a function? There are 4 options:</p>
+<pre><code class="language-cpp">#include &lt;functional&gt;
+#include &lt;iostream&gt;
+
+// Case 1: use a `std::function` parameter
+void repeat1(int repetitions, const std::function&lt;void(int)&gt;&amp; fn)
+{
+    for (int i{ 0 }; i &lt; repetitions; ++i)
+        fn(i);
+}
+
+// Case 2: use a function template with a type template parameter
+template &lt;typename T&gt;
+void repeat2(int repetitions, const T&amp; fn)
+{
+    for (int i{ 0 }; i &lt; repetitions; ++i)
+        fn(i);
+}
+
+// Case 3: use the abbreviated function template syntax (C++20)
+void repeat3(int repetitions, const auto&amp; fn)
+{
+    for (int i{ 0 }; i &lt; repetitions; ++i)
+        fn(i);
+}
+
+// Case 4: use function pointer (only for lambda with no captures)
+void repeat4(int repetitions, void (*fn)(int))
+{
+    for (int i{ 0 }; i &lt; repetitions; ++i)
+        fn(i);   
+}
+
+int main()
+{
+    auto lambda = [](int i)
+    {
+        std::cout &lt;&lt; i &lt;&lt; '\n';
+    };
+
+    repeat1(3, lambda);
+    repeat2(3, lambda);
+    repeat3(3, lambda);
+    repeat4(3, lambda);
+
+    return 0;
+}
+</code></pre>
+<p>In case 1, our function parameter is a <code>std::function</code>. This is nice because we can explicitly see what the parameters and return type of the <code>std::function</code> are. However, this requires the lambda to be implicitly converted whenever the function is called, which adds some overhead. This method also has the benefit of being separable into a declaration (in a header) and a definition (in a .cpp file) if that’s desirable.</p>
+<p>In case 2, we’re using a function template with type template parameter <code>T</code>. When the function is called, a function will be instantiated where <code>T</code> matches the actual type of the lambda. This is more efficient, but the parameters and return type of <code>T</code> are not obvious.</p>
+<p>In case 3, we use C++20’s <code>auto</code> to invoke the abbreviated function template syntax. This generates a function template identical to case 2.</p>
+<p>In case 4, the function parameter is a function pointer. Since a lambda with no captures will implicitly convert to a function pointer, we can pass a lambda with no captures to this function.</p>
+<div id="admonition-best-practices-1" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-1-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-1-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices-1"></a>
+</div>
+<div>
+<p>When storing a lambda in a variable, use <code>auto</code> as the variable’s type.</p>
+<p>When passing a lambda to a function:</p>
+<ul>
+<li>If C++20 capable, use <code>auto</code> as the parameter’s type.</li>
+<li>Otherwise, use a function with a type template parameter or <code>std::function</code> parameter (or a function pointer if the lambda has no captures).</li>
+</ul>
+</div>
+</div>
+<h2 id="generic-lambdas"><a class="header" href="#generic-lambdas">Generic lambdas</a></h2>
+<p>For the most part, lambda parameters work by the same rules as regular function parameters.</p>
+<p>One notable exception is that since C++14 we’re allowed to use <code>auto</code> for parameters (note: in C++20, regular functions are able to use <code>auto</code> for parameters too). When a lambda has one or more <code>auto</code> parameter, the compiler will infer what parameter types are needed from the calls to the lambda.</p>
+<p>Because lambdas with one or more <code>auto</code> parameter can potentially work with a wide variety of types, they are called <strong>generic lambdas</strong>.</p>
+<blockquote>
+<p><strong>For advanced readers</strong></p>
+<p>When used in the context of a lambda, <code>auto</code> is just a shorthand for a template parameter.</p>
+</blockquote>
+<p>Let’s take a look at a generic lambda:</p>
+<pre><code class="language-cpp">#include &lt;algorithm&gt;
+#include &lt;array&gt;
+#include &lt;iostream&gt;
+#include &lt;string_view&gt;
+
+int main()
+{
+  constexpr std::array months{ // pre-C++17 use std::array&lt;const char*, 12&gt;
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  };
+
+  // Search for two consecutive months that start with the same letter.
+  const auto sameLetter{ std::adjacent_find(months.begin(), months.end(),
+                                      [](const auto&amp; a, const auto&amp; b) {
+                                        return a[0] == b[0];
+                                      }) };
+
+  // Make sure that two months were found.
+  if (sameLetter != months.end())
+  {
+    // std::next returns the next iterator after sameLetter
+    std::cout &lt;&lt; *sameLetter &lt;&lt; " and " &lt;&lt; *std::next(sameLetter)
+              &lt;&lt; " start with the same letter\n";
+  }
+
+  return 0;
+}
+</code></pre>
+<p>Output:</p>
+<pre><code class="language-cpp">June and July start with the same letter
+</code></pre>
+<p>In the above example, we use <code>auto</code> parameters to capture our strings by <code>const</code> reference. Because all string types allow access to their individual characters via <code>operator[]</code>, we don’t need to care whether the user is passing in a <code>std::string</code>, C-style string, or something else. This allows us to write a lambda that could accept any of these, meaning if we change the type of <code>months</code> later, we won’t have to rewrite the lambda.</p>
+<p>However, <code>auto</code> isn’t always the best choice. Consider:</p>
+<pre><code class="language-cpp">#include &lt;algorithm&gt;
+#include &lt;array&gt;
+#include &lt;iostream&gt;
+#include &lt;string_view&gt;
+
+int main()
+{
+  constexpr std::array months{ // pre-C++17 use std::array&lt;const char*, 12&gt;
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  };
+
+  // Count how many months consist of 5 letters
+  const auto fiveLetterMonths{ std::count_if(months.begin(), months.end(),
+                                       [](std::string_view str) {
+                                         return str.length() == 5;
+                                       }) };
+
+  std::cout &lt;&lt; "There are " &lt;&lt; fiveLetterMonths &lt;&lt; " months with 5 letters\n";
+
+  return 0;
+}
+</code></pre>
+<p>Output:</p>
+<pre><code class="language-cpp">There are 2 months with 5 letters
+</code></pre>
+<p>In this example, using <code>auto</code> would infer a type of <code>const char*</code>. C-style strings aren’t easy to work with (apart from using <code>operator[]</code>). In this case, we prefer to explicitly define the parameter as a <code>std::string_view</code>, which allows us to work with the underlying data much more easily (e.g. we can ask the string view for its length, even if the user passed in a C-style array).</p>
+<h2 id="constexpr-lambdas"><a class="header" href="#constexpr-lambdas">Constexpr lambdas</a></h2>
+<p>As of C++17, lambdas are implicitly constexpr if the result satisfies the requirements of a constant expression. This generally requires two things:</p>
+<ul>
+<li>The lambda must either have no captures, or all captures must be constexpr.</li>
+<li>The functions called by the lambda must be constexpr. Note that many standard library algorithms and math functions weren’t made constexpr until C++20 or C++23.</li>
+</ul>
+<p>In the above example, our lambda would not be implicitly constexpr in C++17 but it would be in C++20 (as <code>std::count_if</code> was made constexpr in C++20). This means in C++20 we can make <code>fiveLetterMonths</code> constexpr:</p>
+<pre><code class="language-cpp">  constexpr auto fiveLetterMonths{ std::count_if(months.begin(), months.end(),
+                                       [](std::string_view str) {
+                                         return str.length() == 5;
+                                       }) };
+</code></pre>
+<h2 id="generic-lambdas-and-static-variables"><a class="header" href="#generic-lambdas-and-static-variables">Generic lambdas and static variables</a></h2>
+<p>In lesson <a href="function-template-instantiation.html">11.7 -- Function template instantiation</a>, we discussed that when a function template contains a static local variable, each function instantiated from that template will receive its own independent static local variable. This may cause issues if that is not expected.</p>
+<p>Generic lambdas work the same way: a unique lambda will be generated for each different type that <code>auto</code> resolves to.</p>
+<p>The following example shows how one generic lambda turns into two distinct lambdas:</p>
+<pre><code class="language-cpp">#include &lt;algorithm&gt;
+#include &lt;array&gt;
+#include &lt;iostream&gt;
+#include &lt;string_view&gt;
+
+int main()
+{
+  // Print a value and count how many times @print has been called.
+  auto print{
+    [](auto value) {
+      static int callCount{ 0 };
+      std::cout &lt;&lt; callCount++ &lt;&lt; ": " &lt;&lt; value &lt;&lt; '\n';
+    }
+  };
+
+  print("hello"); // 0: hello
+  print("world"); // 1: world
+
+  print(1); // 0: 1
+  print(2); // 1: 2
+
+  print("ding dong"); // 2: ding dong
+
+  return 0;
+}
+</code></pre>
+<p>Output</p>
+<pre><code class="language-cpp">0: hello
+1: world
+0: 1
+1: 2
+2: ding dong
+</code></pre>
+<p>In the above example, we define a lambda and then call it with two different parameters (a string literal parameter, and an integer parameter). This generates two different versions of the lambda (one with a string literal parameter, and one with an integer parameter).</p>
+<p>Most of the time, this is inconsequential. However, note that if the generic lambda uses static duration variables, those variables are not shared between the generated lambdas.</p>
+<p>We can see this in the example above, where each type (string literals and integers) has its own unique count! Although we only wrote the lambda once, two lambdas were generated -- and each has its own version of <code>callCount</code>. To have a shared counter between the two generated lambdas, we’d have to define a global variable or a <code>static</code> local variable outside of the lambda. As you know from previous lessons, both global- and static local variables can cause problems and make it more difficult to understand code. We’ll be able to avoid those variables after talking about lambda captures in the next lesson.</p>
+<h2 id="return-type-deduction-and-trailing-return-types"><a class="header" href="#return-type-deduction-and-trailing-return-types">Return type deduction and trailing return types</a></h2>
+<p>If return type deduction is used, a lambda’s return type is deduced from the <code>return</code>-statements inside the lambda, and all return statements in the lambda must return the same type (otherwise the compiler won’t know which one to prefer).</p>
+<p>For example:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+  auto divide{ [](int x, int y, bool intDivision) { // note: no specified return type
+    if (intDivision)
+      return x / y; // return type is int
+    else
+      return static_cast&lt;double&gt;(x) / y; // ERROR: return type doesn't match previous return type
+  } };
+
+  std::cout &lt;&lt; divide(3, 2, true) &lt;&lt; '\n';
+  std::cout &lt;&lt; divide(3, 2, false) &lt;&lt; '\n';
+
+  return 0;
+}
+</code></pre>
+<p>This produces a compile error because the return type of the first return statement (int) doesn’t match the return type of the second return statement (double).</p>
+<p>In the case where we’re returning different types, we have two options:</p>
+<ol>
+<li>Do explicit casts to make all the return types match, or</li>
+<li>explicitly specify a return type for the lambda, and let the compiler do implicit conversions.</li>
+</ol>
+<p>The second case is usually the better choice:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+  // note: explicitly specifying this returns a double
+  auto divide{ [](int x, int y, bool intDivision) -&gt; double {
+    if (intDivision)
+      return x / y; // will do an implicit conversion of result to double
+    else
+      return static_cast&lt;double&gt;(x) / y;
+  } };
+
+  std::cout &lt;&lt; divide(3, 2, true) &lt;&lt; '\n';
+  std::cout &lt;&lt; divide(3, 2, false) &lt;&lt; '\n';
+
+  return 0;
+}
+</code></pre>
+<p>That way, if you ever decide to change the return type, you (usually) only need to change the lambda’s return type, and not touch the lambda body.</p>
+<h2 id="standard-library-function-objects"><a class="header" href="#standard-library-function-objects">Standard library function objects</a></h2>
+<p>For common operations (e.g. addition, negation, or comparison) you don’t need to write your own lambdas, because the standard library comes with many basic callable objects that can be used instead. These are defined in the <a href="https://en.cppreference.com/w/cpp/utility/functional#Operator_function_objects"><functional></a> header.</p>
+<p>In the following example:</p>
+<pre><code class="language-cpp">#include &lt;algorithm&gt;
+#include &lt;array&gt;
+#include &lt;iostream&gt;
+
+bool greater(int a, int b)
+{
+  // Order @a before @b if @a is greater than @b.
+  return a &gt; b;
+}
+
+int main()
+{
+  std::array arr{ 13, 90, 99, 5, 40, 80 };
+
+  // Pass greater to std::sort
+  std::sort(arr.begin(), arr.end(), greater);
+
+  for (int i : arr)
+  {
+    std::cout &lt;&lt; i &lt;&lt; ' ';
+  }
+
+  std::cout &lt;&lt; '\n';
+
+  return 0;
+}
+</code></pre>
+<p>Output</p>
+<pre><code class="language-cpp">99 90 80 40 13 5
+</code></pre>
+<p>Instead of converting our <code>greater</code> function to a lambda (which would obscure its meaning a bit), we can instead use <code>std::greater</code>:</p>
+<pre><code class="language-cpp">#include &lt;algorithm&gt;
+#include &lt;array&gt;
+#include &lt;iostream&gt;
+#include &lt;functional&gt; // for std::greater
+
+int main()
+{
+  std::array arr{ 13, 90, 99, 5, 40, 80 };
+
+  // Pass std::greater to std::sort
+  std::sort(arr.begin(), arr.end(), std::greater{}); // note: need curly braces to instantiate object
+
+  for (int i : arr)
+  {
+    std::cout &lt;&lt; i &lt;&lt; ' ';
+  }
+
+  std::cout &lt;&lt; '\n';
+
+  return 0;
+}
+</code></pre>
+<p>Output</p>
+<pre><code class="language-cpp">99 90 80 40 13 5
+</code></pre>
+<h2 id="conclusion"><a class="header" href="#conclusion">Conclusion</a></h2>
+<p>Lambdas and the algorithm library may seem unnecessarily complicated when compared to a solution that uses a loop. However, this combination can allow some very powerful operations in just a few lines of code, and can be more readable than writing your own loops. On top of that, the algorithm library features powerful and easy-to-use parallelism, which you won’t get with loops. Upgrading source code that uses library functions is easier than upgrading code that uses loops.</p>
+<p>Lambdas are great, but they don’t replace regular functions for all cases. Prefer regular functions for non-trivial and reusable cases.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ellipsis-and-why-to-avoid-them.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="lambda-captures.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ellipsis-and-why-to-avoid-them.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="lambda-captures.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

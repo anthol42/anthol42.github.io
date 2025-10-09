@@ -1,0 +1,426 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Passing std::vector - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="passing-stdvector"><a class="header" href="#passing-stdvector">Passing std::vector</a></h1>
+<p>An object of type <code>std::vector</code> can be passed to a function just like any other object. That means if we pass a <code>std::vector</code> by value, an expensive copy will be made. Therefore, we typically pass <code>std::vector</code> by (const) reference to avoid such copies.</p>
+<p>With a <code>std::vector</code>, the element type is part of the type information of the object. Therefore, when we use a <code>std::vector</code> as a function parameter, we have to explicitly specify the element type:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+void passByRef(const std::vector&lt;int&gt;&amp; arr) // we must explicitly specify &lt;int&gt; here
+{
+    std::cout &lt;&lt; arr[0] &lt;&lt; '\n';
+}
+
+int main()
+{
+    std::vector primes{ 2, 3, 5, 7, 11 };
+    passByRef(primes);
+
+    return 0;
+}
+</code></pre>
+<h2 id="passing-stdvector-of-different-element-types"><a class="header" href="#passing-stdvector-of-different-element-types">Passing <code>std::vector</code> of different element types</a></h2>
+<p>Because our <code>passByRef()</code> function expects a <code>std::vector&lt;int&gt;</code>, we are unable to pass vectors with different element types:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+void passByRef(const std::vector&lt;int&gt;&amp; arr)
+{
+    std::cout &lt;&lt; arr[0] &lt;&lt; '\n';
+}
+
+int main()
+{
+    std::vector primes{ 2, 3, 5, 7, 11 };
+    passByRef(primes);  // ok: this is a std::vector&lt;int&gt;
+
+    std::vector dbl{ 1.1, 2.2, 3.3 };
+    passByRef(dbl); // compile error: std::vector&lt;double&gt; is not convertible to std::vector&lt;int&gt;
+
+    return 0;
+}
+</code></pre>
+<p>In C++17 or newer, you might try to use CTAD to solve this problem:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+void passByRef(const std::vector&amp; arr) // compile error: CTAD can't be used to infer function parameters
+{
+    std::cout &lt;&lt; arr[0] &lt;&lt; '\n';
+}
+
+int main()
+{
+    std::vector primes{ 2, 3, 5, 7, 11 }; // okay: use CTAD to infer std::vector&lt;int&gt;
+    passByRef(primes);
+
+    return 0;
+}
+</code></pre>
+<p>Although CTAD will work to deduce an vector’s element type from initializers when it is defined, CTAD doesn’t (currently) work with function parameters.</p>
+<p>We’ve seen this kind of problem before, where we have overloaded functions that only differ by the parameter type. This is a great place to make use of function templates! We can create a function template that parameterizes the element type, and then C++ will use that function template to instantiate functions with actual types.</p>
+<blockquote>
+<p><strong>Related content</strong></p>
+<p>Related content</p>
+<p>We cover function templates in lesson <a href="function-templates">11.6 -- Function templates</a>.</p>
+</blockquote>
+<p>We can create a function template that uses the same template parameter declaration:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+template &lt;typename T&gt;
+void passByRef(const std::vector&lt;T&gt;&amp; arr)
+{
+    std::cout &lt;&lt; arr[0] &lt;&lt; '\n';
+}
+
+int main()
+{
+    std::vector primes{ 2, 3, 5, 7, 11 };
+    passByRef(primes); // ok: compiler will instantiate passByRef(const std::vector&lt;int&gt;&amp;)
+
+    std::vector dbl{ 1.1, 2.2, 3.3 };
+    passByRef(dbl);    // ok: compiler will instantiate passByRef(const std::vector&lt;double&gt;&amp;)
+
+    return 0;
+}
+</code></pre>
+<p>In the above example, we’ve created a single function template named <code>passByRef()</code> that has a parameter of type <code>const std::vector&lt;T&gt;&amp;</code>. <code>T</code> is defined in the template parameter declaration on the previous line: <code>template &lt;typename T</code>. <code>T</code> is a standard type template parameter that allows the caller to specify the element type.</p>
+<p>Therefore, when we call <code>passByRef(primes)</code> from <code>main()</code> (where <code>primes</code> is defined as a <code>std::vector&lt;int&gt;</code>), the compiler will instantiate and call <code>void passByRef(const std::vector&lt;int&gt;&amp; arr)</code>.</p>
+<p>When we call <code>passByRef(dbl)</code> from <code>main()</code> (where <code>dbl</code> is defined as a <code>std::vector&lt;double&gt;</code>), the compiler will instantiate and call <code>void passByRef(const std::vector&lt;double&gt;&amp; arr)</code>.</p>
+<p>Thus, we’ve created a single function template that can instantiate functions to handle <code>std::vector</code> arguments of any element type and length!</p>
+<h2 id="passing-a-stdvector-using-a-generic-template-or-abbreviated-function-template"><a class="header" href="#passing-a-stdvector-using-a-generic-template-or-abbreviated-function-template">Passing a <code>std::vector</code> using a generic template or abbreviated function template</a></h2>
+<p>We can also create a function template that will accept any type of object:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+template &lt;typename T&gt;
+void passByRef(const T&amp; arr) // will accept any type of object that has an overloaded operator[]
+{
+    std::cout &lt;&lt; arr[0] &lt;&lt; '\n';
+}
+
+int main()
+{
+    std::vector primes{ 2, 3, 5, 7, 11 };
+    passByRef(primes); // ok: compiler will instantiate passByRef(const std::vector&lt;int&gt;&amp;)
+
+    std::vector dbl{ 1.1, 2.2, 3.3 };
+    passByRef(dbl);    // ok: compiler will instantiate passByRef(const std::vector&lt;double&gt;&amp;)
+
+    return 0;
+}
+</code></pre>
+<p>In C++20, we can use an abbreviated function template (via an <code>auto</code> parameter) to do the same thing:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+void passByRef(const auto&amp; arr) // abbreviated function template
+{
+    std::cout &lt;&lt; arr[0] &lt;&lt; '\n';
+}
+
+int main()
+{
+    std::vector primes{ 2, 3, 5, 7, 11 };
+    passByRef(primes); // ok: compiler will instantiate passByRef(const std::vector&lt;int&gt;&amp;)
+
+    std::vector dbl{ 1.1, 2.2, 3.3 };
+    passByRef(dbl);    // ok: compiler will instantiate passByRef(const std::vector&lt;double&gt;&amp;)
+
+    return 0;
+}
+</code></pre>
+<p>Both of these will accept an argument of <em>any</em> type that will compile. This can be desirable when writing functions that we might want to operate on more than just a <code>std::vector</code>. For example, the above functions will also work on a <code>std::array</code>, a <code>std::string</code>, or some other type we may not have even considered.</p>
+<p>The potential downside of this method is that it may lead to bugs if the function is passed an object of a type that compiles but doesn’t make sense semantically.</p>
+<h2 id="asserting-on-array-length"><a class="header" href="#asserting-on-array-length">Asserting on array length</a></h2>
+<p>Consider the following template function, which is similar to the one presented above:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+template &lt;typename T&gt;
+void printElement3(const std::vector&lt;T&gt;&amp; arr)
+{
+    std::cout &lt;&lt; arr[3] &lt;&lt; '\n';
+}
+
+int main()
+{
+    std::vector arr{ 9, 7, 5, 3, 1 };
+    printElement3(arr);
+
+    return 0;
+}
+</code></pre>
+<p>While <code>printElement3(arr)</code> works fine in this case, there’s a potential bug waiting for a unwary programmer in this program. See it?</p>
+<p>The above program prints the value of the array element with index 3. This is fine as long as the array has a valid element with index 3. However, the compiler will happily let you pass in arrays where index 3 is out of bounds. For example:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+template &lt;typename T&gt;
+void printElement3(const std::vector&lt;T&gt;&amp; arr)
+{
+    std::cout &lt;&lt; arr[3] &lt;&lt; '\n';
+}
+
+int main()
+{
+    std::vector arr{ 9, 7 }; // a 2-element array (valid indexes 0 and 1)
+    printElement3(arr);
+
+    return 0;
+}
+</code></pre>
+<p>This leads to undefined behavior.</p>
+<p>One option here is to assert on <code>arr.size()</code>, which will catch such errors when run in a debug build configuration. Because <code>std::vector::size()</code> is a non-constexpr function, we can only do a runtime assert here.</p>
+<blockquote>
+<p><strong>Tip</strong></p>
+<p>Tip</p>
+<p>A better option is to avoid using <code>std::vector</code>in cases where you need to assert on array length. Using a type that supports <code>constexpr</code> arrays (e.g. <code>std::array</code>) is probably a better choice, as you can <code>static_assert</code> on the length of a constexpr array. We cover this in future lesson <a href="passing-and-returning-stdarray">17.3 -- Passing and returning std::array</a>.</p>
+</blockquote>
+<p>The best option is to avoid writing functions that rely on the user passing in a vector with a minimum length in the first place.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="stdvector-and-the-unsigned-length-and-subscript-problem.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="returning-stdvector-and-an-introduction-to-move-semantics.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="stdvector-and-the-unsigned-length-and-subscript-problem.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="returning-stdvector-and-an-introduction-to-move-semantics.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

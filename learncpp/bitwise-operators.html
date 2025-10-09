@@ -1,0 +1,636 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Bitwise operators - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="bitwise-operators"><a class="header" href="#bitwise-operators">Bitwise operators</a></h1>
+<h2 id="the-bitwise-operators"><a class="header" href="#the-bitwise-operators">The bitwise operators</a></h2>
+<p>C++ provides 6 bit manipulation operators, often called <strong>bitwise</strong> operators:</p>
+<div class="table-wrapper"><table><thead><tr><th>Operator</th><th>Symbol</th><th>Form</th><th>The operation returns a value where:</th></tr></thead><tbody>
+<tr><td>left shift</td><td>&lt;&lt;</td><td>x &lt;&lt; n</td><td>the bits from <code>x</code> are shifted left by <code>n</code> positions, new bits are <code>0</code>.</td></tr>
+<tr><td>right shift</td><td>&gt;&gt;</td><td>x &gt;&gt; n</td><td>the bits from <code>x</code> are shifted right by <code>n</code> positions, new bits are <code>0</code>.</td></tr>
+<tr><td>bitwise NOT</td><td>~</td><td>~x</td><td>each bit from <code>x</code> is flipped.</td></tr>
+<tr><td>bitwise AND</td><td>&amp;</td><td>x &amp; y</td><td>each bit is set when both corresponding bits in <code>x</code> and <code>y</code> are <code>1</code>.</td></tr>
+<tr><td>bitwise OR</td><td></td><td></td><td>x</td></tr>
+<tr><td>bitwise XOR</td><td>^</td><td>x ^ y</td><td>each bit is set when the corresponding bits in <code>x</code> and <code>y</code> are different.</td></tr>
+</tbody></table>
+</div>
+<p>These are non-modifying operators (they do not modify their operands).</p>
+<blockquote>
+<p><strong>Author’s note</strong></p>
+<p>Author’s note</p>
+<p>In the following examples, we will largely be working with 4-bit binary values. This is for the sake of convenience and keeping the examples simple. In actual programs, the number of bits used is based on the size of the object (e.g. a 2 byte object would store 16 bits).</p>
+<p>To improve readability, we may also omit the <code>0b</code> prefix for binary literals outside of code examples (e.g. instead of <code>0b0101</code>, we may opt to use <code>0101</code>).</p>
+</blockquote>
+<p>The bitwise operators are defined for integral types and <code>std::bitset</code>. We’ll use <code>std::bitset</code> in our examples because it’s easier to print the output in binary.</p>
+<p>Avoid using the bitwise operators with signed integral operands, as many operators will return implementation-defined results prior to C++20 or have other potential gotchas that are easily avoided by using unsigned operands (or <code>std::bitset</code>).</p>
+<div id="admonition-best-practices" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices"></a>
+</div>
+<div>
+<p>Best practice</p>
+<p>To avoid surprises, use the bitwise operators with unsigned integral operands or <code>std::bitset</code>.</p>
+</div>
+</div>
+<h2 id="bitwise-left-shift--and-bitwise-right-shift--operators"><a class="header" href="#bitwise-left-shift--and-bitwise-right-shift--operators">Bitwise left shift (&lt;&lt;) and bitwise right shift (&gt;&gt;) operators</a></h2>
+<p>The <strong>bitwise left shift</strong> (&lt;&lt;) operator shifts bits to the left. The left operand is an expression that provides the initial bit sequence, and the right operand is an integer number that specifies the number of bit-positions to move the bits over by. For example, when we write <code>x &lt;&lt; 2</code>, we are saying “produce a value where the bits from <code>x</code> have been moved 2 positions to the left.”</p>
+<p>The left operand is not modified, and new bits shifted in from the right size are <code>0</code>.</p>
+<p>Here are some examples of left shifting the bit sequence <code>0011</code>:</p>
+<pre><code class="language-cpp">0011 \&lt;\&lt; 1 is 0110
+0011 \&lt;\&lt; 2 is 1100
+0011 \&lt;\&lt; 3 is 1000
+</code></pre>
+<p>Note that in the third case, we shifted a <code>1</code> bit off the end of the number! Bits that are shifted off the end of the bit sequence are lost forever.</p>
+<p>The <strong>bitwise right shift</strong> (&gt;&gt;) operator works similarly but shifts bits to the right.</p>
+<p>Here are some examples of right shifting the bit sequence <code>1100</code>:</p>
+<pre><code class="language-cpp">1100 /&gt;/&gt; 1 is 0110
+1100 /&gt;/&gt; 2 is 0011
+1100 /&gt;/&gt; 3 is 0001
+</code></pre>
+<p>Note that in the third case we shifted a bit off the right end of the number, so it is lost.</p>
+<p>Let’s do an example in C++ that you can compile and run:</p>
+<pre><code class="language-cpp">#include &lt;bitset&gt;
+#include &lt;iostream&gt;
+
+int main()
+{
+    std::bitset&lt;4&gt; x { 0b1100 };
+
+    std::cout &lt;&lt; x &lt;&lt; '\n';
+    std::cout &lt;&lt; (x &gt;&gt; 1) &lt;&lt; '\n'; // shift right by 1, yielding 0110
+    std::cout &lt;&lt; (x &lt;&lt; 1) &lt;&lt; '\n'; // shift left by 1, yielding 1000
+
+    return 0;
+}
+</code></pre>
+<p>This prints:</p>
+<pre><code class="language-cpp">1100
+0110
+1000
+</code></pre>
+<blockquote>
+<p><strong>For advanced readers</strong></p>
+<p>For advanced readers</p>
+<p>Bit-shifting in C++ is <a href="https://en.wikipedia.org/wiki/Endianness">endian</a>-agnostic. Left-shift is always towards the most significant bit, and right-shift towards the least significant bit.</p>
+</blockquote>
+<h2 id="what-arent-operator-and-operator-used-for-input-and-output"><a class="header" href="#what-arent-operator-and-operator-used-for-input-and-output">What!? Aren’t operator&lt;&lt; and operator&gt;&gt; used for input and output?</a></h2>
+<p>They sure are.</p>
+<p>Programs today typically do not make much use of the bitwise left and right shift operators to shift bits. Rather, the bitwise left shift operator is more often used with <code>std::cout</code> (or other output stream objects) to output text. Consider the following program:</p>
+<pre><code class="language-cpp">#include &lt;bitset&gt;
+#include &lt;iostream&gt;
+
+int main()
+{
+    unsigned int x { 0b0100 };
+    x = x &lt;&lt; 1; // use operator&lt;&lt; for left shift
+    std::cout &lt;&lt; std::bitset&lt;4&gt;{ x } &lt;&lt; '\n'; // use operator&lt;&lt; for output
+
+    return 0;
+}
+</code></pre>
+<p>This program prints:</p>
+<pre><code class="language-cpp">1000
+</code></pre>
+<p>In the above program, how does <code>operator&lt;&lt;</code> know to shift bits in one case and output <code>x</code> in another case? The answer is that it looks at the type of the operands. If the left operand is an integral type, then <code>operator&lt;&lt;</code> knows to do its usual bit-shifting behavior. If the left operand is an output stream object like <code>std::cout</code>, then it knows it should do output instead.</p>
+<p>The same applies for <code>operator&gt;&gt;</code>.</p>
+<blockquote>
+<p><strong>Related content</strong></p>
+<p>Related content</p>
+<p>This ability for operators to change their behavior based on the type of the arguments leverages a feature called <em>operator overloading</em>, which we introduce later in lesson <a href="introduction-to-overloading-the-i-o-operators">13.5 -- Introduction to overloading the I/O operators</a>.</p>
+</blockquote>
+<p>Note that if you’re using <code>operator&lt;&lt;</code> for both output and left shift, parenthesization is required to use for left-shifting:</p>
+<pre><code class="language-cpp">#include &lt;bitset&gt;
+#include &lt;iostream&gt;
+
+int main()
+{
+	std::bitset&lt;4&gt; x{ 0b0110 };
+
+	std::cout &lt;&lt; x &lt;&lt; 1 &lt;&lt; '\n'; // print value of x (0110), then 1
+	std::cout &lt;&lt; (x &lt;&lt; 1) &lt;&lt; '\n'; // print x left shifted by 1 (1100)
+
+	return 0;
+}
+</code></pre>
+<p>This prints:</p>
+<pre><code class="language-cpp">01101
+1100
+</code></pre>
+<p>The first line prints the value of <code>x</code> (<code>0110</code>), and then the literal <code>1</code>. The second line prints the value of <code>x</code> left-shifted by <code>1</code> (<code>1100</code>).</p>
+<h2 id="bitwise-not"><a class="header" href="#bitwise-not">Bitwise NOT</a></h2>
+<p>The <strong>bitwise NOT</strong> operator (~) is conceptually straightforward: It simply flips each bit from a <code>0</code> to a <code>1</code>, or vice versa.</p>
+<pre><code class="language-cpp">~0011 is 1100
+~0000 0100 is 1111 1011
+</code></pre>
+<blockquote>
+<p><strong>For advanced readers</strong></p>
+<p>For advanced readers</p>
+<p>When interpreted as an integer, the number of bits in the result of a bitwise NOT affects the value produced.</p>
+<p>The following program illustrates this:</p>
+<pre><code>#include &lt;bitset&gt;
+#include &lt;iostream&gt;
+
+int main()
+{
+    std::bitset&lt;4&gt; b4{ 0b100 }; // b4 is 0100
+    std::bitset&lt;8&gt; b8{ 0b100 }; // b8 is 0000 0100
+
+    std::cout &lt;&lt; "Initial values:\n";
+    std::cout &lt;&lt; "Bits: " &lt;&lt; b4 &lt;&lt; ' ' &lt;&lt; b8 &lt;&lt; '\n';
+    std::cout &lt;&lt; "Values: " &lt;&lt; b4.to_ulong() &lt;&lt; ' ' &lt;&lt; b8.to_ulong() &lt;&lt; "\n\n";    
+
+    b4 = ~b4; // flip b4 to 1011
+    b8 = ~b8; // flip b8 to 1111 1011
+    
+    std::cout &lt;&lt; "After bitwise NOT:\n";
+    std::cout &lt;&lt; "Bits: " &lt;&lt; b4 &lt;&lt; ' ' &lt;&lt; b8 &lt;&lt; '\n';
+    std::cout &lt;&lt; "Values: " &lt;&lt; b4.to_ulong() &lt;&lt; ' ' &lt;&lt; b8.to_ulong() &lt;&lt; '\n';    
+
+    return 0;
+}
+</code></pre>
+<p>This prints:</p>
+<pre><code>Initial values:
+Bits: 0100 00000100
+Values: 4 4
+
+After bitwise NOT:
+Bits: 1011 11111011
+Values: 11 251
+</code></pre>
+<p>Initially, <code>b4</code> and <code>b8</code> are both set to <code>0b100</code>. When padded with leading zeros, <code>b4</code> ends up as <code>0100</code> and <code>b8</code> as <code>00000100</code>, which is printed on the next line.</p>
+<p>We then use the <code>to_ulong()</code> member function to interpret the value of the bits, interpreted as a <code>long</code> integer. You can see that both <code>b4</code> and <code>b8</code> print the value <code>4</code>. Despite the different number of bits, they both represent the same value. This is because leading zero bits contribute no value to the interpreted integer.</p>
+<p>Then we use bitwise NOT to flip the bits of each, so <code>b4</code> now has bits <code>1011</code> and <code>b8</code> now has bits <code>1111 1011</code>. When printed as an integer, this prints the values <code>11</code> and <code>251</code>. As you can see, these values are no longer identical. This is because leading ones do contribute value to the interpreted integer, and <code>b8</code> has more leading ones than <code>b4</code>.</p>
+</blockquote>
+<h2 id="bitwise-or"><a class="header" href="#bitwise-or">Bitwise OR</a></h2>
+<p><strong>Bitwise OR</strong> (|) works much like its logical OR counterpart. If you remember, logical OR evaluates to <code>true</code> (<code>1</code>) if either of the <em>operands</em> are <code>true</code>, otherwise it evaluates to <code>false</code> (<code>0</code>).</p>
+<p>However, whereas logical OR is applied to the entire operand (to produce a single true or false result), bitwise OR is applied to each pair of bits in the operands (to produce a single true or false result for each bit).</p>
+<p>Let’s illustrate this with an example. Consider the expression <code>0b0101 | 0b0110</code>.</p>
+<blockquote>
+<p><strong>Tip</strong></p>
+<p>Tip</p>
+<p>To do any binary bitwise operation by hand, it is easiest to line the two operands up like this:</p>
+<pre><code>0 1 0 1 OR (or whatever bitwise operation you are doing)
+0 1 1 0
+</code></pre>
+<p>Then, apply the operation to each <em>column</em> of bits, and write the result underneath.</p>
+</blockquote>
+<p>In the first column, <code>0</code> OR <code>0</code> is <code>0</code>, so we put a 0 underneath the line.</p>
+<pre><code class="language-cpp">0 1 0 1 OR
+0 1 1 0
+-------
+0
+</code></pre>
+<p>Second column, <code>1</code> OR <code>1</code> is <code>1</code>. Third column <code>0</code> or <code>1</code> is <code>1</code>. And fourth column, <code>1</code> or <code>0</code> is <code>1</code>.</p>
+<pre><code class="language-cpp">0 1 0 1 OR
+0 1 1 0
+-------
+0 1 1 1
+</code></pre>
+<p>Our result is <code>0111</code> binary.</p>
+<pre><code class="language-cpp">#include &lt;bitset&gt;
+#include &lt;iostream&gt;
+
+int main()
+{
+	std::cout &lt;&lt; (std::bitset&lt;4&gt;{ 0b0101 } | std::bitset&lt;4&gt;{ 0b0110 }) &lt;&lt; '\n';
+
+	return 0;
+}
+</code></pre>
+<p>This prints:</p>
+<pre><code class="language-cpp">0111
+</code></pre>
+<p>We can do the same thing to compound bitwise OR expressions, such as <code>0b0111 | 0b0011 | 0b0001</code>. If any of the bits in a column are <code>1</code>, the result of that column is <code>1</code>:</p>
+<pre><code class="language-cpp">0 1 1 1 OR
+0 0 1 1 OR
+0 0 0 1
+--------
+0 1 1 1
+</code></pre>
+<p>Here’s code for the above:</p>
+<pre><code class="language-cpp">#include &lt;bitset&gt;
+#include &lt;iostream&gt;
+
+int main()
+{
+	std::cout &lt;&lt; (std::bitset&lt;4&gt;{ 0b0111 } | std::bitset&lt;4&gt;{ 0b0011 } | std::bitset&lt;4&gt;{ 0b0001 }) &lt;&lt; '\n';
+
+	return 0;
+}
+</code></pre>
+<p>This prints:</p>
+<pre><code class="language-cpp">0111
+</code></pre>
+<h2 id="bitwise-and"><a class="header" href="#bitwise-and">Bitwise AND</a></h2>
+<p><strong>Bitwise AND</strong> (&amp;) works similarly to the above, except it uses AND logic instead of OR logic. That is, for each pair of bits in the operands, Bitwise AND sets the resulting bit to <code>true</code> (<code>1</code>) if both paired bits are <code>1</code>, and <code>false</code> (<code>0</code>) otherwise.</p>
+<p>Consider the expression <code>0b0101 &amp; 0b0110</code>. Lining each of the bits up and applying bitwise AND to each column of bits:</p>
+<pre><code class="language-cpp">0 1 0 1 AND
+0 1 1 0
+--------
+0 1 0 0
+</code></pre>
+<pre><code class="language-cpp">#include &lt;bitset&gt;
+#include &lt;iostream&gt;
+
+int main()
+{
+	std::cout &lt;&lt; (std::bitset&lt;4&gt;{ 0b0101 } &amp; std::bitset&lt;4&gt;{ 0b0110 }) &lt;&lt; '\n';
+
+	return 0;
+}
+</code></pre>
+<p>This prints:</p>
+<pre><code class="language-cpp">0100
+</code></pre>
+<p>Similarly, we can do the same thing to compound bitwise AND expressions, such as <code>0b0001 &amp; 0b0011 &amp; 0b0111</code>. If all of the bits in a column are <code>1</code>, the result of that column is <code>1</code>.</p>
+<pre><code class="language-cpp">0 0 0 1 AND
+0 0 1 1 AND
+0 1 1 1
+--------
+0 0 0 1
+</code></pre>
+<pre><code class="language-cpp">#include &lt;bitset&gt;
+#include &lt;iostream&gt;
+
+int main()
+{
+	std::cout &lt;&lt; (std::bitset&lt;4&gt;{ 0b0001 } &amp; std::bitset&lt;4&gt;{ 0b0011 } &amp; std::bitset&lt;4&gt;{ 0b0111 }) &lt;&lt; '\n';
+
+	return 0;
+}
+</code></pre>
+<p>This prints:</p>
+<pre><code class="language-cpp">0001
+</code></pre>
+<h2 id="bitwise-xor"><a class="header" href="#bitwise-xor">Bitwise XOR</a></h2>
+<p>The last operator is the <strong>bitwise XOR</strong> (^), also known as <strong>exclusive or</strong>.</p>
+<p>For each pair of bits in the operands, Bitwise XOR sets the resulting bit to <code>true</code> (<code>1</code>) when exactly one of the paired bits is <code>1</code>, and <code>false</code> (<code>0</code>) otherwise. Put another way, Bitwise XOR sets the resulting bit to <code>true</code> when the paired bits are different (one is a <code>0</code> and the other a <code>1</code>).</p>
+<p>Consider the expression <code>0b0110 ^ 0b0011</code>:</p>
+<pre><code class="language-cpp">0 1 1 0 XOR
+0 0 1 1
+-------
+0 1 0 1
+</code></pre>
+<p>It is also possible to evaluate compound XOR expression column style, such as <code>0b0001 ^ 0b0011 ^ 0b0111</code>. If there are an even number of <code>1</code> bits in a column, the result is <code>0</code>. If there are an odd number of <code>1</code> bits in a column, the result is <code>1</code>.</p>
+<pre><code class="language-cpp">0 0 0 1 XOR
+0 0 1 1 XOR
+0 1 1 1
+--------
+0 1 0 1
+</code></pre>
+<h2 id="bitwise-assignment-operators"><a class="header" href="#bitwise-assignment-operators">Bitwise assignment operators</a></h2>
+<p>Similar to the arithmetic assignment operators, C++ provides bitwise assignment operators. These do modify the left operand.</p>
+<div class="table-wrapper"><table><thead><tr><th>Operator</th><th>Symbol</th><th>Form</th><th>The operation modifies the left operand where:</th></tr></thead><tbody>
+<tr><td>left shift</td><td>&lt;&lt;</td><td>x &lt;&lt;= n</td><td>the bits in <code>x</code> are shifted left by <code>n</code> positions, new bits are <code>0</code>.</td></tr>
+<tr><td>right shift</td><td>&gt;&gt;</td><td>x &gt;&gt;= n</td><td>the bits in <code>x</code> are shifted right by <code>n</code> positions, new bits are <code>0</code>.</td></tr>
+<tr><td>bitwise AND</td><td>&amp;</td><td>x &amp;= y</td><td>each bit is set when both corresponding bits in <code>x</code> and <code>y</code> are <code>1</code>.</td></tr>
+<tr><td>bitwise OR</td><td></td><td></td><td>x</td></tr>
+<tr><td>bitwise XOR</td><td>^</td><td>x ^= y</td><td>each bit is set when the corresponding bits in <code>x</code> and <code>y</code> are different.</td></tr>
+</tbody></table>
+</div>
+<p>For example, instead of writing <code>x = x &gt;&gt; 1;</code>, you can write <code>x &gt;&gt;= 1;</code>.</p>
+<pre><code class="language-cpp">#include &lt;bitset&gt;
+#include &lt;iostream&gt;
+
+int main()
+{
+    std::bitset&lt;4&gt; bits { 0b0100 };
+    bits &gt;&gt;= 1;
+    std::cout &lt;&lt; bits &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>This program prints:</p>
+<pre><code class="language-cpp">0010
+</code></pre>
+<blockquote>
+<p><strong>As an aside…</strong></p>
+<p>As an aside…</p>
+<p>There is no bitwise NOT assignment operator. This is because the other bitwise operators are binary, but bitwise NOT is unary (so what would go on the right-hand side of a <code>~=</code> operator?). If you want to flip all of the bits of an object, you can use normal assignment: <code>x = ~x;</code></p>
+</blockquote>
+<h2 id="bitwise-operators-perform-integral-promotion-on-smaller-integral-types-advanced"><a class="header" href="#bitwise-operators-perform-integral-promotion-on-smaller-integral-types-advanced">Bitwise operators perform integral promotion on smaller integral types Advanced</a></h2>
+<p>If the operand(s) of a bitwise operator are an integral type smaller than an <code>int</code>, those operands will be promoted (converted) to <code>int</code> or <code>unsigned int</code>, and the result returned will also be an <code>int</code> or <code>unsigned int</code>. For example, if our operands are <code>unsigned short</code>, they will be promoted (converted) to <code>unsigned int</code>, and the result of the operation will be returned as an <code>unsigned int</code>.</p>
+<p>In many cases, this won’t matter.</p>
+<blockquote>
+<p><strong>Related content</strong></p>
+<p>Related content</p>
+<p>We cover integral promotion in lesson <a href="floating-point-and-integral-promotion">10.2 -- Floating-point and integral promotion</a>.</p>
+</blockquote>
+<p>However, when using bitwise operators on integral types narrower than <code>int</code> or <code>unsigned int</code>, there are two cases to watch out for:</p>
+<ul>
+<li><code>operator~</code> and <code>operator&lt;&lt;</code> are width-sensitive and may produce different results depending on the width of the operand.</li>
+<li>Initializing or assigning the result to a variable of the smaller integral type is a narrowing conversion (since converting an <code>int</code> or <code>unsigned int</code> to a smaller integral type may result in data loss). This is disallowed in list initialization, and your compiler may or may not complain about a narrowing assignment.</li>
+</ul>
+<p>The following program exhibits these issues (assuming 32-bit ints):</p>
+<pre><code class="language-cpp">#include &lt;bitset&gt;
+#include &lt;cstdint&gt;
+#include &lt;iostream&gt;
+
+int main()
+{
+    std::uint8_t c { 0b00001111 };
+    
+    std::cout &lt;&lt; std::bitset&lt;32&gt;(~c) &lt;&lt; '\n';     // incorrect: prints 11111111111111111111111111110000
+    std::cout &lt;&lt; std::bitset&lt;32&gt;(c &lt;&lt; 6) &lt;&lt; '\n'; // incorrect: prints 0000000000000000001111000000
+    std::uint8_t cneg { ~c };                     // error: narrowing conversion from unsigned int to std::uint8_t
+    c = ~c;                                       // possible warning: narrowing conversion from unsigned int to std::uint8_t
+ 
+    return 0;
+}
+</code></pre>
+<p>These issues can be addressed by using <code>static_cast</code> to convert the result of your bitwise operation back to the narrower integral type. The following program produces the correct results:</p>
+<pre><code class="language-cpp">#include &lt;bitset&gt;
+#include &lt;cstdint&gt;
+#include &lt;iostream&gt;
+
+int main()
+{
+    std::uint8_t c { 0b00001111 };
+
+    std::cout &lt;&lt; std::bitset&lt;32&gt;(static_cast&lt;std::uint8_t&gt;(~c)) &lt;&lt; '\n';     // correct: prints 00000000000000000000000011110000
+    std::cout &lt;&lt; std::bitset&lt;32&gt;(static_cast&lt;std::uint8_t&gt;(c &lt;&lt; 6)) &lt;&lt; '\n'; // correct: prints 0000000000000000000011000000
+    std::uint8_t cneg { static_cast&lt;std::uint8_t&gt;(~c) };                     // compiles
+    c = static_cast&lt;std::uint8_t&gt;(~c);                                       // no warning
+ 
+    return 0;
+}
+</code></pre>
+<div id="admonition-warning" class="admonition admonish-warning" role="note" aria-labelledby="admonition-warning-title">
+<div class="admonition-title">
+<div id="admonition-warning-title">
+<p>Warning</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-warning"></a>
+</div>
+<div>
+<p>Warning</p>
+<p>Bitwise operators will promote operands with narrower integral types to <code>int</code> or <code>unsigned int</code>.</p>
+<p><code>operator~</code> and <code>operator&lt;&lt;</code> are width-sensitive and may produce different results depending on the width of the operand. <code>static_cast</code> the result of such bitwise operations back to the narrower integral type before using to ensure correct results.</p>
+</div>
+</div>
+<div id="admonition-best-practices-1" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-1-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-1-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices-1"></a>
+</div>
+<div>
+<p>Best practice</p>
+<p>Avoid bit shifting on integral types smaller than <code>int</code> whenever possible.</p>
+</div>
+</div>
+<h2 id="summary"><a class="header" href="#summary">Summary</a></h2>
+<p>Summarizing how to evaluate bitwise operations utilizing the column method:</p>
+<p>When evaluating bitwise OR, if any bit in a column is 1, the result for that column is 1.<br />
+When evaluating bitwise AND, if all bits in a column are 1, the result for that column is 1.<br />
+When evaluating bitwise XOR, if there are an odd number of 1 bits in a column, the result for that column is 1.</p>
+<p>In the next lesson, we’ll explore how these operators can be used in conjunction with bit masks to facilitate bit manipulation.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="bit-flags-and-bit-manipulation-via-stdbitset.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="bit-manipulation-with-bitwise-operators-and-bit-masks.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="bit-flags-and-bit-manipulation-via-stdbitset.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="bit-manipulation-with-bitwise-operators-and-bit-masks.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

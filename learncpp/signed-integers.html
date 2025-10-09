@@ -1,0 +1,389 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Signed integers - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="signed-integers"><a class="header" href="#signed-integers">Signed integers</a></h1>
+<p>An <strong>integer</strong> is an integral type that can represent positive and negative whole numbers, including 0 (e.g. -2, -1, 0, 1, 2). C++ has <em>4</em> primary fundamental integer types available for use:</p>
+<div class="table-wrapper"><table><thead><tr><th>Type</th><th>Minimum Size</th><th>Note</th></tr></thead><tbody>
+<tr><td>short int</td><td>16 bits</td><td></td></tr>
+<tr><td>int</td><td>16 bits</td><td>Typically 32 bits on modern architectures</td></tr>
+<tr><td>long int</td><td>32 bits</td><td></td></tr>
+<tr><td>long long int</td><td>64 bits</td><td></td></tr>
+</tbody></table>
+</div>
+<p>The key difference between the various integer types is that they have varying sizes -- the larger integers can hold bigger numbers.</p>
+<blockquote>
+<p><strong>A reminder</strong></p>
+<p>A reminder</p>
+<p>C++ only guarantees that integers will have a certain minimum size, not that they will have a specific size. See lesson <a href="object-sizes-and-the-sizeof-operator">4.3 -- Object sizes and the sizeof operator</a> for information on how to determine how large each type is on your machine.</p>
+</blockquote>
+<blockquote>
+<p><strong>As an aside…</strong></p>
+<p>As an aside…</p>
+<p>Technically, the <code>bool</code> and <code>char</code> types are considered to be integral types (because these types store their values as integer values). For the purpose of the next few lessons, we’ll exclude these types from our discussion.</p>
+</blockquote>
+<h2 id="signed-integers-1"><a class="header" href="#signed-integers-1">Signed integers</a></h2>
+<p>When writing negative numbers in everyday life, we use a negative sign. For example, <em>-3</em> means “negative 3”. We’d also typically recognize <em>+3</em> as “positive 3” (though common convention dictates that we typically omit plus prefixes).</p>
+<p>This attribute of being positive, negative, or zero is called the number’s <strong>sign</strong>.</p>
+<p>By default, integers in C++ are <strong>signed</strong>, which means the number’s sign is stored as part of the value. Therefore, a signed integer can hold both positive and negative numbers (and 0).</p>
+<p>In this lesson, we’ll focus on signed integers. We’ll discuss unsigned integers (which can only hold non-negative numbers) in the next lesson.</p>
+<h2 id="defining-signed-integers"><a class="header" href="#defining-signed-integers">Defining signed integers</a></h2>
+<p>Here is the preferred way to define the four types of signed integers:</p>
+<pre><code class="language-cpp">short s;      // prefer "short" instead of "short int"
+int i;
+long l;       // prefer "long" instead of "long int"
+long long ll; // prefer "long long" instead of "long long int"
+</code></pre>
+<p>Although <em>short int</em>, <em>long int</em>, or <em>long long int</em> will work, we prefer the short names for these types (that do not use the <em>int</em> suffix). In addition to being more typing, adding the <em>int</em> suffix makes the type harder to distinguish from variables of type <em>int</em>. This can lead to mistakes if the short or long modifier is inadvertently missed.</p>
+<p>The integer types can also take an optional <em>signed</em> keyword, which by convention is typically placed before the type name:</p>
+<pre><code class="language-cpp">signed short ss;
+signed int si;
+signed long sl;
+signed long long sll;
+</code></pre>
+<p>However, this keyword should not be used, as it is redundant, since integers are signed by default.</p>
+<div id="admonition-best-practices" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices"></a>
+</div>
+<div>
+<p>Best practice</p>
+<p>Prefer the shorthand types that do not use the <code>int</code> suffix or <code>signed</code> prefix.</p>
+</div>
+</div>
+<h2 id="signed-integer-ranges"><a class="header" href="#signed-integer-ranges">Signed integer ranges</a></h2>
+<p>As you learned in the last section, a variable with <em>n</em> bits can hold 2n possible values. But which specific values? We call the set of specific values that a data type can hold its <strong>range</strong>. The range of an integer variable is determined by two factors: its size (in bits), and whether it is signed or not.</p>
+<p>For example, an 8-bit signed integer has a range of -128 to 127. This means an 8-bit signed integer can store any integer value between -128 and 127 (inclusive) safely.</p>
+<p>Here’s a table containing the range of signed integers of different sizes:</p>
+<div class="table-wrapper"><table><thead><tr><th>Size / Type</th><th>Range</th></tr></thead><tbody>
+<tr><td>8-bit signed</td><td>-128 to 127</td></tr>
+<tr><td>16-bit signed</td><td>-32,768 to 32,767</td></tr>
+<tr><td>32-bit signed</td><td>-2,147,483,648 to 2,147,483,647</td></tr>
+<tr><td>64-bit signed</td><td>-9,223,372,036,854,775,808 to 9,223,372,036,854,775,807</td></tr>
+</tbody></table>
+</div>
+<p>For the math inclined, an n-bit signed variable has a range of -(2n-1) to (2n-1)-1.</p>
+<p>For the non-math inclined… use the table. :)</p>
+<blockquote>
+<p><strong>For advanced readers</strong></p>
+<p>For advanced readers</p>
+<p>The above ranges assume “two’s complement” binary representation. This representation is the de-facto standard for modern architectures (as it is easier to implement in hardware), and is now required by the C++20 standard. We discuss two’s complement in lesson <a href="converting-integers-between-binary-and-decimal-representation">O.4 -- Converting integers between binary and decimal representation</a>.</p>
+<p>In prior standards, sign-magnitude and ones complement representations were permitted for historical reasons. Such representations produce values in the range -(2n-1-1) to +(2n-1-1).</p>
+</blockquote>
+<h2 id="overflow"><a class="header" href="#overflow">Overflow</a></h2>
+<p>What happens if we try to assign the value <em>140</em> to an 8-bit signed integer? This number is outside the range that an 8-bit signed integer can hold. The number 140 requires 9 bits to represent (8 magnitude bits and 1 sign bit), but we only have 8 bits (7 magnitude bits and 1 sign bit) available in an 8-bit signed integer.</p>
+<p>The C++20 standard makes this blanket statement: “If during the evaluation of an expression, the result is not mathematically defined or not in the range of representable values for its type, the behavior is undefined”. Colloquially, this is called <strong>overflow</strong>.</p>
+<p>Therefore, assigning value 140 to an 8-bit signed integer will result in undefined behavior.</p>
+<p>If an arithmetic operation (such as addition or multiplication) attempts to create a value outside the range that can be represented, this is called <strong>integer overflow</strong> (or <strong>arithmetic overflow</strong>). For signed integers, integer overflow will result in undefined behavior.</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+    // assume 4 byte integers
+    int x { 2'147'483'647 }; // the maximum value of a 4-byte signed integer
+    std::cout &lt;&lt; x &lt;&lt; '\n';
+
+    x = x + 1; // integer overflow, undefined behavior
+    std::cout &lt;&lt; x &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>On the author’s machine, the above printed:</p>
+<pre><code class="language-cpp">2147483647
+-2147483648
+</code></pre>
+<p>However, because the second output is the result of undefined behavior, the value output may vary on your machine.</p>
+<blockquote>
+<p><strong>For advanced readers</strong></p>
+<p>For advanced readers</p>
+<p>We cover what happens when unsigned integers overflow in lesson <a href="unsigned-integers-and-why-to-avoid-them">4.5 -- Unsigned integers, and why to avoid them</a>.</p>
+</blockquote>
+<p>In general, overflow results in information being lost, which is almost never desirable. If there is <em>any</em> suspicion that an object might need to store a value that falls outside its range, use a type with a bigger range!</p>
+<h2 id="integer-division"><a class="header" href="#integer-division">Integer division</a></h2>
+<p>When dividing two integers, C++ works like you’d expect when the quotient is a whole number:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+    std::cout &lt;&lt; 20 / 4 &lt;&lt; '\n';
+    return 0;
+}
+</code></pre>
+<p>This produces the expected result:</p>
+<pre><code class="language-cpp">5
+</code></pre>
+<p>But let’s look at what happens when integer division causes a fractional result:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+    std::cout &lt;&lt; 8 / 5 &lt;&lt; '\n';
+    return 0;
+}
+</code></pre>
+<p>This produces a possibly unexpected result:</p>
+<pre><code class="language-cpp">1
+</code></pre>
+<p>When doing division with two integers (called <strong>integer division</strong>), C++ always produces an integer result. Since integers can’t hold fractional values, any fractional portion is simply dropped (not rounded!).</p>
+<p>Taking a closer look at the above example, 8 / 5 produces the value 1.6. The fractional part (0.6) is dropped, and the result of 1 remains. Alternatively, we can say 8 / 5 equals 1 remainder 3. The remainder is dropped, leaving 1.</p>
+<p>Similarly, -8 / 5 results in the value -1.</p>
+<div id="admonition-warning" class="admonition admonish-warning" role="note" aria-labelledby="admonition-warning-title">
+<div class="admonition-title">
+<div id="admonition-warning-title">
+<p>Warning</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-warning"></a>
+</div>
+<div>
+<p>Warning</p>
+<p>Be careful when using integer division, as you will lose any fractional parts of the quotient. However, if it’s what you want, integer division is safe to use, as the results are predictable.</p>
+</div>
+</div>
+<p>If fractional results are desired, we show a method to do this in lesson <a href="arithmetic-operators.html">6.2 -- Arithmetic operators</a>.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="object-sizes-and-the-sizeof-operator.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="unsigned-integers-and-why-to-avoid-them.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="object-sizes-and-the-sizeof-operator.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="unsigned-integers-and-why-to-avoid-them.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

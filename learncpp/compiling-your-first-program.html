@@ -1,0 +1,469 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Compiling your first program - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="compiling-your-first-program"><a class="header" href="#compiling-your-first-program">Compiling your first program</a></h1>
+<p>Before we can write our first program, we need to learn how to create new programs within our Integrated Development Environment (IDE). In this lesson, we’ll cover how to do that, and you’ll also compile and execute your first program!</p>
+<h2 id="projects"><a class="header" href="#projects">Projects</a></h2>
+<p>To write a C++ program inside an IDE, we typically start by creating a new project (we’ll show you how to do this in a bit). A <strong>project</strong> is a container that holds all of your source code files, images, data files, etc… that are needed to produce an executable (or library, website, etc…) that you can run or use. The project also saves various IDE, compiler, and linker settings, as well as remembering where you left off, so that when you reopen the project later, the state of the IDE can be restored to wherever you left off. When you choose to compile your program, all of the .cpp files in the project will get compiled and linked.</p>
+<p>Each project corresponds to one program. When you’re ready to create a second program, you’ll either need to create a new project, or overwrite the code in an existing project (if you don’t want to keep it). Project files are generally IDE specific, so a project created for one IDE will need to be recreated in a different IDE.</p>
+<div id="admonition-best-practices" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices"></a>
+</div>
+<div>
+<p>Create a new project for each new program you write.</p>
+</div>
+</div>
+<h2 id="console-projects"><a class="header" href="#console-projects">Console projects</a></h2>
+<p>When you create a new project, you’ll generally be asked what type of project you want to create. All of the projects that we will create in this tutorial will be console projects. A <strong>console project</strong> means that we are going to create programs that can be run from the Windows, Linux, or Mac console.</p>
+<p>Here’s a screenshot of the Windows console:</p>
+<p><img src="https://www.learncpp.com/images/CppTutorial/Chapter0/WindowsCommandLine-min.png" alt="Windows console" /></p>
+<p>By default, console applications have no graphical user interface (GUI), they print text to the console, read input from the keyboard, and are compiled into stand-alone executable files. This is perfect for learning C++, because it keeps the complexity to a minimum, and ensures things work on a wide variety of systems.</p>
+<p>Don’t worry if you’ve never used a console before, or don’t know how to access it. We’ll compile and launch our programs through our IDEs (which will invoke the console when necessary).</p>
+<h2 id="workspaces--solutions"><a class="header" href="#workspaces--solutions">Workspaces / solutions</a></h2>
+<p>When you create a new project for your program, many IDEs will automatically add your project to a “workspace” or a “solution” (the term varies by IDE). A workspace or solution is a container that can hold one or more related projects. For example, if you were writing a game and wanted to have a separate executable for single player and multiplayer, you’d need to create two projects. It wouldn’t make sense for both of these projects to be completely independent -- after all, they are part of the same game. Most likely, each would be configured as a separate project within a single workspace/solution.</p>
+<p>Although you can add multiple projects to a single solution, we generally recommend creating a new workspace or solution for each program, especially while learning. It’s simpler and there’s less chance of something going wrong.</p>
+<h2 id="writing-your-first-program"><a class="header" href="#writing-your-first-program">Writing your first program</a></h2>
+<p>Traditionally, the first program programmers write in a new language is the infamous <a href="https://en.wikipedia.org/wiki/Hello_world">hello world program</a>, and we aren’t going to deprive you of that experience! You’ll thank us later. Maybe.</p>
+<h2 id="creating-a-project-in-visual-studio-2019-or-newer"><a class="header" href="#creating-a-project-in-visual-studio-2019-or-newer">Creating a project in Visual Studio 2019 (or newer)</a></h2>
+<p>When you run Visual Studio 2019 (or newer), you should see a dialog that looks like this:</p>
+<p><img src="https://www.learncpp.com/images/CppTutorial/Chapter0/VS2019-GetStarted-min.png" alt="Visual Studio 2019 Get Started dialog" /></p>
+<p>Select <em>Create a new project</em>.</p>
+<p>You’ll then see a dialog that looks like this:</p>
+<p><img src="https://www.learncpp.com/images/CppTutorial/Chapter0/VS2019-CreateNewProject-min.png" alt="Visual Studio 2019 Create New Project dialog" /></p>
+<p>If you’ve already opened a prior project, you can access this dialog via the <em>File menu &gt; New &gt; Project</em>.</p>
+<p>Select <em>Windows Desktop Wizard</em> and click <em>Next</em>. If you don’t see this, then you probably forgot to choose to install the <em>Desktop development with C++</em> workload when you installed Visual Studio. In that case, go back to lesson <a href="installing-an-integrated-development-environment-ide.html">0.6 -- Installing an Integrated Development Environment (IDE)</a> and reinstall your Visual Studio as indicated (note: rather than doing a full reinstall, you can run the Visual Studio installer and modify your existing installation to add the C++ workload).</p>
+<p>Next, you’ll see a dialog that looks like this:</p>
+<p><img src="https://www.learncpp.com/images/CppTutorial/Chapter0/VS2019-ConfigureNewProject-min.png" alt="Visual Studio 2019 Configure New Project dialog" /></p>
+<p>Replace the existing project name with <code>HelloWorld</code>.</p>
+<p>It’s recommended that you also check the <em>Place solution and project in the same directory</em>, as this reduces the number of subdirectories that get created with each project.</p>
+<p>Click <em>Create</em> to continue.</p>
+<p>Finally, you’ll see one last dialog:</p>
+<p><img src="https://www.learncpp.com/images/CppTutorial/Chapter0/VS2019-PrecompiledHeader-min.png" alt="Visual Studio 2019 Project options dialog" /></p>
+<p>Make sure the <em>Application type</em> is set as <em>Console Application (.exe)</em> and that the <em>Precompiled Header</em> option is unselected. Then click <em>OK</em>.</p>
+<p>You’ve now created a project! Jump down to the <a href="#visual_studio_solution_explorer">Visual Studio Solution Explorer</a> section below to continue.</p>
+<blockquote>
+<p><strong>Q: What are precompiled headers and why are we turning them off?</strong></p>
+<p>In large projects (those with many code files), precompiled headers can improve compilation speed by avoiding some redundant compilation that tends to occur in larger projects.</p>
+<p>However, precompiled headers require extra work to use, and for small projects (such as those you’ll create in our tutorials) make little to no difference in compilation times.</p>
+<p>For this reason, we recommend turning precompiled headers off initially, and only enabling them later if and when you find your compilation times suffering.</p>
+</blockquote>
+<h2 id="creating-a-project-in-visual-studio-2017-or-older"><a class="header" href="#creating-a-project-in-visual-studio-2017-or-older">Creating a project in Visual Studio 2017 or older</a></h2>
+<p>To create a new project in Visual Studio 2017 or older, go to the <em>File menu &gt; New &gt; Project</em>. A dialog box will pop up that looks something like this:</p>
+<p><img src="https://www.learncpp.com/images/CppTutorial/Chapter0/VS2017-NewProject-min.png" alt="Visual Studio 2017 New Project dialog" /></p>
+<p>First, make sure <em>Visual C++</em> is listed on the left side. If you don’t see <em>Visual C++</em>, then you probably forgot to choose to install the <em>Desktop development with C++</em> workload when you installed Visual Studio. In that case, go back to lesson <a href="installing-an-integrated-development-environment-ide.html">0.6 -- Installing an Integrated Development Environment (IDE)</a> and reinstall your Visual Studio as indicated (note: rather doing a full reinstall, you can run the Visual Studio installer and modify your existing install to add the C++ workload).</p>
+<p>If you’re using Visual Studio 2017 v15.3 or newer, underneath <em>Visual C++</em>, select <em>Windows Desktop</em> and then select <em>Windows Desktop Wizard</em> in the main window.</p>
+<p>If you don’t see <em>Windows Desktop</em> as an option, you’re probably using an older version of Visual Studio. That’s fine. Instead, choose <em>Win32</em> and then <em>Win32 Console Application</em> in the main window.</p>
+<p>Down below, in the <em>Name</em> field, enter the name of your program (replace the existing name with <code>HelloWorld</code>). In the Location field, you can optionally select a different location for your project to be placed into. The default is fine for now.</p>
+<p>Click <em>OK</em>. If you’re using an older version of Visual Studio, the Win32 Application Wizard will launch. Press <em>Next</em>.</p>
+<p>At this point, you should see a wizard dialog that looks something like this (older versions of Visual Studio use a different style, but have most of the same options):</p>
+<p><img src="https://www.learncpp.com/images/CppTutorial/Chapter0/VS2017-DesktopWizard-min.png" alt="Visual Studio 2017 Desktop wizard" /></p>
+<p>Make sure you uncheck <em>Precompiled Header</em>.</p>
+<p>Then click <em>Ok</em> or <em>Finish</em>. Now your project is created!</p>
+<h2 id="visual-studio-solution-explorer"><a class="header" href="#visual-studio-solution-explorer">Visual Studio Solution Explorer</a></h2>
+<p>On the left or right side of the window, you should see a window titled <em>Solution Explorer</em>. Inside this window, Visual Studio has created a solution for you (<em>Solution ‘HelloWorld’</em>). Within that, with the name in bold, is your new project (<em>HelloWorld</em>). Within the project, Visual Studio has created a number of files for you, including <em>HelloWorld.cpp</em> (underneath the <em>Source Files</em> tree item). You may also see some other .cpp or .h files, which you can ignore for now.</p>
+<p><img src="https://www.learncpp.com/images/CppTutorial/Chapter0/VS2019-Initial-min.png" alt="Visual Studio 2019 initial windows" /></p>
+<p>In the text editor, you will see that Visual Studio has already opened <em>HelloWorld.cpp</em> and created some code for you. Select and delete all of the code, and type/copy the following into your IDE:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+	std::cout &lt;&lt; "Hello, world!";
+	return 0;
+}
+</code></pre>
+<p>To compile your program, either press <em>F7</em> (if this doesn’t work, try <em>Ctrl-Shift-B</em>) or go to the <em>Build menu &gt; Build Solution</em>. If all goes well, you should see the following appear in the Output window:</p>
+<pre><code class="language-cpp">1&gt;------ Build started: Project: HelloWorld, Configuration: Debug Win32 ------
+1&gt;HelloWorld.cpp
+1&gt;HelloWorld.vcxproj -&gt; c:\users\alex\documents\visual studio 2017\Projects\HelloWorld\Debug\HelloWorld.exe
+========== Build: 1 succeeded, 0 failed, 0 up-to-date, 0 skipped ==========
+</code></pre>
+<p>This means your compile was successful!</p>
+<blockquote>
+<p><strong>Q: I got error C1010 ("fatal error C1010: unexpected end of file while looking for precompiled header. Did you forget to add ‘#include "stdafx.h"’ to your source?"). What now?</strong></p>
+<p>You forgot to turn off precompiled headers when you created your project. Recreate your project (as per the <a href="#creating_project_vs19">instructions above</a>) and make sure to disable precompiled headers.</p>
+</blockquote>
+<p>To run your compiled program, press <em>Ctrl-F5</em>, or go to the <em>Debug menu</em> and choose <em>Start Without Debugging</em>. You will see something like the following:</p>
+<p><img src="https://www.learncpp.com/images/CppTutorial/Chapter0/VC2005-Run-min.png" alt="Program run" /></p>
+<p>That is the result of your program! Congratulations, you’ve compiled and run your first program!</p>
+<blockquote>
+<p><strong>Related content</strong></p>
+<p>When you run a program directly from Visual Studio, you may see an additional line of output that looks something like this:</p>
+<pre><code>C:\Users\Alex\source\repos\Project6\Debug\Project6.exe (process 21896) exited with code 0.
+</code></pre>
+<p>This is normal. Visual Studio is providing some additional information about whether your program exited normally or abnormally. We discuss this further in lesson <a href="function-return-values-value-returning-functions">2.2 -- Function return values (value-returning functions)</a>.</p>
+</blockquote>
+<h2 id="creating-a-project-in-codeblocks"><a class="header" href="#creating-a-project-in-codeblocks">Creating a project in Code::Blocks</a></h2>
+<p>To create a new project, go to <em>File menu &gt; New &gt; Project</em>. A dialog box will pop up that looks like this:</p>
+<p><img src="https://www.learncpp.com/images/CppTutorial/Chapter0/CB-Project-min.png" alt="Code::Blocks Project Dialog" /></p>
+<p>Select <em>Console application</em> and press the <em>Go (or Create)</em> button.</p>
+<p>If you see a console application wizard dialog, press <em>Next</em>, make sure C++ is selected and press <em>Next</em> again.</p>
+<p>Now you will be asked to name your project. Title the project <code>HelloWorld</code>. You can save it wherever you wish. On Windows, we recommend you to save it in a subdirectory of the C drive, such as <code>C:\CBProjects</code>.</p>
+<p><img src="https://www.learncpp.com/images/CppTutorial/Chapter0/CB2017-Save-min.png" alt="Code::Blocks Save Project Dialog" /></p>
+<p>You may see another dialog asking you which configurations you want enabled. The defaults should be fine here, so select <em>Finish</em>.</p>
+<p>Now your new project has been created.</p>
+<p>On the left side of the screen, you should see a <em>Management</em> window, with the <em>Projects</em> tab selected. Inside that window, you’ll see a <em>Workspace</em> folder, with your <em>HelloWorld</em> project inside of it:</p>
+<p><img src="https://www.learncpp.com/images/CppTutorial/Chapter0/CB-Closed-min.png" alt="Code::Blocks Workspace" /></p>
+<p>Inside the <em>HelloWorld</em> project, expand the <em>Sources</em> folder, and double click on “main.cpp”. You will see that a hello world program has already been written for you!</p>
+<p>Replace that one with the following:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+	std::cout &lt;&lt; "Hello, world!";
+	return 0;
+}
+</code></pre>
+<p>To build your project, press <em>Ctrl-F9</em>, or go to <em>Build menu &gt; Build</em>. If all goes well, you should see the following appear in the Build log window:</p>
+<pre><code class="language-cpp">-------------- Build: Debug in HelloWorld (compiler: GNU GCC Compiler)---------------
+mingw32-g++.exe -Wall -fexceptions -g -std=c++14  -c C:\CBProjects\HelloWorld\main.cpp -o obj\Debug\main.o
+mingw32-g++.exe  -o bin\Debug\HelloWorld.exe obj\Debug\main.o   
+Output file is bin\Debug\HelloWorld.exe with size 1.51 MB
+Process terminated with status 0 (0 minute(s), 0 second(s))
+0 error(s), 0 warning(s) (0 minute(s), 0 second(s))
+</code></pre>
+<p>This means your compile was successful!</p>
+<p>To run your compiled program, press <em>Ctrl-F10</em>, or go to <em>Build menu &gt; Run</em>. You will see something similar to the following:</p>
+<p><img src="https://www.learncpp.com/images/CppTutorial/Chapter0/VC2005-Run-min.png" alt="Program run" /></p>
+<p>That is the result of your program!</p>
+<blockquote>
+<p><strong>For Linux users</strong></p>
+<p>Linux users may need to install the additional packages before Code::Blocks will compile. Please see the Code::Blocks installation instructions in lesson <a href="installing-an-integrated-development-environment-ide">0.6 -- Installing an Integrated Development Environment (IDE)</a> for more info.</p>
+</blockquote>
+<h2 id="creating-a-project-in-vs-code"><a class="header" href="#creating-a-project-in-vs-code">Creating a project in VS Code</a></h2>
+<p>To start a new project, go to the <em>View &gt; Explorer</em> menu (or press <em>Ctrl-Shift-E</em>). This will open the explorer pane. If you haven’t previously opened a project, you should see an <em>Open Folder</em> button in the explorer pane -- press it. If there is already an open project and you want to start a new one, choose <em>File &gt; Open Folder</em> from the top nav.</p>
+<p>Inside the dialog that opens, create a new folder named <em>HelloWorld</em> and then select this folder. This folder will be your project folder.</p>
+<p>Next, we need to create the file that will contain our source code. Choose <em>File &gt; New File</em> from the top nav, or click the <em>New File icon</em> to the right of <em>HELLOWORLD</em> in the explorer pane.</p>
+<p>Name your file <em>main.cpp</em> and add the following contents to it:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+	std::cout &lt;&lt; "Hello, world!";
+	return 0;
+}
+</code></pre>
+<p>To compile <em>main.cpp</em> and run the program, make sure <em>main.cpp</em> is open in the main pane, and then either choose <em>Run &gt; Run Without Debugging</em> from the top nav, or click the <em>v</em> to the right of the play icon to the right of <em>main.cpp</em> tab and choose <em>Run C/C++ File</em>.</p>
+<p>Next, choose the <em>g++ build and debug active file</em> option (macOS users should choose <em>clang++</em> instead of <em>g++</em>). Switch the tab from <em>DEBUG CONSOLE</em> to <em>TERMINAL</em> at the bottom of the window.</p>
+<p>If the terminal contains the text “Hello, world!”, then congratulations, you’ve just run your first C++ program!</p>
+<h2 id="if-youre-using-g-on-the-command-line"><a class="header" href="#if-youre-using-g-on-the-command-line">If you’re using g++ on the command line</a></h2>
+<p>In this case, you don’t need to create a project. Simply paste the following into a text file named HelloWorld.cpp and save your file:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+	std::cout &lt;&lt; "Hello, world!";
+	return 0;
+}
+</code></pre>
+<p>From the command line, type:</p>
+<p><code>g++ -o HelloWorld HelloWorld.cpp</code></p>
+<p>This will compile and link HelloWorld.cpp. To run it, type:</p>
+<p><code>HelloWorld</code> (or possibly <code>./HelloWorld</code>), and you will see the output of your program.</p>
+<h2 id="if-youre-using-other-ides-or-a-web-based-compiler"><a class="header" href="#if-youre-using-other-ides-or-a-web-based-compiler">If you’re using other IDEs or a web-based compiler</a></h2>
+<p>You will have to figure out how to do the following on your own:</p>
+<ol>
+<li>Create a console project (IDEs only)</li>
+<li>Add a .cpp file to the project (IDEs only, if one isn’t auto-created for you)</li>
+<li>Paste the following code into the file:</li>
+</ol>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+	std::cout &lt;&lt; "Hello, world!";
+	return 0;
+}
+</code></pre>
+<ol start="4">
+<li>Compile the project</li>
+<li>Run the project</li>
+</ol>
+<h2 id="if-compiling-fails"><a class="header" href="#if-compiling-fails">If compiling fails</a></h2>
+<p>It’s okay, take a deep breath. We can probably fix it. :)</p>
+<p>First, look at the error message that the compiler gave you. Most often, it will contain a line number indicating which line was in error. Examine both that line and the lines around it, and make sure there are no typos or misspellings. Also make sure you’re not including line numbers in your code (your editor should be providing those).</p>
+<p>Second, look at the Q&amp;A in lesson <a href="a-few-common-cpp-problems.html">0.8 -- A few common C++ problems</a>, as your issue may be covered there.</p>
+<p>Third, read the comments below the lesson containing the example you’re compiling -- someone may have encountered the same issue and provided a solution.</p>
+<p>Finally, if all of the above fail, try searching for your error message on your favorite search engine. It’s likely someone else has encountered this issue before and figured out how to fix it.</p>
+<h2 id="if-your-program-runs-but-the-console-window-flashes-and-closes-immediately"><a class="header" href="#if-your-program-runs-but-the-console-window-flashes-and-closes-immediately">If your program runs but the console window flashes and closes immediately</a></h2>
+<p>When a console program is run, the console window will open and any output from the program will be written into the console window.</p>
+<p>When the program has finished running, most modern IDEs will keep the console open (until you press a key) so you can inspect the results of the program before continuing. However, some older IDEs will automatically close the console window when the program finishes running. This is generally not what you want.</p>
+<p>If your IDE closes the console window automatically, the following two steps can be used to ensure the console pauses at end of the program.</p>
+<p>First, add or ensure the following lines are near the top of your program:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;limits&gt;
+</code></pre>
+<p>Second, add the following code at the end of the main() function (just before the return statement):</p>
+<pre><code class="language-cpp">std::cin.clear(); // reset any error flags
+std::cin.ignore(std::numeric_limits&lt;std::streamsize&gt;::max(), '\n'); // ignore any characters in the input buffer until we find a newline
+std::cin.get(); // get one more char from the user (waits for user to press enter)
+</code></pre>
+<p>This will cause your program to wait for the user to press enter before continuing (you may have to press enter twice), which will give you time to examine your program’s output before your IDE closes the console window.</p>
+<p>Other solutions, such as the commonly suggested <code>system("pause")</code> solution may only work on certain operating systems and should be avoided.</p>
+<p>If the console window doesn’t open at all and your program doesn’t appear to be running, your anti-virus or anti-malware may also be blocking execution of the program. If that’s the case, try temporarily disabling your scanners and see if the problem resolves, or exclude the project directory from your scans.</p>
+<blockquote>
+<p><strong>Tip</strong></p>
+<p>If you’re using anti-virus or anti-malware, consider excluding your project directory from the scans, as compiling and debugging may cause false positives.</p>
+</blockquote>
+<h2 id="what-is-the-difference-between-the-compile-build-rebuild-clean-and-runstart-options-in-my-ide"><a class="header" href="#what-is-the-difference-between-the-compile-build-rebuild-clean-and-runstart-options-in-my-ide">What is the difference between the compile, build, rebuild, clean, and run/start options in my IDE?</a></h2>
+<p>In lesson <a href="introduction-to-the-compiler-linker-and-libraries.html">0.5 -- Introduction to the compiler, linker, and libraries</a>, we showed that to produce an executable that can be run, each code file in a program is compiled into an object file, and then the object files are linked into an executable.</p>
+<p>When a code file is compiled, your IDE may cache (save) the resulting object file on disk. A <strong>cache</strong> (pronounced like “cash”) is storage location where frequently accessed data is stored for fast retrieval later. That way, if the program is compiled again in the future, any code file that hasn’t been modified doesn’t need to be recompiled -- the cached object file from last time can be reused (rather than having to be regenerated). This can speed up compilation times significantly (at the cost of a little bit of disk space).</p>
+<p>With that in mind, here’s what each of the options typically does:</p>
+<ul>
+<li><strong>Build</strong> compiles all <em>modified</em> code files in the project or workspace/solution, and then links the object files into an executable. If no code files have been modified since the last build, this option does nothing.</li>
+<li><strong>Clean</strong> removes all cached objects and executables so the next time the project is built, all files will be recompiled and a new executable produced.</li>
+<li><strong>Rebuild</strong> does a “clean”, followed by a “build”.</li>
+<li><strong>Compile</strong> recompiles a single code file (regardless of whether it has been cached previously). This option does not invoke the linker or produce an executable.</li>
+<li><strong>Run/start</strong> executes the executable from a prior build. Some IDEs (e.g. Visual Studio) will invoke a “build” before doing a “run” to ensure you are running the latest version of your code. Otherwise (e.g. Code::Blocks) will just execute the prior executable.</li>
+</ul>
+<p>Although we talk informally about “compiling” our programs, to actually compile our programs we will typically choose the “build” (or “run”) option in our IDE to do so.</p>
+<h2 id="conclusion"><a class="header" href="#conclusion">Conclusion</a></h2>
+<p>Congratulations, you made it through the hardest part of this tutorial (installing the IDE and compiling your first program)!</p>
+<p>Don’t worry if you don’t understand what the different lines in the Hello World program do. We’ll examine and explain each line in detail at the start of the next chapter.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="installing-an-integrated-development-environment-ide.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="a-few-common-cpp-problems.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="installing-an-integrated-development-environment-ide.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="a-few-common-cpp-problems.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

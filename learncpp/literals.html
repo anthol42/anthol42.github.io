@@ -1,0 +1,466 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Literals - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="literals"><a class="header" href="#literals">Literals</a></h1>
+<p><strong>Literals</strong> are values that are inserted directly into the code. For example:</p>
+<pre><code class="language-cpp">return 5;                     // 5 is an integer literal
+bool myNameIsAlex { true };   // true is a boolean literal
+double d { 3.4 };             // 3.4 is a double literal
+std::cout &lt;&lt; "Hello, world!"; // "Hello, world!" is a C-style string literal
+</code></pre>
+<p>Literals are sometimes called <strong>literal constants</strong> because their meaning cannot be redefined (<code>5</code> always means the integral value 5).</p>
+<h2 id="the-type-of-a-literal"><a class="header" href="#the-type-of-a-literal">The type of a literal</a></h2>
+<p>Just like objects have a type, all literals have a type. The type of a literal is deduced from the literal’s value. For example, a literal that is a whole number (e.g. <code>5</code>) is deduced to be of type <code>int</code>.</p>
+<p>By default:</p>
+<div class="table-wrapper"><table><thead><tr><th>Literal value</th><th>Examples</th><th>Default literal type</th><th>Note</th></tr></thead><tbody>
+<tr><td>integer value</td><td>5, 0, -3</td><td>int</td><td></td></tr>
+<tr><td>boolean value</td><td>true, false</td><td>bool</td><td></td></tr>
+<tr><td>floating point value</td><td>1.2, 0.0, 3.4</td><td>double (not float!)</td><td></td></tr>
+<tr><td>character</td><td>‘a’, ‘\n’</td><td>char</td><td></td></tr>
+<tr><td>C-style string</td><td>“Hello, world!”</td><td>const char[14]</td><td>see C-style string literals section below</td></tr>
+</tbody></table>
+</div>
+<h2 id="literal-suffixes"><a class="header" href="#literal-suffixes">Literal suffixes</a></h2>
+<p>If the default type of a literal is not as desired, you can change the type of a literal by adding a suffix. Here are some of the more common suffixes:</p>
+<div class="table-wrapper"><table><thead><tr><th>Data type</th><th>Suffix</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>integral</td><td>u or U</td><td>unsigned int</td></tr>
+<tr><td>integral</td><td>l or L</td><td>long</td></tr>
+<tr><td>integral</td><td>ul, uL, Ul, UL, lu, lU, Lu, LU</td><td>unsigned long</td></tr>
+<tr><td>integral</td><td>ll or LL</td><td>long long</td></tr>
+<tr><td>integral</td><td>ull, uLL, Ull, ULL, llu, llU, LLu, LLU</td><td>unsigned long long</td></tr>
+<tr><td>integral</td><td>z or Z</td><td>The signed version of std::size_t (C++23)</td></tr>
+<tr><td>integral</td><td>uz, uZ, Uz, UZ, zu, zU, Zu, ZU</td><td>std::size_t (C++23)</td></tr>
+<tr><td>floating point</td><td>f or F</td><td>float</td></tr>
+<tr><td>floating point</td><td>l or L</td><td>long double</td></tr>
+<tr><td>string</td><td>s</td><td>std::string</td></tr>
+<tr><td>string</td><td>sv</td><td>std::string_view</td></tr>
+</tbody></table>
+</div>
+<p>We’ll discuss the integral and floating point literals and suffixes more in a moment.</p>
+<p>In most cases, suffixes aren’t needed (except for <code>f</code>).</p>
+<blockquote>
+<p><strong>Related content</strong></p>
+<p>Related content</p>
+<p>The <code>s</code> and <code>sv</code> suffixes require an additional line of code to use. We cover these further in lessons <a href="introduction-to-stdstring">5.7 -- Introduction to std::string</a> and <a href="introduction-to-stdstring_view">5.8 -- Introduction to std::string_view</a>.</p>
+<p>Additional (rarely used) suffixes exist for complex numbers and chrono (time) literals. These are documented <a href="https://en.cppreference.com/w/cpp/symbol_index/literals">here</a>.</p>
+</blockquote>
+<blockquote>
+<p><strong>For advanced readers</strong></p>
+<p>For advanced readers</p>
+<p>Excepting the <code>f</code> suffix, suffixes are most often used in cases where type deduction is involved. See <a href="type-deduction-for-objects-using-the-auto-keyword">10.8 -- Type deduction for objects using the auto keyword</a> and <a href="class-template-argument-deduction-ctad-and-deduction-guides">13.14 -- Class template argument deduction (CTAD) and deduction guides</a>.</p>
+</blockquote>
+<h2 id="suffix-casing"><a class="header" href="#suffix-casing">Suffix casing</a></h2>
+<p>Most of the suffixes are not case sensitive. The exceptions are:</p>
+<ul>
+<li><code>s</code> and <code>sv</code> must be lower case.</li>
+<li>Two consecutive <code>l</code> or <code>L</code> characters must have the same casing (<code>lL</code> and <code>Ll</code> are not accepted).</li>
+</ul>
+<p>Because lower-case <code>L</code> can look like numeric <code>1</code> in some fonts, some developers prefer to use upper-case literals. Others use lower case suffixes except for <code>L</code>.</p>
+<div id="admonition-best-practices" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices"></a>
+</div>
+<div>
+<p>Best practice</p>
+<p>Prefer literal suffix L (upper case) over l (lower case).</p>
+</div>
+</div>
+<h2 id="integral-literals"><a class="header" href="#integral-literals">Integral literals</a></h2>
+<p>You generally won’t need to use suffixes for integral literals, but here are examples:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+    std::cout &lt;&lt; 5 &lt;&lt; '\n';  // 5 (no suffix) is type int (by default)
+    std::cout &lt;&lt; 5L &lt;&lt; '\n'; // 5L is type long
+    std::cout &lt;&lt; 5u &lt;&lt; '\n'; // 5u is type unsigned int
+
+    return 0;
+}
+</code></pre>
+<p>In most cases, it’s fine to use non-suffixed <code>int</code> literals, even when initializing non-<code>int</code> types:</p>
+<pre><code class="language-cpp">int main()
+{
+    int a { 5 };          // ok: types match
+    unsigned int b { 6 }; // ok: compiler will convert int value 6 to unsigned int value 6
+    long c { 7 };         // ok: compiler will convert int value 7 to long value 7
+
+    return 0;
+}
+</code></pre>
+<p>In such cases, the compiler will convert the int literal to the appropriate type.</p>
+<p>In the first case, <code>5</code> is already an <code>int</code> by default, so the compiler can use this value directly to initialize <code>int</code> variable <code>a</code>. In the second case, <code>int</code> value <code>6</code> doesn’t match the type of <code>unsigned int b</code>. The compiler will convert int value <code>6</code> to <code>unsigned int</code> value <code>6</code>, and then use that as an initializer for <code>b</code>. In the third case, <code>int</code> value <code>7</code> doesn’t match the type of <code>long c</code>. The compiler will convert int value <code>7</code> to <code>long</code> value <code>7</code>, and then use that as an initializer for <code>c</code>.</p>
+<h2 id="floating-point-literals"><a class="header" href="#floating-point-literals">Floating point literals</a></h2>
+<p>By default, floating point literals have a type of <code>double</code>. To make them <code>float</code> literals instead, the <code>f</code> (or <code>F</code>) suffix should be used:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+    std::cout &lt;&lt; 5.0 &lt;&lt; '\n';  // 5.0 (no suffix) is type double (by default)
+    std::cout &lt;&lt; 5.0f &lt;&lt; '\n'; // 5.0f is type float
+
+    return 0;
+}
+</code></pre>
+<p>New programmers are often confused about why the following causes a compiler warning:</p>
+<pre><code class="language-cpp">float f { 4.1 }; // warning: 4.1 is a double literal, not a float literal
+</code></pre>
+<p>Because <code>4.1</code> has no suffix, the literal has type <code>double</code>, not <code>float</code>. When the compiler determines the type of a literal, it doesn’t care what you’re doing with the literal (e.g. in this case, using it to initialize a <code>float</code> variable). Since the type of the literal (<code>double</code>) doesn’t match the type of the variable it is being used to initialize (<code>float</code>), the literal value must be converted to a <code>float</code> so it can then be used to initialize variable <code>f</code>. Converting a value from a <code>double</code> to a <code>float</code> can result in a loss of precision, so the compiler will issue a warning.</p>
+<p>The solution here is one of the following:</p>
+<pre><code class="language-cpp">float f { 4.1f }; // use 'f' suffix so the literal is a float and matches variable type of float
+double d { 4.1 }; // change variable to type double so it matches the literal type double
+</code></pre>
+<h2 id="scientific-notation-for-floating-point-literals"><a class="header" href="#scientific-notation-for-floating-point-literals">Scientific notation for floating point literals</a></h2>
+<p>There are two different ways to write floating-point literals.</p>
+<ol>
+<li>In standard notation, we write a number with a decimal point:</li>
+</ol>
+<pre><code class="language-cpp">double pi { 3.14159 }; // 3.14159 is a double literal in standard notation
+double d { -1.23 };    // the literal can be negative
+double why { 0. };     // syntactically acceptable, but avoid this because it's hard to see the decimal point (prefer 0.0)
+</code></pre>
+<ol start="2">
+<li>In scientific notation, we add an <code>e</code> to represent the exponent:</li>
+</ol>
+<pre><code class="language-cpp">double avogadro { 6.02e23 }; // 6.02 x 10^23 is a double literal in scientific notation
+double protonCharge { 1.6e-19 }; // charge on a proton is 1.6 x 10^-19
+</code></pre>
+<h2 id="string-literals"><a class="header" href="#string-literals">String literals</a></h2>
+<p>In programming, a <strong>string</strong> is a collection of sequential characters used to represent text (such as names, words, and sentences).</p>
+<p>The very first C++ program you wrote probably looked something like this:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+ 
+int main()
+{
+    std::cout &lt;&lt; "Hello, world!";
+    return 0;
+}
+</code></pre>
+<p><code>"Hello, world!"</code> is a string literal. String literals are placed between double quotes to identify them as strings (as opposed to char literals, which are placed between single quotes).</p>
+<p>Because strings are commonly used in programs, most modern programming languages include a fundamental string data type. For historical reasons, strings are not a fundamental type in C++. Rather, they have a strange, complicated type that is hard to work with (we’ll cover how/why in a future lesson, once we’ve covered more fundamentals required to explain how they work). Such strings are often called <strong>C strings</strong> or <strong>C-style strings</strong>, as they are inherited from the C-language.</p>
+<p>There are two non-obvious things worth knowing about C-style string literals.</p>
+<ol>
+<li>All C-style string literals have an implicit null terminator. Consider a string such as <code>"hello"</code>. While this C-style string appears to only have five characters, it actually has six: <code>'h'</code>, <code>'e'</code>, <code>'l</code>‘, <code>'l'</code>, <code>'o'</code>, and <code>'\0'</code> (a character with ASCII code 0). This trailing ‘\0’ character is a special character called a <strong>null terminator</strong>, and it is used to indicate the end of the string. A string that ends with a null terminator is called a <strong>null-terminated string</strong>.</li>
+</ol>
+<blockquote>
+<p><strong>For advanced readers</strong></p>
+<p>For advanced readers</p>
+<p>This is the reason the string <code>"Hello, world!"</code> has type <code>const char[14]</code> rather than <code>const char[13]</code> -- the hidden null terminator counts as a character.</p>
+</blockquote>
+<p>The reason for the null-terminator is also historical: it can be used to determine where the string ends.</p>
+<ol start="2">
+<li>Unlike most other literals (which are values, not objects), C-style string literals are const objects that are created at the start of the program and are guaranteed to exist for the entirety of the program. This fact will become important in a few lessons, when we discuss <code>std::string_view</code>.</li>
+</ol>
+<blockquote>
+<p><strong>Key insight</strong></p>
+<p>Key insight</p>
+<p>C-style string literals are const objects that are created at the start of the program and are guaranteed to exist for the entirety of the program.</p>
+</blockquote>
+<p>Unlike C-style string literals, <code>std::string</code> and <code>std::string_view</code> literals create temporary objects. These temporary objects must be used immediately, as they are destroyed at the end of the full expression in which they are created.</p>
+<blockquote>
+<p><strong>Related content</strong></p>
+<p>Related content</p>
+<p>We discuss <code>std::string</code> and <code>std::string_view</code> literals in lesson <a href="introduction-to-stdstring">5.7 -- Introduction to std::string</a> and <a href="introduction-to-stdstring_view">5.8 -- Introduction to std::string_view</a> respectively.</p>
+</blockquote>
+<h2 id="magic-numbers"><a class="header" href="#magic-numbers">Magic numbers</a></h2>
+<p>A <strong>magic number</strong> is a literal (usually a number) that either has an unclear meaning or may need to be changed later.</p>
+<p>Here are two statements showing examples of magic numbers:</p>
+<pre><code class="language-cpp">const int maxStudentsPerSchool{ numClassrooms * 30 };
+setMax(30);
+</code></pre>
+<p>What do the literals <code>30</code> mean in these contexts? In the former, you can probably guess that it’s the number of students per class, but it’s not immediately obvious. In the latter, who knows. We’d have to go look at the function to know what it does.</p>
+<p>In complex programs, it can be very difficult to infer what a literal represents, unless there’s a comment to explain it.</p>
+<p>Using magic numbers is generally considered bad practice because, in addition to not providing context as to what they are being used for, they pose problems if the value needs to change. Let’s assume that the school buys new desks that allow them to raise the class size from 30 to 35, and our program needs to reflect that.</p>
+<p>To do so, we need to update one or more literal from <code>30</code> to <code>35</code>. But which literals? The <code>30</code> in the initializer of <code>maxStudentsPerSchool</code> seems obvious. But what about the <code>30</code> used as an argument to <code>setMax()</code>? Does that <code>30</code> have the same meaning as the other <code>30</code>? If so, it should be updated. If not, it should be left alone, or we might break our program somewhere else. If you do a global search-and-replace, you might inadvertently update the argument of <code>setMax()</code> when it wasn’t supposed to change. So you have to look through all the code for every instance of the literal <code>30</code> (of which there might be hundreds), and then make an individual determination as to whether it needs to change or not. That can be seriously time consuming (and error prone).</p>
+<p>Fortunately, both the lack of context and the issues around updating can be easily addressed by using symbolic constants:</p>
+<pre><code class="language-cpp">const int maxStudentsPerClass { 30 };
+const int totalStudents{ numClassrooms * maxStudentsPerClass }; // now obvious what this 30 means
+
+const int maxNameLength{ 30 };
+setMax(maxNameLength); // now obvious this 30 is used in a different context
+</code></pre>
+<p>The name of the constant provides context, and we only need to update a value in one place to make a change to the value across our entire program.</p>
+<p>Note that magic numbers aren’t always numbers -- they can also be text (e.g. names) or other types:</p>
+<pre><code class="language-cpp">int main()
+{
+    printAppWelcome("MyCalculator"); // bad: app name may be used in other places or change in the future
+}
+</code></pre>
+<p>Literals used in obvious contexts that are unlikely to change are typically not considered magic. The values <code>-1</code>, <code>0</code>, <code>0.0</code>, and <code>1</code> are often used in such contexts:</p>
+<pre><code class="language-cpp">int idGenerator { 0 };         // okay: we're starting our id generator with value 0
+idGenerator = idGenerator + 1; // okay: we're just incrementing our generator
+</code></pre>
+<p>Other numbers may also be obvious in context (and thus, not considered magic):</p>
+<pre><code class="language-cpp">int kmtoM(int km)
+{
+    return km * 1000; // okay: it's obvious 1000 is a conversion factor
+}
+</code></pre>
+<p>Sequential integral ids are also generally not considered magic:</p>
+<pre><code class="language-cpp">int main()
+{
+    // okay: these are just sequential ids/counts
+    printPlayerInfo(1); // `1` would not really benefit from being named `player1` instead
+    printPlayerInfo(2);
+}
+</code></pre>
+<div id="admonition-best-practices-1" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-1-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-1-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices-1"></a>
+</div>
+<div>
+<p>Best practice</p>
+<p>Avoid magic numbers in your code (use constexpr variables instead, see lesson <a href="constexpr-variables.html">5.6 -- Constexpr variables</a>).</p>
+</div>
+</div>
+<p>AI CONTENT END 1</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="constant-variables-named-constants.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="numeral-systems-decimal-binary-hexadecimal-and-octal.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="constant-variables-named-constants.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="numeral-systems-decimal-binary-hexadecimal-and-octal.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

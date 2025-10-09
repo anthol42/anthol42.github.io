@@ -1,0 +1,426 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Timing your code - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="timing-your-code"><a class="header" href="#timing-your-code">Timing your code</a></h1>
+<p>When writing your code, sometimes you’ll run across cases where you’re not sure whether one method or another will be more performant. So how do you tell?</p>
+<p>One easy way is to time your code to see how long it takes to run. C++11 comes with some functionality in the chrono library to do just that. However, using the chrono library is a bit arcane. The good news is that we can easily encapsulate all the timing functionality we need into a class that we can then use in our own programs.</p>
+<p>Here’s the class:</p>
+<pre><code class="language-cpp">#include &lt;chrono&gt; // for std::chrono functions
+
+class Timer
+{
+private:
+	// Type aliases to make accessing nested type easier
+	using Clock = std::chrono::steady_clock;
+	using Second = std::chrono::duration&lt;double, std::ratio&lt;1&gt; &gt;;
+	
+	std::chrono::time_point&lt;Clock&gt; m_beg { Clock::now() };
+
+public:
+	void reset()
+	{
+		m_beg = Clock::now();
+	}
+	
+	double elapsed() const
+	{
+		return std::chrono::duration_cast&lt;Second&gt;(Clock::now() - m_beg).count();
+	}
+};
+</code></pre>
+<p>That’s it! To use it, we instantiate a Timer object at the top of our main function (or wherever we want to start timing), and then call the elapsed() member function whenever we want to know how long the program took to run to that point.</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+    Timer t;
+
+    // Code to time goes here
+
+    std::cout &lt;&lt; "Time elapsed: " &lt;&lt; t.elapsed() &lt;&lt; " seconds\n";
+
+    return 0;
+}
+</code></pre>
+<p>Now, let’s use this in an actual example where we sort an array of 10000 elements. First, let’s use the selection sort algorithm we developed in a previous chapter:</p>
+<pre><code class="language-cpp">#include &lt;array&gt;
+#include &lt;chrono&gt; // for std::chrono functions
+#include &lt;cstddef&gt; // for std::size_t
+#include &lt;iostream&gt;
+#include &lt;numeric&gt; // for std::iota
+
+const int g_arrayElements { 10000 };
+
+class Timer
+{
+private:
+    // Type aliases to make accessing nested type easier
+    using Clock = std::chrono::steady_clock;
+    using Second = std::chrono::duration&lt;double, std::ratio&lt;1&gt; &gt;;
+
+    std::chrono::time_point&lt;Clock&gt; m_beg{ Clock::now() };
+
+public:
+
+    void reset()
+    {
+        m_beg = Clock::now();
+    }
+
+    double elapsed() const
+    {
+        return std::chrono::duration_cast&lt;Second&gt;(Clock::now() - m_beg).count();
+    }
+};
+
+void sortArray(std::array&lt;int, g_arrayElements&gt;&amp; array)
+{
+
+    // Step through each element of the array
+    // (except the last one, which will already be sorted by the time we get there)
+    for (std::size_t startIndex{ 0 }; startIndex &lt; (g_arrayElements - 1); ++startIndex)
+    {
+        // smallestIndex is the index of the smallest element we’ve encountered this iteration
+        // Start by assuming the smallest element is the first element of this iteration
+        std::size_t smallestIndex{ startIndex };
+
+        // Then look for a smaller element in the rest of the array
+        for (std::size_t currentIndex{ startIndex + 1 }; currentIndex &lt; g_arrayElements; ++currentIndex)
+        {
+            // If we've found an element that is smaller than our previously found smallest
+            if (array[currentIndex] &lt; array[smallestIndex])
+            {
+                // then keep track of it
+                smallestIndex = currentIndex;
+            }
+        }
+
+        // smallestIndex is now the smallest element in the remaining array
+        // swap our start element with our smallest element (this sorts it into the correct place)
+        std::swap(array[startIndex], array[smallestIndex]);
+    }
+}
+
+int main()
+{
+    std::array&lt;int, g_arrayElements&gt; array;
+    std::iota(array.rbegin(), array.rend(), 1); // fill the array with values 10000 to 1
+
+    Timer t;
+
+    sortArray(array);
+
+    std::cout &lt;&lt; "Time taken: " &lt;&lt; t.elapsed() &lt;&lt; " seconds\n";
+
+    return 0;
+}
+</code></pre>
+<p>On the author’s machine, three runs produced timings of 0.0507, 0.0506, and 0.0498. So we can say around 0.05 seconds.</p>
+<p>Now, let’s do the same test using std::sort from the standard library.</p>
+<pre><code class="language-cpp">#include &lt;algorithm&gt; // for std::sort
+#include &lt;array&gt;
+#include &lt;chrono&gt; // for std::chrono functions
+#include &lt;cstddef&gt; // for std::size_t
+#include &lt;iostream&gt;
+#include &lt;numeric&gt; // for std::iota
+
+const int g_arrayElements { 10000 };
+
+class Timer
+{
+private:
+    // Type aliases to make accessing nested type easier
+    using Clock = std::chrono::steady_clock;
+    using Second = std::chrono::duration&lt;double, std::ratio&lt;1&gt; &gt;;
+
+    std::chrono::time_point&lt;Clock&gt; m_beg{ Clock::now() };
+
+public:
+
+    void reset()
+    {
+        m_beg = Clock::now();
+    }
+
+    double elapsed() const
+    {
+        return std::chrono::duration_cast&lt;Second&gt;(Clock::now() - m_beg).count();
+    }
+};
+
+int main()
+{
+    std::array&lt;int, g_arrayElements&gt; array;
+    std::iota(array.rbegin(), array.rend(), 1); // fill the array with values 10000 to 1
+
+    Timer t;
+
+    std::ranges::sort(array); // Since C++20
+    // If your compiler isn't C++20-capable
+    // std::sort(array.begin(), array.end());
+
+    std::cout &lt;&lt; "Time taken: " &lt;&lt; t.elapsed() &lt;&lt; " seconds\n";
+
+    return 0;
+}
+</code></pre>
+<p>On the author’s machine, this produced results of: 0.000693, 0.000692, and 0.000699. So basically right around 0.0007.</p>
+<p>In other words, in this case, std::sort is 100 times faster than the selection sort we wrote ourselves!</p>
+<h2 id="things-that-can-impact-the-performance-of-your-program"><a class="header" href="#things-that-can-impact-the-performance-of-your-program">Things that can impact the performance of your program</a></h2>
+<p>Timing a run of your program is fairly straightforward, but your results can be significantly impacted by a number of things, and it’s important to be aware of how to properly measure and what things can impact timing.</p>
+<p>First, make sure you’re using a release build target, not a debug build target. Debug build targets typically turn optimization off, and that optimization can have a significant impact on the results. For example, using a debug build target, running the above std::sort example on the author’s machine took 0.0235 seconds -- 33 times as long!</p>
+<p>Second, your timing results may be influenced by other things your system may be doing in the background. Make sure your system isn’t doing anything CPU, memory, or hard drive intensive (e.g. playing a game, searching for a file, running an antivirus scan, or installing a update in the background). Seemingly innocent things, like idle web browsers, can temporarily spike your CPU to 100% utilization when the active tab rotates in a new ad banner and has to parse a bunch of javascript. The more apps you can shut down before measuring, the less variance in your results you are likely to have.</p>
+<p>Third, if your program uses a random number generator, the particular sequence of random numbers generated may impact timing. For example, if you’re sorting an array filled with random numbers, the results will likely vary from run to run because the number of swaps required to sort the array will vary from run to run. To get more consistent results across multiple runs of your program, you can temporarily seed your random number generator with a literal value (rather than std::random_device or the system clock), so that it generates the same sequence of numbers with each run. However, if your program’s performance is highly dependent on the particular random sequence generated, this can also lead to misleading results overall.</p>
+<p>Fourth, make sure you’re not timing waiting for user input, as how long the user takes to input something should not be part of your timing considerations. If user input is required, consider adding some way to provide that input that does not wait on the user (e.g. command line, from a file, having a code path that routes around the input).</p>
+<h2 id="measuring-performance"><a class="header" href="#measuring-performance">Measuring performance</a></h2>
+<p>When measuring the performance of your program, gather at least 3 results. If the results are all similar, these likely represent the actual performance of your program on that machine. Otherwise, continue to take measurements until you have a cluster of similar results (and understand which other results are outliers). It’s not uncommon to have one or more outliers due to your system doing something in the background during some of those runs.</p>
+<p>If your results have a lot of variance (and aren’t clustering well), your program is likely either being significantly affected by other things happening on the system, or by the effects of randomization within your application.</p>
+<p>Because performance measurements are impacted by so many things (particularly hardware speed, but also OS, apps running, etc…), absolute performance measurements (e.g. “the program runs in 10 seconds”) are generally not that useful outside of understanding how well the program runs on one particular machine you care about. On a different machine, that same program may run in 1 second, 10 seconds, or 1 minute. It’s hard to know without actually measuring across a spectrum of different hardware.</p>
+<p>However, on a single machine, relative performance measurements can be useful. We can gather performance results from several different variants of a program to determine which variant is the most performant. For example, if variant 1 runs in 10 seconds and variant 2 runs in 8 seconds, variant 2 is probably going to be faster on all similar machines regardless of the absolute speed of that machine.</p>
+<p>After measuring the second variant, a good sanity check is to measure the first variant again. If the results of the first variant are consistent with your initial measurements for that variant, then the result of both variants should be reasonably comparable. For example, if variant 1 runs in 10 seconds, and variant 2 runs in 8 seconds, and then we measure variant 1 again and get 10 seconds, then we can reasonably conclude that the measurements for both variants were fairly measured, and that variant 2 is faster.</p>
+<p>However, if the results of the first variant are no longer consistent with your initial measurements for that variant, then something has happened on the machine that is now affecting performance, and it will be hard to tell whether differences in measurement are due to the variant or due to the machine itself. In this case, it’s best to discard the existing results and re-measure.</p>
+<p>AI CONTENT END 1</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="introduction-to-standard-library-algorithms.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="chapter-Dynamic_Allocation_(under_construction).html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="introduction-to-standard-library-algorithms.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="chapter-Dynamic_Allocation_(under_construction).html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

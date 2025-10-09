@@ -1,0 +1,483 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Multiple inheritance - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="multiple-inheritance"><a class="header" href="#multiple-inheritance">Multiple inheritance</a></h1>
+<p>So far, all of the examples of inheritance we’ve presented have been single inheritance -- that is, each inherited class has one and only one parent. However, C++ provides the ability to do multiple inheritance. <strong>Multiple inheritance</strong> enables a derived class to inherit members from more than one parent.</p>
+<p>Let’s say we wanted to write a program to keep track of a bunch of teachers. A teacher is a person. However, a teacher is also an employee (they are their own employer if working for themselves). Multiple inheritance can be used to create a Teacher class that inherits properties from both Person and Employee. To use multiple inheritance, simply specify each base class (just like in single inheritance), separated by a comma.</p>
+<p><img src="https://www.learncpp.com/images/CppTutorial/Section11/PersonTeacher.gif" alt="" /></p>
+<pre><code class="language-cpp">#include &lt;string&gt;
+#include &lt;string_view&gt;
+
+class Person
+{
+private:
+    std::string m_name{};
+    int m_age{};
+
+public:
+    Person(std::string_view name, int age)
+        : m_name{ name }, m_age{ age }
+    {
+    }
+
+    const std::string&amp; getName() const { return m_name; }
+    int getAge() const { return m_age; }
+};
+
+class Employee
+{
+private:
+    std::string m_employer{};
+    double m_wage{};
+
+public:
+    Employee(std::string_view employer, double wage)
+        : m_employer{ employer }, m_wage{ wage }
+    {
+    }
+
+    const std::string&amp; getEmployer() const { return m_employer; }
+    double getWage() const { return m_wage; }
+};
+
+// Teacher publicly inherits Person and Employee
+class Teacher : public Person, public Employee
+{
+private:
+    int m_teachesGrade{};
+
+public:
+    Teacher(std::string_view name, int age, std::string_view employer, double wage, int teachesGrade)
+        : Person{ name, age }, Employee{ employer, wage }, m_teachesGrade{ teachesGrade }
+    {
+    }
+};
+
+int main()
+{
+    Teacher t{ "Mary", 45, "Boo", 14.3, 8 };
+
+    return 0;
+}
+</code></pre>
+<h2 id="mixins"><a class="header" href="#mixins">Mixins</a></h2>
+<p>A <strong>mixin</strong> (also spelled “mix-in”) is a small class that can be inherited from in order to add properties to a class. The name mixin indicates that the class is intended to be mixed into other classes, not instantiated on its own.</p>
+<p>In the following example, the <code>Box</code>, <code>Label</code>, and <code>Tooltip</code> classes are mixins that we inherit from in order to create a new <code>Button</code> class.</p>
+<pre><code class="language-cpp">// h/t to reader Waldo for this example
+#include &lt;string&gt;
+
+struct Point2D
+{
+	int x{};
+	int y{};
+};
+
+class Box // mixin Box class
+{
+public:
+	void setTopLeft(Point2D point) { m_topLeft = point; }
+	void setBottomRight(Point2D point) { m_bottomRight = point; }
+private:
+	Point2D m_topLeft{};
+	Point2D m_bottomRight{};
+};
+
+class Label // mixin Label class
+{
+public:
+	void setText(const std::string_view str) { m_text = str; }
+	void setFontSize(int fontSize) { m_fontSize = fontSize; }
+private:
+	std::string m_text{};
+	int m_fontSize{};
+};
+
+class Tooltip // mixin Tooltip class
+{
+public:
+	void setText(const std::string_view str) { m_text = str; }
+private:
+	std::string m_text{};
+};
+
+class Button : public Box, public Label, public Tooltip {}; // Button using three mixins
+
+int main()
+{
+	Button button{};
+	button.Box::setTopLeft({ 1, 1 });
+	button.Box::setBottomRight({ 10, 10 });
+	button.Label::setText("Submit");
+	button.Label::setFontSize(6);
+	button.Tooltip::setText("Submit the form to the server");
+}
+</code></pre>
+<p>You may be wondering why we use explicit <code>Box::</code>, <code>Label::</code>, and <code>Tooltip::</code> scope resolution prefixes when this isn’t necessary in most cases.</p>
+<ol>
+<li><code>Label::setText()</code> and <code>Tooltip::setText()</code> have the same prototype. If we called <code>button.setText()</code>, the compiler would produce an ambiguous function call compilation error. In such cases, we must use the prefix to disambiguate which version we want.</li>
+<li>In non-ambiguous cases, using the mixin name provides documentation as to which mixin the function call applies to, which helps make our code easier to understand.</li>
+<li>Non-ambiguous cases may become ambiguous in the future if we add additional mixins. Using explicit prefixes helps prevent this from occurring.</li>
+</ol>
+<blockquote>
+<p><strong>For advanced readers</strong></p>
+<p>For advanced readers</p>
+<p>Because mixins are designed to add functionality to the derived class, not to provide an interface, mixins typically do not use virtual functions (covered in the next chapter). Instead, if a mixin class needs to be customized to work in a particular way, templates are typically used. For this reason, mixin classes are often templatized.</p>
+<p>Perhaps surprisingly, a derived class can inherit from a mixin base class using the derived class as a template type parameter. Such inheritance is called <strong>Curiously Recurring Template Pattern</strong> (CRTP for short), which looks like this:</p>
+<pre><code>// The Curiously Recurring Template Pattern (CRTP)
+
+template &lt;class T&gt;
+class Mixin
+{
+    // Mixin&lt;T&gt; can use template type parameter T to access members of Derived
+    // via (static_cast&lt;T*&gt;(this))
+};
+
+class Derived : public Mixin&lt;Derived&gt;
+{
+};
+</code></pre>
+<p>You can find a simple example using CRTP <a href="https://en.cppreference.com/w/cpp/language/crtp">here</a>.</p>
+</blockquote>
+<p><strong>Problems with multiple inheritance</strong></p>
+<p>While multiple inheritance seems like a simple extension of single inheritance, multiple inheritance introduces a lot of issues that can markedly increase the complexity of programs and make them a maintenance nightmare. Let’s take a look at some of these situations.</p>
+<p>First, ambiguity can result when multiple base classes contain a function with the same name. For example:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+class USBDevice
+{
+private:
+    long m_id {};
+
+public:
+    USBDevice(long id)
+        : m_id { id }
+    {
+    }
+
+    long getID() const { return m_id; }
+};
+
+class NetworkDevice
+{
+private:
+    long m_id {};
+
+public:
+    NetworkDevice(long id)
+        : m_id { id }
+    {
+    }
+
+    long getID() const { return m_id; }
+};
+
+class WirelessAdapter: public USBDevice, public NetworkDevice
+{
+public:
+    WirelessAdapter(long usbId, long networkId)
+        : USBDevice { usbId }, NetworkDevice { networkId }
+    {
+    }
+};
+
+int main()
+{
+    WirelessAdapter c54G { 5442, 181742 };
+    std::cout &lt;&lt; c54G.getID(); // Which getID() do we call?
+
+    return 0;
+}
+</code></pre>
+<p>When <code>c54G.getID()</code>  is compiled, the compiler looks to see if WirelessAdapter contains a function named getID(). It doesn’t. The compiler then looks to see if any of the parent classes have a function named getID(). See the problem here? The problem is that c54G actually contains TWO getID() functions: one inherited from USBDevice, and one inherited from NetworkDevice. Consequently, this function call is ambiguous, and you will receive a compiler error if you try to compile it.</p>
+<p>However, there is a way to work around this problem: you can explicitly specify which version you meant to call:</p>
+<pre><code class="language-cpp">int main()
+{
+    WirelessAdapter c54G { 5442, 181742 };
+    std::cout &lt;&lt; c54G.USBDevice::getID();
+
+    return 0;
+}
+</code></pre>
+<p>While this workaround is pretty simple, you can see how things can get complex when your class inherits from four or six base classes, which inherit from other classes themselves. The potential for naming conflicts increases exponentially as you inherit more classes, and each of these naming conflicts needs to be resolved explicitly.</p>
+<p>Second, and more serious is the <a href="https://en.wikipedia.org/wiki/Diamond_problem">diamond problem</a>, which your author likes to call the “diamond of doom”. This occurs when a class multiply inherits from two classes which each inherit from a single base class. This leads to a diamond shaped inheritance pattern.</p>
+<p>For example, consider the following set of classes:</p>
+<pre><code class="language-cpp">class PoweredDevice
+{
+};
+
+class Scanner: public PoweredDevice
+{
+};
+
+class Printer: public PoweredDevice
+{
+};
+
+class Copier: public Scanner, public Printer
+{
+};
+</code></pre>
+<p><img src="https://www.learncpp.com/images/CppTutorial/Section11/PoweredDevice.gif" alt="" /></p>
+<p>Scanners and printers are both powered devices, so they derived from PoweredDevice. However, a copy machine incorporates the functionality of both Scanners and Printers.</p>
+<p>There are many issues that arise in this context, including whether Copier should have one or two copies of PoweredDevice, and how to resolve certain types of ambiguous references. While most of these issues can be addressed through explicit scoping, the maintenance overhead added to your classes in order to deal with the added complexity can cause development time to skyrocket. We’ll talk more about ways to resolve the diamond problem in the next chapter (lesson <a href="virtual-base-classes.html">25.8 -- Virtual base classes</a>).</p>
+<p><strong>Is multiple inheritance more trouble than it’s worth?</strong></p>
+<p>As it turns out, most of the problems that can be solved using multiple inheritance can be solved using single inheritance as well. Many object-oriented languages (eg. Smalltalk, PHP) do not even support multiple inheritance. Many relatively modern languages such as Java and C# restrict classes to single inheritance of normal classes, but allow multiple inheritance of interface classes (which we will talk about later). The driving idea behind disallowing multiple inheritance in these languages is that it simply makes the language too complex, and ultimately causes more problems than it fixes.</p>
+<p>Many authors and experienced programmers believe multiple inheritance in C++ should be avoided at all costs due to the many potential problems it brings. Your author does not agree with this approach, because there are times and situations when multiple inheritance is the best way to proceed. However, multiple inheritance should be used extremely judiciously.</p>
+<p>As an interesting aside, you have already been using classes written using multiple inheritance without knowing it: the iostream library objects std::cin and std::cout are both implemented using multiple inheritance!</p>
+<div id="admonition-best-practices" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices"></a>
+</div>
+<div>
+<p>Best practice</p>
+<p>Avoid multiple inheritance unless alternatives lead to more complexity.</p>
+</div>
+</div>
+<p>AI CONTENT END 1</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="hiding-inherited-functionality.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="chapter-24-summary-and-quiz.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="hiding-inherited-functionality.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="chapter-24-summary-and-quiz.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

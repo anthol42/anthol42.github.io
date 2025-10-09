@@ -1,0 +1,270 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Chapter 8 summary and quiz - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="chapter-8-summary-and-quiz"><a class="header" href="#chapter-8-summary-and-quiz">Chapter 8 summary and quiz</a></h1>
+<h2 id="chapter-review"><a class="header" href="#chapter-review">Chapter Review</a></h2>
+<p>The specific sequence of statements that the CPU executes in a program is called the program’s <strong>execution path</strong>. A <strong>straight-line program</strong> takes the same path every time it is run.</p>
+<p><strong>Control flow statements</strong> (also called <strong>Flow control statements</strong>) allow the programmer to change the normal path of execution. When a control flow statement causes the program to begin executing some non-sequential instruction sequence, this is called a <strong>branch</strong>.</p>
+<p>A <strong>conditional statement</strong> is a statement that specifies whether some associated statement(s) should be executed or not.</p>
+<p><strong>If statements</strong> allow us to execute an associated statement based on whether some condition is <code>true</code>. <strong>Else statements</strong> execute if the associated condition is <code>false</code>. You can chain together multiple if and else statements.</p>
+<p>A <strong>dangling else</strong> occurs when it is ambiguous which <code>if statement</code> an <code>else statement</code> is connected to. <code>Dangling else</code> statements are matched up with the last unmatched <code>if statement</code> in the same block. Thus, we trivially avoid <code>dangling else</code> statements by ensuring the body of an <code>if statement</code> is placed in a block.</p>
+<p>A <strong>null statement</strong> is a statement that consists of just a semicolon. It does nothing, and is used when the language requires a statement to exist but the programmer does not need the statement to do anything.</p>
+<p><strong>Switch statements</strong> provide a cleaner and faster method for selecting between a number of matching items. Switch statements only work with integral types. <strong>Case labels</strong> are used to identify the values for the evaluated condition to match. The statements beneath a <strong>default label</strong> are executed if no matching case label can be found.</p>
+<p>When execution flows from a statement underneath a label into statements underneath a subsequent label, this is called <strong>fallthrough</strong>. A <code>break statement</code> (or <code>return statement</code>) can be used to prevent fallthrough. The [[fallthrough]] attribute can be used to document intentional fallthrough.</p>
+<p><strong>Goto statements</strong> allow the program to jump to somewhere else in the code, either forward or backwards. These should generally be avoided, as they can create <strong>spaghetti code</strong>, which occurs when a program has a path of execution that resembles a bowl of spaghetti.</p>
+<p><strong>While loops</strong> allow the program to loop as long as a given condition evaluates to <code>true</code>. The condition is evaluated before the loop executes.</p>
+<p>An <strong>infinite loop</strong> is a loop that has a condition that always evaluates to <code>true</code>. These loops will loop forever unless another control flow statement is used to stop them.</p>
+<p>A <strong>loop variable</strong> (also called a <strong>counter</strong>) is an integer variable used to count how many times a loop has executed. Each execution of a loop is called an <strong>iteration</strong>.</p>
+<p><strong>Do while loops</strong> are similar to while loops, but the condition is evaluated after the loop executes instead of before.</p>
+<p><strong>For loops</strong> are the most used loop, and are ideal when you need to loop a specific number of times. An <strong>off-by-one error</strong> occurs when the loop iterates one too many or one too few times.</p>
+<p><strong>Break statements</strong> allow us to break out of a switch, while, do while, or for loop (also <code>range-based for loops</code>, which we haven’t covered yet). <strong>Continue statements</strong> allow us to move immediately to the next loop iteration.</p>
+<p><strong>Halts</strong> allow us to terminate our program. <strong>Normal termination</strong> means the program has exited in an expected way (and the <code>status code</code> will indicate whether it succeeded or not). <strong>std::exit()</strong> is automatically called at the end of <code>main</code>, or it can be called explicitly to terminate the program. It does some cleanup, but does not cleanup any local variables, or unwind the call stack.</p>
+<p><strong>Abnormal termination</strong> occurs when the program encountered some kind of unexpected error and had to be shut down. <strong>std::abort</strong> can be called for an abnormal termination.</p>
+<p>An <strong>algorithm</strong> is a finite sequence of instructions that can be followed to solve some problem or produce some useful result. An algorithm is considered to be <strong>stateful</strong> if it retains some information across calls. Conversely, a <strong>stateless</strong> algorithm does not store any information (and must be given all the information it needs to work with when it is called). When applied to algorithms, the term <strong>state</strong> refers to the current values held in stateful variables.</p>
+<p>An algorithm is considered <strong>deterministic</strong> if for a given input (the value provided for <code>start</code>) it will always produce the same output sequence.</p>
+<p>A <strong>pseudo-random number generator (PRNG)</strong> is an algorithm that generates a sequence of numbers whose properties simulate a sequence of random numbers. When a PRNG is instantiated, an initial value (or set of values) called a <strong>random seed</strong> (or <strong>seed</strong> for short) can be provided to initialize the state of the PRNG. When a PRNG has been initialized with a seed, we say it has been <strong>seeded</strong>. The size of the seed value can be smaller than the size of the state of the PRNG. When this happens, we say the PRNG has been <strong>underseeded</strong>. The length of the sequence before a PRNG begins to repeat itself is known as the <strong>period</strong>.</p>
+<p>A <strong>random number distribution</strong> converts the output of a PRNG into some other distribution of numbers. A <strong>uniform distribution</strong> is a random number distribution that produces outputs between two numbers X and Y (inclusive) with equal probability.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="global-random-numbers-random-h.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="chapter-Error_Detection_and_Handling.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="global-random-numbers-random-h.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="chapter-Error_Detection_and_Handling.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

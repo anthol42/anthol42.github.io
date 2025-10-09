@@ -1,0 +1,470 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Classes and header files - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="classes-and-header-files"><a class="header" href="#classes-and-header-files">Classes and header files</a></h1>
+<p>All of the classes that we have written so far have been simple enough that we have been able to implement the member functions directly inside the class definition itself. For example, here’s a simple <code>Date</code> class where all member functions are defined inside the <code>Date</code> class definition:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+class Date
+{
+private:
+    int m_year{};
+    int m_month{};
+    int m_day{};
+ 
+public:
+    Date(int year, int month, int day)
+        : m_year { year }
+        , m_month { month }
+        , m_day { day}
+    {
+    }
+
+    void print() const { std::cout &lt;&lt; "Date(" &lt;&lt; m_year &lt;&lt; ", " &lt;&lt; m_month &lt;&lt; ", " &lt;&lt; m_day &lt;&lt; ")\n"; }
+
+    int getYear() const { return m_year; }
+    int getMonth() const { return m_month; }
+    int getDay() const { return m_day; }
+};
+
+int main()
+{
+    Date d { 2015, 10, 14 };
+    d.print();
+
+    return 0;
+}
+</code></pre>
+<p>However, as classes get longer and more complicated, having all the member function definitions inside the class can make the class harder to manage and work with. Using an already-written class only requires understanding its public interface (the public member functions), not how the class works underneath the hood. The member function implementations clutter up the public interface with details that aren’t relevant to actually using the class.</p>
+<p>To help address this, C++ allows us to separate the “declaration” portion of the class from the “implementation” portion by defining member functions outside of the class definition.</p>
+<p>Here is the same <code>Date</code> class as above, with the constructor and <code>print()</code> member functions defined outside the class definition. Note that the prototypes for these member functions still exist inside the class definition (as these functions need to be declared as part of the class type definition), but the actual implementation has been moved outside:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+class Date
+{
+private:
+    int m_year{};
+    int m_month{};
+    int m_day{};
+
+public:
+    Date(int year, int month, int day); // constructor declaration
+
+    void print() const; // print function declaration
+
+    int getYear() const { return m_year; }
+    int getMonth() const { return m_month; }
+    int getDay() const  { return m_day; }
+};
+
+Date::Date(int year, int month, int day) // constructor definition
+    : m_year{ year }
+    , m_month{ month }
+    , m_day{ day }
+{
+}
+
+void Date::print() const // print function definition
+{
+    std::cout &lt;&lt; "Date(" &lt;&lt; m_year &lt;&lt; ", " &lt;&lt; m_month &lt;&lt; ", " &lt;&lt; m_day &lt;&lt; ")\n";
+};
+
+int main()
+{
+    const Date d{ 2015, 10, 14 };
+    d.print();
+
+    return 0;
+}
+</code></pre>
+<p>Member functions can be defined outside the class definition just like non-member functions. The only difference is that we must prefix the member function names with the name of the class type (in this case, <code>Date::</code>) so the compiler knows we’re defining a member of that class type rather than a non-member.</p>
+<p>Note that we left the access functions defined inside the class definition. Because access functions are typically only one line, defining these functions inside the class definition adds minimal clutter, whereas moving them outside the class definition would result in many extra lines of code. For this reason, the definitions of access functions (and other trivial, one-line functions) are often left inside the class definition.</p>
+<h2 id="putting-class-definitions-in-a-header-file"><a class="header" href="#putting-class-definitions-in-a-header-file">Putting class definitions in a header file</a></h2>
+<p>If you define a class inside a source (.cpp) file, that class is only usable within that particular source file. In larger programs, it’s common that we’ll want to use the classes we write in multiple source files.</p>
+<p>In lesson <a href="header-files.html">2.11 -- Header files</a>, you learned that you can put function declarations in a header files. Then you can #include those functions declarations into multiple code files (or even multiple projects). Classes are no different. A class definitions can be put in a header files, and then #included into any other files that want to use the class type.</p>
+<p>Unlike functions, which only need a forward declaration to be used, the compiler typically needs to see the full definition of a class (or any program-defined type) in order for the type to be used. This is because the compiler needs to understand how members are declared in order to ensure they are used properly, and it needs to be able to calculate how large objects of that type are in order to instantiate them. So our header files usually contain the full definition of a class rather than just a forward declaration of the class.</p>
+<h2 id="naming-your-class-header-and-code-files"><a class="header" href="#naming-your-class-header-and-code-files">Naming your class header and code files</a></h2>
+<p>Most often, classes are defined in header files of the same name as the class, and any member functions defined outside of the class are put in a .cpp file of the same name as the class.</p>
+<p>Here’s our Date class again, broken into a .cpp and .h file:</p>
+<p>Date.h:</p>
+<pre><code class="language-cpp">#ifndef DATE_H
+#define DATE_H
+
+class Date
+{
+private:
+    int m_year{};
+    int m_month{};
+    int m_day{};
+ 
+public:
+    Date(int year, int month, int day);
+
+    void print() const;
+
+    int getYear() const { return m_year; }
+    int getMonth() const { return m_month; }
+    int getDay() const { return m_day; }
+};
+
+#endif
+</code></pre>
+<p>Date.cpp:</p>
+<pre><code class="language-cpp">#include "Date.h"
+
+Date::Date(int year, int month, int day) // constructor definition
+    : m_year{ year }
+    , m_month{ month }
+    , m_day{ day }
+{
+}
+
+void Date::print() const // print function definition
+{
+    std::cout &lt;&lt; "Date(" &lt;&lt; m_year &lt;&lt; ", " &lt;&lt; m_month &lt;&lt; ", " &lt;&lt; m_day &lt;&lt; ")\n";
+};
+</code></pre>
+<p>Now any other header or code file that wants to use the <code>Date</code> class can simply <code>#include "Date.h"</code>. Note that <em>Date.cpp</em> also needs to be compiled into any project that uses <em>Date.h</em> so that the linker can connect calls to the member functions to their definitions.</p>
+<div id="admonition-best-practices" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices"></a>
+</div>
+<div>
+<p>Prefer to put your class definitions in a header file with the same name as the class. Trivial member functions (such as access functions, constructors with empty bodies, etc…) can be defined inside the class definition.</p>
+<p>Prefer to define non-trivial member functions in a source file with the same name as the class.</p>
+</div>
+</div>
+<h2 id="doesnt-defining-a-class-in-a-header-file-violate-the-one-definition-rule-if-the-header-is-included-more-than-once"><a class="header" href="#doesnt-defining-a-class-in-a-header-file-violate-the-one-definition-rule-if-the-header-is-included-more-than-once">Doesn’t defining a class in a header file violate the one-definition rule if the header is #included more than once?</a></h2>
+<p>Types are exempt from the part of the one-definition rule (ODR) that says you can only have one definition per program. Therefore, there isn’t an issue #including class definitions into multiple translation units. If there was, classes wouldn’t be of much use.</p>
+<p>Including a class definition more than once into a single translation unit is still an ODR violation. However, header guards (or <code>#pragma once</code>) will prevent this from happening.</p>
+<h2 id="inline-member-functions"><a class="header" href="#inline-member-functions">Inline member functions</a></h2>
+<p>Member functions are not exempt from the ODR, so you may be wondering how we avoid ODR violations when member functions are defined in a header file (that may then be included into more than one translation unit).</p>
+<p>Member functions defined <em>inside</em> the class definition are implicitly inline. Inline functions are exempt from the one definition per program part of the one-definition rule.</p>
+<p>Member functions defined <em>outside</em> the class definition are not implicitly inline (and thus are subject to the one definition per program part of the one-definition rule). This is why such functions are usually defined in a code file (where they will only have one definition across the whole program).</p>
+<p>Alternatively, member functions defined outside the class definition can be left in the header file if they are made inline (using the <code>inline</code> keyword). Here’s our <em>Date.h</em> header again, with the member functions defined outside the class marked as <code>inline</code>:</p>
+<p>Date.h:</p>
+<pre><code class="language-cpp">#ifndef DATE_H
+#define DATE_H
+
+#include &lt;iostream&gt;
+
+class Date
+{
+private:
+    int m_year{};
+    int m_month{};
+    int m_day{};
+ 
+public:
+    Date(int year, int month, int day);
+
+    void print() const;
+
+    int getYear() const { return m_year; }
+    int getMonth() const { return m_month; }
+    int getDay() const { return m_day; }
+};
+
+inline Date::Date(int year, int month, int day) // now inline
+    : m_year{ year }
+    , m_month{ month }
+    , m_day{ day }
+{
+}
+
+inline void Date::print() const // now inline
+{
+    std::cout &lt;&lt; "Date(" &lt;&lt; m_year &lt;&lt; ", " &lt;&lt; m_month &lt;&lt; ", " &lt;&lt; m_day &lt;&lt; ")\n";
+};
+
+#endif
+</code></pre>
+<p>This <em>Date.h</em> can be included into multiple translation units without issue.</p>
+<blockquote>
+<p><strong>Key insight</strong></p>
+<p>Functions defined inside the class definition are implicitly inline, which allows them to be #included into multiple code files without violating the ODR.</p>
+<p>Functions defined outside the class definition are not implicitly inline. They can be made inline by using the <code>inline</code> keyword.</p>
+</blockquote>
+<h2 id="inline-expansion-of-member-functions"><a class="header" href="#inline-expansion-of-member-functions">Inline expansion of member functions</a></h2>
+<p>The compiler must be able to see a full definition of a function in order to perform inline expansion. Most often, such functions (e.g. access functions) are defined inside the class definition. However, if you want to define a member function outside the class definition, but still want it to be eligible for inline expansion, you can define it as an inline function just below the class definition (in the same header file). That way the definition of the function is accessible to anybody who #includes the header.</p>
+<h2 id="so-why-not-put-everything-in-a-header-file"><a class="header" href="#so-why-not-put-everything-in-a-header-file">So why not put everything in a header file?</a></h2>
+<p>You might be tempted to put all of your member function definitions into the header file, either inside the class definition, or as inline functions below the class definition. While this will compile, there are a couple of downsides to doing so.</p>
+<p>First, as mentioned above, defining members inside the class definition clutters up your class definition.</p>
+<p>Second, if you change any of the code in the header, then you’ll need to recompile every file that includes that header. This can have a ripple effect, where one minor change causes the entire program to need to recompile. The cost of recompilation can vary significantly: a small project may only take a minute or less to build, whereas a large commercial project can take hours.</p>
+<p>Conversely, if you change the code in a .cpp file, only that .cpp file needs to be recompiled. Therefore, given the choice, it’s generally better to put non-trivial code in a .cpp file when you can.</p>
+<p>There are a few cases where it might make sense to violate the best practice of putting the class definition in a header and non-trivial member functions in a code file.</p>
+<p>First, for a small class that is used in only one code file and not intended for general reuse, you may prefer to define the class (and all member functions) directly in the single .cpp file it is used in. This helps make it clear that the class is only used within that single file, and is not intended for wider use. You can always move the class to a separate header/code file later if you later find you want to use it in more than one file, or are finding that the class and member function definitions are cluttering your source file.</p>
+<p>Second, if a class only has a small number of non-trivial member functions that are unlikely to change, creating a .cpp file that contains only one or two definitions may not be worth the effort (as it clutters your project). In such cases, it may be preferable to make the member functions <code>inline</code> and place them beneath the class definition in the header.</p>
+<p>Third, in modern C++, classes or libraries are increasingly being distributed as “header-only”, meaning all of the code for the class or library is placed in a header file. This is done primarily to make distributing and using such files easier, as a header only needs to be #included, whereas a code file needs to be explicitly added to every project that uses it, so that it can be compiled. If intentionally creating a header-only class or library for distribution, all non-trivial member functions can be made <code>inline</code> and placed in the header file beneath the class definition.</p>
+<p>Finally, for template classes, template member functions defined outside the class are almost always defined inside the header file, beneath the class definition. Just like non-member template functions, the compiler needs to see the full template definition in order to instantiate it. We cover template member functions in lesson <a href="class-templates-with-member-functions.html">15.5 -- Class templates with member functions</a>.</p>
+<blockquote>
+<p><strong>Author’s note</strong></p>
+<p>In future lessons, most of our classes will be defined in a single .cpp file, with all the functions implemented directly in the class definition. This is done to keep the examples concise and easy to compile yourself. In real projects, it is much more common for classes to be put in their own code and header files, and you should get used to doing so.</p>
+</blockquote>
+<h2 id="default-arguments-for-member-functions"><a class="header" href="#default-arguments-for-member-functions">Default arguments for member functions</a></h2>
+<p>In lesson <a href="default-arguments.html">11.5 -- Default arguments</a>, we discussed the best practice for default arguments of non-member functions: “If the function has a forward declaration (especially one in a header file), put the default argument there. Otherwise, put the default argument in the function definition.”</p>
+<p>Because member functions are always declared (or defined) as part of the class definition, the best practice for member functions is actually simpler: always put the default argument inside the class definition.</p>
+<div id="admonition-best-practices-1" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-1-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-1-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices-1"></a>
+</div>
+<div>
+<p>Put any default arguments for member functions inside the class definition.</p>
+</div>
+</div>
+<h2 id="libraries"><a class="header" href="#libraries">Libraries</a></h2>
+<p>Throughout your programs, you’ve used classes that are part of the standard library, such as <code>std::string</code>. To use these classes, you simply need to #include the relevant header (such as <code>#include &lt;string&gt;</code>). Note that you haven’t needed to add any code files (such as <code>string.cpp</code> or <code>iostream.cpp</code>) into your projects.</p>
+<p>The header files provide the declarations that the compiler requires in order to validate that the programs you’re writing are syntactically correct. However, the implementations for the classes that belong to the C++ standard library are contained in a precompiled file that is linked in automatically at the link stage. You never see the code.</p>
+<p>Many open source software packages provide both .h and .cpp files for you to compile into your program. However, most commercial libraries provide only .h files and a precompiled library file. There are several reasons for this: 1) It’s faster to link a precompiled library than to recompile it every time you need it, 2) A single copy of a precompiled library can be shared by many applications, whereas compiled code gets compiled into every executable that uses it (inflating file sizes), and 3) Intellectual property reasons (you don’t want people stealing your code).</p>
+<p>We discuss how to include 3rd party precompiled libraries into your projects in the appendix.</p>
+<p>While you probably won’t be creating and distributing your own libraries for a while, separating your classes into header files and source files is not only good form, it also makes creating your own custom libraries easier. Creating your own libraries is beyond the scope of these tutorials, but separating your declaration and implementation is a prerequisite to doing so if you want to distribute precompiled binaries.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="the-hidden-this-pointer-and-member-function-chaining.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="nested-types-member-types.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="the-hidden-this-pointer-and-member-function-chaining.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="nested-types-member-types.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

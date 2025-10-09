@@ -1,0 +1,544 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Delegating constructors - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="delegating-constructors"><a class="header" href="#delegating-constructors">Delegating constructors</a></h1>
+<p>Whenever possible, we want to reduce redundant code (following the DRY principle -- Don’t Repeat Yourself).</p>
+<p>Consider the following functions:</p>
+<pre><code class="language-cpp">void A()
+{
+    // statements that do task A
+}
+
+void B()
+{
+    // statements that do task A
+    // statements that do task B
+}
+</code></pre>
+<p>Both functions have a set of statements that do exactly the same thing (task A). In such a case, we can refactor like this:</p>
+<pre><code class="language-cpp">void A()
+{
+    // statements that do task A
+}
+
+void B()
+{
+    A();
+    // statements that do task B
+}
+</code></pre>
+<p>In that way, we’ve removed redundant code that existed in functions <code>A()</code> and <code>B()</code>. This makes our code easier to maintain, as changes only need to be made in one place.</p>
+<p>When a class contains multiple constructors, it’s extremely common for the code in each constructor to be similar if not identical, with lots of repetition. We’d similarly like to remove constructor redundancy where possible.</p>
+<p>Consider the following example:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;string_view&gt;
+
+class Employee
+{
+private:
+    std::string m_name { "???" };
+    int m_id { 0 };
+    bool m_isManager { false };
+
+public:
+    Employee(std::string_view name, int id) // Employees must have a name and an id
+        : m_name{ name }, m_id { id }
+    {
+        std::cout &lt;&lt; "Employee " &lt;&lt; m_name &lt;&lt; " created\n";
+    }
+
+    Employee(std::string_view name, int id, bool isManager) // They can optionally be a manager
+        : m_name{ name }, m_id{ id }, m_isManager { isManager }
+    {
+        std::cout &lt;&lt; "Employee " &lt;&lt; m_name &lt;&lt; " created\n";
+    }
+};
+
+int main()
+{
+    Employee e1{ "James", 7 };
+    Employee e2{ "Dave", 42, true };
+}
+</code></pre>
+<p>The body of each constructor has the exact same print statement.</p>
+<blockquote>
+<p><strong>Author’s note</strong></p>
+<p>Author’s note</p>
+<p>It’s generally not a good idea to have a constructor print something (except for debugging purposes), as this means you can’t create an object using that constructor in cases where you do not want to print something. We’re doing it in this example to help illustrate what’s happening.</p>
+</blockquote>
+<p>Constructors are allowed to call other functions, including other member functions of the class. So we could refactor like this:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;string_view&gt;
+
+class Employee
+{
+private:
+    std::string m_name { "???" };
+    int m_id{ 0 };
+    bool m_isManager { false };
+
+    void printCreated() const // our new helper function
+    {
+        std::cout &lt;&lt; "Employee " &lt;&lt; m_name &lt;&lt; " created\n";
+    }
+
+public:
+    Employee(std::string_view name, int id)
+        : m_name{ name }, m_id { id }
+    {
+        printCreated(); // we call it here
+    }
+
+    Employee(std::string_view name, int id, bool isManager)
+        : m_name{ name }, m_id{ id }, m_isManager { isManager }
+    {
+        printCreated(); // and here
+    }
+};
+
+int main()
+{
+    Employee e1{ "James", 7 };
+    Employee e2{ "Dave", 42, true };
+}
+</code></pre>
+<p>While this is better than the prior version (as the redundant statement has been replaced by a redundant function call), it requires introduction of a new function. And our two constructors are also both initializing <code>m_name</code> and <code>m_id</code>. Ideally we’d remove this redundancy too.</p>
+<p>Can we do better? We can. But this is where many new programmers run into trouble.</p>
+<h2 id="calling-a-constructor-in-the-body-of-a-function-creates-a-temporary-object"><a class="header" href="#calling-a-constructor-in-the-body-of-a-function-creates-a-temporary-object">Calling a constructor in the body of a function creates a temporary object</a></h2>
+<p>Analogous to how we had function <code>B()</code> call function <code>A()</code> in the example above, the obvious solution seems like it would be to call the <code>Employee(std::string_view, int)</code> constructor from the body of <code>Employee(std::string_view, int, bool)</code> in order to initialize <code>m_name</code>, <code>m_id</code>, and print the statement. Here’s what that looks like:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;string_view&gt;
+
+class Employee
+{
+private:
+    std::string m_name { "???" };
+    int m_id { 0 };
+    bool m_isManager { false };
+
+public:
+    Employee(std::string_view name, int id)
+        : m_name{ name }, m_id { id } // this constructor initializes name and id
+    {
+        std::cout &lt;&lt; "Employee " &lt;&lt; m_name &lt;&lt; " created\n"; // our print statement is back here
+    }
+
+    Employee(std::string_view name, int id, bool isManager)
+        : m_isManager { isManager } // this constructor initializes m_isManager
+    {
+        // Call Employee(std::string_view, int) to initialize m_name and m_id
+        Employee(name, id); // this doesn't work as expected!
+    }
+
+    const std::string&amp; getName() const { return m_name; }
+};
+
+int main()
+{
+    Employee e2{ "Dave", 42, true };
+    std::cout &lt;&lt; "e2 has name: " &lt;&lt; e2.getName() &lt;&lt; "\n"; // print e2.m_name
+}
+</code></pre>
+<p>But this doesn’t work correctly, as the program outputs the following:</p>
+<pre><code class="language-cpp">Employee Dave created
+e2 has name: ???
+</code></pre>
+<p>Even though <code>Employee Dave created</code> printed, after <code>e2</code> finished construction, <code>e2.m_name</code> still appears to be set to its initial value of <code>"???"</code>. How is that possible?</p>
+<p>We were expecting <code>Employee(name, id)</code> to call the constructor in order to continue initialization of the current implicit object (<code>e2</code>). But initialization of a class object is finished once the member initializer list has finished executing. By the time we begin executing the constructor’s body, it’s too late to do more initialization.</p>
+<p>When called from the body of a function, what looks like a function call to a constructor usually creates and direct-initializes a temporary object (in one other case, you’ll get a compile error instead). In our example above, <code>Employee(name, id);</code> creates a temporary (unnamed) Employee object. This temporary object is the one whose <code>m_name</code> is set to <code>Dave</code>, and is the one that prints <code>Employee Dave created</code>. Then the temporary is destroyed. <code>e2</code> never has its <code>m_name</code> or <code>m_id</code> changed from the default values.</p>
+<div id="admonition-best-practices" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices"></a>
+</div>
+<div>
+<p>Best practice</p>
+<p>Constructors should not be called directly from the body of another function. Doing so will either result in a compilation error, or will direct-initialize a temporary object.<br />
+If you do want a temporary object, prefer list-initialization (which makes it clear you are intending to create an object).</p>
+</div>
+</div>
+<p>So if we can’t call a constructor from the body of another constructor, then how do we solve this issue?</p>
+<h2 id="delegating-constructors-1"><a class="header" href="#delegating-constructors-1">Delegating constructors</a></h2>
+<p>Constructors are allowed to delegate (transfer responsibility for) initialization to another constructor from the same class type. This process is sometimes called <strong>constructor chaining</strong> and such constructors are called <strong>delegating constructors</strong>.</p>
+<p>To make one constructor delegate initialization to another constructor, simply call the constructor in the member initializer list:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;string_view&gt;
+
+class Employee
+{
+private:
+    std::string m_name { "???" };
+    int m_id { 0 };
+
+public:
+    Employee(std::string_view name)
+        : Employee{ name, 0 } // delegate initialization to Employee(std::string_view, int) constructor
+    {
+    }
+
+    Employee(std::string_view name, int id)
+        : m_name{ name }, m_id { id } // actually initializes the members
+    {
+        std::cout &lt;&lt; "Employee " &lt;&lt; m_name &lt;&lt; " created\n";
+    }
+
+};
+
+int main()
+{
+    Employee e1{ "James" };
+    Employee e2{ "Dave", 42 };
+}
+</code></pre>
+<p>When <code>e1 { "James" }</code> is initialized, matching constructor <code>Employee(std::string_view)</code> is called with parameter <code>name</code> set to <code>"James"</code>. The member initializer list of this constructor delegates initialization to other constructor, so <code>Employee(std::string_view, int)</code> is then called. The value of <code>name</code> (<code>"James"</code>) is passed as the first argument, and literal <code>0</code> is passed as the second argument. The member initializer list of the delegated constructor then initializes the members. The body of the delegated constructor then runs. Then control returns to the initial constructor, whose (empty) body runs. Finally, control returns to the caller.</p>
+<p>The downside of this method is that it sometimes requires duplication of initialization values. In the delegation to the <code>Employee(std::string_view, int)</code> constructor, we need an initialization value for the <code>int</code> parameter. We had to hardcode literal <code>0</code>, as there is no way to reference the default member initializer.</p>
+<p>A few additional notes about delegating constructors. First, a constructor that delegates to another constructor is not allowed to do any member initialization itself. So your constructors can delegate or initialize, but not both.</p>
+<blockquote>
+<p><strong>As an aside…</strong></p>
+<p>As an aside…</p>
+<p>Note that we had <code>Employee(std::string_view)</code> (the constructor with less parameters) delegate to <code>Employee(std::string_view name, int id)</code> (the constructor with more parameters). It is common to have the constructor with fewer parameters delegate to the constructor with more parameters.</p>
+<p>If we had instead chosen to have <code>Employee(std::string_view name, int id)</code> delegate to <code>Employee(std::string_view)</code>, then that would have left us unable to initialize <code>m_id</code> using <code>id</code>, as a constructor can only delegate or initialize, not both.</p>
+</blockquote>
+<p>Second, it’s possible for one constructor to delegate to another constructor, which delegates back to the first constructor. This forms an infinite loop, and will cause your program to run out of stack space and crash. You can avoid this by ensuring all of your constructors resolve to a non-delegating constructor.</p>
+<div id="admonition-best-practices-1" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-1-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-1-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices-1"></a>
+</div>
+<div>
+<p>Best practice</p>
+<p>If you have multiple constructors, consider whether you can use delegating constructors to reduce duplicate code.</p>
+</div>
+</div>
+<h2 id="reducing-constructors-using-default-arguments"><a class="header" href="#reducing-constructors-using-default-arguments">Reducing constructors using default arguments</a></h2>
+<p>Default values can also sometimes be used to reduce multiple constructors into fewer constructors. For example, by putting a default value on our <code>id</code> parameter, we can create a single <code>Employee</code> constructor that requires a name argument but will optionally accept an id argument:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;string_view&gt;
+
+class Employee
+{
+private:
+    std::string m_name{};
+    int m_id{ 0 }; // default member initializer
+
+public:
+
+    Employee(std::string_view name, int id = 0) // default argument for id
+        : m_name{ name }, m_id{ id }
+    {
+        std::cout &lt;&lt; "Employee " &lt;&lt; m_name &lt;&lt; " created\n";
+    }
+};
+
+int main()
+{
+    Employee e1{ "James" };
+    Employee e2{ "Dave", 42 };
+}
+</code></pre>
+<p>Since default values must be attached to the rightmost parameters in a function call, a good practice when defining classes is to define members for which a user <em>must</em> provide initialization values for first (and then make those the leftmost parameters of the constructor). Members for which the user can optionally provide (because the default values are acceptable) should be defined second (and then make those the rightmost parameters of the constructor).</p>
+<div id="admonition-best-practices-2" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-2-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-2-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices-2"></a>
+</div>
+<div>
+<p>Best practice</p>
+<p>Members for which the user must provide initialization values should be defined first (and as the leftmost parameters of the constructor). Members for which the user can optionally provide initialization values (because the default values are acceptable) should be defined second (and as the rightmost parameters of the constructor).</p>
+</div>
+</div>
+<p>Note that this method also requires duplication of the default initialization value for <code>m_id</code> (‘0’): once as a default member initializer, and once as a default argument.</p>
+<h2 id="a-conundrum-redundant-constructors-vs-redundant-default-values"><a class="header" href="#a-conundrum-redundant-constructors-vs-redundant-default-values">A conundrum: Redundant constructors vs redundant default values</a></h2>
+<p>In the above examples, we used delegating constructors and then default arguments to reduce constructor redundancy. But both of these methods required us to duplicate initialization values for our members in various places. Unfortunately, there is currently no way to specify that a delegating constructor or default argument should use the default member initializer value.</p>
+<p>There are various opinions about whether it is better to have fewer constructors (with duplication of initialization values) or more constructors (with no duplication of initialization values). Our opinion is that it’s usually more straightforward to have fewer constructors, even if it results in duplication of initialization values.</p>
+<blockquote>
+<p><strong>For advanced readers</strong></p>
+<p>For advanced readers</p>
+<p>When we have an initialization value that is used in multiple places (e.g. as a default member initializer and a default argument for a constructor parameter), we can define a named constant and use that wherever our initialization value is needed. This allows the initialization value to be defined in one place.</p>
+<p>Although you could use a constexpr global variable for this, a better option is to use a <code>static constexpr</code> member inside the class:</p>
+<pre><code>#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;string_view&gt;
+
+class Employee
+{
+private:
+    static constexpr int default_id { 0 }; // define a named constant with our desired initialization value
+    
+    std::string m_name {};
+    int m_id { default_id }; // we can use it here
+
+public:
+
+    Employee(std::string_view name, int id = default_id) // and we can use it here
+        : m_name { name }, m_id { id }
+    {
+        std::cout &lt;&lt; "Employee " &lt;&lt; m_name &lt;&lt; " created\n";
+    }
+};
+
+int main()
+{
+    Employee e1 { "James" };
+    Employee e2 { "Dave", 42 };
+}
+</code></pre>
+<p>Use of the <code>static</code> keyword in this context allows us to have a single <code>default_id</code> member that is shared by all <code>Employee</code> objects. Without the <code>static</code>, each <code>Employee</code> object would have its own independent <code>default_id</code> member (which would work, but be a waste of memory).</p>
+<p>The downside of this approach is that each additional named constant adds another name that must be understood, making your class a little more cluttered and complex. Whether this is worth it depends on how many of such constants are required, and in how many places the initialization values are needed.</p>
+<p>We cover static data members in lesson <a href="static-member-variables">15.6 -- Static member variables</a>.</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="default-constructors-and-default-arguments.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="temporary-class-objects.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="default-constructors-and-default-arguments.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="temporary-class-objects.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

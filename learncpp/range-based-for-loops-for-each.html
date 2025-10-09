@@ -1,0 +1,514 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Range-based for loops (for-each) - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="range-based-for-loops-for-each"><a class="header" href="#range-based-for-loops-for-each">Range-based for loops (for-each)</a></h1>
+<p>In lesson <a href="arrays-and-loops.html">16.6 -- Arrays and loops</a>, we showed examples where we used a for-loop to iterate through each element of an array using a loop variable as an index. Here’s another example of such:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+int main()
+{
+    std::vector fibonacci { 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89 };
+
+    std::size_t length { fibonacci.size() };
+    for (std::size_t index { 0 }; index &lt; length; ++index)
+       std::cout &lt;&lt; fibonacci[index] &lt;&lt; ' ';
+
+    std::cout &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>Although for-loops provide a convenient and flexible way to iterate through an array, they are also easy to mess up, prone to off-by-one errors, and subject to array indexing sign problems (discussed in lesson <a href="arrays-loops-and-sign-challenge-solutions.html">16.7 -- Arrays, loops, and sign challenge solutions</a>).</p>
+<p>Because traversing (forwards) through an array is such a common thing to do, C++ supports another type of for-loop called a <strong>range-based for loop</strong> (also sometimes called a <strong>for-each loop</strong>) that allows traversal of a container without having to do explicit indexing. Range-based for loops are simpler, safer, and work with all the common array types in C++ (including <code>std::vector</code>, <code>std::array</code>, and C-style arrays).</p>
+<h2 id="range-based-for-loops"><a class="header" href="#range-based-for-loops">Range-based for loops</a></h2>
+<p>The <em>range-based for</em> statement has a syntax that looks like this:</p>
+<pre><code class="language-cpp">for (element_declaration : array_object)
+   statement;
+</code></pre>
+<p>When a range-based for loop is encountered, the loop will iterate through each element in <code>array_object</code>. For each iteration, the value of the current array element will be assigned to the variable declared in <code>element_declaration</code>, and then <code>statement</code> will execute.</p>
+<p>For best results, <code>element_declaration</code> should have the same type as the array elements, otherwise type conversion will occur.</p>
+<p>Here’s a simple example that uses a <em>range-based for</em> loop to print all of the elements in an array named <code>fibonacci</code>:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+int main()
+{
+    std::vector fibonacci { 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89 };
+
+    for (int num : fibonacci) // iterate over array fibonacci and copy each value into `num`
+       std::cout &lt;&lt; num &lt;&lt; ' '; // print the current value of `num`
+
+    std::cout &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>This prints:</p>
+<pre><code class="language-cpp">0 1 1 2 3 5 8 13 21 34 55 89
+</code></pre>
+<p>Note that this example does not require us to use the array’s length, nor does it require us to index the array!</p>
+<p>Let’s take a closer look at how this works. This range-based for loop will execute through all the elements of <code>fibonacci</code>. For the first iteration, variable <code>num</code> is assigned the value of the first element (<code>0</code>). Then the program executes the associated statement, which prints the value of <code>num</code> (<code>0</code>) to the console. For the second iteration, <code>num</code> is assigned the value of the second element (<code>1</code>). The associated statement executes again, which prints <code>1</code>. The range-based for loop continues to iterate through each of the array elements in turn, executing the associated statement for each one, until there are no elements left in the array to iterate over. At that point, the loop terminates, and the program continues execution (printing a newline and then returning <code>0</code> to the operating system).</p>
+<blockquote>
+<p><strong>Key insight</strong></p>
+<p>Key insight</p>
+<p>The declared element (<code>num</code> in the prior example) is not an array index. Rather, it is assigned the value of the array element being iterated over.</p>
+</blockquote>
+<p>Because <code>num</code> is assigned the value of the array element, this does mean the array element is copied (which can be expensive for some types).</p>
+<div id="admonition-best-practices" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices"></a>
+</div>
+<div>
+<p>Best practice</p>
+<p>Favor range-based for loops over regular for-loops when traversing containers.</p>
+</div>
+</div>
+<h2 id="range-based-for-loops-and-empty-containers"><a class="header" href="#range-based-for-loops-and-empty-containers">Range-based for loops and empty containers</a></h2>
+<p>In cases where the container being traversed has no elements, the body of the range-based for-loop will simply not execute:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+int main()
+{
+    std::vector empty { };
+
+    for (int num : empty)
+       std::cout &lt;&lt; "Hi mom!\n";
+
+    return 0;
+}
+</code></pre>
+<p>The above example does not print anything. Sorry mom!</p>
+<h2 id="range-based-for-loops-and-type-deduction-using-the-auto-keyword"><a class="header" href="#range-based-for-loops-and-type-deduction-using-the-auto-keyword">Range-based for loops and type deduction using the <code>auto</code> keyword</a></h2>
+<p>Because <code>element_declaration</code> should have the same type as the array elements (to prevent type conversion from occurring), this is an ideal case in which to use the <code>auto</code> keyword, and let the compiler deduce the type of the array elements for us. That way we don’t have to redundantly specify the type, and there’s no risk of accidentally mistyping (and “mis-typing”, ha!)</p>
+<p>Here’s the same example as above, but using <code>auto</code> as the type of <code>num</code>:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+int main()
+{
+    std::vector fibonacci { 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89 };
+
+    for (auto num : fibonacci) // compiler will deduce type of num to be `int`
+       std::cout &lt;&lt; num &lt;&lt; ' ';
+
+    std::cout &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>Because <code>std::vector fibonacci</code> has elements of type <code>int</code>, <code>num</code> will be deduced to be an <code>int</code>.</p>
+<div id="admonition-best-practices-1" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-1-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-1-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices-1"></a>
+</div>
+<div>
+<p>Best practice</p>
+<p>Use type deduction (<code>auto</code>) with range-based for loops to have the compiler deduce the type of the array element.</p>
+</div>
+</div>
+<p>Another benefit to using <code>auto</code> is that if the element type of the array is ever updated (e.g. from <code>int</code> to <code>long</code>), <code>auto</code> will automatically deduce the updated element type, ensuring they stay in sync (and preventing type conversion from occurring).</p>
+<h2 id="avoid-element-copies-using-references"><a class="header" href="#avoid-element-copies-using-references">Avoid element copies using references</a></h2>
+<p>Consider the following range-based for loop, which iterates over an array of <code>std::string</code>:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+
+int main()
+{
+    std::vector&lt;std::string&gt; words{ "peter", "likes", "frozen", "yogurt" };
+
+    for (auto word : words)
+        std::cout &lt;&lt; word &lt;&lt; ' ';
+
+    std::cout &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>For each iteration of this loop, the next <code>std::string</code> element from the <code>words</code> array will be assigned (copied) into the variable <code>word</code>. Copying a <code>std::string</code> is expensive, which is why we typically pass <code>std::string</code> to functions by const reference. We want to avoid making copies of things that are expensive to copy unless we really need a copy. In this case, we’re just printing the value of the copy and then the copy is destroyed. It would be better if we could avoid making a copy and just reference the actual array element.</p>
+<p>Fortunately, we can do exactly that by making our <code>element_declaration</code> a (const) reference:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+
+int main()
+{
+    std::vector&lt;std::string&gt; words{ "peter", "likes", "frozen", "yogurt" };
+
+    for (const auto&amp; word : words) // word is now a const reference
+        std::cout &lt;&lt; word &lt;&lt; ' ';
+
+    std::cout &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>In the above example, <code>word</code> is now a const reference. With each iteration of this loop, <code>word</code> will be bound to the next array element. This allows us to access the array element’s value without having to make an expensive copy.</p>
+<p>If the reference is non-const, it can also be used to change the values in the array (something not possible if our <code>element_declaration</code> is a copy of the value).</p>
+<h2 id="when-to-use-auto-vs-auto-vs-const-auto"><a class="header" href="#when-to-use-auto-vs-auto-vs-const-auto">When to use <code>auto</code> vs <code>auto&amp;</code> vs <code>const auto&amp;</code></a></h2>
+<p>Normally we’d use <code>auto</code> for cheap-to-copy types, <code>auto&amp;</code> when we want to modify the elements, and <code>const auto&amp;</code> for expensive-to-copy types. But with range-based for loops, many developers believe it is preferable to always use <code>const auto&amp;</code> because it is more future-proof.</p>
+<p>For example, consider the following example:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string_view&gt;
+#include &lt;vector&gt;
+
+int main()
+{
+    std::vector&lt;std::string_view&gt; words{ "peter", "likes", "frozen", "yogurt" }; // elements are type std::string_view
+
+    for (auto word : words) // We normally pass string_view by value, so we'll use auto here
+        std::cout &lt;&lt; word &lt;&lt; ' ';
+
+    std::cout &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>In this example, we have a <code>std::vector</code> containing <code>std::string_view</code> objects. Since <code>std::string_view</code> is normally passed by value, using <code>auto</code> seems appropriate.</p>
+<p>But consider what happens if <code>words</code> is later updated to an array of <code>std::string</code> instead.</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+
+int main()
+{
+    std::vector&lt;std::string&gt; words{ "peter", "likes", "frozen", "yogurt" }; // obvious we should update this
+
+    for (auto word : words) // Probably not obvious we should update this too
+        std::cout &lt;&lt; word &lt;&lt; ' ';
+
+    std::cout &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>The range-based for loop will compile and execute just fine, but <code>word</code> will now be deduced to be a <code>std::string</code>, and because we’re using <code>auto</code>, our loop will silently make expensive copies of <code>std::string</code> elements. We just took a huge performance hit!</p>
+<p>There are a couple of reasonable ways to ensure this doesn’t happen:</p>
+<ul>
+<li>Don’t use type deduction in your range-based for loop. If we’d explicitly specified the element type as <code>std::string_view</code>, then when the array was later updated to <code>std::string</code>, the <code>std::string</code> elements will implicitly convert to <code>std::string_view</code>, which is no problem. If the array is updated to some other type that is not convertible, the compiler will error, and we can figure out what the appropriate thing to do is at that point. But if the element type is convertible, then the compiler will silently perform the conversion and we may not realize we’re doing something suboptimal.</li>
+<li>Use <code>const auto&amp;</code> instead of <code>auto</code> when using type deduction in your range-based for loop when you don’t want to work with copies. The performance penalty of accessing elements through a reference instead of by value is likely to be small, and this insulates us from potentially significant performance penalties down the road if the element type is later changed to something that is expensive to copy.</li>
+</ul>
+<div id="admonition-best-practices-2" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-2-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-2-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices-2"></a>
+</div>
+<div>
+<p>Best practice</p>
+<p>For range-based for loops, prefer to define the element type as:</p>
+<ul>
+<li><code>auto</code> when you want to modify copies of the elements.</li>
+<li><code>auto&amp;</code> when you want to modify the original elements.</li>
+<li><code>const auto&amp;</code> otherwise (when you just need to view the original elements).</li>
+</ul>
+</div>
+</div>
+<h2 id="range-based-for-loops-and-other-standard-container-types"><a class="header" href="#range-based-for-loops-and-other-standard-container-types">Range-based for loops and other standard container types</a></h2>
+<p>Range-based for loops work with a wide variety of array types, including (non-decayed) C-style arrays, <code>std::array</code>, <code>std::vector</code>, linked list, trees, and maps. We haven’t covered any of these yet, so don’t worry if you don’t know what these are. Just remember that <em>range-based for</em> loops provide a flexible and generic way to iterate through more than just <code>std::vector</code>:</p>
+<pre><code class="language-cpp">#include &lt;array&gt;
+#include &lt;iostream&gt;
+
+int main()
+{
+    std::array fibonacci{ 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89 }; // note use of std::array here
+
+    for (auto number : fibonacci)
+    {
+        std::cout &lt;&lt; number &lt;&lt; ' ';
+    }
+
+    std::cout &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<blockquote>
+<p><strong>For advanced readers</strong></p>
+<p>For advanced readers</p>
+<p>Range-based for loops won’t work with decayed C-style arrays. This is because a range-based for-loop needs to know the length of the array to know when traversal is complete, and decayed C-style arrays do not contain this information.</p>
+<p>Range-based for loops also won’t work with enumerations. We show a method for working around this in lesson <a href="stdarray-and-enumerations">17.6 -- std::array and enumerations</a>.</p>
+</blockquote>
+<h2 id="getting-the-index-of-the-current-element"><a class="header" href="#getting-the-index-of-the-current-element">Getting the index of the current element</a></h2>
+<p>Range-based for loops do <em>not</em> provide a direct way to get the array index of the current element. This is because many of the structures that a range-based for loop can iterate over (such as <code>std::list</code>) do not support indices.</p>
+<p>However, because range-based for loops always iterate in a forwards direction and don’t skip elements, you can always declare (and increment) your own counter. However, if you’re going to do this, you should consider whether you’re better off using a normal for-loop instead of a range-based for loop.</p>
+<h2 id="range-based-for-loops-in-reverse-c20"><a class="header" href="#range-based-for-loops-in-reverse-c20">Range-based for loops in reverse C++20</a></h2>
+<p>Range-based for loops only iterate in forwards order. However, there are cases where we want to traverse an array in reverse order. Prior to C++20, range-based for loops could not be easily used for this purpose, and other solutions had to be employed (typically normal for-loops).</p>
+<p>However, as of C++20, you can use the <code>std::views::reverse</code> capability of the Ranges library to create a reverse view of the elements that can be traversed:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;ranges&gt; // C++20
+#include &lt;string_view&gt;
+#include &lt;vector&gt;
+
+int main()
+{
+    std::vector&lt;std::string_view&gt; words{ "Alex", "Bobby", "Chad", "Dave" }; // sorted in alphabetical order
+
+    for (const auto&amp; word : std::views::reverse(words)) // create a reverse view
+        std::cout &lt;&lt; word &lt;&lt; ' ';
+
+    std::cout &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>This prints:</p>
+<pre><code class="language-cpp">Dave
+Chad
+Bobby
+Alex
+</code></pre>
+<p>We haven’t covered the ranges library, so consider this a useful bit of magic for now.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="arrays-loops-and-sign-challenge-solutions.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="array-indexing-and-length-using-enumerators.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="arrays-loops-and-sign-challenge-solutions.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="array-indexing-and-length-using-enumerators.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

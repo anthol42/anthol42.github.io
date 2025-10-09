@@ -1,0 +1,617 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Temporary class objects - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="temporary-class-objects"><a class="header" href="#temporary-class-objects">Temporary class objects</a></h1>
+<p>Consider the following example:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int add(int x, int y)
+{
+    int sum{ x + y }; // stores x + y in a variable
+    return sum;       // returns value of that variable
+}
+
+int main()
+{
+    std::cout &lt;&lt; add(5, 3) &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>In the <code>add()</code> function, the variable <code>sum</code> is used to store the result of the expression <code>x + y</code>. This variable is then evaluated in the return statement to produce the value to be returned. While this might be occasionally useful for debugging (so we can inspect the value of <code>sum</code> if desired), it actually makes the function more complex than it needs to be by defining an object that is then only used one time.</p>
+<p>In most cases where a variable is used only once, we actually don’t need a variable. Instead, we can substitute in the expression used to initialize the variable where the variable would have been used. Here is the <code>add()</code> function rewritten in this manner:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int add(int x, int y)
+{
+    return x + y; // just return x + y directly
+}
+
+int main()
+{
+    std::cout &lt;&lt; add(5, 3) &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>This works not only with return values, but also with most function arguments. For example, instead of this:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+void printValue(int value)
+{
+    std::cout &lt;&lt; value;
+}
+
+int main()
+{
+    int sum{ 5 + 3 };
+    printValue(sum);
+
+    return 0;
+}
+</code></pre>
+<p>We can write this:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+void printValue(int value)
+{
+    std::cout &lt;&lt; value;
+}
+
+int main()
+{
+    printValue(5 + 3);
+
+    return 0;
+}
+</code></pre>
+<p>Note how much cleaner this keeps our code. We don’t have to define and give a name to a variable. And we don’t have to scan through the entire function to determine whether that variable is actually used elsewhere. Because <code>5 + 3</code> is an expression, we know it is only used on that one line.</p>
+<p>Do note that this only works in cases where an rvalue expression is accepted. In cases where an lvalue expression is required, we must have an object:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+void addOne(int&amp; value) // pass by non-const references requires lvalue
+{
+    ++value;
+}
+
+int main()
+{
+    int sum { 5 + 3 };
+    addOne(sum);   // okay, sum is an lvalue
+
+    addOne(5 + 3); // compile error: not an lvalue
+
+    return 0;
+}
+</code></pre>
+<h2 id="temporary-class-objects-1"><a class="header" href="#temporary-class-objects-1">Temporary class objects</a></h2>
+<p>The same issue applies in the context of class types.</p>
+<blockquote>
+<p><strong>Author’s note</strong></p>
+<p>Author’s note</p>
+<p>We’ll use a class here, but everything in this lesson that uses list initialization is equally applicable to structs that are initialized using aggregate initialization.</p>
+</blockquote>
+<p>The following example is similar to the ones above, but uses program-defined class type <code>IntPair</code> instead of <code>int</code>:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+class IntPair
+{
+private:
+    int m_x{};
+    int m_y{};
+
+public:
+    IntPair(int x, int y)
+        : m_x { x }, m_y { y }
+    {}
+
+    int x() const { return m_x; }
+    int y() const { return m_y; }
+};
+
+void print(IntPair p)
+{
+    std::cout &lt;&lt; "(" &lt;&lt; p.x() &lt;&lt; ", " &lt;&lt; p.y() &lt;&lt; ")\n";        
+}
+        
+int main()
+{
+    // Case 1: Pass variable
+    IntPair p { 3, 4 };
+    print(p); // prints (3, 4)
+    
+    return 0;
+}
+</code></pre>
+<p>In case 1, we’re instantiating variable <code>IntPair p</code> and then passing <code>p</code> to function <code>print()</code>.</p>
+<p>However, <code>p</code> is only used once, and function <code>print()</code> will accept rvalues, so there is really no reason to define a variable here. So let’s get rid of <code>p</code>.</p>
+<p>We can do that by passing a temporary object instead of a named variable. A <strong>temporary object</strong> (sometimes called an <strong>anonymous object</strong> or an <strong>unnamed object</strong>) is an object that has no name and exists only for the duration of a single expression.</p>
+<p>There are two common ways to create temporary class type objects:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+class IntPair
+{
+private:
+    int m_x{};
+    int m_y{};
+
+public:
+    IntPair(int x, int y)
+        : m_x { x }, m_y { y }
+    {}
+
+    int x() const { return m_x; }
+    int y() const{ return m_y; }
+};
+
+void print(IntPair p)
+{
+    std::cout &lt;&lt; "(" &lt;&lt; p.x() &lt;&lt; ", " &lt;&lt; p.y() &lt;&lt; ")\n";        
+}
+        
+int main()
+{
+    // Case 1: Pass variable
+    IntPair p { 3, 4 };
+    print(p);
+
+    // Case 2: Construct temporary IntPair and pass to function
+    print(IntPair { 5, 6 } );
+
+    // Case 3: Implicitly convert { 7, 8 } to a temporary Intpair and pass to function
+    print( { 7, 8 } );
+    
+    return 0;
+}
+</code></pre>
+<p>In case 2, we’re telling the compiler to construct an <code>IntPair</code> object, and initializing it with <code>{ 5, 6 }</code>. Because this object has no name, it is a temporary. The temporary object is then passed to parameter <code>p</code> of function <code>print()</code>. When the function call returns, the temporary object is destroyed.</p>
+<p>In case 3, we’re also creating a temporary <code>IntPair</code> object to pass to function <code>print()</code>. However, because we have not explicitly specified what type to construct, the compiler will deduce the necessary type (<code>IntPair</code>) from the function parameter, and then implicitly convert <code>{ 7, 8 }</code> to an <code>IntPair</code> object.</p>
+<p>To summarize:</p>
+<pre><code class="language-cpp">IntPair p { 1, 2 }; // create named object p initialized with { 1, 2 }
+IntPair { 1, 2 };   // create temporary object initialized with { 1, 2 }
+{ 1, 2 };           // compiler will try to convert { 1, 2 } to temporary object matching expected type (typically a parameter or return type)
+</code></pre>
+<p>We’ll discuss this last case in more detail in lesson <a href="converting-constructors-and-the-explicit-keyword.html">14.16 -- Converting constructors and the explicit keyword</a>.</p>
+<p>A few more examples:</p>
+<pre><code class="language-cpp">std::string { "Hello" }; // create a temporary std::string initialized with "Hello"
+std::string {};          // create a temporary std::string using value initialization / default constructor
+</code></pre>
+<h2 id="creating-temporary-objects-via-direct-initialization-optional"><a class="header" href="#creating-temporary-objects-via-direct-initialization-optional">Creating temporary objects via direct initialization Optional</a></h2>
+<p>Since we can create temporary objects via direct-list-initialization, you might be wondering whether you can create temporary objects via the other initialization forms. There is no syntax to create temporary objects using copy initialization.</p>
+<p>However, you can create temporary objects using direct initialization. For example:</p>
+<pre><code class="language-cpp">Foo (1, 2); //  temporary Foo, direct-initialized with (1, 2) (similar to `Foo { 1, 2 }`)
+</code></pre>
+<p>Putting aside the fact that it looks like a function call at first glance, this produces the same result as <code>Foo { 1, 2 }</code> (just with no narrowing conversion prevention). Pretty normal right?</p>
+<p>We’ll now spend the remainder of this section showing you why you probably shouldn’t do this.</p>
+<blockquote>
+<p><strong>Author’s note</strong></p>
+<p>Author’s note</p>
+<p>This is mostly here for your reading pleasure, not as something you need to digest, memorize, and be able to explain.</p>
+<p>Even if you don’t have that much fun reading it, it might help you understand why list initialization is preferred in modern C++!</p>
+</blockquote>
+<p>Now let’s look at the case where we don’t have any arguments:</p>
+<pre><code class="language-cpp">Foo();     // temporary Foo, value-initialized (identical to `Foo {}`)
+</code></pre>
+<p>You probably didn’t expect that <code>Foo()</code> would create a value-initialized temporary just like <code>Foo {}</code> does. And that’s probably because this syntax has a completely different meaning when used with a named variable!</p>
+<pre><code class="language-cpp">Foo bar{}; // definition of variable bar, value-initialized
+Foo bar(); // declaration of function bar that has no parameters and returns a Foo (inconsistent with `Foo bar{}` and `Foo()`)
+</code></pre>
+<p>Ready to get real weird?!?</p>
+<pre><code class="language-cpp">Foo(1);    // Function-style cast of literal 1, returns temporary Foo (similar to `Foo { 1 }`)
+Foo(bar);  // Defines variable bar of type Foo (inconsistent with `Foo { bar }` and `Foo(1)`)
+</code></pre>
+<p>Wait, what?</p>
+<ul>
+<li>The version with literal <code>1</code> in parentheses behaves consistently with all the other versions of this syntax that create temporary objects.</li>
+<li>The version with identifier <code>bar</code> in parentheses defines a variable named <code>bar</code> (identical to <code>Foo bar;</code>). If <code>bar</code> is already defined, this will cause a redefinition compile-error.</li>
+</ul>
+<p>The compiler knows that literals can’t be used as identifiers for variables, so it’s able to treat that case consistently with the others.</p>
+<blockquote>
+<p><strong>As an aside…</strong></p>
+<p>As an aside…</p>
+<p>If you’re wondering why <code>Foo(bar);</code> behaves identically to <code>Foo bar;</code>…</p>
+<p>One of the most common uses of parentheses is to group things. For example, in mathematics: <code>(1 + 2) * 3</code> produces the result <code>9</code>, which is different than <code>1 + 2 * 3</code>, which produces the result <code>7</code>. If we can do <code>(1 + 2) * 3</code>, there’s no reason we shouldn’t be able to do <code>(3) * 3</code>.</p>
+<p>For similar reasons, the declaration syntax allows parenthesis-based grouping, and those groups can have a single thing in them. <code>Foo(bar)</code> is interpreted as a variable definition consisting of type <code>Foo</code> followed by a group that consists only of identifier <code>bar</code>. It just looks funny to us, mainly because the parentheses don’t serve any useful purpose in this case. But there’s no compelling reason to disallow doing so (as that would just make the syntax of the language that much more complicated).</p>
+</blockquote>
+<blockquote>
+<p><strong>For advanced readers</strong></p>
+<p>For advanced readers</p>
+<p>Let’s look at a slightly more complicated case. Consider the statement <code>Foo * bar();</code>. By using (or not using) parentheses, we can completely change the meaning of this statement:</p>
+<ul>
+<li><code>Foo * bar();</code> (with no additional parenthesis) groups the <code>*</code> with <code>Foo</code> by default. <code>Foo* bar();</code> is the declaration of a function named <code>bar</code> that has no parameters and returns a <code>Foo*</code>.</li>
+<li><code>Foo (*bar)();</code> explicitly groups the <code>*</code> with <code>bar</code>. This defines a function pointer named <code>bar</code> that holds the address of a function that takes no parameters and returns a <code>Foo</code>.</li>
+<li><code>Foo (* bar());</code> is the same as <code>Foo * bar();</code> -- the parentheses are superfluous in this case.</li>
+</ul>
+<p>Finally:</p>
+<ul>
+<li><code>(Foo *) bar();</code>. You might expect this to be the same as <code>Foo* bar()</code>, but this is actually an expression statement that calls function <code>bar()</code>, C-style casts the return value to type <code>Foo*</code>, and then discards it!</li>
+</ul>
+<p>C++ is so weird sometimes.</p>
+</blockquote>
+<blockquote>
+<p><strong>Key insight</strong></p>
+<p>Key insight</p>
+<p>Parentheses are complex because they are so overloaded, and used in the syntax of vastly different things. This includes function calls, direct-initialization of objects, value initialization of temporaries, C-style casts, groupings of symbols/identifiers, and variable definitions. So when you see parentheses in some syntax… it’s not always obvious what you’re going to get!</p>
+<p>On the other hand, if we see curly braces, we know we’re dealing with objects.</p>
+</blockquote>
+<p>Okay, fun over. Back to the boring stuff.</p>
+<h2 id="temporary-objects-and-return-by-value"><a class="header" href="#temporary-objects-and-return-by-value">Temporary objects and return by value</a></h2>
+<p>When a function returns by value, the object that is returned is a temporary object (initialized using the value or object identified in the return statement).</p>
+<p>Here are some examples:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+class IntPair
+{
+private:
+    int m_x{};
+    int m_y{};
+
+public:
+    IntPair(int x, int y)
+        : m_x { x }, m_y { y }
+    {}
+
+    int x() const { return m_x; }
+    int y() const { return m_y; }
+};
+
+void print(IntPair p)
+{
+    std::cout &lt;&lt; "(" &lt;&lt; p.x() &lt;&lt; ", " &lt;&lt; p.y() &lt;&lt; ")\n";        
+}
+
+// Case 1: Create named variable and return
+IntPair ret1()
+{
+    IntPair p { 3, 4 };
+    return p; // returns temporary object (initialized using p)
+}
+
+// Case 2: Create temporary IntPair and return
+IntPair ret2()
+{
+    return IntPair { 5, 6 }; // returns temporary object (initialized using another temporary object)
+}
+
+// Case 3: implicitly convert { 7, 8 } to IntPair and return
+IntPair ret3()
+{
+    return { 7, 8 }; // returns temporary object (initialized using another temporary object)
+}
+     
+int main()
+{
+    print(ret1());
+    print(ret2());
+    print(ret3());
+
+    return 0;
+}
+</code></pre>
+<p>In case 1, when we <code>return p</code>, a temporary object is created and initialized using <code>p</code>.</p>
+<p>The cases in this example are analogous to the cases in the prior example.</p>
+<h2 id="a-few-notes"><a class="header" href="#a-few-notes">A few notes</a></h2>
+<p>First, just as in the case of an <code>int</code>, when used in an expression, a temporary class object is an rvalue. Thus, such objects can only be used where rvalue expressions are accepted.</p>
+<p>Second, temporary objects are created at the point of definition, and destroyed at the end of the full expression in which they are defined . A full expression is an expression that is not a subexpression.</p>
+<h2 id="static_cast-vs-explicit-instantiation-of-a-temporary-object"><a class="header" href="#static_cast-vs-explicit-instantiation-of-a-temporary-object"><code>static_cast</code> vs explicit instantiation of a temporary object</a></h2>
+<p>In cases where we need to convert a value from one type to another but narrowing conversions aren’t involved, we often have the option to use either <code>static_cast</code> or explicit instantiation of a temporary object.</p>
+<p>For example:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+    char c { 'a' };
+
+    std::cout &lt;&lt; static_cast&lt;int&gt;( c ) &lt;&lt; '\n'; // static_cast returns a temporary int direct-initialized with value of c
+    std::cout &lt;&lt; int { c } &lt;&lt; '\n';             // explicitly creates a temporary int list-initialized with value c
+
+    return 0;
+}
+</code></pre>
+<p><code>static_cast&lt;int&gt;(c)</code> returns a temporary <code>int</code> that is direct-initialized with the value of <code>c</code>. <code>int { c }</code> creates a temporary <code>int</code> that is list-initialized with the value of <code>c</code>. Either way, we get a temporary int initialized with the value of <code>c</code>, which is what we want.</p>
+<p>Let’s show a slightly more complex example:</p>
+<p>printString.h:</p>
+<pre><code class="language-cpp">#include &lt;string&gt;
+void printString(const std::string &amp;s)
+{
+    std::cout &lt;&lt; s &lt;&lt; '\n';
+}
+</code></pre>
+<p>main.cpp:</p>
+<pre><code class="language-cpp">#include "printString.h"
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;string_view&gt;
+
+int main()
+{
+    std::string_view sv { "Hello" };
+
+    // We want to print sv using the printString() function
+    
+//    printString(sv); // compile error: a std::string_view won't implicitly convert to a std::string
+
+    printString( static_cast&lt;std::string&gt;(sv) ); // Case 1: static_cast returns a temporary std::string direct-initialized with sv
+    printString( std::string { sv } );           // Case 2: explicitly creates a temporary std::string list-initialized with sv
+    printString( std::string ( sv ) );           // Case 3: C-style cast returns temporary std::string direct-initialized with sv (avoid this one!)
+
+    return 0;
+}
+</code></pre>
+<p>Let’s say the code in header file <code>printString.h</code> isn’t code we can modify (e.g. because it’s distributed with some 3rd party library we’re using, and has been written to be compatible with C++11, which doesn’t support <code>std::string_view</code>). So how do we call <code>printString()</code> with <code>sv</code>? Because a <code>std::string_view</code> won’t implicitly convert to a <code>std::string</code> (for efficiency reasons), we can’t just use <code>sv</code> as an argument. We must use some explicit form of conversion.</p>
+<p>In case 1, <code>static_cast&lt;std::string&gt;(sv)</code> invokes the static_cast operator to cast <code>sv</code> to a <code>std::string</code>. This returns a temporary <code>std::string</code> that has been direct-initialized using <code>sv</code>, which is then used as the argument for the function call.</p>
+<p>In case 2, <code>std::string { sv }</code> creates a temporary <code>std::string</code> that is list-initialized using <code>sv</code>. Since this is an explicit construction, the conversion is allowed. This temporary is then used as the argument for the function call.</p>
+<p>In case 3, <code>std::string ( sv )</code> use a C-style cast to cast <code>sv</code> to a <code>std::string</code>. Although this works here, C-style casting can be dangerous in general and should be avoided. Notice how similar this looks to the prior case!</p>
+<div id="admonition-best-practices" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices"></a>
+</div>
+<div>
+<p>Best practice</p>
+<p>As a quick rule of thumb: Prefer <code>static_cast</code> when converting to a fundamental type, and a list-initialized temporary when converting to a class type.</p>
+<p>Prefer <code>static_cast</code> when to create a temporary object when any of the following are true:</p>
+<ul>
+<li>We need to performing a narrowing conversion.</li>
+<li>We want to make it really obvious that we’re converting to a type that will result in some different behavior (e.g. a <code>char</code> to an <code>int</code>).</li>
+<li>We want to use direct-initialization for some reason (e.g. to avoid list constructors taking precedence).</li>
+</ul>
+<p>Prefer creating a new object (using list initialization) to create a temporary object when any of the following are true:</p>
+<ul>
+<li>We want to use list-initialization (e.g. for the protection against narrowing conversions, or because we need to invoke a list constructor).</li>
+<li>We need to provide additional arguments to a constructor to facilitate the conversion.</li>
+</ul>
+</div>
+</div>
+<blockquote>
+<p><strong>Related content</strong></p>
+<p>Related content</p>
+<p>We cover list constructors in lesson <a href="introduction-to-stdvector-and-list-constructors">16.2 -- Introduction to std::vector and list constructors</a>.</p>
+</blockquote>
+<p>AI CONTENT END 1</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="delegating-constructors.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="introduction-to-the-copy-constructor.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="delegating-constructors.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="introduction-to-the-copy-constructor.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

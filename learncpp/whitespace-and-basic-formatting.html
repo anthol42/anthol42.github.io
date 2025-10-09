@@ -1,0 +1,492 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Whitespace and basic formatting - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="whitespace-and-basic-formatting"><a class="header" href="#whitespace-and-basic-formatting">Whitespace and basic formatting</a></h1>
+<p><strong>Whitespace</strong> is a term that refers to characters that are used for formatting purposes. In C++, this refers primarily to spaces, tabs, and newlines. Whitespace in C++ is generally used for 3 things: separating certain language elements, inside text, and for formatting code.</p>
+<h2 id="some-language-elements-must-be-whitespace-separated"><a class="header" href="#some-language-elements-must-be-whitespace-separated">Some language elements must be whitespace-separated</a></h2>
+<p>The syntax of the language requires that some elements are separated by whitespace. This mostly occurs when two keywords or identifiers must be placed consecutively, so the compiler can tell them apart.</p>
+<p>For example, a variable declaration must be whitespace separated:</p>
+<pre><code class="language-cpp">int x; // int and x must be whitespace separated
+</code></pre>
+<p>If we typed <code>intx</code> instead, the compiler would interpret this as an identifier, and then complain it doesn’t know what identifier <code>intx</code> is.</p>
+<p>As another example, a function’s return type and name must be whitespace separated:</p>
+<pre><code class="language-cpp">int main(); // int and main must be whitespace separated
+</code></pre>
+<p>When whitespace is required as a separator, the compiler doesn’t care how much whitespace is used, as long as some exists.</p>
+<p>The following variable definitions are all valid:</p>
+<pre><code class="language-cpp">int x;
+int                y;
+            int 
+z;
+</code></pre>
+<p>In certain cases, newlines are used as a separator. Single-line comments are terminated by a newline.</p>
+<p>As an example, doing something like this will get you in trouble:</p>
+<pre><code class="language-cpp">std::cout &lt;&lt; "Hello world!"; // This is part of the comment and
+this is not part of the comment
+</code></pre>
+<p>Preprocessor directives (e.g. <code>#include &lt;iostream&gt;</code>) must be placed on separate lines:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+</code></pre>
+<h2 id="quoted-text-takes-the-amount-of-whitespace-literally"><a class="header" href="#quoted-text-takes-the-amount-of-whitespace-literally">Quoted text takes the amount of whitespace literally</a></h2>
+<p>Inside quoted text, the amount of whitespace is taken literally.</p>
+<pre><code class="language-cpp">std::cout &lt;&lt; "Hello world!";
+</code></pre>
+<p>is different than:</p>
+<pre><code class="language-cpp">std::cout &lt;&lt; "Hello          world!";
+</code></pre>
+<p>Newlines are not allowed in quoted text:</p>
+<pre><code class="language-cpp">std::cout &lt;&lt; "Hello
+     world!"; // Not allowed!
+</code></pre>
+<p>Quoted text separated by nothing but whitespace (spaces, tabs, or newlines) will be concatenated:</p>
+<pre><code class="language-cpp">std::cout &lt;&lt; "Hello "
+     "world!"; // prints "Hello world!"
+</code></pre>
+<h2 id="using-whitespace-to-format-code"><a class="header" href="#using-whitespace-to-format-code">Using whitespace to format code</a></h2>
+<p>Whitespace is otherwise generally ignored. This means we can use whitespace wherever we like to format our code in order to make it easier to read.</p>
+<p>For example, the following is pretty hard to read:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+int main(){std::cout&lt;&lt;"Hello world";return 0;}
+</code></pre>
+<p>The following is better (but still pretty dense):</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+int main() {
+std::cout &lt;&lt; "Hello world";
+return 0;
+}
+</code></pre>
+<p>And the following is even better:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+    std::cout &lt;&lt; "Hello world";
+
+    return 0;
+}
+</code></pre>
+<p>Statements may be split over multiple lines if desired:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+    std::cout
+        &lt;&lt; "Hello world"; // works fine
+    return 0;
+}
+</code></pre>
+<p>This can be useful for particularly long statements.</p>
+<h2 id="basic-formatting"><a class="header" href="#basic-formatting">Basic formatting</a></h2>
+<p>Unlike some other languages, C++ does not enforce any kind of formatting restrictions on the programmer. For this reason, we say that C++ is a whitespace-independent language.</p>
+<p>This is a mixed blessing. On one hand, it’s nice to have the freedom to do whatever you like. On the other hand, many different methods of formatting C++ programs have been developed throughout the years, and you will find (sometimes significant and distracting) disagreement on which ones are best. Our basic rule of thumb is that the best styles are the ones that produce the most readable code, and provide the most consistency.</p>
+<p>Here are our recommendations for basic formatting:</p>
+<ol>
+<li>It’s fine to use either tabs or spaces for indentation (most IDEs have a setting where you can convert a tab press into the appropriate number of spaces). Developers who prefer spaces tend to do so because it ensures that code is precisely aligned as intended regardless of which editor or settings are used. Proponents of using tabs wonder why you wouldn’t use the character designed to do indentation for indentation, especially as you can set the width to whatever your personal preference is. There’s no right answer here -- and debating it is like arguing whether cake or pie is better. It ultimately comes down to personal preference.</li>
+</ol>
+<p>Either way, we recommend you set your tabs to 4 spaces worth of indentation. Some IDEs default to 3 spaces of indentation, which is fine too.</p>
+<ol start="2">
+<li>There are two conventional styles for function braces.</li>
+</ol>
+<p>Many developers prefer putting the opening curly brace on the same line as the statement:</p>
+<pre><code class="language-cpp">int main() {
+    // statements here
+}
+</code></pre>
+<p>The justification for this is that it reduces the amount of vertical whitespace (as you aren’t devoting an entire line to an opening curly brace), so you can fit more code on a screen. This enhances code comprehension, as you don’t need to scroll as much to understand what the code is doing.</p>
+<p>However, in this tutorial series, we’ll use the common alternative, where the opening brace appears on its own line:</p>
+<pre><code class="language-cpp">int main()
+{
+    // statements here
+}
+</code></pre>
+<p>This enhances readability, and is less error prone since your brace pairs should always be indented at the same level. If you get a compiler error due to a brace mismatch, it’s very easy to see where.</p>
+<ol start="3">
+<li>Each statement within curly braces should start one tab in from the opening brace of the function it belongs to. For example:</li>
+</ol>
+<pre><code class="language-cpp">int main()
+{
+    std::cout &lt;&lt; "Hello world!\n"; // tabbed in one tab (4 spaces)
+    std::cout &lt;&lt; "Nice to meet you.\n"; // tabbed in one tab (4 spaces)
+}
+</code></pre>
+<ol start="4">
+<li>Lines should not be too long. Typically, 80 characters has been the de facto standard for the maximum length a line should be. If a line is going to be longer, it should be split (at a reasonable spot) into multiple lines. This can be done by indenting each subsequent line with an extra tab, or if the lines are similar, by aligning it with the line above (whichever is easier to read).</li>
+</ol>
+<pre><code class="language-cpp">int main()
+{
+    std::cout &lt;&lt; "This is a really, really, really, really, really, really, really, " 
+        "really long line\n"; // one extra indentation for continuation line
+
+    std::cout &lt;&lt; "This is another really, really, really, really, really, really, really, "
+                 "really long line\n"; // text aligned with the previous line for continuation line
+
+    std::cout &lt;&lt; "This one is short\n";
+}
+</code></pre>
+<p>This makes your lines easier to read. On modern wide-screen monitors, it also allows you to place two windows with similar code side by side and compare them more easily.</p>
+<div id="admonition-best-practices" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices"></a>
+</div>
+<div>
+<p>Best practice</p>
+<p>Consider keeping your lines to 80 chars or less in length.</p>
+</div>
+</div>
+<blockquote>
+<p><strong>Tip</strong></p>
+<p>Tip</p>
+<p>Many editors have a built-in feature (or plugin/extension) that will show a line (called a “column guide”) at a given column (e.g. at 80 characters), so you can easily see when your lines are getting too long. To see if your editor supports this, do a search on your editor’s name + “Column guide”.</p>
+</blockquote>
+<ol start="5">
+<li>If a long line is split with an operator (eg. &lt;&lt; or +), the operator should be placed at the beginning of the next line, not the end of the current line</li>
+</ol>
+<pre><code class="language-cpp">    std::cout &lt;&lt; 3 + 4
+        + 5 + 6
+        * 7 * 8;
+</code></pre>
+<p>This helps make it clearer that subsequent lines are continuations of the previous lines, and allows you to align the operators on the left, which makes for easier reading.</p>
+<ol start="6">
+<li>Use whitespace to make your code easier to read by aligning values or comments or adding spacing between blocks of code.</li>
+</ol>
+<p>Harder to read:</p>
+<pre><code class="language-cpp">cost = 57;
+pricePerItem = 24;
+value = 5;
+numberOfItems = 17;
+</code></pre>
+<p>Easier to read:</p>
+<pre><code class="language-cpp">cost          = 57;
+pricePerItem  = 24;
+value         = 5;
+numberOfItems = 17;
+</code></pre>
+<p>Harder to read:</p>
+<pre><code class="language-cpp">std::cout &lt;&lt; "Hello world!\n"; // cout lives in the iostream library
+std::cout &lt;&lt; "It is very nice to meet you!\n"; // these comments make the code hard to read
+std::cout &lt;&lt; "Yeah!\n"; // especially when lines are different lengths
+</code></pre>
+<p>Easier to read:</p>
+<pre><code class="language-cpp">std::cout &lt;&lt; "Hello world!\n";                  // cout lives in the iostream library
+std::cout &lt;&lt; "It is very nice to meet you!\n";  // these comments are easier to read
+std::cout &lt;&lt; "Yeah!\n";                         // especially when all lined up
+</code></pre>
+<p>Harder to read:</p>
+<pre><code class="language-cpp">// cout lives in the iostream library
+std::cout &lt;&lt; "Hello world!\n";
+// these comments make the code hard to read
+std::cout &lt;&lt; "It is very nice to meet you!\n";
+// especially when all bunched together
+std::cout &lt;&lt; "Yeah!\n";
+</code></pre>
+<p>Easier to read:</p>
+<pre><code class="language-cpp">// cout lives in the iostream library
+std::cout &lt;&lt; "Hello world!\n";
+
+// these comments are easier to read
+std::cout &lt;&lt; "It is very nice to meet you!\n";
+
+// when separated by whitespace
+std::cout &lt;&lt; "Yeah!\n";
+</code></pre>
+<p>We will follow these conventions throughout this tutorial, and they will become second nature to you. As we introduce new topics to you, we will introduce new style recommendations to go with those features.</p>
+<p>Ultimately, C++ gives you the power to choose whichever style you are most comfortable with, or think is best. However, we highly recommend you utilize the same style that we use for our examples. It has been battle tested by thousands of programmers over billions of lines of code, and is optimized for success.</p>
+<p>One exception: If you are working in someone else’s code base, adopt their styles. It’s better to favor consistency than your preferences.</p>
+<div id="admonition-best-practices-1" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-1-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-1-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices-1"></a>
+</div>
+<div>
+<p>Best practice</p>
+<p>When working in an existing project, be consistent with whatever style has already been adopted.</p>
+</div>
+</div>
+<h2 id="automatic-formatting"><a class="header" href="#automatic-formatting">Automatic formatting</a></h2>
+<p>Most modern IDEs will help you format your code as you type it in (e.g. when you create a function, the IDE will automatically indent the statements inside the function body).</p>
+<p>However, as you add or remove code, or change the IDE’s default formatting, or paste in a block of code that has different formatting, the formatting can get messed up. Fixing the formatting for part or all of a file can be a headache. Fortunately, modern IDEs typically contain an automatic formatting feature that will reformat either a selection (highlighted with your mouse) or an entire file.</p>
+<blockquote>
+<p><strong>For Visual Studio users</strong></p>
+<p>For Visual Studio users</p>
+<p>In Visual Studio, the automatic formatting options can be found under <em>Edit &gt; Advanced &gt; Format Document</em> and <em>Edit &gt; Advanced &gt; Format Selection</em>.</p>
+</blockquote>
+<blockquote>
+<p><strong>For Code::Blocks users</strong></p>
+<p>For Code::Blocks users</p>
+<p>In Code::Blocks, the automatic formatting options can be found under <em>Right mouse click &gt; Format use AStyle</em>.</p>
+</blockquote>
+<p>For easier access, we recommend adding a keyboard shortcut to auto-format the active file.</p>
+<p>There are also external tools that can be used to automatically format code. <a href="https://clang.llvm.org/docs/ClangFormat.html">clang-format</a> is a popular one.</p>
+<div id="admonition-best-practices-2" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-2-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-2-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices-2"></a>
+</div>
+<div>
+<p>Best practice</p>
+<p>Using the automatic formatting feature is highly recommended to keep your code’s formatting style consistent.</p>
+</div>
+</div>
+<h2 id="style-guides"><a class="header" href="#style-guides">Style guides</a></h2>
+<p>A <strong>style guide</strong> is a concise, opinionated document containing (sometimes arbitrary) programming conventions, formatting guidelines, and best practices. The goal of a style guide is to ensure that all developers on a project are programming in a consistent manner.</p>
+<p>Some commonly referenced C++ style guides include:</p>
+<ul>
+<li><a href="http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines">C++ Core Guidelines</a>, maintained by Bjarne Stroustrup and Herb Sutter.</li>
+<li><a href="https://google.github.io/styleguide/cppguide.html">Google</a>.</li>
+<li><a href="https://llvm.org/docs/CodingStandards.html">LLVM</a></li>
+<li><a href="https://gcc.gnu.org/codingconventions.html">GCC/GNU</a></li>
+</ul>
+<p>We generally favor the C++ Core Guidelines, as they are up to date and widely applicable.</p>
+<p>AI CONTENT END 1</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="keywords-and-naming-identifiers.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="introduction-to-literals-and-operators.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="keywords-and-naming-identifiers.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="introduction-to-literals-and-operators.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

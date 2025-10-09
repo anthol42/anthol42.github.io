@@ -1,0 +1,506 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Default arguments - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="default-arguments"><a class="header" href="#default-arguments">Default arguments</a></h1>
+<p>A <strong>default argument</strong> is a default value provided for a function parameter. For example:</p>
+<pre><code class="language-cpp">void print(int x, int y=10) // 10 is the default argument
+{
+    std::cout &lt;&lt; "x: " &lt;&lt; x &lt;&lt; '\n';
+    std::cout &lt;&lt; "y: " &lt;&lt; y &lt;&lt; '\n';
+}
+</code></pre>
+<p>When making a function call, the caller can optionally provide an argument for any function parameter that has a default argument. If the caller provides an argument, the value of the argument in the function call is used. If the caller does not provide an argument, the value of the default argument is used.</p>
+<p>Consider the following program:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+void print(int x, int y=4) // 4 is the default argument
+{
+    std::cout &lt;&lt; "x: " &lt;&lt; x &lt;&lt; '\n';
+    std::cout &lt;&lt; "y: " &lt;&lt; y &lt;&lt; '\n';
+}
+
+int main()
+{
+    print(1, 2); // y will use user-supplied argument 2
+    print(3); // y will use default argument 4, as if we had called print(3, 4)
+
+    return 0;
+}
+</code></pre>
+<p>This program produces the following output:</p>
+<pre><code class="language-cpp">x: 1
+y: 2
+x: 3
+y: 4
+</code></pre>
+<p>In the first function call, the caller supplied explicit arguments for both parameters, so those argument values are used. In the second function call, the caller omitted the second argument, so the default value of <code>4</code> was used.</p>
+<p>Note that you must use the equals sign to specify a default argument. Using parenthesis or brace initialization won’t work:</p>
+<pre><code class="language-cpp">void foo(int x = 5);   // ok
+void goo(int x ( 5 )); // compile error
+void boo(int x { 5 }); // compile error
+</code></pre>
+<p>Perhaps surprisingly, default arguments are handled by the compiler at the call site. In the above example, when the compiler sees <code>print(3)</code>, it will rewrite this function call as <code>print(3, 4)</code>, so that the number of arguments matches the number of parameters. The rewritten function call then works as per usual.</p>
+<blockquote>
+<p><strong>Key insight</strong></p>
+<p>Key insight</p>
+<p>Default arguments are inserted by the compiler at site of the function call.</p>
+</blockquote>
+<p>Default arguments are frequently used in C++, and you’ll see them a lot in code you encounter (and in future lessons).</p>
+<h2 id="when-to-use-default-arguments"><a class="header" href="#when-to-use-default-arguments">When to use default arguments</a></h2>
+<p>Default arguments are an excellent option when a function needs a value that has a reasonable default value, but for which you want to let the caller override if they wish.</p>
+<p>For example, here are a couple of function prototypes for which default arguments might be commonly used:</p>
+<pre><code class="language-cpp">int rollDie(int sides=6);
+void openLogFile(std::string filename="default.log");
+</code></pre>
+<blockquote>
+<p><strong>Author’s note</strong></p>
+<p>Author’s note</p>
+<p>Because the user can choose whether to supply a specific argument value or use the default value, a parameter with a default value provided is sometimes called an <strong>optional parameter</strong>. However, the term <em>optional parameter</em> is also used to refer to several other types of parameters (including parameters passed by address, and parameters using <code>std::optional</code>), so we recommend avoiding this term.</p>
+</blockquote>
+<p>Default arguments are also useful in cases where we need to add a new parameter to an existing function. If we add a new parameter without a default argument, it will break all existing function calls (which aren’t supplying an argument for that parameter). This can result in a lot of updating of existing function calls (and may not even be possible if you don’t own the calling code). However, if we add a new parameter with a default argument instead, all existing function calls will still work (as they will use the default argument for the parameter), while still letting new calls to the function specify an explicit argument if desired.</p>
+<h2 id="multiple-default-arguments"><a class="header" href="#multiple-default-arguments">Multiple default arguments</a></h2>
+<p>A function can have multiple parameters with default arguments:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+void print(int x=10, int y=20, int z=30)
+{
+    std::cout &lt;&lt; "Values: " &lt;&lt; x &lt;&lt; " " &lt;&lt; y &lt;&lt; " " &lt;&lt; z &lt;&lt; '\n';
+}
+
+int main()
+{
+    print(1, 2, 3); // all explicit arguments
+    print(1, 2); // rightmost argument defaulted
+    print(1); // two rightmost arguments defaulted
+    print(); // all arguments defaulted
+
+    return 0;
+}
+</code></pre>
+<p>The following output is produced:</p>
+<pre><code class="language-cpp">Values: 1 2 3
+Values: 1 2 30
+Values: 1 20 30
+Values: 10 20 30
+</code></pre>
+<p>C++ does not (as of C++23) support a function call syntax such as <code>print(,,3)</code> (as a way to provide an explicit value for <code>z</code> while using the default arguments for <code>x</code> and <code>y</code>. This has three major consequences:</p>
+<ol>
+<li>In a function call, any explicitly provided arguments must be the leftmost arguments (arguments with defaults cannot be skipped).</li>
+</ol>
+<p>For example:</p>
+<pre><code class="language-cpp">void print(std::string_view sv="Hello", double d=10.0);
+
+int main()
+{
+    print();           // okay: both arguments defaulted
+    print("Macaroni"); // okay: d defaults to 10.0
+    print(20.0);       // error: does not match above function (cannot skip argument for sv)
+
+    return 0;
+}
+</code></pre>
+<ol start="2">
+<li>If a parameter is given a default argument, all subsequent parameters (to the right) must also be given default arguments.</li>
+</ol>
+<p>The following is not allowed:</p>
+<pre><code class="language-cpp">void print(int x=10, int y); // not allowed
+</code></pre>
+<div id="admonition-rule" class="admonition admonish-tip" role="note" aria-labelledby="admonition-rule-title">
+<div class="admonition-title">
+<div id="admonition-rule-title">
+<p>Rule</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-rule"></a>
+</div>
+<div>
+<p>Rule</p>
+<p>If a parameter is given a default argument, all subsequent parameters (to the right) must also be given default arguments.</p>
+</div>
+</div>
+<ol start="3">
+<li>If more than one parameter has a default argument, the leftmost parameter should be the one most likely to be explicitly set by the user.</li>
+</ol>
+<h2 id="default-arguments-can-not-be-redeclared-and-must-be-declared-before-use"><a class="header" href="#default-arguments-can-not-be-redeclared-and-must-be-declared-before-use">Default arguments can not be redeclared, and must be declared before use</a></h2>
+<p>Once declared, a default argument can not be redeclared in the same translation unit. That means for a function with a forward declaration and a function definition, the default argument can be declared in either the forward declaration or the function definition, but not both.</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+void print(int x, int y=4); // forward declaration
+
+void print(int x, int y=4) // compile error: redefinition of default argument
+{
+    std::cout &lt;&lt; "x: " &lt;&lt; x &lt;&lt; '\n';
+    std::cout &lt;&lt; "y: " &lt;&lt; y &lt;&lt; '\n';
+}
+</code></pre>
+<p>The default argument must also be declared in the translation unit before it can be used:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+void print(int x, int y); // forward declaration, no default argument
+
+int main()
+{
+    print(3); // compile error: default argument for y hasn't been defined yet
+
+    return 0;    
+}
+
+void print(int x, int y=4)
+{
+    std::cout &lt;&lt; "x: " &lt;&lt; x &lt;&lt; '\n';
+    std::cout &lt;&lt; "y: " &lt;&lt; y &lt;&lt; '\n';
+}
+</code></pre>
+<p>The best practice is to declare the default argument in the forward declaration and not in the function definition, as the forward declaration is more likely to be seen by other files and included before use (particularly if it’s in a header file).</p>
+<p>in foo.h:</p>
+<pre><code class="language-cpp">#ifndef FOO_H
+#define FOO_H
+void print(int x, int y=4);
+#endif
+</code></pre>
+<p>in main.cpp:</p>
+<pre><code class="language-cpp">#include "foo.h"
+#include &lt;iostream&gt;
+
+void print(int x, int y)
+{
+    std::cout &lt;&lt; "x: " &lt;&lt; x &lt;&lt; '\n';
+    std::cout &lt;&lt; "y: " &lt;&lt; y &lt;&lt; '\n';
+}
+
+int main()
+{
+    print(5);
+
+    return 0;
+}
+</code></pre>
+<p>Note that in the above example, we’re able to use the default argument for function <code>print()</code> because <em>main.cpp</em> #includes <em>foo.h</em>, which has the forward declaration that defines the default argument.</p>
+<div id="admonition-best-practices" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices"></a>
+</div>
+<div>
+<p>Best practice</p>
+<p>If the function has a forward declaration (especially one in a header file), put the default argument there. Otherwise, put the default argument in the function definition.</p>
+</div>
+</div>
+<h2 id="default-arguments-and-function-overloading"><a class="header" href="#default-arguments-and-function-overloading">Default arguments and function overloading</a></h2>
+<p>Functions with default arguments may be overloaded. For example, the following is allowed:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string_view&gt;
+
+void print(std::string_view s)
+{
+    std::cout &lt;&lt; s &lt;&lt; '\n';
+}
+
+void print(char c = ' ')
+{
+    std::cout &lt;&lt; c &lt;&lt; '\n';
+}
+
+int main()
+{
+    print("Hello, world"); // resolves to print(std::string_view)
+    print('a');            // resolves to print(char)
+    print();               // resolves to print(char)
+
+    return 0;
+}
+</code></pre>
+<p>The function call to <code>print()</code> actually calls <code>print(char)</code>, which acts as if the user had explicitly called <code>print(' ')</code>.</p>
+<p>Now consider this case:</p>
+<pre><code class="language-cpp">void print(int x);                  // signature print(int)
+void print(int x, int y = 10);      // signature print(int, int)
+void print(int x, double y = 20.5); // signature print(int, double)
+</code></pre>
+<p>Default values are not part of a function’s signature, so these function declarations are differentiated overloads.</p>
+<blockquote>
+<p><strong>Related content</strong></p>
+<p>Related content</p>
+<p>We discuss function overload differentiation in lesson <a href="function-overload-differentiation">11.2 -- Function overload differentiation</a></p>
+</blockquote>
+<h2 id="default-arguments-can-lead-to-ambiguous-matches"><a class="header" href="#default-arguments-can-lead-to-ambiguous-matches">Default arguments can lead to ambiguous matches</a></h2>
+<p>Default arguments can easily lead to ambiguous function calls:</p>
+<pre><code class="language-cpp">void foo(int x = 0)
+{
+}
+
+void foo(double d = 0.0)
+{
+}
+
+int main()
+{
+    foo(); // ambiguous function call
+
+    return 0;
+}
+</code></pre>
+<p>In this example, the compiler can’t tell whether <code>foo()</code> should resolve to <code>foo(0)</code> or <code>foo(0.0)</code>.</p>
+<p>Here’s a slightly more complex example:</p>
+<pre><code class="language-cpp">void print(int x);                  // signature print(int)
+void print(int x, int y = 10);      // signature print(int, int)
+void print(int x, double y = 20.5); // signature print(int, double) 
+
+int main()
+{
+    print(1, 2);   // will resolve to print(int, int)
+    print(1, 2.5); // will resolve to print(int, double) 
+    print(1);      // ambiguous function call
+
+    return 0;
+}
+</code></pre>
+<p>For the call <code>print(1)</code>, the compiler is unable to tell whether this resolve to <code>print(int)</code>, <code>print(int, int)</code>, or <code>print(int, double)</code>.</p>
+<p>In the case where we mean to call <code>print(int, int)</code> or <code>print(int, double)</code> we can always explicitly specify the second parameter. But what if we want to call <code>print(int)</code>? It’s not obvious how we can do so.</p>
+<h2 id="default-arguments-dont-work-for-functions-called-through-function-pointers-advanced"><a class="header" href="#default-arguments-dont-work-for-functions-called-through-function-pointers-advanced">Default arguments don’t work for functions called through function pointers Advanced</a></h2>
+<p>We cover this topic in lesson <a href="function-pointers.html">20.1 -- Function Pointers</a>. Because default arguments are not considered using this method, this also provides a workaround to call a function that would otherwise be ambiguous due to default arguments.</p>
+<p>AI CONTENT END 1</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="deleting-functions.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="function-templates.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="deleting-functions.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="function-templates.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

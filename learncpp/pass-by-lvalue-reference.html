@@ -1,0 +1,424 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Pass by lvalue reference - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="pass-by-lvalue-reference"><a class="header" href="#pass-by-lvalue-reference">Pass by lvalue reference</a></h1>
+<p>In the previous lessons, we introduced lvalue references (<a href="lvalue-references.html">12.3 -- Lvalue references</a>) and lvalue references to const (<a href="lvalue-references-to-const.html">12.4 -- Lvalue references to const</a>). In isolation, these may not have seemed very useful -- why create an alias to a variable when you can just use the variable itself?</p>
+<p>In this lesson, we’ll finally provide some insight into what makes references useful. And then starting later in this chapter, you’ll see references used regularly.</p>
+<p>First, some context. Back in lesson <a href="introduction-to-function-parameters-and-arguments.html">2.4 -- Introduction to function parameters and arguments</a> we discussed <code>pass by value</code>, where an argument passed to a function is copied into the function’s parameter:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+void printValue(int y)
+{
+    std::cout &lt;&lt; y &lt;&lt; '\n';
+} // y is destroyed here
+
+int main()
+{
+    int x { 2 };
+
+    printValue(x); // x is passed by value (copied) into parameter y (inexpensive)
+
+    return 0;
+}
+</code></pre>
+<p>In the above program, when <code>printValue(x)</code> is called, the value of <code>x</code> (<code>2</code>) is <em>copied</em> into parameter <code>y</code>. Then, at the end of the function, object <code>y</code> is destroyed.</p>
+<p>This means that when we called the function, we made a copy of our argument’s value, only to use it briefly and then destroy it! Fortunately, because fundamental types are cheap to copy, this isn’t a problem.</p>
+<h2 id="some-objects-are-expensive-to-copy"><a class="header" href="#some-objects-are-expensive-to-copy">Some objects are expensive to copy</a></h2>
+<p>Most of the types provided by the standard library (such as <code>std::string</code>) are class types. Class types are usually expensive to copy. Whenever possible, we want to avoid making unnecessary copies of objects that are expensive to copy, especially when we will destroy those copies almost immediately.</p>
+<p>Consider the following program illustrating this point:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+void printValue(std::string y)
+{
+    std::cout &lt;&lt; y &lt;&lt; '\n';
+} // y is destroyed here
+
+int main()
+{
+    std::string x { "Hello, world!" }; // x is a std::string
+
+    printValue(x); // x is passed by value (copied) into parameter y (expensive)
+
+    return 0;
+}
+</code></pre>
+<p>This prints</p>
+<pre><code class="language-cpp">Hello, world!
+</code></pre>
+<p>While this program behaves like we expect, it’s also inefficient. Identically to the prior example, when <code>printValue()</code> is called, argument <code>x</code> is copied into <code>printValue()</code> parameter <code>y</code>. However, in this example, the argument is a <code>std::string</code> instead of an <code>int</code>, and <code>std::string</code> is a class type that is expensive to copy. And this expensive copy is made every time <code>printValue()</code> is called!</p>
+<p>We can do better.</p>
+<h2 id="pass-by-reference"><a class="header" href="#pass-by-reference">Pass by reference</a></h2>
+<p>One way to avoid making an expensive copy of an argument when calling a function is to use <code>pass by reference</code> instead of <code>pass by value</code>. When using <strong>pass by reference</strong>, we declare a function parameter as a reference type (or const reference type) rather than as a normal type. When the function is called, each reference parameter is bound to the appropriate argument. Because the reference acts as an alias for the argument, no copy of the argument is made.</p>
+<p>Here’s the same example as above, using pass by reference instead of pass by value:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+void printValue(std::string&amp; y) // type changed to std::string&amp;
+{
+    std::cout &lt;&lt; y &lt;&lt; '\n';
+} // y is destroyed here
+
+int main()
+{
+    std::string x { "Hello, world!" };
+
+    printValue(x); // x is now passed by reference into reference parameter y (inexpensive)
+
+    return 0;
+}
+</code></pre>
+<p>This program is identical to the prior one, except the type of parameter <code>y</code> has been changed from <code>std::string</code> to <code>std::string&amp;</code> (an lvalue reference). Now, when <code>printValue(x)</code> is called, lvalue reference parameter <code>y</code> is bound to argument <code>x</code>. Binding a reference is always inexpensive, and no copy of <code>x</code> needs to be made. Because a reference acts as an alias for the object being referenced, when <code>printValue()</code> uses reference <code>y</code>, it’s accessing the actual argument <code>x</code> (rather than a copy of <code>x</code>).</p>
+<blockquote>
+<p><strong>Key insight</strong></p>
+<p>Pass by reference allows us to pass arguments to a function without making copies of those arguments each time the function is called.</p>
+</blockquote>
+<p>The following program demonstrates that a value parameter is a separate object from the argument, while a reference parameter is treated as if it were the argument:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+void printAddresses(int val, int&amp; ref)
+{
+    std::cout &lt;&lt; "The address of the value parameter is: " &lt;&lt; &amp;val &lt;&lt; '\n';
+    std::cout &lt;&lt; "The address of the reference parameter is: " &lt;&lt; &amp;ref &lt;&lt; '\n';   
+}
+
+int main()
+{
+    int x { 5 };
+    std::cout &lt;&lt; "The address of x is: " &lt;&lt; &amp;x &lt;&lt; '\n';
+    printAddresses(x, x);
+
+    return 0;
+}
+</code></pre>
+<p>One run of this program produced the following output:</p>
+<pre><code class="language-cpp">The address of x is: 0x7ffd16574de0
+The address of the value parameter is: 0x7ffd16574de4
+The address of the reference parameter is: 0x7ffd16574de0
+</code></pre>
+<p>We can see that the argument has a different address than the value parameter, meaning the value parameter is a different object. Since they have separate memory addresses, in order for the value parameter to have the same value as the argument, the argument’s value must be copied into memory held by the value parameter.</p>
+<p>On the other hand, we can see that taking the address of the reference parameter yields an address identical to that of the argument. This means that the reference parameter is being treated as if it were the same object as the argument.</p>
+<h2 id="pass-by-reference-allows-us-to-change-the-value-of-an-argument"><a class="header" href="#pass-by-reference-allows-us-to-change-the-value-of-an-argument">Pass by reference allows us to change the value of an argument</a></h2>
+<p>When an object is passed by value, the function parameter receives a copy of the argument. This means that any changes to the value of the parameter are made to the copy of the argument, not the argument itself:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+void addOne(int y) // y is a copy of x
+{
+    ++y; // this modifies the copy of x, not the actual object x
+}
+
+int main()
+{
+    int x { 5 };
+
+    std::cout &lt;&lt; "value = " &lt;&lt; x &lt;&lt; '\n';
+
+    addOne(x);
+
+    std::cout &lt;&lt; "value = " &lt;&lt; x &lt;&lt; '\n'; // x has not been modified
+
+    return 0;
+}
+</code></pre>
+<p>In the above program, because value parameter <code>y</code> is a copy of <code>x</code>, when we increment <code>y</code>, this only affects <code>y</code>. This program outputs:</p>
+<pre><code class="language-cpp">value = 5
+value = 5
+</code></pre>
+<p>However, since a reference acts identically to the object being referenced, when using pass by reference, any changes made to the reference parameter <em>will</em> affect the argument:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+void addOne(int&amp; y) // y is bound to the actual object x
+{
+    ++y; // this modifies the actual object x
+}
+
+int main()
+{
+    int x { 5 };
+
+    std::cout &lt;&lt; "value = " &lt;&lt; x &lt;&lt; '\n';
+
+    addOne(x);
+
+    std::cout &lt;&lt; "value = " &lt;&lt; x &lt;&lt; '\n'; // x has been modified
+
+    return 0;
+}
+</code></pre>
+<p>This program outputs:</p>
+<pre><code class="language-cpp">value = 5
+value = 6
+</code></pre>
+<p>In the above example, <code>x</code> initially has value <code>5</code>. When <code>addOne(x)</code> is called, reference parameter <code>y</code> is bound to argument <code>x</code>. When the <code>addOne()</code> function increments reference <code>y</code>, it’s actually incrementing argument <code>x</code> from <code>5</code> to <code>6</code> (not a copy of <code>x</code>). This changed value persists even after <code>addOne()</code> has finished executing.</p>
+<blockquote>
+<p><strong>Key insight</strong></p>
+<p>Passing values by reference to non-const allows us to write functions that modify the value of arguments passed in.</p>
+</blockquote>
+<p>The ability for functions to modify the value of arguments passed in can be useful. Imagine you’ve written a function that determines whether a monster has successfully attacked the player. If so, the monster should do some amount of damage to the player’s health. If you pass your player object by reference, the function can directly modify the health of the actual player object that was passed in. If you pass the player object by value, you could only modify the health of a copy of the player object, which isn’t as useful.</p>
+<h2 id="pass-by-reference-can-only-accept-modifiable-lvalue-arguments"><a class="header" href="#pass-by-reference-can-only-accept-modifiable-lvalue-arguments">Pass by reference can only accept modifiable lvalue arguments</a></h2>
+<p>Because a reference to a non-const value can only bind to a modifiable lvalue (essentially a non-const variable), this means that pass by reference only works with arguments that are modifiable lvalues. In practical terms, this significantly limits the usefulness of pass by reference to non-const, as it means we can not pass const variables or literals. For example:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+void printValue(int&amp; y) // y only accepts modifiable lvalues
+{
+    std::cout &lt;&lt; y &lt;&lt; '\n';
+}
+
+int main()
+{
+    int x { 5 };
+    printValue(x); // ok: x is a modifiable lvalue
+
+    const int z { 5 };
+    printValue(z); // error: z is a non-modifiable lvalue
+
+    printValue(5); // error: 5 is an rvalue
+
+    return 0;
+}
+</code></pre>
+<p>Fortunately, there’s an easy way around this, which we will discuss next lesson. We’ll also take a look at when to pass by value vs. pass by reference.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="lvalue-references-to-const.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="pass-by-const-lvalue-reference.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="lvalue-references-to-const.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="pass-by-const-lvalue-reference.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,506 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Value categories (lvalues and rvalues) - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="value-categories-lvalues-and-rvalues"><a class="header" href="#value-categories-lvalues-and-rvalues">Value categories (lvalues and rvalues)</a></h1>
+<p>Before we talk about our first compound type (lvalue references), we’re going to take a little detour and talk about what an <code>lvalue</code> is.</p>
+<p>In lesson <a href="introduction-to-expressions.html">1.10 -- Introduction to expressions</a>, we defined an expression as “a combination of literals, variables, operators, and function calls that can be executed to produce a singular value”.</p>
+<p>For example:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+    std::cout &lt;&lt; 2 + 3 &lt;&lt; '\n'; // The expression 2 + 3 produces the value 5
+
+    return 0;
+}
+</code></pre>
+<p>In the above program, the expression <code>2 + 3</code> is evaluated to produce the value 5, which is then printed to the console.</p>
+<p>In lesson <a href="increment-decrement-operators-and-side-effects.html">6.4 -- Increment/decrement operators, and side effects</a>, we also noted that expressions can produce side effects that outlive the expression:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+    int x { 5 };
+    ++x; // This expression statement has the side-effect of incrementing x
+    std::cout &lt;&lt; x &lt;&lt; '\n'; // prints 6
+
+    return 0;
+}
+</code></pre>
+<p>In the above program, the expression <code>++x</code> increments the value of <code>x</code>, and that value remains changed even after the expression has finished evaluating.</p>
+<p>Besides producing values and side effects, expressions can do one more thing: they can evaluate to objects or functions. We’ll explore this point further in just a moment.</p>
+<h2 id="the-properties-of-an-expression"><a class="header" href="#the-properties-of-an-expression">The properties of an expression</a></h2>
+<p>To help determine how expressions should evaluate and where they can be used, all expressions in C++ have two properties: a type and a value category.</p>
+<h2 id="the-type-of-an-expression"><a class="header" href="#the-type-of-an-expression">The type of an expression</a></h2>
+<p>The type of an expression is equivalent to the type of the value, object, or function that results from the evaluated expression. For example:</p>
+<pre><code class="language-cpp">int main()
+{
+    auto v1 { 12 / 4 }; // int / int =&gt; int
+    auto v2 { 12.0 / 4 }; // double / int =&gt; double
+
+    return 0;
+}
+</code></pre>
+<p>For <code>v1</code>, the compiler will determine (at compile time) that a division with two <code>int</code> operands will produce an <code>int</code> result, so <code>int</code> is the type of this expression. Via type inference, <code>int</code> will then be used as the type of <code>v1</code>.</p>
+<p>For <code>v2</code>, the compiler will determine (at compile time) that a division with a <code>double</code> operand and an <code>int</code> operand will produce a <code>double</code> result. Remember that arithmetic operators must have operands of matching types, so in this case, the <code>int</code> operand gets converted to a <code>double</code>, and a floating point division is performed. So <code>double</code> is the type of this expression.</p>
+<p>The compiler can use the type of an expression to determine whether an expression is valid in a given context. For example:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+void print(int x)
+{
+    std::cout &lt;&lt; x &lt;&lt; '\n';
+}
+
+int main()
+{
+    print("foo"); // error: print() was expecting an int argument, we tried to pass in a string literal
+
+    return 0;
+}
+</code></pre>
+<p>In the above program, the <code>print(int)</code> function is expecting an <code>int</code> parameter. However, the type of the expression we’re passing in (the string literal <code>"foo"</code>) does not match, and no conversion can be found. So a compile error results.</p>
+<p>Note that the type of an expression must be determinable at compile time (otherwise type checking and type deduction wouldn’t work) -- however, the value of an expression may be determined at either compile time (if the expression is constexpr) or runtime (if the expression is not constexpr).</p>
+<h2 id="the-value-category-of-an-expression"><a class="header" href="#the-value-category-of-an-expression">The value category of an expression</a></h2>
+<p>Now consider the following program:</p>
+<pre><code class="language-cpp">int main()
+{
+    int x{};
+
+    x = 5; // valid: we can assign 5 to x
+    5 = x; // error: can not assign value of x to literal value 5
+
+    return 0;
+}
+</code></pre>
+<p>One of these assignment statements is valid (assigning value <code>5</code> to variable <code>x</code>) and one is not (what would it mean to assign the value of <code>x</code> to the literal value <code>5</code>?). So how does the compiler know which expressions can legally appear on either side of an assignment statement?</p>
+<p>The answer lies in the second property of expressions: the <code>value category</code>. The <strong>value category</strong> of an expression (or subexpression) indicates whether an expression resolves to a value, a function, or an object of some kind.</p>
+<p>Prior to C++11, there were only two possible value categories: <code>lvalue</code> and <code>rvalue</code>.</p>
+<p>In C++11, three additional value categories (<code>glvalue</code>, <code>prvalue</code>, and <code>xvalue</code>) were added to support a new feature called <code>move semantics</code>.</p>
+<blockquote>
+<p><strong>Author’s note</strong></p>
+<p>Author’s note</p>
+<p>In this lesson, we’ll stick to the pre-C++11 view of value categories, as this makes for a gentler introduction to value categories (and is all that we need for the moment). We’ll cover move semantics (and the additional three value categories) in a future chapter.</p>
+</blockquote>
+<h2 id="lvalue-and-rvalue-expressions"><a class="header" href="#lvalue-and-rvalue-expressions">Lvalue and rvalue expressions</a></h2>
+<p>An <strong>lvalue</strong> (pronounced “ell-value”, short for “left value” or “locator value”, and sometimes written as “l-value”) is an expression that evaluates to an identifiable object or function (or bit-field).</p>
+<p>The term “identity” is used by the C++ standard, but is not well-defined. An entity (such as an object or function) that has an identity can be differentiated from other similar entities (typically by comparing the addresses of the entity).</p>
+<p>Entities with identities can be accessed via an identifier, reference, or pointer, and typically have a lifetime longer than a single expression or statement.</p>
+<pre><code class="language-cpp">int main()
+{
+    int x { 5 };
+    int y { x }; // x is an lvalue expression
+
+    return 0;
+}
+</code></pre>
+<p>In the above program, the expression <code>x</code> is an lvalue expression as it evaluates to variable <code>x</code> (which has an identifier).</p>
+<p>Since the introduction of constants into the language, lvalues come in two subtypes: a <strong>modifiable lvalue</strong> is an lvalue whose value can be modified. A <strong>non-modifiable lvalue</strong> is an lvalue whose value can’t be modified (because the lvalue is const or constexpr).</p>
+<pre><code class="language-cpp">int main()
+{
+    int x{};
+    const double d{};
+
+    int y { x }; // x is a modifiable lvalue expression
+    const double e { d }; // d is a non-modifiable lvalue expression
+
+    return 0;
+}
+</code></pre>
+<p>An <strong>rvalue</strong> (pronounced “arr-value”, short for “right value”, and sometimes written as <code>r-value</code>) is an expression that is not an lvalue. Rvalue expressions evaluate to a value. Commonly seen rvalues include literals (except C-style string literals, which are lvalues) and the return value of functions and operators that return by value. Rvalues aren’t identifiable (meaning they have to be used immediately), and only exist within the scope of the expression in which they are used.</p>
+<pre><code class="language-cpp">int return5()
+{
+    return 5;
+}
+
+int main()
+{
+    int x{ 5 }; // 5 is an rvalue expression
+    const double d{ 1.2 }; // 1.2 is an rvalue expression
+
+    int y { x }; // x is a modifiable lvalue expression
+    const double e { d }; // d is a non-modifiable lvalue expression
+    int z { return5() }; // return5() is an rvalue expression (since the result is returned by value)
+
+    int w { x + 1 }; // x + 1 is an rvalue expression
+    int q { static_cast&lt;int&gt;(d) }; // the result of static casting d to an int is an rvalue expression
+
+    return 0;
+}
+</code></pre>
+<p>You may be wondering why <code>return5()</code>, <code>x + 1</code>, and <code>static_cast&lt;int&gt;(d)</code> are rvalues: the answer is because these expressions produce temporary values that are not identifiable objects.</p>
+<blockquote>
+<p><strong>Key insight</strong></p>
+<p>Key insight</p>
+<p>Lvalue expressions evaluate to an identifiable object.<br />
+Rvalue expressions evaluate to a value.</p>
+</blockquote>
+<h2 id="value-categories-and-operators"><a class="header" href="#value-categories-and-operators">Value categories and operators</a></h2>
+<p>Unless otherwise specified, operators expect their operands to be rvalues. For example, binary <code>operator+</code> expects its operands to be rvalues:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+    std::cout &lt;&lt; 1 + 2; // 1 and 2 are rvalues, operator+ returns an rvalue
+
+    return 0;
+}
+</code></pre>
+<p>The literals <code>1</code> and <code>2</code> are both rvalue expressions. <code>operator+</code> will happily use these to return the rvalue expression <code>3</code>.</p>
+<p>Now we can answer the question about why <code>x = 5</code> is valid but <code>5 = x</code> is not: an assignment operation requires its left operand to be a modifiable lvalue expression. The latter assignment (<code>5 = x</code>) fails because the left operand expression <code>5</code> is an rvalue, not a modifiable lvalue.</p>
+<pre><code class="language-cpp">int main()
+{
+    int x{};
+
+    // Assignment requires the left operand to be a modifiable lvalue expression and the right operand to be an rvalue expression
+    x = 5; // valid: x is a modifiable lvalue expression and 5 is an rvalue expression
+    5 = x; // error: 5 is an rvalue expression and x is a modifiable lvalue expression
+
+    return 0;
+}
+</code></pre>
+<h2 id="lvalue-to-rvalue-conversion"><a class="header" href="#lvalue-to-rvalue-conversion">Lvalue-to-rvalue conversion</a></h2>
+<p>Since assignment operations expect the right operand to be an rvalue expression, you might be wondering why the following works:</p>
+<pre><code class="language-cpp">int main()
+{
+    int x{ 1 };
+    int y{ 2 };
+
+    x = y; // y is not an rvalue, but this is legal
+
+    return 0;
+}
+</code></pre>
+<p>In cases where an rvalue is expected but an lvalue is provided, the lvalue will undergo an lvalue-to-rvalue conversion so that it can be used in such contexts. This basically means the lvalue is evaluated to produce its value, which is an rvalue.</p>
+<p>In the above example, the lvalue expression <code>y</code> undergoes an lvalue-to-rvalue conversion, which evaluates <code>y</code> to produce an rvalue (<code>2</code>), which is then assigned to <code>x</code>.</p>
+<blockquote>
+<p><strong>Key insight</strong></p>
+<p>Key insight</p>
+<p>An lvalue will implicitly convert to an rvalue. This means an lvalue can be used anywhere an rvalue is expected.<br />
+An rvalue, on the other hand, will not implicitly convert to an lvalue.</p>
+</blockquote>
+<p>Now consider this example:</p>
+<pre><code class="language-cpp">int main()
+{
+    int x { 2 };
+
+    x = x + 1;
+
+    return 0;
+}
+</code></pre>
+<p>In this statement, the variable <code>x</code> is being used in two different contexts. On the left side of the assignment operator (where an lvalue expression is required), <code>x</code> is an lvalue expression that evaluates to variable <code>x</code>. On the right side of the assignment operator, <code>x</code> undergoes an lvalue-to-rvalue conversion and is then evaluated so that its (<code>2</code>) can be used as the left operand of <code>operator+</code>. <code>operator+</code> returns the rvalue expression <code>3</code>, which is then used as the right operand for the assignment.</p>
+<h2 id="how-to-differentiate-lvalues-and-rvalues"><a class="header" href="#how-to-differentiate-lvalues-and-rvalues">How to differentiate lvalues and rvalues</a></h2>
+<p>You may still be confused about what kind of expressions qualify as an lvalue vs an rvalue. For example, is the result of <code>operator++</code> an lvalue or an rvalue? We’ll cover various methods you can use to determine which is which here.</p>
+<blockquote>
+<p><strong>Tip</strong></p>
+<p>Tip</p>
+<p>A rule of thumb to identify lvalue and rvalue expressions:</p>
+<ul>
+<li>Lvalue expressions are those that evaluate to functions or identifiable objects (including variables) that persist beyond the end of the expression.</li>
+<li>Rvalue expressions are those that evaluate to values, including literals and temporary objects that do not persist beyond the end of the expression.</li>
+</ul>
+</blockquote>
+<p>For a more complete list of lvalue and rvalue expressions, you can consult technical documentation.</p>
+<blockquote>
+<p><strong>Tip</strong></p>
+<p>Tip</p>
+<p>A full list of lvalue and rvalue expressions can be found <a href="https://en.cppreference.com/w/cpp/language/value_category">here</a>. In C++11, rvalues are broken into two subtypes: prvalues and xvalues, so the rvalues we’re talking about here are the sum of both of those categories.</p>
+</blockquote>
+<p>Finally, we can write a program and have the compiler tell us what kind of expression something is. The following code demonstrates a method that determines whether an expression is an lvalue or an rvalue:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+// T&amp; is an lvalue reference, so this overload will be preferred for lvalues
+template &lt;typename T&gt;
+constexpr bool is_lvalue(T&amp;)
+{
+    return true;
+}
+
+// T&amp;&amp; is an rvalue reference, so this overload will be preferred for rvalues
+template &lt;typename T&gt;
+constexpr bool is_lvalue(T&amp;&amp;)
+{
+    return false;
+}
+
+// A helper macro (#expr prints whatever is passed in for expr as text)
+#define PRINTVCAT(expr) { std::cout &lt;&lt; #expr &lt;&lt; " is an " &lt;&lt; (is_lvalue(expr) ? "lvalue\n" : "rvalue\n"); }
+
+int getint() { return 5; }
+
+int main()
+{
+    PRINTVCAT(5);        // rvalue
+    PRINTVCAT(getint()); // rvalue
+    int x { 5 };
+    PRINTVCAT(x);        // lvalue
+    PRINTVCAT(std::string {"Hello"}); // rvalue
+    PRINTVCAT("Hello");  // lvalue
+    PRINTVCAT(++x);      // lvalue
+    PRINTVCAT(x++);      // rvalue
+}
+</code></pre>
+<p>This prints:</p>
+<pre><code class="language-cpp">5 is an rvalue
+getint() is an rvalue
+x is an lvalue
+std::string {"Hello"} is an rvalue
+"Hello" is an lvalue
+++x is an lvalue
+x++ is an rvalue
+</code></pre>
+<p>This method relies on two overloaded functions: one with an lvalue refrence parameter and one with an rvalue reference parameter. The lvalue reference version will be preferred for lvalue arguments, and the rvalue reference version will be preferred for rvalue arguments. Thus we can determine whether the argument is an lvalue or rvalue based on which function gets selected.</p>
+<p>So as you can see, whether <code>operator++</code> results in an lvalue or an rvalue depends on whether it is used as a prefix operator (which returns an lvalue) or a postfix operator (which returns an rvalue)!</p>
+<blockquote>
+<p><strong>For advanced readers</strong></p>
+<p>For advanced readers</p>
+<p>Unlike the other literals (which are rvalues), a C-style string literal is an lvalue because C-style strings (which are C-style arrays) decay to a pointer. The decay process only works if the array is an lvalue (and thus has an address that can be stored in the pointer). C++ inherited this for backwards compatibility.</p>
+<p>We cover array decay in lesson <a href="c-style-array-decay">17.8 -- C-style array decay</a>.</p>
+</blockquote>
+<p>Now that we’ve covered lvalues, we can get to our first compound type: the <code>lvalue reference</code>.</p>
+<p>AI CONTENT END 1</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="introduction-to-compound-data-types.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="lvalue-references.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="introduction-to-compound-data-types.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="lvalue-references.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

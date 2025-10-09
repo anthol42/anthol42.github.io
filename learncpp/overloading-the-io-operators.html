@@ -1,0 +1,550 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Overloading the I/O operators - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="overloading-the-io-operators"><a class="header" href="#overloading-the-io-operators">Overloading the I/O operators</a></h1>
+<p>For classes that have multiple member variables, printing each of the individual variables on the screen can get tiresome fast. For example, consider the following class:</p>
+<pre><code class="language-cpp">class Point
+{
+private:
+    double m_x{};
+    double m_y{};
+    double m_z{};
+
+public:
+    Point(double x=0.0, double y=0.0, double z=0.0)
+      : m_x{x}, m_y{y}, m_z{z}
+    {
+    }
+
+    double getX() const { return m_x; }
+    double getY() const { return m_y; }
+    double getZ() const { return m_z; }
+};
+</code></pre>
+<p>If you wanted to print an instance of this class to the screen, you’d have to do something like this:</p>
+<pre><code class="language-cpp">Point point { 5.0, 6.0, 7.0 };
+
+std::cout &lt;&lt; "Point(" &lt;&lt; point.getX() &lt;&lt; ", " &lt;&lt;
+    point.getY() &lt;&lt; ", " &lt;&lt;
+    point.getZ() &lt;&lt; ')';
+</code></pre>
+<p>Of course, it makes more sense to do this as a reusable function. And in previous examples, you’ve seen us create <code>print()</code> functions that work like this:</p>
+<pre><code class="language-cpp">class Point
+{
+private:
+    double m_x{};
+    double m_y{};
+    double m_z{};
+
+public:
+    Point(double x=0.0, double y=0.0, double z=0.0)
+      : m_x{x}, m_y{y}, m_z{z}
+    {
+    }
+
+    double getX() const { return m_x; }
+    double getY() const { return m_y; }
+    double getZ() const { return m_z; }
+
+    void print() const
+    {
+        std::cout &lt;&lt; "Point(" &lt;&lt; m_x &lt;&lt; ", " &lt;&lt; m_y &lt;&lt; ", " &lt;&lt; m_z &lt;&lt; ')';
+    }
+};
+</code></pre>
+<p>While this is much better, it still has some downsides. Because <code>print()</code> returns <code>void</code>, it can’t be called in the middle of an output statement. Instead, you have to do this:</p>
+<pre><code class="language-cpp">int main()
+{
+    const Point point { 5.0, 6.0, 7.0 };
+
+    std::cout &lt;&lt; "My point is: ";
+    point.print();
+    std::cout &lt;&lt; " in Cartesian space.\n";
+}
+</code></pre>
+<p>It would be much easier if you could simply type:</p>
+<pre><code class="language-cpp">Point point{5.0, 6.0, 7.0};
+cout &lt;&lt; "My point is: " &lt;&lt; point &lt;&lt; " in Cartesian space.\n";
+</code></pre>
+<p>and get the same result. There would be no breaking up output across multiple statements, and no having to remember what you named the print function.</p>
+<p>Fortunately, by overloading <code>operator&lt;&lt;</code>, you can!</p>
+<h2 id="overloading-operator"><a class="header" href="#overloading-operator">Overloading <code>operator&lt;&lt;</code></a></h2>
+<p>Overloading <code>operator&lt;&lt;</code> is similar to overloading operator+ (they are both binary operators), except that the parameter types are different.</p>
+<p>Consider the expression <code>std::cout &lt;&lt; point</code>. If the operator is <code>&lt;&lt;</code>, what are the operands? The left operand is the <code>std::cout</code> object, and the right operand is your <code>Point</code> class object. <code>std::cout</code> is actually an object of type <code>std::ostream</code>. Therefore, our overloaded function will look like this:</p>
+<pre><code class="language-cpp">// std::ostream is the type for object std::cout
+friend std::ostream&amp; operator&lt;&lt; (std::ostream&amp; out, const Point&amp; point);
+</code></pre>
+<p>Implementation of <code>operator&lt;&lt;</code> for our <code>Point</code> class is fairly straightforward -- because C++ already knows how to output doubles using <code>operator&lt;&lt;</code>, and our members are all doubles, we can simply use <code>operator&lt;&lt;</code> to output the data members of our <code>Point</code>. Here is the above <code>Point</code> class with the overloaded <code>operator&lt;&lt;</code>.</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+class Point
+{
+private:
+    double m_x{};
+    double m_y{};
+    double m_z{};
+
+public:
+    Point(double x=0.0, double y=0.0, double z=0.0)
+      : m_x{x}, m_y{y}, m_z{z}
+    {
+    }
+
+    friend std::ostream&amp; operator&lt;&lt; (std::ostream&amp; out, const Point&amp; point);
+};
+
+std::ostream&amp; operator&lt;&lt; (std::ostream&amp; out, const Point&amp; point)
+{
+    // Since operator&lt;&lt; is a friend of the Point class, we can access Point's members directly.
+    out &lt;&lt; "Point(" &lt;&lt; point.m_x &lt;&lt; ", " &lt;&lt; point.m_y &lt;&lt; ", " &lt;&lt; point.m_z &lt;&lt; ')'; // actual output done here
+
+    return out; // return std::ostream so we can chain calls to operator&lt;&lt;
+}
+
+int main()
+{
+    const Point point1 { 2.0, 3.0, 4.0 };
+
+    std::cout &lt;&lt; point1 &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>This is pretty straightforward -- note how similar our output line is to the line in the <code>print()</code> function we wrote previously. The most notable difference is that <code>std::cout</code> has become parameter <code>out</code> (which will be a reference to <code>std::cout</code> when the function is called).</p>
+<p>The trickiest part here is the return type. With the arithmetic operators, we calculated and returned a single answer by value (because we were creating and returning a new result). However, if you try to return <code>std::ostream</code> by value, you’ll get a compiler error. This happens because <code>std::ostream</code> specifically disallows being copied.</p>
+<p>In this case, we return the left hand parameter as a reference. This not only prevents a copy of <code>std::ostream</code> from being made, it also allows us to “chain” output commands together, such as <code>std::cout &lt;&lt; point &lt;&lt; '\n'</code>.</p>
+<p>Consider what would happen if our <code>operator&lt;&lt;</code> returned <code>void</code> instead. When the compiler evaluates <code>std::cout &lt;&lt; point &lt;&lt; '\n'</code>, due to the precedence/associativity rules, it evaluates this expression as <code>(std::cout &lt;&lt; point) &lt;&lt; '\n';</code>. <code>std::cout &lt;&lt; point</code> would call our void-returning overloaded <code>operator&lt;&lt;</code> function, which returns <code>void</code>. Then the partially evaluated expression becomes: <code>void &lt;&lt; '\n';</code>, which makes no sense!</p>
+<p>By returning the <code>out</code> parameter as the return type instead, <code>(std::cout &lt;&lt; point)</code> returns <code>std::cout</code>. Then our partially evaluated expression becomes: <code>std::cout &lt;&lt; '\n';</code>, which then gets evaluated itself!</p>
+<p>Any time we want our overloaded binary operators to be chainable in such a manner, the left operand should be returned (by reference). Returning the left-hand parameter by reference is okay in this case -- since the left-hand parameter was passed in by the calling function, it must still exist when the called function returns. Therefore, we don’t have to worry about referencing something that will go out of scope and get destroyed when the operator returns.</p>
+<p>Just to prove it works, consider the following example, which uses the Point class with the overloaded <code>operator&lt;&lt;</code> we wrote above:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+class Point
+{
+private:
+    double m_x{};
+    double m_y{};
+    double m_z{};
+
+public:
+    Point(double x=0.0, double y=0.0, double z=0.0)
+      : m_x{x}, m_y{y}, m_z{z}
+    {
+    }
+
+    friend std::ostream&amp; operator&lt;&lt; (std::ostream&amp; out, const Point&amp; point);
+};
+
+std::ostream&amp; operator&lt;&lt; (std::ostream&amp; out, const Point&amp; point)
+{
+    // Since operator&lt;&lt; is a friend of the Point class, we can access Point's members directly.
+    out &lt;&lt; "Point(" &lt;&lt; point.m_x &lt;&lt; ", " &lt;&lt; point.m_y &lt;&lt; ", " &lt;&lt; point.m_z &lt;&lt; ')';
+
+    return out;
+}
+
+int main()
+{
+    Point point1 { 2.0, 3.5, 4.0 };
+    Point point2 { 6.0, 7.5, 8.0 };
+
+    std::cout &lt;&lt; point1 &lt;&lt; ' ' &lt;&lt; point2 &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>This produces the following result:</p>
+<pre><code class="language-cpp">Point(2, 3.5, 4) Point(6, 7.5, 8)
+</code></pre>
+<p>In the above example, <code>operator&lt;&lt;</code> is a friend because it needs direct access to the member of <code>Point</code>. However, if the members could be accessed via getters, then <code>operator&lt;&lt;</code> could be implemented as a non-friend.</p>
+<h2 id="overloading-operator-1"><a class="header" href="#overloading-operator-1">Overloading <code>operator&gt;&gt;</code></a></h2>
+<p>It is also possible to overload the input operator. This is done in a manner analogous to overloading the output operator. The key thing you need to know is that <code>std::cin</code> is an object of type <code>std::istream</code>. Here’s our <code>Point</code> class with an overloaded <code>operator&gt;&gt;</code> added:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+class Point
+{
+private:
+    double m_x{};
+    double m_y{};
+    double m_z{};
+
+public:
+    Point(double x=0.0, double y=0.0, double z=0.0)
+      : m_x{x}, m_y{y}, m_z{z}
+    {
+    }
+
+    friend std::ostream&amp; operator&lt;&lt; (std::ostream&amp; out, const Point&amp; point);
+    friend std::istream&amp; operator&gt;&gt; (std::istream&amp; out, Point&amp; point);
+};
+
+std::ostream&amp; operator&lt;&lt; (std::ostream&amp; out, const Point&amp; point)
+{
+    // Since operator&lt;&lt; is a friend of the Point class, we can access Point's members directly.
+    out &lt;&lt; "Point(" &lt;&lt; point.m_x &lt;&lt; ", " &lt;&lt; point.m_y &lt;&lt; ", " &lt;&lt; point.m_z &lt;&lt; ')';
+
+    return out;
+}
+
+// note that point must be non-const so we can modify the object
+std::istream&amp; operator&gt;&gt; (std::istream&amp; in, Point&amp; point)
+{
+    // This version subject to partial extraction issues (see below)
+    in &gt;&gt; point.m_x &gt;&gt; point.m_y &gt;&gt; point.m_z;
+
+    return in;
+}
+
+int main()
+{
+    std::cout &lt;&lt; "Enter a point: ";
+
+    Point point{ 1.0, 2.0, 3.0 }; // non-zero test data
+    std::cin &gt;&gt; point;
+
+    std::cout &lt;&lt; "You entered: " &lt;&lt; point &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>Assuming the user enters <code>4.0 5.6 7.26</code> as input, the program produces the following result:</p>
+<pre><code class="language-cpp">You entered: Point(4, 5.6, 7.26)
+</code></pre>
+<p>Now let’s see what happens when the user enters <code>4.0b 5.6 7.26</code> as input (notice the <code>b</code> after the <code>4.0</code>):</p>
+<pre><code class="language-cpp">You entered: Point(4, 0, 3)
+</code></pre>
+<p>Our point is now a weird hybrid consisting of one value from the user’s input (<code>4.0</code>), one value that has been zero-initialized (<code>0.0</code>), and one value that was untouched by the input function (<code>3.0</code>). That’s… not great!</p>
+<h2 id="guarding-against-partial-extraction"><a class="header" href="#guarding-against-partial-extraction">Guarding against partial extraction</a></h2>
+<p>When we’re extracting a single value, there are only two possible outcomes: the extraction fails, or it is successful. However, when we’re extracting more than one value as part of an input operation, things get a bit more complicated.</p>
+<p>The above implementation of <code>operator&gt;&gt;</code> can result in a partial extraction. And this is exactly what we’re seeing with input <code>4.0b 5.6 7.26</code>. The extraction to <code>x_y</code> successfully extracts <code>4.0</code> from the user’s input, leaving <code>b 5.6 7.26</code> in the input stream. The extraction to <code>m_y</code> fails to extract <code>b</code>, so <code>m_y</code> is copy-assigned the value <code>0.0</code> and the input stream is set to failure mode. Since we haven’t cleared failure mode, the extraction to <code>m_z</code> aborts immediately, and the value that <code>m_z</code> had before the extraction attempt remains (<code>3.0</code>).</p>
+<p>There is no case where this is a desirable outcome. And in some cases, it might even be actively dangerous. Imagine we were writing an <code>operator&gt;&gt;</code> for a <code>Fraction</code> object instead. After successfully extracting the numerator, a failed extraction to the denominator would set the denominator to <code>0.0</code>, which might later cause a divide by zero and cause the application to crash.</p>
+<p>So how might we avoid this? One way is to make our operations transactional. A <strong>transactional operation</strong> must either completely succeed or completely fail -- no partial successes or failures are allowed. This is sometimes known as “all or nothing”. If a failure occurs at any point during the transaction, prior changes made by the operation must be undone.</p>
+<blockquote>
+<p><strong>Key insight</strong></p>
+<p>Key insight</p>
+<p>Transactions occur all the time in real life. Consider the case where I want to transfer money from one bank account to another. This requires two steps: First the money must first be deducted from one account, and then it must be credited to the other account. In the execution of this operation, there are three possibilities:</p>
+<ul>
+<li>The deduction step fails (e.g. not enough funds). The transaction fails, and neither account balance reflects the transfer.</li>
+<li>The crediting step fails (e.g. due to a technical problem). In this case, the deduction (which has already succeeded) must be undone. The transaction fails, and neither account balance reflects the transfer.</li>
+<li>Both steps succeed. The transaction is successful, and both account balances reflect the transfer.</li>
+</ul>
+<p>The end result is that there are only two possible outcomes: the transfer fully fails and the account balances are unchanged, or the transfer succeeds and the account balances are both changed.</p>
+</blockquote>
+<p>Let’s reimplement our overloaded <code>Point</code> <code>operator&gt;&gt;</code> as a transactional operation:</p>
+<pre><code class="language-cpp">// note that point must be non-const so we can modify the object
+// note that this implementation is a non-friend
+std::istream&amp; operator&gt;&gt; (std::istream&amp; in, Point&amp; point)
+{
+    double x{};
+    double y{};
+    double z{};
+    
+    if (in &gt;&gt; x &gt;&gt; y &gt;&gt; z)      // if all extractions succeeded
+        point = Point{x, y, z}; // overwrite our existing point
+        
+    return in;
+}
+</code></pre>
+<p>In this implementation, we’re not overwriting the data members directly with the user’s input. Instead, we’re extracting the user’s input to temporary variables (<code>x</code>, <code>y</code>, and <code>z</code>). Once all extraction attempts have completed, we check whether all extractions were successful. If so, then we update all the members of <code>Point</code> together. Otherwise, we do not update any of them.</p>
+<blockquote>
+<p><strong>Tip</strong></p>
+<p>Tip</p>
+<p><code>if (in &gt;&gt; x &gt;&gt; y &gt;&gt; z)</code> is equivalent to <code>in &gt;&gt; x &gt;&gt; y &gt;&gt; z; if (in)</code>. Remember, each extraction returns <code>in</code> so that multiple extractions can be chained together. The single-statement version uses the <code>in</code> returned from the last extraction as the condition of the if-statement, whereas the multi-statement version uses <code>in</code> explicitly.</p>
+</blockquote>
+<blockquote>
+<p><strong>Tip</strong></p>
+<p>Tip</p>
+<p>Transactional operations can be implemented using a number of different strategies. For example:</p>
+<ul>
+<li>Alter on success: Store the result of each sub-operation. If all sub-operations succeed, replace the relevant data with the stored results. This is the strategy we use in the <code>Point</code> example above.</li>
+<li>Restore on failure: Copy any data that can be altered. If any sub-operation fails, the changes made by prior sub-operations can be reverted using the data from copy.</li>
+<li>Rollback on failure: If any sub-operation fails, each prior sub-operation is reversed (using an opposite sub-operation). This strategy is often used in databases, where the data is too large to back up, and the result of sub-operations can’t be stored.</li>
+</ul>
+</blockquote>
+<p>While the above <code>operator&gt;&gt;</code> prevents partial extractions, it is inconsistent with how <code>operator&gt;&gt;</code> works for fundamental types. When extraction to an object with a fundamental type fails, the object isn’t left unaltered -- it is copy assigned the value <code>0</code> (this ensures the object has some consistent value in case it wasn’t initialized before the extraction attempt). Therefore, for consistency, you may wish to have a failed extraction reset the object to its default state (at least in cases where such a thing exists).</p>
+<p>Here’s an alternate version of <code>operator&gt;&gt;</code> that resets <code>Point</code> to its default state if any extraction fails:</p>
+<pre><code class="language-cpp">// note that point must be non-const so we can modify the object
+// note that this implementation is a non-friend
+std::istream&amp; operator&gt;&gt; (std::istream&amp; in, Point&amp; point)
+{
+    double x{};
+    double y{};
+    double z{};
+    
+    in &gt;&gt; x &gt;&gt; y &gt;&gt; z;
+    point = in ? Point{x, y, z} : Point{};
+        
+    return in;
+}
+</code></pre>
+<blockquote>
+<p><strong>Author’s note</strong></p>
+<p>Author’s note</p>
+<p>Such an operation is technically no longer transactional (because failure doesn’t “do nothing”). There doesn’t appear to be a general term for operations that guarantee no partial results. Perhaps “indivisible operation”.</p>
+</blockquote>
+<h2 id="handling-semantically-invalid-input"><a class="header" href="#handling-semantically-invalid-input">Handling semantically invalid input</a></h2>
+<p>Extraction can fail in different ways.</p>
+<p>In cases where <code>operator&gt;&gt;</code> simply fails to extract anything to a variable, <code>std::cin</code> will automatically be placed in failure mode (which we discuss in lesson <a href="stdcin-and-handling-invalid-input.html">9.5 -- std::cin and handling invalid input</a>). The caller of this function can then check <code>std::cin</code> to see if it failed and handle that case as appropriate.</p>
+<p>But what about cases where the user inputs a value that is extractable but semantically invalid (e.g. a <code>Fraction</code> with a denominator of <code>0</code>)? Because <code>std::cin</code> did extract something, it won’t go into failure mode automatically. And then the caller probably won’t realize something went wrong.</p>
+<p>To address this, we can have our overloaded <code>operator&gt;&gt;</code> determine whether any of the values that were extracted are semantically invalid, and if so, manually put the input stream in failure mode. This can be done by calling <code>std::cin.setstate(std::ios_base::failbit);</code>.</p>
+<p>Here’s an example of a transactional overloaded <code>operator&gt;&gt;</code> for <code>Point</code> that will cause the input stream to enter failure mode if the user inputs an extractable negative value:</p>
+<pre><code class="language-cpp">std::istream&amp; operator&gt;&gt; (std::istream&amp; in, Point&amp; point)
+{
+    double x{};
+    double y{};
+    double z{};
+    
+    in &gt;&gt; x &gt;&gt; y &gt;&gt; z;
+    if (x &lt; 0.0 || y &lt; 0.0 || z &lt; 0.0)       // if any extractable input is negative
+        in.setstate(std::ios_base::failbit); // set failure mode manually
+    point = in ? Point{x, y, z} : Point{};
+       
+    return in;
+}
+</code></pre>
+<h2 id="conclusion"><a class="header" href="#conclusion">Conclusion</a></h2>
+<p>Overloading <code>operator&lt;&lt;</code> and <code>operator&gt;&gt;</code> make it easy to output your class to screen and accept user input from the console.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="overloading-operators-using-normal-functions.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="overloading-operators-using-member-functions.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="overloading-operators-using-normal-functions.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="overloading-operators-using-member-functions.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

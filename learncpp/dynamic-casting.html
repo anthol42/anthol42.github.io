@@ -1,0 +1,496 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Dynamic casting - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="dynamic-casting"><a class="header" href="#dynamic-casting">Dynamic casting</a></h1>
+<p>Way back in lesson <a href="explicit-type-conversion-casting-and-static-cast.html">10.6 -- Explicit type conversion (casting) and static_cast</a>, we examined the concept of casting, and the use of static_cast to convert variables from one type to another.</p>
+<p>In this lesson, we’ll continue by examining another type of cast: dynamic_cast.</p>
+<p><strong>The need for dynamic_cast</strong></p>
+<p>When dealing with polymorphism, you’ll often encounter cases where you have a pointer to a base class, but you want to access some information that exists only in a derived class.</p>
+<p>Consider the following (slightly contrived) program:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;string_view&gt;
+
+class Base
+{
+protected:
+	int m_value{};
+
+public:
+	Base(int value)
+		: m_value{value}
+	{
+	}
+	
+	virtual ~Base() = default;
+};
+
+class Derived : public Base
+{
+protected:
+	std::string m_name{};
+
+public:
+	Derived(int value, std::string_view name)
+		: Base{value}, m_name{name}
+	{
+	}
+
+	const std::string&amp; getName() const { return m_name; }
+};
+
+Base* getObject(bool returnDerived)
+{
+	if (returnDerived)
+		return new Derived{1, "Apple"};
+	else
+		return new Base{2};
+}
+
+int main()
+{
+	Base* b{ getObject(true) };
+
+	// how do we print the Derived object's name here, having only a Base pointer?
+
+	delete b;
+
+	return 0;
+}
+</code></pre>
+<p>In this program, function getObject() always returns a Base pointer, but that pointer may be pointing to either a Base or a Derived object. In the case where the Base pointer is actually pointing to a Derived object, how would we call Derived::getName()?</p>
+<p>One way would be to add a virtual function to Base called getName() (so we could call it with a Base pointer/reference, and have it dynamically resolve to Derived::getName()). But what would this function return if you called it with a Base pointer/reference that was actually pointing to a Base object? There isn’t really any value that makes sense. Furthermore, we would be polluting our Base class with things that really should only be the concern of the Derived class.</p>
+<p>We know that C++ will implicitly let you convert a Derived pointer into a Base pointer (in fact, getObject() does just that). This process is sometimes called <strong>upcasting</strong>. However, what if there was a way to convert a Base pointer back into a Derived pointer? Then we could call Derived::getName() directly using that pointer, and not have to worry about virtual function resolution at all.</p>
+<p><strong>dynamic_cast</strong></p>
+<p>C++ provides a casting operator named <strong>dynamic_cast</strong> that can be used for just this purpose. Although dynamic casts have a few different capabilities, by far the most common use for dynamic casting is for converting base-class pointers into derived-class pointers. This process is called <strong>downcasting</strong>.</p>
+<p>Using dynamic_cast works just like static_cast. Here’s our example main() from above, using a dynamic_cast to convert our Base pointer back into a Derived pointer:</p>
+<pre><code class="language-cpp">int main()
+{
+	Base* b{ getObject(true) };
+
+	Derived* d{ dynamic_cast&lt;Derived*&gt;(b) }; // use dynamic cast to convert Base pointer into Derived pointer
+
+	std::cout &lt;&lt; "The name of the Derived is: " &lt;&lt; d-&gt;getName() &lt;&lt; '\n';
+
+	delete b;
+
+	return 0;
+}
+</code></pre>
+<p>This prints:</p>
+<pre><code class="language-cpp">The name of the Derived is: Apple
+</code></pre>
+<p><strong>dynamic_cast failure</strong></p>
+<p>The above example works because b is actually pointing to a Derived object, so converting b into a Derived pointer is successful.</p>
+<p>However, we’ve made quite a dangerous assumption: that b is pointing to a Derived object. What if b wasn’t pointing to a Derived object? This is easily tested by changing the argument to getObject() from true to false. In that case, getObject() will return a Base pointer to a Base object. When we try to dynamic_cast that to a Derived, it will fail, because the conversion can’t be made.</p>
+<p>If a dynamic_cast fails, the result of the conversion will be a null pointer.</p>
+<p>Because we haven’t checked for a null pointer result, we access d-&gt;getName(), which will try to dereference a null pointer, leading to undefined behavior (probably a crash).</p>
+<p>In order to make this program safe, we need to ensure the result of the dynamic_cast actually succeeded:</p>
+<pre><code class="language-cpp">int main()
+{
+	Base* b{ getObject(true) };
+
+	Derived* d{ dynamic_cast&lt;Derived*&gt;(b) }; // use dynamic cast to convert Base pointer into Derived pointer
+
+	if (d) // make sure d is non-null
+		std::cout &lt;&lt; "The name of the Derived is: " &lt;&lt; d-&gt;getName() &lt;&lt; '\n';
+
+	delete b;
+
+	return 0;
+}
+</code></pre>
+<div id="admonition-rule" class="admonition admonish-tip" role="note" aria-labelledby="admonition-rule-title">
+<div class="admonition-title">
+<div id="admonition-rule-title">
+<p>Rule</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-rule"></a>
+</div>
+<div>
+<p>Rule</p>
+<p>Always ensure your dynamic casts actually succeeded by checking for a null pointer result.</p>
+</div>
+</div>
+<p>Note that because dynamic_cast does some consistency checking at runtime (to ensure the conversion can be made), use of dynamic_cast does incur a performance penalty.</p>
+<p>Also note that there are several cases where downcasting using dynamic_cast will not work:</p>
+<ol>
+<li>With protected or private inheritance.</li>
+<li>For classes that do not declare or inherit any virtual functions (and thus don’t have a virtual table).</li>
+<li>In certain cases involving virtual base classes (see <a href="https://msdn.microsoft.com/en-us/library/cby9kycs.aspx">this page</a> for an example of some of these cases, and how to resolve them).</li>
+</ol>
+<p><strong>Downcasting with static_cast</strong></p>
+<p>It turns out that downcasting can also be done with static_cast. The main difference is that static_cast does no runtime type checking to ensure that what you’re doing makes sense. This makes using static_cast faster, but more dangerous. If you cast a Base* to a Derived*, it will “succeed” even if the Base pointer isn’t pointing to a Derived object. This will result in undefined behavior when you try to access the resulting Derived pointer (that is actually pointing to a Base object).</p>
+<p>If you’re absolutely sure that the pointer you’re downcasting will succeed, then using static_cast is acceptable. One way to ensure that you know what type of object you’re pointing to is to use a virtual function. Here’s one (not great) way to do that:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;string_view&gt;
+
+// Class identifier
+enum class ClassID
+{
+	base,
+	derived
+	// Others can be added here later
+};
+
+class Base
+{
+protected:
+	int m_value{};
+
+public:
+	Base(int value)
+		: m_value{value}
+	{
+	}
+
+	virtual ~Base() = default;
+	virtual ClassID getClassID() const { return ClassID::base; }
+};
+
+class Derived : public Base
+{
+protected:
+	std::string m_name{};
+
+public:
+	Derived(int value, std::string_view name)
+		: Base{value}, m_name{name}
+	{
+	}
+
+	const std::string&amp; getName() const { return m_name; }
+	ClassID getClassID() const override { return ClassID::derived; }
+
+};
+
+Base* getObject(bool bReturnDerived)
+{
+	if (bReturnDerived)
+		return new Derived{1, "Apple"};
+	else
+		return new Base{2};
+}
+
+int main()
+{
+	Base* b{ getObject(true) };
+
+	if (b-&gt;getClassID() == ClassID::derived)
+	{
+		// We already proved b is pointing to a Derived object, so this should always succeed
+		Derived* d{ static_cast&lt;Derived*&gt;(b) };
+		std::cout &lt;&lt; "The name of the Derived is: " &lt;&lt; d-&gt;getName() &lt;&lt; '\n';
+	}
+
+	delete b;
+
+	return 0;
+}
+</code></pre>
+<p>But if you’re going to go through all of the trouble to implement this (and pay the cost of calling a virtual function and processing the result), you might as well just use dynamic_cast.</p>
+<p>Also consider what would happen if our object were actually some class that is derived from Derived (let’s call it <code>D2</code>). The above check <code>b-&gt;getClassID() == ClassID::derived</code> will fail because <code>getClassId()</code> would return <code>ClassID::D2</code>, which is not equal to <code>ClassID::derived</code>. Dynamic casting <code>D2</code> to <code>Derived</code> would succeed though, since a <code>D2</code> is a <code>Derived</code>!</p>
+<p><strong>dynamic_cast and references</strong></p>
+<p>Although all of the above examples show dynamic casting of pointers (which is more common), dynamic_cast can also be used with references. This works analogously to how dynamic_cast works with pointers.</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;string_view&gt;
+
+class Base
+{
+protected:
+	int m_value;
+
+public:
+	Base(int value)
+		: m_value{value}
+	{
+	}
+
+	virtual ~Base() = default; 
+};
+
+class Derived : public Base
+{
+protected:
+	std::string m_name;
+
+public:
+	Derived(int value, std::string_view name)
+		: Base{value}, m_name{name}
+	{
+	}
+
+	const std::string&amp; getName() const { return m_name; }
+};
+
+int main()
+{
+	Derived apple{1, "Apple"}; // create an apple
+	Base&amp; b{ apple }; // set base reference to object
+	Derived&amp; d{ dynamic_cast&lt;Derived&amp;&gt;(b) }; // dynamic cast using a reference instead of a pointer
+
+	std::cout &lt;&lt; "The name of the Derived is: " &lt;&lt; d.getName() &lt;&lt; '\n'; // we can access Derived::getName through d
+
+	return 0;
+}
+</code></pre>
+<p>Because C++ does not have a “null reference”, dynamic_cast can’t return a null reference upon failure. Instead, if the dynamic_cast of a reference fails, an exception of type std::bad_cast is thrown. We talk about exceptions later in this tutorial.</p>
+<p><strong>dynamic_cast vs static_cast</strong></p>
+<p>New programmers are sometimes confused about when to use static_cast vs dynamic_cast. The answer is quite simple: use static_cast unless you’re downcasting, in which case dynamic_cast is usually a better choice. However, you should also consider avoiding casting altogether and just use virtual functions.</p>
+<p><strong>Downcasting vs virtual functions</strong></p>
+<p>There are some developers who believe dynamic_cast is evil and indicative of a bad class design. Instead, these programmers say you should use virtual functions.</p>
+<p>In general, using a virtual function <em>should</em> be preferred over downcasting. However, there are times when downcasting is the better choice:</p>
+<ul>
+<li>When you can not modify the base class to add a virtual function (e.g. because the base class is part of the standard library)</li>
+<li>When you need access to something that is derived-class specific (e.g. an access function that only exists in the derived class)</li>
+<li>When adding a virtual function to your base class doesn’t make sense (e.g. there is no appropriate value for the base class to return). Using a pure virtual function may be an option here if you don’t need to instantiate the base class.</li>
+</ul>
+<p><strong>A warning about dynamic_cast and RTTI</strong></p>
+<p>Run-time type information (RTTI) is a feature of C++ that exposes information about an object’s data type at runtime. This capability is leveraged by dynamic_cast. Because RTTI has a pretty significant space performance cost, some compilers allow you to turn RTTI off as an optimization. Needless to say, if you do this, dynamic_cast won’t function correctly.</p>
+<p>AI CONTENT END 1</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="object-slicing.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="printing-inherited-classes-using-operator.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="object-slicing.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="printing-inherited-classes-using-operator.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

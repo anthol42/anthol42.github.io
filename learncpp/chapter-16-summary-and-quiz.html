@@ -1,0 +1,304 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Chapter 16 summary and quiz - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="chapter-16-summary-and-quiz"><a class="header" href="#chapter-16-summary-and-quiz">Chapter 16 summary and quiz</a></h1>
+<h2 id="words-of-encouragement"><a class="header" href="#words-of-encouragement">Words of encouragement</a></h2>
+<p>This chapter isn’t an easy one. We covered a lot of material, and unearthed some of C++’s warts. Congrats on making it through!</p>
+<p>Arrays are one of the keys that unlock a huge amount of power within your C++ programs.</p>
+<h2 id="chapter-review"><a class="header" href="#chapter-review">Chapter Review</a></h2>
+<p>A <strong>container</strong> is a data type that provides storage for a collection of unnamed objects (called <strong>elements</strong>). We typically use containers when we need to work with a set of related values.</p>
+<p>The number of elements in a container is often called it’s <strong>length</strong> (or sometimes <strong>count</strong>). In C++, the term <strong>size</strong> is also commonly used for the number of elements in a container. In most programming languages (including C++), containers are <strong>homogenous</strong>, meaning the elements of a container are required to have the same type.</p>
+<p>The <strong>Containers library</strong> is a part of the C++ standard library that contains various class types that implement some common types of containers. A class type that implements a container is sometimes called a <strong>container class</strong>.</p>
+<p>An <strong>array</strong> is a container data type that stores a sequence of values <strong>contiguously</strong> (meaning each element is placed in an adjacent memory location, with no gaps). Arrays allow fast, direct access to any element.</p>
+<p>C++ contains three primary array types: (C-style) arrays, the <code>std::vector</code> container class, and the <code>std::array</code> container class.</p>
+<p><code>std::vector</code> is one of the container classes in the C++ standard containers library that implements an array. <code>std::vector</code> is defined in the <vector> header as a class template, with a template type parameter that defines the type of the elements. Thus, <code>std::vector&lt;int&gt;</code> declares a <code>std::vector</code> whose elements are of type <code>int</code>.</p>
+<p>Containers typically have a special constructor called a <strong>list constructor</strong> that allows us to construct an instance of the container using an initializer list. Use list initialization with an initializer list of values to construct a container with those element values.</p>
+<p>In C++, the most common way to access array elements is by using the name of the array along with the subscript operator (<code>operator[]</code>). To select a specific element, inside the square brackets of the subscript operator, we provide an integral value that identifies which element we want to select. This integral value is called a <strong>subscript</strong> (or informally, an <strong>index</strong>). The first element is accessed using index 0, the second is accessed using index 1, etc… Because the indexing starts with 0 rather than 1, we say arrays in C++ are <strong>zero-based</strong>.</p>
+<p><code>operator[]</code> does not do any kind of <strong>bounds checking</strong>, meaning it does not check to see whether the index is within the bounds of 0 to N-1 (inclusive). Passing an invalid index to <code>operator[]</code> will result in undefined behavior.</p>
+<p>Arrays are one of the few container types that allow <strong>random access</strong>, meaning every element in the container can be accessed directly and with equal speed, regardless of the number of elements in the container.</p>
+<p>When constructing a class type object, a matching list constructor is selected over other matching constructors. When constructing a container (or any type that has a list constructor) with initializers that are not element values, use direct initialization.</p>
+<pre><code class="language-cpp">std::vector v1 { 5 }; // defines a 1 element vector containing value `5`.
+std::vector v2 ( 5 ); // defines a 5 element vector where elements are value-initialized.
+</code></pre>
+<p><code>std::vector</code> can be made const but not constexpr.</p>
+<p>Each of the standard library container classes defines a nested typedef member named <code>size_type</code> (sometimes written as <code>T::size_type</code>), which is an alias for the type used for the length (and indices, if supported) of the container. <code>size_type</code> is almost always an alias for <code>std::size_t</code>, but can be overridden (in rare cases) to use a different type. We can reasonably assume <code>size_type</code> is an alias for <code>std::size_t</code>.</p>
+<p>When accessing the <code>size_type</code> member of a container class, we must scope qualify it with the fully templated name of the container class. For example, <code>std::vector&lt;int&gt;::size_type</code>.</p>
+<p>We can ask a container class object for its length using the <code>size()</code> member function, which returns the length as unsigned <code>size_type</code>. In C++17, we can also use the <code>std::size()</code> non-member function.</p>
+<p>In C++20, the <code>std::ssize()</code> non-member function, which returns the length as a large <em>signed</em> integral type (usually <code>std::ptrdiff_t</code>, which is the type normally used as the signed counterpart to <code>std::size_t</code>).</p>
+<p>Accessing array elements using the <code>at()</code> member function does runtime bounds checking (and throws an exception of type <code>std::out_of_range</code> if the bounds are out of range). If the exception isn’t caught, the application will be terminated.</p>
+<p>Both <code>operator[]</code> and the <code>at()</code> member function support indexing with non-const indices. However, both expect the index to be of type <code>size_type</code>, which is an unsigned integral type. This causes sign conversion problems when the indices are non-constexpr.</p>
+<p>An object of type <code>std::vector</code> can be passed to a function just like any other object. That means if we pass a <code>std::vector</code> by value, an expensive copy will be made. Therefore, we typically pass <code>std::vector</code> by (const) reference to avoid such copies.</p>
+<p>We can use a function template to be able to pass a <code>std::vector</code> with any element type into a function. You can use an <code>assert()</code> to ensure the vector passed in has the correct length.</p>
+<p>The term <strong>copy semantics</strong> refers to the rules that determine how copies of objects are made. When we say copy semantics are being invoked, that means we’ve done something that will make a copy of an object.</p>
+<p>When ownership of data is transfered from one object to another, we say that data has been <strong>moved</strong>.</p>
+<p><strong>Move semantics</strong> refers to the rules that determine how the data from one object is moved to another object. When move semantics is invoked, any data member that can be moved is moved, and any data member that can’t be moved is copied. The ability to move data instead of copying it can make move semantics more efficient than copy semantics, especially when we can replace an expensive copy with an inexpensive move.</p>
+<p>Normally, when an object is being initialized with or assigned an object of the same type, copy semantics will be used (assuming the copy isn’t elided). Move semantics will be automatically used instead when the type of the object supports move semantics, and the initializer or object being assigned from is an rvalue.</p>
+<p>We can return move-capable types (like <code>std::vector</code> and <code>std::string</code>) by value. Such types will inexpensively move their values instead of making an expensive copy.</p>
+<p>Accessing each element of a container in some order is called <strong>traversal</strong>, or <strong>traversing</strong> the container. Traversal is also sometimes called <strong>iterating over</strong> or <strong>iterating through</strong> the container.</p>
+<p>Loops are often used to traverse through an array, with a loop variable being used as an index. Beware of off-by-one errors, where the loop body executes one too many or one too few times.</p>
+<p>A <strong>range-based for loop</strong> (also sometimes called a <strong>for-each loop</strong>) allows traversal of a container without having to do explicit indexing. Favor range-based-for loops over regular for-loops when traversing containers.</p>
+<p>Use type deduction (<code>auto</code>) with ranged-based for-loops to have the compiler deduce the type of the array element. The element declaration should use a (const) reference whenever you would normally pass that element type by (const) reference. Consider always using <code>const auto&amp;</code> unless you need to work with copies. This will ensure copies aren’t made even if the element type is later changed.</p>
+<p>Unscoped enumerations can be used as indices, and help provide any information about the meaning of the index.</p>
+<p>Adding an additional “count” enumerator is useful whenever we need an enumerator that represents the array length. You can assert or static_assert that an array’s length is equal to the count enumerator to ensure an array is initialized with the expected number of initializers.</p>
+<p>Arrays where the length of the array must be defined at the point of instantiation and then cannot be changed are called <strong>fixed-size arrays</strong> or <strong>fixed-length arrays</strong>. A <strong>dynamic array</strong> (also called a <strong>resizable array</strong>) is an array whose size can be changed after instantiation. This ability to be resized is what makes <code>std::vector</code> special.</p>
+<p>A <code>std::vector</code> can be resized after instantiation by calling the <code>resize()</code> member function with the new desired length.</p>
+<p>In the context of a <code>std::vector</code>, <strong>capacity</strong> is how many elements the <code>std::vector</code> has allocated storage for, and <strong>length</strong> is how many elements are currently being used. We can ask a <code>std::vector</code> for its capacity via the <code>capacity()</code> member function.</p>
+<p>When a <code>std::vector</code> changes the amount of storage it is managing, this process is called <strong>reallocation</strong>. Because reallocation typically requires every element in the array to be copied, reallocation is an expensive process. As a result, we want to avoid reallocation as much as reasonable.</p>
+<p>Valid indices for the subscript operator (<code>operator[]</code>) and <code>at()</code> member function is based on the vector’s length, not the capacity.</p>
+<p><code>std::vector</code> has a member function called <code>shrink_to_fit()</code> that requests that the vector shrink its capacity to match its length. This request is non-binding.</p>
+<p>The order in which items are added to and removed from a stack can be described as <strong>last-in, first-out (LIFO)</strong>. The last plate added onto the stack will be the first plate that is removed. In programming, a <strong>stack</strong> is a container data type where the insertion and removal of elements occurs in a LIFO manner. This is commonly implemented via two operations named <strong>push</strong> and <strong>pop</strong>.</p>
+<p>The <code>std::vector</code> member functions <code>push_back()</code> and <code>emplace_back()</code> will increment the length of a <code>std::vector</code>, and will cause a reallocation to occur if the capacity is not sufficient to insert the value. When pushing triggers a reallocation, <code>std::vector</code> will typically allocate some extra capacity to allow additional elements to be added without triggering another reallocation the next time an element is added.</p>
+<p>The <code>resize()</code> member function changes the length of the vector, and the capacity (if necessary).<br />
+The <code>reserve()</code> member function changes just the capacity (if necessary)</p>
+<p>To increase the number of elements in a <code>std::vector</code>:</p>
+<ul>
+<li>Use <code>resize()</code> when accessing a vector via indexing. This changes the length of the vector so your indices will be valid.</li>
+<li>Use <code>reserve()</code> when accessing a vector using stack operations. This adds capacity without changing the length of the vector.</li>
+</ul>
+<p>Both <code>push_back()</code> and <code>emplace_back()</code> push an element onto the stack. If the object to be pushed already exists, <code>push_back()</code> and <code>emplace_back()</code> are equivalent. However, in cases where we are creating a temporary object for the purpose of pushing it onto the vector, <code>emplace_back()</code> can be more efficient. Prefer emplace_back() when creating a new temporary object to add to the container, or when you need to access an explicit constructor. Prefer push_back() otherwise.</p>
+<p>There is a special implementation for <code>std::vector&lt;bool&gt;</code> that may be more space efficient for Boolean values by similarly compacting 8 Boolean values into a byte.</p>
+<p><code>std::vector&lt;bool&gt;</code> is not a vector (it is not required to be contiguous in memory), nor does it hold <code>bool</code> values (it holds a collection of bits), nor does it meet C++’s definition of a container. Although <code>std::vector&lt;bool&gt;</code> behaves like a vector in most cases, it is not fully compatible with the rest of the standard library. Code that works with other element types may not work with <code>std::vector&lt;bool&gt;</code>. As a result, <code>std::vector&lt;bool&gt;</code> should generally be avoided.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="stdvector-bool.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="chapter-Fixed-size_arrays:_std::array_and_C-style_arrays.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="stdvector-bool.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="chapter-Fixed-size_arrays:_std::array_and_C-style_arrays.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

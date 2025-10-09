@@ -1,0 +1,446 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Using an integrated debugger: Running and breakpoints - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="using-an-integrated-debugger-running-and-breakpoints"><a class="header" href="#using-an-integrated-debugger-running-and-breakpoints">Using an integrated debugger: Running and breakpoints</a></h1>
+<p>While stepping (covered in lesson <a href="using-an-integrated-debugger-stepping.html">3.6 -- Using an integrated debugger: Stepping</a>) is useful for examining each individual line of your code in isolation, in a large program, it can take a long time to step through your code to even get to the point where you want to examine in more detail.</p>
+<p>Fortunately, modern debuggers provide more tools to help us efficiently debug our programs. In this lesson, we’ll look at some of the debugger features that let us more quickly navigate our code.</p>
+<h2 id="run-to-cursor"><a class="header" href="#run-to-cursor">Run to cursor</a></h2>
+<p>The first useful command is commonly called <em>Run to cursor</em>. This <strong>Run to cursor</strong> command executes the program until execution reaches the statement selected by your cursor. Then it returns control to you so you can debug starting at that point. This makes for an efficient way to start debugging at a particular point in your code, or if already debugging, to move straight to some place you want to examine further.</p>
+<blockquote>
+<p><strong>For Visual Studio users</strong></p>
+<p>For Visual Studio users</p>
+<p>In Visual Studio, the <em>run to cursor</em> command can be accessed by right clicking a statement in your code and choosing <em>Run to Cursor</em> from the context menu, or by pressing the ctrl-F10 keyboard combo.</p>
+</blockquote>
+<blockquote>
+<p><strong>For Code::Blocks users</strong></p>
+<p>For Code::Blocks users</p>
+<p>In Code::Blocks, the <em>run to cursor</em> command can be accessed by right clicking a statement in your code and choosing either <em>Run to cursor</em> from the context menu or <em>Debug menu &gt; Run to cursor</em>, or by pressing the F4 shortcut key.</p>
+</blockquote>
+<blockquote>
+<p><strong>For VS Code users</strong></p>
+<p>For VS Code users</p>
+<p>In VS Code, the <em>run to cursor</em> command can be accessed while already debugging a program by right clicking a statement in your code and choosing <em>Run to Cursor</em> from the context menu.</p>
+</blockquote>
+<p>Let’s try it using the same program we’ve been using:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+void printValue(int value)
+{
+    std::cout &lt;&lt; value &lt;&lt; '\n';
+}
+
+int main()
+{
+    printValue(5);
+
+    return 0;
+}
+</code></pre>
+<p>Simply right click anywhere on line 5, then choose “Run to cursor”.</p>
+<p><img src="https://www.learncpp.com/images/CppTutorial/Chapter3/VS-StepInto4-min.png" alt="" /></p>
+<p>You will notice the program starts running, and the execution marker moves to the line you just selected. Your program has executed up to this point and is now waiting for your further debugging commands. From here, you can step through your program, <em>run to cursor</em> to a different location, etc…</p>
+<p>If you <em>run to cursor</em> to a location that doesn’t execute, <em>run to cursor</em> will simply run your program until termination.</p>
+<h2 id="continue"><a class="header" href="#continue">Continue</a></h2>
+<p>Once you’re in the middle of a debugging session, you may want to just run the program from that point forward. The easiest way to do this is to use the <em>continue</em> command. The <strong>continue</strong> debug command simply continues running the program as per normal, either until the program terminates, or until something triggers control to return back to you again (such as a breakpoint, which we’ll cover later in this lesson).</p>
+<blockquote>
+<p><strong>For Visual Studio users</strong></p>
+<p>For Visual Studio users</p>
+<p>In Visual Studio, the <em>continue</em> command can be accessed while already debugging a program via <em>Debug menu &gt; Continue</em>, or by pressing the F5 shortcut key.</p>
+</blockquote>
+<blockquote>
+<p><strong>For Code::Blocks users</strong></p>
+<p>For Code::Blocks users</p>
+<p>In Code::Blocks, the <em>continue</em> command can be accessed while already debugging a program via <em>Debug menu &gt; Start / Continue</em>, or by pressing the F8 shortcut key.</p>
+</blockquote>
+<blockquote>
+<p><strong>For VS Code users</strong></p>
+<p>For VS Code users</p>
+<p>In VS Code, the <em>continue</em> command can be accessed while already debugging a program via <em>Run menu &gt; Continue</em>, or by pressing the <em>F5</em> shortcut key.</p>
+</blockquote>
+<p>Let’s test out the <em>continue</em> command. If your execution marker isn’t already on line 5, <em>run to cursor</em> to line 5. Then choose <em>continue</em> from this point. Your program will finish executing and then terminate.</p>
+<h2 id="start"><a class="header" href="#start">Start</a></h2>
+<p>The <em>continue</em> command has a twin brother named <em>start</em>. The <em>start</em> command performs the same action as <em>continue</em>, just starting from the beginning of the program. It can only be invoked when not already in a debug session.</p>
+<blockquote>
+<p><strong>For Visual Studio users</strong></p>
+<p>For Visual Studio users</p>
+<p>In Visual Studio, the <em>start</em> command can be accessed while not debugging a program via <em>Debug menu &gt; Start Debugging</em>, or by pressing the F5 shortcut key.</p>
+</blockquote>
+<blockquote>
+<p><strong>For Code::Blocks users</strong></p>
+<p>For Code::Blocks users</p>
+<p>In Code::Blocks, the <em>start</em> command can be accessed while not debugging a program via <em>Debug menu &gt; Start / Continue</em>, or by pressing the F8 shortcut key.</p>
+</blockquote>
+<blockquote>
+<p><strong>For VS Code users</strong></p>
+<p>For VS Code users</p>
+<p>In VS Code, the <em>start</em> command can be accessed while not debugging a program via <em>Run menu &gt; Start Debugging</em>, or by pressing the <em>F5</em> shortcut key.</p>
+</blockquote>
+<p>If you use the <em>start</em> command on the above sample program, it will run all the way through without interruption (except on <code>VS Code</code>, because we set <code>stopAtEntry: true</code> in the prior lesson). While this may seem unremarkable, that’s only because we haven’t told the debugger to interrupt the program. We’ll put this command to better use in the next section.</p>
+<h2 id="breakpoints"><a class="header" href="#breakpoints">Breakpoints</a></h2>
+<p>The last topic we are going to talk about in this section is breakpoints. A <strong>breakpoint</strong> is a special marker that tells the debugger to stop execution of the program at the breakpoint when running in debug mode.</p>
+<blockquote>
+<p><strong>For Visual Studio users</strong></p>
+<p>For Visual Studio users</p>
+<p>In Visual Studio, you can set or remove a breakpoint via <em>Debug menu &gt; Toggle Breakpoint</em>, or by right clicking on a statement and choosing <em>Toggle Breakpoint</em> from the context menu, or by pressing the F9 shortcut key, or by clicking to the left of the line number (in the light grey area).</p>
+</blockquote>
+<blockquote>
+<p><strong>For Code::Blocks users</strong></p>
+<p>For Code::Blocks users</p>
+<p>In Code::Blocks, you can set or remove a breakpoint via <em>Debug menu &gt; Toggle breakpoint</em>, or by right clicking on a statement and choosing <em>Toggle breakpoint</em> from the context menu, or by pressing the F5 shortcut key, or by clicking to the right of the line number.</p>
+</blockquote>
+<blockquote>
+<p><strong>For VS Code users</strong></p>
+<p>For VS Code users</p>
+<p>In VS Code, you can set or remove a breakpoint via <em>Run menu &gt; Toggle Breakpoint</em>, or by pressing the <em>F9</em> shortcut key, or by clicking to the left of the line number.</p>
+</blockquote>
+<p>When you set a breakpoint, you will see a new type of icon appear. Visual Studio uses a red circle, Code::Blocks uses a red octagon (like a stop sign):</p>
+<p><img src="https://www.learncpp.com/images/CppTutorial/Chapter3/VS-Breakpoint1-min.png" alt="" /></p>
+<p>Go ahead and set a breakpoint on the line 5, as shown in the image above.</p>
+<p>Now, choose the <em>Start</em> command to have the debugger run your code, and let’s see the breakpoint in action. You will notice that instead of running all the way to the end of the program, the debugger stops at the breakpoint (with the execution marker sitting on top of the breakpoint icon):</p>
+<p><img src="https://www.learncpp.com/images/CppTutorial/Chapter3/VS-Breakpoint2-min.png" alt="" /></p>
+<p>It’s just as if you’d <em>run to cursor</em> to this point.</p>
+<p>Breakpoints have a couple of advantages over <em>run to cursor</em>. First, a breakpoint will cause the debugger to return control to you every time they are encountered (unlike <em>run to cursor</em>, which only runs to the cursor once each time it is invoked). Second, you can set a breakpoint and it will persist until you remove it, whereas with <em>run to cursor</em> you have to locate the spot you want to run to each time you invoke the command.</p>
+<p>Note that breakpoints placed on lines that are not in the path of execution will not cause the debugger to halt execution of the code.</p>
+<p>Let’s take a look at a slightly modified program that better illustrates the difference between breakpoints and <em>run to cursor</em>:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+void printValue(int value)
+{
+    std::cout &lt;&lt; value &lt;&lt; '\n';
+}
+
+int main()
+{
+    printValue(5);
+    printValue(6);
+    printValue(7);
+
+    return 0;
+}
+</code></pre>
+<p>First, start a new debugging session and then do a <em>run to cursor</em> to line 5. Now choose <em>continue</em>. The program will continue to the end (it won’t stop on line 5 again, even though line 5 is executed twice more).</p>
+<p>Next, place a breakpoint on line 5, then choose <em>start</em>. The program will stop on line 5. Now choose <em>continue</em>. The program will stop on line 5 a second time. Choose <em>continue</em> again, and it will stop a third time. One more <em>continue</em>, and the program will terminate. You can see that the breakpoint caused the program to stop as many times as that line was executed.</p>
+<h2 id="set-next-statement"><a class="header" href="#set-next-statement">Set next statement</a></h2>
+<p>There’s one more debugging command that’s used fairly uncommonly, but is still at least worth knowing about, even if you won’t use it very often. The <strong>set next statement</strong> command allows us to change the point of execution to some other statement (sometimes informally called <em>jumping</em>). This can be used to jump the point of execution forwards and skip some code that would otherwise execute, or backwards and have something that already executed run again.</p>
+<blockquote>
+<p><strong>For Visual Studio users</strong></p>
+<p>For Visual Studio users</p>
+<p>In Visual Studio, you can jump the point of execution by right clicking on a statement and choosing <em>Set next statement</em> from the context menu, or by pressing the Ctrl-Shift-F10 shortcut combination. This option is contextual and only occurs while already debugging a program.</p>
+</blockquote>
+<blockquote>
+<p><strong>For Code::Blocks users</strong></p>
+<p>For Code::Blocks users</p>
+<p>In Code::Blocks, you can jump the point of execution via <em>Debug menu &gt; Set next statement</em>, or by right clicking on a statement and choosing <em>Set next statement</em> from the context menu. Code::Blocks doesn’t have a keyboard shortcut for this command.</p>
+</blockquote>
+<blockquote>
+<p><strong>For VS Code users</strong></p>
+<p>For VS Code users</p>
+<p>In VS Code, you can jump the point of execution by right clicking on a statement and choosing <em>Jump to cursor</em> from the context menu. This option is contextual and only occurs while already debugging a program.</p>
+</blockquote>
+<p>Let’s see jumping forwards in action:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+void printValue(int value)
+{
+    std::cout &lt;&lt; value &lt;&lt; '\n';
+}
+
+int main()
+{
+    printValue(5);
+    printValue(6);
+    printValue(7);
+
+    return 0;
+}
+</code></pre>
+<p>First, <em>run to cursor</em> to line 11. At this point, you should see the value of <em>5</em> in the console output window.</p>
+<p>Now, right click on line 12, and choose <em>set next statement</em>. This causes line 11 to be skipped and not execute. Then choose <em>continue</em> to finish executing your program.</p>
+<p>The output of your program should look like this:</p>
+<pre><code class="language-cpp">5
+7
+</code></pre>
+<p>We can see that <code>printValue(6)</code> was skipped.</p>
+<p>This functionality can be useful in several contexts.</p>
+<p>In our exploration of basic debugging techniques, we discussed commenting out a function as a way to determine whether that function had a role in causing an issue. This requires modifying our code, and remembering to uncomment the function later. In the debugger, there’s no direct way to skip a function, so if you decide you want to do this, using <em>set next statement</em> to jump over a function call is the easiest way to do so.</p>
+<p>Jumping backwards can also be useful if we want to watch a function that just executed run again, so we can see what it is doing.</p>
+<p>With the same code above, <em>run to cursor</em> to line 12. Then <em>set next statement</em> on line 11, and <em>continue</em>. The program’s output should be:</p>
+<pre><code class="language-cpp">5
+6
+6
+7
+</code></pre>
+<div id="admonition-warning" class="admonition admonish-warning" role="note" aria-labelledby="admonition-warning-title">
+<div class="admonition-title">
+<div id="admonition-warning-title">
+<p>Warning</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-warning"></a>
+</div>
+<div>
+<p>Warning</p>
+<p>The <em>set next statement</em> command will change the point of execution, but will not otherwise change the program state. Your variables will retain whatever values they had before the jump. As a result, jumping may cause your program to produce different values, results, or behaviors than it would otherwise. Use this capability judiciously (especially jumping backwards).</p>
+</div>
+</div>
+<div id="admonition-warning-1" class="admonition admonish-warning" role="note" aria-labelledby="admonition-warning-1-title">
+<div class="admonition-title">
+<div id="admonition-warning-1-title">
+<p>Warning</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-warning-1"></a>
+</div>
+<div>
+<p>Warning</p>
+<p>You should not use <em>set next statement</em> to change the point of execution to a different function. This may result in undefined behavior, and likely a crash.</p>
+</div>
+</div>
+<h2 id="step-back-vs-jumping-backwards-via-set-next-statement"><a class="header" href="#step-back-vs-jumping-backwards-via-set-next-statement">“Step back” vs jumping backwards via “Set next statement”</a></h2>
+<p>“Step back” rewinds the state of everything, as if you’d never gone past that point in the first place. Any changes to variable values or other program state is undone. This is essentially an “undo” command for stepping.</p>
+<p>“Set next statement” when used to jump backwards only changes the point of execution. Any changes to variable values or other program state are not undone.</p>
+<h2 id="conclusion"><a class="header" href="#conclusion">Conclusion</a></h2>
+<p>You now learned the major ways that you can use an integrated debugger to watch and control how your program executes. While these commands can be useful for diagnosing code flow issues (e.g. to determine if certain functions are or aren’t being called), they are only a portion of the benefit that the integrated debugger brings to the table. In the next lesson, we’ll start exploring additional ways to examine your program’s state, for which you’ll need these commands as a prerequisite. Let’s go!</p>
+<p>AI CONTENT END 1</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="using-an-integrated-debugger-stepping.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="using-an-integrated-debugger-watching-variables.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="using-an-integrated-debugger-stepping.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="using-an-integrated-debugger-watching-variables.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

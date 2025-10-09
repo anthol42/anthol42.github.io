@@ -1,0 +1,674 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Bit manipulation with bitwise operators and bit masks - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="bit-manipulation-with-bitwise-operators-and-bit-masks"><a class="header" href="#bit-manipulation-with-bitwise-operators-and-bit-masks">Bit manipulation with bitwise operators and bit masks</a></h1>
+<p>In the previous lesson on bitwise operators (<a href="bitwise-operators.html">O.2 -- Bitwise operators</a>), we discussed how the various bitwise operators apply logical operators to each bit within the operands. Now that we understand how they function, let’s take a look at how they’re more commonly used.</p>
+<h2 id="bit-masks"><a class="header" href="#bit-masks">Bit masks</a></h2>
+<p>In order to manipulate individual bits (e.g. turn them on or off), we need some way to identify the specific bits we want to manipulate. Unfortunately, the bitwise operators don’t know how to work with bit positions. Instead they work with bit masks.</p>
+<p>A <strong>bit mask</strong> is a predefined set of bits that is used to select which specific bits will be modified by subsequent operations.</p>
+<p>Consider a real-life case where you want to paint a window frame. If you’re not careful, you risk painting not only the window frame, but also the glass itself. You might buy some masking tape and apply it to the glass and any other parts you don’t want painted. Then when you paint, the masking tape blocks the paint from reaching anything you don’t want painted. In the end, only the non-masked parts (the parts you want painted) get painted.</p>
+<p>A bit mask essentially performs the same function for bits -- the bit mask blocks the bitwise operators from touching bits we don’t want modified, and allows access to the ones we do want modified.</p>
+<p>Let’s first explore how to define some simple bit masks, and then we’ll show you how to use them.</p>
+<h2 id="defining-bit-masks-in-c14"><a class="header" href="#defining-bit-masks-in-c14">Defining bit masks in C++14</a></h2>
+<p>The simplest set of bit masks is to define one bit mask for each bit position. We use 0s to mask out the bits we don’t care about, and 1s to denote the bits we want modified.</p>
+<p>Although bit masks can be literals, they’re often defined as symbolic constants so they can be given a meaningful name and easily reused.</p>
+<p>Because C++14 supports binary literals, defining these bit masks is easy:</p>
+<pre><code class="language-cpp">#include &lt;cstdint&gt;
+
+constexpr std::uint8_t mask0{ 0b0000'0001 }; // represents bit 0
+constexpr std::uint8_t mask1{ 0b0000'0010 }; // represents bit 1
+constexpr std::uint8_t mask2{ 0b0000'0100 }; // represents bit 2 
+constexpr std::uint8_t mask3{ 0b0000'1000 }; // represents bit 3
+constexpr std::uint8_t mask4{ 0b0001'0000 }; // represents bit 4
+constexpr std::uint8_t mask5{ 0b0010'0000 }; // represents bit 5
+constexpr std::uint8_t mask6{ 0b0100'0000 }; // represents bit 6
+constexpr std::uint8_t mask7{ 0b1000'0000 }; // represents bit 7
+</code></pre>
+<p>Now we have a set of symbolic constants that represents each bit position. We can use these to manipulate the bits (which we’ll show how to do in just a moment).</p>
+<h2 id="defining-bit-masks-in-c11-or-earlier"><a class="header" href="#defining-bit-masks-in-c11-or-earlier">Defining bit masks in C++11 or earlier</a></h2>
+<p>Because C++11 doesn’t support binary literals, we have to use other methods to set the symbolic constants. There are two good methods for doing this.</p>
+<p>The first method is to use hexadecimal literals.</p>
+<blockquote>
+<p><strong>Related content</strong></p>
+<p>Related content</p>
+<p>We talk about hexadecimal in lesson <a href="literals">5.2 -- Literals</a>.</p>
+</blockquote>
+<p>Here’s how hexadecimal converts to binary:</p>
+<div class="table-wrapper"><table><thead><tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></thead><tbody>
+<tr><td>Hexadecimal</td><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td></tr>
+<tr><td>Binary</td><td>0000</td><td>0001</td><td>0010</td><td>0011</td><td>0100</td><td>0101</td><td>0110</td><td>0111</td><td>1000</td><td>1001</td><td>1010</td><td>1011</td><td>1100</td><td>1101</td><td>1110</td><td>1111</td></tr>
+</tbody></table>
+</div>
+<p>Therefore, we can define bit masks using hexadecimal like this:</p>
+<pre><code class="language-cpp">constexpr std::uint8_t mask0{ 0x01 }; // hex for 0000 0001
+constexpr std::uint8_t mask1{ 0x02 }; // hex for 0000 0010
+constexpr std::uint8_t mask2{ 0x04 }; // hex for 0000 0100
+constexpr std::uint8_t mask3{ 0x08 }; // hex for 0000 1000
+constexpr std::uint8_t mask4{ 0x10 }; // hex for 0001 0000
+constexpr std::uint8_t mask5{ 0x20 }; // hex for 0010 0000
+constexpr std::uint8_t mask6{ 0x40 }; // hex for 0100 0000
+constexpr std::uint8_t mask7{ 0x80 }; // hex for 1000 0000
+</code></pre>
+<p>Sometimes leading hexadecimal 0s will be omitted (e.g. instead of <code>0x01</code> you’ll just see <code>0x1</code>). Either way, this can be a little hard to read if you’re not familiar with hexadecimal to binary conversion.</p>
+<p>An easier method is to use the left-shift operator to shift a single bit into the proper location:</p>
+<pre><code class="language-cpp">constexpr std::uint8_t mask0{ 1 &lt;&lt; 0 }; // 0000 0001 
+constexpr std::uint8_t mask1{ 1 &lt;&lt; 1 }; // 0000 0010
+constexpr std::uint8_t mask2{ 1 &lt;&lt; 2 }; // 0000 0100
+constexpr std::uint8_t mask3{ 1 &lt;&lt; 3 }; // 0000 1000
+constexpr std::uint8_t mask4{ 1 &lt;&lt; 4 }; // 0001 0000
+constexpr std::uint8_t mask5{ 1 &lt;&lt; 5 }; // 0010 0000
+constexpr std::uint8_t mask6{ 1 &lt;&lt; 6 }; // 0100 0000
+constexpr std::uint8_t mask7{ 1 &lt;&lt; 7 }; // 1000 0000
+</code></pre>
+<h2 id="testing-a-bit-to-see-if-it-is-on-or-off"><a class="header" href="#testing-a-bit-to-see-if-it-is-on-or-off">Testing a bit (to see if it is on or off)</a></h2>
+<p>Now that we have a set of bit masks, we can use these in conjunction with a bit flag variable to manipulate our bit flags.</p>
+<p>To determine if a bit is on or off, we use <em>bitwise AND</em> in conjunction with the bit mask for the appropriate bit:</p>
+<pre><code class="language-cpp">#include &lt;cstdint&gt;
+#include &lt;iostream&gt;
+
+int main()
+{
+	[[maybe_unused]] constexpr std::uint8_t mask0{ 0b0000'0001 }; // represents bit 0
+	[[maybe_unused]] constexpr std::uint8_t mask1{ 0b0000'0010 }; // represents bit 1
+	[[maybe_unused]] constexpr std::uint8_t mask2{ 0b0000'0100 }; // represents bit 2 
+	[[maybe_unused]] constexpr std::uint8_t mask3{ 0b0000'1000 }; // represents bit 3
+	[[maybe_unused]] constexpr std::uint8_t mask4{ 0b0001'0000 }; // represents bit 4
+	[[maybe_unused]] constexpr std::uint8_t mask5{ 0b0010'0000 }; // represents bit 5
+	[[maybe_unused]] constexpr std::uint8_t mask6{ 0b0100'0000 }; // represents bit 6
+	[[maybe_unused]] constexpr std::uint8_t mask7{ 0b1000'0000 }; // represents bit 7
+
+	std::uint8_t flags{ 0b0000'0101 }; // 8 bits in size means room for 8 flags
+
+	std::cout &lt;&lt; "bit 0 is " &lt;&lt; (static_cast&lt;bool&gt;(flags &amp; mask0) ? "on\n" : "off\n");
+	std::cout &lt;&lt; "bit 1 is " &lt;&lt; (static_cast&lt;bool&gt;(flags &amp; mask1) ? "on\n" : "off\n");
+
+	return 0;
+}
+</code></pre>
+<p>This prints:</p>
+<pre><code class="language-cpp">bit 0 is on
+bit 1 is off
+</code></pre>
+<p>Let’s examine how this works.</p>
+<p>In the case of <code>flags &amp; mask0</code>, we have <code>0000'0101</code> &amp; <code>0000'0001</code>. Let’s line these up:</p>
+<pre><code class="language-cpp">0000'0101 &amp;
+0000'0001
+---------
+0000'0001
+</code></pre>
+<p>We are then casting <code>0000'0001</code> to a <code>bool</code>. Since any non-zero number converts to <code>true</code> and this value has a non-zero digit, this evaluates to <code>true</code>.</p>
+<p>In the case of <code>flags &amp; mask1</code>, we have <code>0000'0101</code> &amp; <code>0000'0010</code>. Let’s line these up:</p>
+<pre><code class="language-cpp">0000'0101 &amp;
+0000'0010
+---------
+0000'0000
+</code></pre>
+<p>Since a zero value converts to <code>false</code> and this value has only zero digits, this evaluates to <code>false</code>.</p>
+<h2 id="setting-a-bit"><a class="header" href="#setting-a-bit">Setting a bit</a></h2>
+<p>To set (turn on) a bit (to value 1), we use bitwise OR equals (operator |=) in conjunction with the bit mask for the appropriate bit:</p>
+<pre><code class="language-cpp">#include &lt;cstdint&gt;
+#include &lt;iostream&gt;
+
+int main()
+{
+    [[maybe_unused]] constexpr std::uint8_t mask0{ 0b0000'0001 }; // represents bit 0
+    [[maybe_unused]] constexpr std::uint8_t mask1{ 0b0000'0010 }; // represents bit 1
+    [[maybe_unused]] constexpr std::uint8_t mask2{ 0b0000'0100 }; // represents bit 2 
+    [[maybe_unused]] constexpr std::uint8_t mask3{ 0b0000'1000 }; // represents bit 3
+    [[maybe_unused]] constexpr std::uint8_t mask4{ 0b0001'0000 }; // represents bit 4
+    [[maybe_unused]] constexpr std::uint8_t mask5{ 0b0010'0000 }; // represents bit 5
+    [[maybe_unused]] constexpr std::uint8_t mask6{ 0b0100'0000 }; // represents bit 6
+    [[maybe_unused]] constexpr std::uint8_t mask7{ 0b1000'0000 }; // represents bit 7
+    
+    std::uint8_t flags{ 0b0000'0101 }; // 8 bits in size means room for 8 flags
+
+    std::cout &lt;&lt; "bit 1 is " &lt;&lt; (static_cast&lt;bool&gt;(flags &amp; mask1) ? "on\n" : "off\n");
+
+    flags |= mask1; // turn on bit 1
+
+    std::cout &lt;&lt; "bit 1 is " &lt;&lt; (static_cast&lt;bool&gt;(flags &amp; mask1) ? "on\n" : "off\n");
+
+    return 0;
+}
+</code></pre>
+<p>This prints:</p>
+<pre><code class="language-cpp">bit 1 is off
+bit 1 is on
+</code></pre>
+<p>We can also turn on multiple bits at the same time using <em>Bitwise OR</em>:</p>
+<pre><code class="language-cpp">flags |= (mask4 | mask5); // turn bits 4 and 5 on at the same time
+</code></pre>
+<h2 id="resetting-a-bit"><a class="header" href="#resetting-a-bit">Resetting a bit</a></h2>
+<p>To reset (clear) a bit (to value 0), we use <em>Bitwise AND</em> and <em>Bitwise NOT</em> together:</p>
+<pre><code class="language-cpp">#include &lt;cstdint&gt;
+#include &lt;iostream&gt;
+
+int main()
+{
+    [[maybe_unused]] constexpr std::uint8_t mask0{ 0b0000'0001 }; // represents bit 0
+    [[maybe_unused]] constexpr std::uint8_t mask1{ 0b0000'0010 }; // represents bit 1
+    [[maybe_unused]] constexpr std::uint8_t mask2{ 0b0000'0100 }; // represents bit 2 
+    [[maybe_unused]] constexpr std::uint8_t mask3{ 0b0000'1000 }; // represents bit 3
+    [[maybe_unused]] constexpr std::uint8_t mask4{ 0b0001'0000 }; // represents bit 4
+    [[maybe_unused]] constexpr std::uint8_t mask5{ 0b0010'0000 }; // represents bit 5
+    [[maybe_unused]] constexpr std::uint8_t mask6{ 0b0100'0000 }; // represents bit 6
+    [[maybe_unused]] constexpr std::uint8_t mask7{ 0b1000'0000 }; // represents bit 7
+    
+    std::uint8_t flags{ 0b0000'0101 }; // 8 bits in size means room for 8 flags
+
+    std::cout &lt;&lt; "bit 2 is " &lt;&lt; (static_cast&lt;bool&gt;(flags &amp; mask2) ? "on\n" : "off\n");
+
+    flags &amp;= ~mask2; // turn off bit 2
+
+    std::cout &lt;&lt; "bit 2 is " &lt;&lt; (static_cast&lt;bool&gt;(flags &amp; mask2) ? "on\n" : "off\n");
+
+    return 0;
+}
+</code></pre>
+<p>This prints:</p>
+<pre><code class="language-cpp">bit 2 is on
+bit 2 is off
+</code></pre>
+<p>We can turn off multiple bits at the same time:</p>
+<pre><code class="language-cpp">flags &amp;= ~(mask4 | mask5); // turn bits 4 and 5 off at the same time
+</code></pre>
+<blockquote>
+<p><strong>Key insight</strong></p>
+<p>Key insight</p>
+<p>Some compilers may complain about a sign conversion with this line:</p>
+<pre><code>flags &amp;= ~mask2;
+</code></pre>
+<p>Because the type of <code>mask2</code> is smaller than <code>int</code>, <code>operator~</code> causes operand <code>mask2</code> to undergo integral promotion to type <code>int</code>. Then the compiler complains that we’re trying to use <code>operator&amp;=</code> where the left operand is unsigned and the right operand is signed.</p>
+<p>If this is the case, try the following:</p>
+<pre><code>flags &amp;= static_cast&lt;std::uint8_t&gt;(~mask2);
+</code></pre>
+<p>We discuss this issue in lesson <a href="bitwise-operators">O.2 -- Bitwise operators</a>.</p>
+</blockquote>
+<h2 id="flipping-a-bit"><a class="header" href="#flipping-a-bit">Flipping a bit</a></h2>
+<p>To toggle (flip) a bit state (from 0 to 1 or from 1 to 0), we use <em>Bitwise XOR</em>:</p>
+<pre><code class="language-cpp">#include &lt;cstdint&gt;
+#include &lt;iostream&gt;
+
+int main()
+{
+    [[maybe_unused]] constexpr std::uint8_t mask0{ 0b0000'0001 }; // represents bit 0
+    [[maybe_unused]] constexpr std::uint8_t mask1{ 0b0000'0010 }; // represents bit 1
+    [[maybe_unused]] constexpr std::uint8_t mask2{ 0b0000'0100 }; // represents bit 2 
+    [[maybe_unused]] constexpr std::uint8_t mask3{ 0b0000'1000 }; // represents bit 3
+    [[maybe_unused]] constexpr std::uint8_t mask4{ 0b0001'0000 }; // represents bit 4
+    [[maybe_unused]] constexpr std::uint8_t mask5{ 0b0010'0000 }; // represents bit 5
+    [[maybe_unused]] constexpr std::uint8_t mask6{ 0b0100'0000 }; // represents bit 6
+    [[maybe_unused]] constexpr std::uint8_t mask7{ 0b1000'0000 }; // represents bit 7
+
+    std::uint8_t flags{ 0b0000'0101 }; // 8 bits in size means room for 8 flags
+
+    std::cout &lt;&lt; "bit 2 is " &lt;&lt; (static_cast&lt;bool&gt;(flags &amp; mask2) ? "on\n" : "off\n");
+    flags ^= mask2; // flip bit 2
+    std::cout &lt;&lt; "bit 2 is " &lt;&lt; (static_cast&lt;bool&gt;(flags &amp; mask2) ? "on\n" : "off\n");
+    flags ^= mask2; // flip bit 2
+    std::cout &lt;&lt; "bit 2 is " &lt;&lt; (static_cast&lt;bool&gt;(flags &amp; mask2) ? "on\n" : "off\n");
+
+    return 0;
+}
+</code></pre>
+<p>This prints:</p>
+<pre><code class="language-cpp">bit 2 is on
+bit 2 is off
+bit 2 is on
+</code></pre>
+<p>We can flip multiple bits simultaneously:</p>
+<pre><code class="language-cpp">flags ^= (mask4 | mask5); // flip bits 4 and 5 at the same time
+</code></pre>
+<h2 id="bit-masks-and-stdbitset"><a class="header" href="#bit-masks-and-stdbitset">Bit masks and std::bitset</a></h2>
+<p>std::bitset supports the full set of bitwise operators. So even though it’s easier to use the functions (test, set, reset, and flip) to modify individual bits, you can use bitwise operators and bit masks if you want.</p>
+<p>Why would you want to? The functions only allow you to modify individual bits. The bitwise operators allow you to modify multiple bits at once.</p>
+<pre><code class="language-cpp">#include &lt;bitset&gt;
+#include &lt;iostream&gt;
+
+int main()
+{
+	[[maybe_unused]] constexpr std::bitset&lt;8&gt; mask0{ 0b0000'0001 }; // represents bit 0
+	[[maybe_unused]] constexpr std::bitset&lt;8&gt; mask1{ 0b0000'0010 }; // represents bit 1
+	[[maybe_unused]] constexpr std::bitset&lt;8&gt; mask2{ 0b0000'0100 }; // represents bit 2 
+	[[maybe_unused]] constexpr std::bitset&lt;8&gt; mask3{ 0b0000'1000 }; // represents bit 3
+	[[maybe_unused]] constexpr std::bitset&lt;8&gt; mask4{ 0b0001'0000 }; // represents bit 4
+	[[maybe_unused]] constexpr std::bitset&lt;8&gt; mask5{ 0b0010'0000 }; // represents bit 5
+	[[maybe_unused]] constexpr std::bitset&lt;8&gt; mask6{ 0b0100'0000 }; // represents bit 6
+	[[maybe_unused]] constexpr std::bitset&lt;8&gt; mask7{ 0b1000'0000 }; // represents bit 7
+
+	std::bitset&lt;8&gt; flags{ 0b0000'0101 }; // 8 bits in size means room for 8 flags
+	std::cout &lt;&lt; "bit 1 is " &lt;&lt; (flags.test(1) ? "on\n" : "off\n");
+	std::cout &lt;&lt; "bit 2 is " &lt;&lt; (flags.test(2) ? "on\n" : "off\n");
+
+	flags ^= (mask1 | mask2); // flip bits 1 and 2
+	std::cout &lt;&lt; "bit 1 is " &lt;&lt; (flags.test(1) ? "on\n" : "off\n");
+	std::cout &lt;&lt; "bit 2 is " &lt;&lt; (flags.test(2) ? "on\n" : "off\n");
+
+	flags |= (mask1 | mask2); // turn bits 1 and 2 on
+	std::cout &lt;&lt; "bit 1 is " &lt;&lt; (flags.test(1) ? "on\n" : "off\n");
+	std::cout &lt;&lt; "bit 2 is " &lt;&lt; (flags.test(2) ? "on\n" : "off\n");
+
+	flags &amp;= ~(mask1 | mask2); // turn bits 1 and 2 off
+	std::cout &lt;&lt; "bit 1 is " &lt;&lt; (flags.test(1) ? "on\n" : "off\n");
+	std::cout &lt;&lt; "bit 2 is " &lt;&lt; (flags.test(2) ? "on\n" : "off\n");
+
+	return 0;
+}
+</code></pre>
+<p>This prints:</p>
+<pre><code class="language-cpp">bit 1 is off
+bit 2 is on
+bit 1 is on
+bit 2 is off
+bit 1 is on
+bit 2 is on
+bit 1 is off
+bit 2 is off
+</code></pre>
+<h2 id="making-bit-masks-meaningful"><a class="header" href="#making-bit-masks-meaningful">Making bit masks meaningful</a></h2>
+<p>Naming our bit masks “mask1” or “mask2” tells us what bit is being manipulated, but doesn’t give us any indication of what that bit flag is actually being used for.</p>
+<p>A best practice is to give your bit masks useful names as a way to document the meaning of your bit flags. Here’s an example from a game we might write:</p>
+<pre><code class="language-cpp">#include &lt;cstdint&gt;
+#include &lt;iostream&gt;
+
+int main()
+{
+        // Define a bunch of physical/emotional states
+	[[maybe_unused]] constexpr std::uint8_t isHungry   { 1 &lt;&lt; 0 }; // 0000 0001
+	[[maybe_unused]] constexpr std::uint8_t isSad      { 1 &lt;&lt; 1 }; // 0000 0010
+	[[maybe_unused]] constexpr std::uint8_t isMad      { 1 &lt;&lt; 2 }; // 0000 0100
+	[[maybe_unused]] constexpr std::uint8_t isHappy    { 1 &lt;&lt; 3 }; // 0000 1000
+	[[maybe_unused]] constexpr std::uint8_t isLaughing { 1 &lt;&lt; 4 }; // 0001 0000
+	[[maybe_unused]] constexpr std::uint8_t isAsleep   { 1 &lt;&lt; 5 }; // 0010 0000
+	[[maybe_unused]] constexpr std::uint8_t isDead     { 1 &lt;&lt; 6 }; // 0100 0000
+	[[maybe_unused]] constexpr std::uint8_t isCrying   { 1 &lt;&lt; 7 }; // 1000 0000
+
+	std::uint8_t me{}; // all flags/options turned off to start
+	me |= (isHappy | isLaughing); // I am happy and laughing
+	me &amp;= ~isLaughing; // I am no longer laughing
+
+	// Query a few states
+	// (we'll use static_cast&lt;bool&gt; to interpret the results as a boolean value)
+	std::cout &lt;&lt; std::boolalpha; // print true or false instead of 1 or 0
+	std::cout &lt;&lt; "I am happy? " &lt;&lt; static_cast&lt;bool&gt;(me &amp; isHappy) &lt;&lt; '\n';
+	std::cout &lt;&lt; "I am laughing? " &lt;&lt; static_cast&lt;bool&gt;(me &amp; isLaughing) &lt;&lt; '\n';
+
+	return 0;
+}
+</code></pre>
+<p>Here’s the same example implemented using std::bitset:</p>
+<pre><code class="language-cpp">#include &lt;bitset&gt;
+#include &lt;iostream&gt;
+
+int main()
+{
+        // Define a bunch of physical/emotional states
+	[[maybe_unused]] constexpr std::bitset&lt;8&gt; isHungry   { 0b0000'0001 };
+	[[maybe_unused]] constexpr std::bitset&lt;8&gt; isSad      { 0b0000'0010 };
+	[[maybe_unused]] constexpr std::bitset&lt;8&gt; isMad      { 0b0000'0100 };
+	[[maybe_unused]] constexpr std::bitset&lt;8&gt; isHappy    { 0b0000'1000 };
+	[[maybe_unused]] constexpr std::bitset&lt;8&gt; isLaughing { 0b0001'0000 };
+	[[maybe_unused]] constexpr std::bitset&lt;8&gt; isAsleep   { 0b0010'0000 };
+	[[maybe_unused]] constexpr std::bitset&lt;8&gt; isDead     { 0b0100'0000 };
+	[[maybe_unused]] constexpr std::bitset&lt;8&gt; isCrying   { 0b1000'0000 };
+
+
+	std::bitset&lt;8&gt; me{}; // all flags/options turned off to start
+	me |= (isHappy | isLaughing); // I am happy and laughing
+	me &amp;= ~isLaughing; // I am no longer laughing
+
+	// Query a few states (we use the any() function to see if any bits remain set)
+	std::cout &lt;&lt; std::boolalpha; // print true or false instead of 1 or 0
+	std::cout &lt;&lt; "I am happy? " &lt;&lt; (me &amp; isHappy).any() &lt;&lt; '\n';
+	std::cout &lt;&lt; "I am laughing? " &lt;&lt; (me &amp; isLaughing).any() &lt;&lt; '\n';
+
+	return 0;
+}
+</code></pre>
+<p>Two notes here: First, std::bitset doesn’t have a nice function that allows you to query bits using a bit mask. So if you want to use bit masks rather than positional indexes, you’ll have to use <em>Bitwise AND</em> to query bits. Second, we make use of the any() function, which returns true if any bits are set, and false otherwise to see if the bit we queried remains on or off.</p>
+<h2 id="when-are-bit-flags-most-useful"><a class="header" href="#when-are-bit-flags-most-useful">When are bit flags most useful?</a></h2>
+<p>Astute readers may note that the above examples don’t actually save any memory. 8 separate booleans values would normally take 8 bytes. But the examples above (using std::uint8_t) use 9 bytes -- 8 bytes to define the bit masks, and 1 byte for the flag variable!</p>
+<p>Bit flags make the most sense when you have many identical flag variables. For example, in the example above, imagine that instead of having one person (me), you had 100. If you used 8 Booleans per person (one for each possible state), you’d use 800 bytes of memory. With bit flags, you’d use 8 bytes for the bit masks, and 100 bytes for the bit flag variables, for a total of 108 bytes of memory -- approximately 8 times less memory.</p>
+<p>For most programs, the amount of memory saved using bit flags is not worth the added complexity. But in programs where there are tens of thousands or even millions of similar objects, using bit flags can reduce memory use substantially. It’s a useful optimization to have in your toolkit if you need it.</p>
+<p>There’s another case where bit flags and bit masks can make sense. Imagine you had a function that could take any combination of 32 different options. One way to write that function would be to use 32 individual Boolean parameters:</p>
+<pre><code class="language-cpp">void someFunction(bool option1, bool option2, bool option3, bool option4, bool option5, bool option6, bool option7, bool option8, bool option9, bool option10, bool option11, bool option12, bool option13, bool option14, bool option15, bool option16, bool option17, bool option18, bool option19, bool option20, bool option21, bool option22, bool option23, bool option24, bool option25, bool option26, bool option27, bool option28, bool option29, bool option30, bool option31, bool option32);
+</code></pre>
+<p>Hopefully you’d give your parameters more descriptive names, but the point here is to show you how obnoxiously long the parameter list is.</p>
+<p>Then when you wanted to call the function with options 10 and 32 set to true, you’d have to do so like this:</p>
+<pre><code class="language-cpp">someFunction(false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true);
+</code></pre>
+<p>This is ridiculously difficult to read (is that option 9, 10, or 11 that’s set to true?), and also means you have to remember which argument corresponds to which option (is setting the “edit flag” the 9th, 10th, or 11th parameter?).</p>
+<p>Instead, if you defined the function using bit flags like this:</p>
+<pre><code class="language-cpp">void someFunction(std::bitset&lt;32&gt; options);
+</code></pre>
+<p>Then you could use bit flags to pass in only the options you wanted:</p>
+<pre><code class="language-cpp">someFunction(option10 | option32);
+</code></pre>
+<p>This is much more readable.</p>
+<p>This is one of the reasons OpenGL, a well regarded 3d graphic library, opted to use bit flag parameters instead of many consecutive Boolean parameters.</p>
+<p>Here’s a sample function call from OpenGL:</p>
+<pre><code class="language-cpp">glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the color and the depth buffer
+</code></pre>
+<p>GL_COLOR_BUFFER_BIT and GL_DEPTH_BUFFER_BIT are bit masks defined as follows (in gl2.h):</p>
+<pre><code class="language-cpp">#define GL_DEPTH_BUFFER_BIT               0x00000100
+#define GL_STENCIL_BUFFER_BIT             0x00000400
+#define GL_COLOR_BUFFER_BIT               0x00004000
+</code></pre>
+<h2 id="bit-masks-involving-multiple-bits"><a class="header" href="#bit-masks-involving-multiple-bits">Bit masks involving multiple bits</a></h2>
+<p>Although bit masks often are used to select a single bit, they can also be used to select multiple bits. Lets take a look at a slightly more complicated example where we do this.</p>
+<p>Color display devices such as TVs and monitors are composed of millions of pixels, each of which can display a dot of color. Each dot of color is the result of combining three beams of light: one red, one green, and one blue (RGB). The intensity of these lights are varied to produce different colors.</p>
+<p>Typically, the intensity of R, G, and B for a given pixel is represented by an 8-bit unsigned integer. For example, a red pixel would have R=255, G=0, B=0. A purple pixel would have R=255, G=0, B=255. A medium-grey pixel would have R=127, G=127, B=127.</p>
+<p>When assigning color values to a pixel, in addition to R, G, and B, a 4th value called A is often used. “A” stands for “alpha”, and it controls how transparent the color is. If A=0, the color is fully transparent. If A=255, the color is opaque.</p>
+<p>R, G, B, and A are normally stored as a single 32-bit integer, with 8 bits used for each component:</p>
+<div class="table-wrapper"><table><thead><tr><th></th><th></th><th></th><th></th></tr></thead><tbody>
+<tr><td>32-bit RGBA value</td><td></td><td></td><td></td></tr>
+<tr><td>bits 31-24</td><td>bits 23-16</td><td>bits 15-8</td><td>bits 7-0</td></tr>
+<tr><td>RRRRRRRR</td><td>GGGGGGGG</td><td>BBBBBBBB</td><td>AAAAAAAA</td></tr>
+<tr><td>red</td><td>green</td><td>blue</td><td>alpha</td></tr>
+</tbody></table>
+</div>
+<p>The following program asks the user to enter a 32-bit hexadecimal value, and then extracts the 8-bit color values for R, G, B, and A.</p>
+<pre><code class="language-cpp">#include &lt;cstdint&gt;
+#include &lt;iostream&gt;
+
+int main()
+{
+	constexpr std::uint32_t redBits{ 0xFF000000 };
+	constexpr std::uint32_t greenBits{ 0x00FF0000 };
+	constexpr std::uint32_t blueBits{ 0x0000FF00 };
+	constexpr std::uint32_t alphaBits{ 0x000000FF };
+
+	std::cout &lt;&lt; "Enter a 32-bit RGBA color value in hexadecimal (e.g. FF7F3300): ";
+	std::uint32_t pixel{};
+	std::cin &gt;&gt; std::hex &gt;&gt; pixel; // std::hex allows us to read in a hex value
+
+	// use Bitwise AND to isolate the pixels for our given color,
+	// then right shift the value into the lower 8 bits
+	const std::uint8_t red{ static_cast&lt;std::uint8_t&gt;((pixel &amp; redBits) &gt;&gt; 24) };
+	const std::uint8_t green{ static_cast&lt;std::uint8_t&gt;((pixel &amp; greenBits) &gt;&gt; 16) };
+	const std::uint8_t blue{ static_cast&lt;std::uint8_t&gt;((pixel &amp; blueBits) &gt;&gt; 8) };
+	const std::uint8_t alpha{ static_cast&lt;std::uint8_t&gt;(pixel &amp; alphaBits) };
+
+	std::cout &lt;&lt; "Your color contains:\n";
+	std::cout &lt;&lt; std::hex; // print the following values in hex
+
+        // reminder: std::uint8_t will likely print as a char
+        // we static_cast to int to ensure it prints as an integer
+	std::cout &lt;&lt; static_cast&lt;int&gt;(red)   &lt;&lt; " red\n";
+	std::cout &lt;&lt; static_cast&lt;int&gt;(green) &lt;&lt; " green\n";
+	std::cout &lt;&lt; static_cast&lt;int&gt;(blue)  &lt;&lt; " blue\n";
+	std::cout &lt;&lt; static_cast&lt;int&gt;(alpha) &lt;&lt; " alpha\n";
+
+	return 0;
+}
+</code></pre>
+<p>This produces the output:</p>
+<pre><code class="language-cpp">Enter a 32-bit RGBA color value in hexadecimal (e.g. FF7F3300): FF7F3300
+Your color contains:
+ff red
+7f green
+33 blue
+0 alpha
+</code></pre>
+<p>In the above program, we use a <em>bitwise AND</em> to query the set of 8 bits we’re interested in, and then we <em>right shift</em> them into an 8-bit value so we can print them back as hex values.</p>
+<h2 id="summary"><a class="header" href="#summary">Summary</a></h2>
+<p>Summarizing how to set, clear, toggle, and query bit flags:</p>
+<p>To query bit states, we use <em>bitwise AND</em>:</p>
+<pre><code class="language-cpp">if (flags &amp; option4) ... // if option4 is set, do something
+</code></pre>
+<p>To set bits (turn on), we use <em>bitwise OR</em>:</p>
+<pre><code class="language-cpp">flags |= option4; // turn option 4 on.
+flags |= (option4 | option5); // turn options 4 and 5 on.
+</code></pre>
+<p>To clear bits (turn off), we use <em>bitwise AND</em> with <em>bitwise NOT</em>:</p>
+<pre><code class="language-cpp">flags &amp;= ~option4; // turn option 4 off
+flags &amp;= ~(option4 | option5); // turn options 4 and 5 off
+</code></pre>
+<p>To flip bit states, we use <em>bitwise XOR</em>:</p>
+<pre><code class="language-cpp">flags ^= option4; // flip option4 from on to off, or vice versa
+flags ^= (option4 | option5); // flip options 4 and 5
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="bitwise-operators.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="converting-integers-between-binary-and-decimal-representation.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="bitwise-operators.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="converting-integers-between-binary-and-decimal-representation.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

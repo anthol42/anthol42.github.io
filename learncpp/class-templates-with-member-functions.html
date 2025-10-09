@@ -1,0 +1,386 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Class templates with member functions - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="class-templates-with-member-functions"><a class="header" href="#class-templates-with-member-functions">Class templates with member functions</a></h1>
+<p>In lesson <a href="function-templates.html">11.6 -- Function templates</a>, we took a look at function templates:</p>
+<pre><code class="language-cpp">template &lt;typename T&gt; // this is the template parameter declaration
+T max(T x, T y) // this is the function template definition for max&lt;T&gt;
+{
+    return (x &lt; y) ? y : x;
+}
+</code></pre>
+<p>With a function template, we can define type template parameters (e.g. <code>typename T</code>) and then use them as the type of our function parameters (<code>T x, T y</code>).</p>
+<p>In lesson <a href="class-templates.html">13.13 -- Class templates</a>, we covered class templates, which allow us to use type template parameters for the type of our data members of class types (struct, classes, and unions):</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+template &lt;typename T&gt;
+struct Pair
+{
+    T first{};
+    T second{};
+};
+
+// Here's a deduction guide for our Pair (required in C++17 or older)
+// Pair objects initialized with arguments of type T and T should deduce to Pair&lt;T&gt;
+template &lt;typename T&gt;
+Pair(T, T) -&gt; Pair&lt;T&gt;;
+
+int main()
+{
+    Pair&lt;int&gt; p1{ 5, 6 };        // instantiates Pair&lt;int&gt; and creates object p1
+    std::cout &lt;&lt; p1.first &lt;&lt; ' ' &lt;&lt; p1.second &lt;&lt; '\n';
+
+    Pair&lt;double&gt; p2{ 1.2, 3.4 }; // instantiates Pair&lt;double&gt; and creates object p2
+    std::cout &lt;&lt; p2.first &lt;&lt; ' ' &lt;&lt; p2.second &lt;&lt; '\n';
+
+    Pair&lt;double&gt; p3{ 7.8, 9.0 }; // creates object p3 using prior definition for Pair&lt;double&gt;
+    std::cout &lt;&lt; p3.first &lt;&lt; ' ' &lt;&lt; p3.second &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<blockquote>
+<p><strong>Related content</strong></p>
+<p>Related content</p>
+<p>We discuss deduction guides in lesson <a href="class-template-argument-deduction-ctad-and-deduction-guides/#DeductionGuide">13.14 -- Class template argument deduction (CTAD) and deduction guides</a>.</p>
+</blockquote>
+<p>In this lesson, we’ll combine elements of both function templates and class templates as we take a closer look at class templates that have member functions.</p>
+<h2 id="type-template-parameters-in-member-functions"><a class="header" href="#type-template-parameters-in-member-functions">Type template parameters in member functions</a></h2>
+<p>Type template parameters defined as part of a class template parameter declaration can be used both as the type of data members and as the type of member function parameters.</p>
+<p>In the following example, we rewrite the above <code>Pair</code> class template, converting it from a struct to a class:</p>
+<pre><code class="language-cpp">#include &lt;ios&gt;       // for std::boolalpha
+#include &lt;iostream&gt;
+
+template &lt;typename T&gt;
+class Pair
+{
+private:
+    T m_first{};
+    T m_second{};
+
+public:
+    // When we define a member function inside the class definition,
+    // the template parameter declaration belonging to the class applies
+    Pair(const T&amp; first, const T&amp; second)
+        : m_first{ first }
+        , m_second{ second }
+    {
+    }
+
+    bool isEqual(const Pair&lt;T&gt;&amp; pair);
+};
+
+// When we define a member function outside the class definition,
+// we need to resupply a template parameter declaration
+template &lt;typename T&gt;
+bool Pair&lt;T&gt;::isEqual(const Pair&lt;T&gt;&amp; pair)
+{
+    return m_first == pair.m_first &amp;&amp; m_second == pair.m_second;
+}
+
+int main()
+{
+    Pair p1{ 5, 6 }; // uses CTAD to infer type Pair&lt;int&gt;
+    std::cout &lt;&lt; std::boolalpha &lt;&lt; "isEqual(5, 6): " &lt;&lt; p1.isEqual( Pair{5, 6} ) &lt;&lt; '\n';
+    std::cout &lt;&lt; std::boolalpha &lt;&lt; "isEqual(5, 7): " &lt;&lt; p1.isEqual( Pair{5, 7} ) &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>The above should be pretty straightforward, but there are a few things worth noting.</p>
+<p>First, because our class has private members, it is not an aggregate, and therefore can’t use aggregate initialization. Instead, we have to initialize our class objects using a constructor.</p>
+<p>Since our class data members are of type <code>T</code>, we make the parameters of our constructor type <code>const T&amp;</code>, so the user can supply initialization values of the same type. Because <code>T</code> might be expensive to copy, it’s safer to pass by const reference than by value.</p>
+<p>Note that when we define a member function inside the class template definition, we don’t need to provide a template parameter declaration for the member function. Such member functions implicitly use the class template parameter declaration.</p>
+<p>Second, we don’t need deduction guides for CTAD to work with non-aggregate classes. A matching constructor provides the compiler with the information it needs to deduce the template parameters from the initializers.</p>
+<p>Third, let’s look more closely at the case where we define a member function for a class template outside of the class template definition:</p>
+<pre><code class="language-cpp">template &lt;typename T&gt;
+bool Pair&lt;T&gt;::isEqual(const Pair&lt;T&gt;&amp; pair)
+{
+    return m_first == pair.m_first &amp;&amp; m_second == pair.m_second;
+}
+</code></pre>
+<p>Since this member function definition is separate from the class template definition, we need to resupply a template parameter declaration (<code>template &lt;typename T&gt;</code>) so the compiler knows what <code>T</code> is.</p>
+<p>Also, when we define a member function outside of the class, we need to qualify the member function name with the fully templated name of the class template (<code>Pair&lt;T&gt;::isEqual</code>, not <code>Pair::isEqual</code>).</p>
+<h2 id="injected-class-names"><a class="header" href="#injected-class-names">Injected class names</a></h2>
+<p>In a prior lesson, we noted that the name of a constructor must match the name of the class. But in our class template for <code>Pair&lt;T&gt;</code> above, we named our constructor <code>Pair</code>, not <code>Pair&lt;T&gt;</code>. Somehow this still works, even though the names don’t match.</p>
+<p>Within the scope of a class, the unqualified name of the class is called an <strong>injected class name</strong>. In a class template, the injected class name serves as shorthand for the fully templated name.</p>
+<p>Because <code>Pair</code> is the injected class name of <code>Pair&lt;T&gt;</code>, within the scope of our <code>Pair&lt;T&gt;</code> class template, any use of <code>Pair</code> will be treated as if we had written <code>Pair&lt;T&gt;</code> instead. Therefore, although we named the constructor <code>Pair</code>, the compiler treats it as if we had written <code>Pair&lt;T&gt;</code> instead. The names now match!</p>
+<p>This means that we can also define our <code>isEqual()</code> member function like this:</p>
+<pre><code class="language-cpp">template &lt;typename T&gt;
+bool Pair&lt;T&gt;::isEqual(const Pair&amp; pair) // note the parameter has type Pair, not Pair&lt;T&gt;
+{
+    return m_first == pair.m_first &amp;&amp; m_second == pair.m_second;
+}
+</code></pre>
+<p>Because this is a definition for a member function of <code>Pair&lt;T&gt;</code>, we’re in the scope of the <code>Pair&lt;T&gt;</code> class template. Therefore, any use of <code>Pair</code> is shorthand for <code>Pair&lt;T&gt;</code>!</p>
+<blockquote>
+<p><strong>Key insight</strong></p>
+<p>Key insight</p>
+<p>In lesson <a href="class-template-argument-deduction-ctad-and-deduction-guides">13.14 -- Class template argument deduction (CTAD) and deduction guides</a>, we noted that CTAD doesn’t work with function parameters (as it is argument deduction, not parameter deduction). However, using an injected class name as a function parameter is okay, as it is shorthand for the fully templated name, not a use of CTAD.</p>
+</blockquote>
+<h2 id="where-to-define-member-functions-for-class-templates-outside-the-class"><a class="header" href="#where-to-define-member-functions-for-class-templates-outside-the-class">Where to define member functions for class templates outside the class</a></h2>
+<p>With member functions for class templates, the compiler needs to see both the class definition (to ensure that the member function template is declared as part of the class) and the template member function definition (to know how to instantiate the template). Therefore, we typically want to define both a class and its member function templates in the same location.</p>
+<p>When a member function template is defined <em>inside</em> the class definition, the template member function definition is part of the class definition, so anywhere the class definition can be seen, the template member function definition can also be seen. This makes things easy (at the cost of cluttering our class definition).</p>
+<p>When a member function template is defined <em>outside</em> the class definition, it should generally be defined immediately below the class definition. That way, anywhere the class definition can be seen, the member function template definitions immediately below the class definition will also be seen.</p>
+<p>In the typical case where a class is defined in a header file, this means any member function templates defined outside the class should also be defined in the same header file, below the class definition.</p>
+<blockquote>
+<p><strong>Key insight</strong></p>
+<p>Key insight</p>
+<p>In lesson <a href="function-template-instantiation">11.7 -- Function template instantiation</a>, we noted that functions implicitly instantiated from templates are implicitly inline. This includes both non-member and member function templates. Therefore, there is no issue including member function templates defined in header files into multiple code files, as the functions instantiated from those templates will be implicitly inline (and the linker will de-duplicate them).</p>
+</blockquote>
+<div id="admonition-best-practices" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices"></a>
+</div>
+<div>
+<p>Best practice</p>
+<p>Any member function templates defined outside the class definition should be defined just below the class definition (in the same file).</p>
+</div>
+</div>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="introduction-to-destructors.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="static-member-variables.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="introduction-to-destructors.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="static-member-variables.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

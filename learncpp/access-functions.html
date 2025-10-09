@@ -1,0 +1,373 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Access functions - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="access-functions"><a class="header" href="#access-functions">Access functions</a></h1>
+<p>In previous lesson <a href="public-and-private-members-and-access-specifiers.html">14.5 -- Public and private members and access specifiers</a>, we discussed the public and private access levels. As a reminder, classes typically make their data members private, and private members can not be directly accessed by the public.</p>
+<p>Consider the following <code>Date</code> class:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+class Date
+{
+private:
+    int m_year{ 2020 };
+    int m_month{ 10 };
+    int m_day{ 14 };
+
+public:
+    void print() const
+    {
+        std::cout &lt;&lt; m_year &lt;&lt; '/' &lt;&lt; m_month &lt;&lt; '/' &lt;&lt; m_day &lt;&lt; '\n';
+    }
+};
+
+int main()
+{
+    Date d{};  // create a Date object
+    d.print(); // print the date
+
+    return 0;
+}
+</code></pre>
+<p>While this class provides a <code>print()</code> member function to print the entire date, this may not be sufficient for what the user wants to do. For example, what if the user of a <code>Date</code> object wanted to get the year? Or to change the year to a different value? They would be unable to do so, as <code>m_year</code> is private (and thus can’t be directly accessed by the public).</p>
+<p>For some classes, it can be appropriate (in the context of what the class does) for us to be able to get or set the value of a private member variable.</p>
+<h2 id="access-functions-1"><a class="header" href="#access-functions-1">Access functions</a></h2>
+<p>An <strong>access function</strong> is a trivial public member function whose job is to retrieve or change the value of a private member variable.</p>
+<p>Access functions come in two flavors: getters and setters. <strong>Getters</strong> (also sometimes called <strong>accessors</strong>) are public member functions that return the value of a private member variable. <strong>Setters</strong> (also sometimes called <strong>mutators</strong>) are public member functions that set the value of a private member variable.</p>
+<blockquote>
+<p><strong>Nomenclature</strong></p>
+<p>Nomenclature</p>
+<p>The term “mutator” is often used interchangably with “setter”. But more broadly, a <strong>mutator</strong> is any member function that modifies (mutates) the state of the object. Under this definition, a setter is a specific kind of mutator. However, it is also possible to have non-setter functions that qualify as mutators.</p>
+</blockquote>
+<p>Getters are usually made const, so they can be called on both const and non-const objects. Setters should be non-const, so they can modify the data members.</p>
+<p>For illustrative purposes, let’s update our <code>Date</code> class to have a full set of getters and setters:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+class Date
+{
+private:
+    int m_year { 2020 };
+    int m_month { 10 };
+    int m_day { 14 };
+
+public:
+    void print()
+    {
+        std::cout &lt;&lt; m_year &lt;&lt; '/' &lt;&lt; m_month &lt;&lt; '/' &lt;&lt; m_day &lt;&lt; '\n';
+    }
+
+    int getYear() const { return m_year; }        // getter for year
+    void setYear(int year) { m_year = year; }     // setter for year
+
+    int getMonth() const  { return m_month; }     // getter for month
+    void setMonth(int month) { m_month = month; } // setter for month
+
+    int getDay() const { return m_day; }          // getter for day
+    void setDay(int day) { m_day = day; }         // setter for day
+};
+
+int main()
+{
+    Date d{};
+    d.setYear(2021);
+    std::cout &lt;&lt; "The year is: " &lt;&lt; d.getYear() &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>This prints:</p>
+<pre><code class="language-cpp">The year is: 2021
+</code></pre>
+<h2 id="access-function-naming"><a class="header" href="#access-function-naming">Access function naming</a></h2>
+<p>There is no common convention for naming access functions. However, there are a few naming conventions that are more popular than others.</p>
+<ul>
+<li>Prefixed with “get” and “set”:</li>
+</ul>
+<pre><code class="language-cpp">    int getDay() const { return m_day; }  // getter
+    void setDay(int day) { m_day = day; } // setter
+</code></pre>
+<p>The advantage of using “get” and “set” prefixes is that it makes it clear that these are access functions (and should be inexpensive to call).</p>
+<ul>
+<li>No prefix:</li>
+</ul>
+<pre><code class="language-cpp">    int day() const { return m_day; }  // getter
+    void day(int day) { m_day = day; } // setter
+</code></pre>
+<p>This style is more concise, and uses the same name for both the getter and setter (relying on function overloading to differentiate the two). The C++ standard library uses this convention.</p>
+<p>The downside of the no-prefix convention is that it is not particularly obvious that this is setting the value of the day member:</p>
+<pre><code class="language-cpp">d.day(5); // does this look like it's setting the day member to 5?
+</code></pre>
+<blockquote>
+<p><strong>Key insight</strong></p>
+<p>Key insight</p>
+<p>One of the best reasons to prefix private data members with “m_” is to avoid having data members and getters with the same name (something C++ doesn’t support, although other languages like Java do).</p>
+</blockquote>
+<ul>
+<li>“set” prefix only:</li>
+</ul>
+<pre><code class="language-cpp">    int day() const { return m_day; }     // getter
+    void setDay(int day) { m_day = day; } // setter
+</code></pre>
+<p>Which of the above you choose is a matter of personal preference. However, we highly recommend using the “set” prefix for setters. Getters can use either a “get” prefix or no prefix.</p>
+<blockquote>
+<p><strong>Tip</strong></p>
+<p>Tip</p>
+<p>Use a “set” prefix on your setters to make it more obvious that they are changing the state of the object.</p>
+</blockquote>
+<h2 id="getters-should-return-by-value-or-by-const-lvalue-reference"><a class="header" href="#getters-should-return-by-value-or-by-const-lvalue-reference">Getters should return by value or by const lvalue reference</a></h2>
+<p>Getters should provide “read-only” access to data. Therefore, the best practice is that they should return by either value (if making a copy of the member is inexpensive) or by const lvalue reference (if making a copy of the member is expensive).</p>
+<p>Because returning data members by reference is a non-trivial topic, we’ll cover that topic in more detail in lesson <a href="member-functions-returning-references-to-data-members.html">14.7 -- Member functions returning references to data members</a>.</p>
+<h2 id="access-functions-concerns"><a class="header" href="#access-functions-concerns">Access functions concerns</a></h2>
+<p>There is a fair bit of discussion around cases in which access functions should be used or avoided. Many developers would argue that use of access functions violates good class design (a topic that could easily fill an entire book).</p>
+<p>For now, we’ll recommend a pragmatic approach. As you create your classes, consider the following:</p>
+<ul>
+<li>If your class has no invariants and requires a lot of access functions, consider using a struct (whose data members are public) and providing direct access to members instead.</li>
+<li>Prefer implementing behaviors or actions instead of access functions. For example, instead of a <code>setAlive(bool)</code> setter, implement a <code>kill()</code> and a <code>revive()</code> function.</li>
+<li>Only provide access functions in cases where the public would reasonably need to get or set the value of an individual member.</li>
+</ul>
+<h2 id="why-make-data-private-if-were-going-to-provide-a-public-access-function-to-it"><a class="header" href="#why-make-data-private-if-were-going-to-provide-a-public-access-function-to-it">Why make data private if we’re going to provide a public access function to it?</a></h2>
+<p>So glad you asked. We’ll answer this question in upcoming lesson <a href="the-benefits-of-data-hiding-encapsulation.html">14.8 -- The benefits of data hiding (encapsulation)</a>.</p>
+<p>AI CONTENT END 1</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="public-and-private-members-and-access-specifiers.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="member-functions-returning-references-to-data-members.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="public-and-private-members-and-access-specifiers.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="member-functions-returning-references-to-data-members.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

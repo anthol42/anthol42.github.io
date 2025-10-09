@@ -1,0 +1,726 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Function Pointers - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="function-pointers"><a class="header" href="#function-pointers">Function Pointers</a></h1>
+<p>In lesson <a href="introduction-to-pointers.html">12.7 -- Introduction to pointers</a>, you learned that a pointer is a variable that holds the address of another variable. Function pointers are similar, except that instead of pointing to variables, they point to functions!</p>
+<p>Consider the following function:</p>
+<pre><code class="language-cpp">int foo()
+{
+    return 5;
+}
+</code></pre>
+<p>Identifier <code>foo()</code> is the function’s name. But what type is the function? Functions have their own function type -- in this case, a function type that returns an integer and takes no parameters. Much like variables, functions live at an assigned address in memory (making them lvalues).</p>
+<p>When a function is called (via <code>operator()</code>), execution jumps to the address of the function being called:</p>
+<pre><code class="language-cpp">int foo() // code for foo starts at memory address 0x002717f0
+{
+    return 5;
+}
+
+int main()
+{
+    foo(); // jump to address 0x002717f0
+
+    return 0;
+}
+</code></pre>
+<p>At some point in your programming career (if you haven’t already), you’ll probably make a simple mistake:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int foo() // code starts at memory address 0x002717f0
+{
+    return 5;
+}
+
+int main()
+{
+    std::cout &lt;&lt; foo &lt;&lt; '\n'; // we meant to call foo(), but instead we're printing foo itself!
+
+    return 0;
+}
+</code></pre>
+<p>Instead of calling function <code>foo()</code> and printing the return value, we’ve unintentionally sent function <code>foo</code> directly to <code>std::cout</code>. What happens in this case?</p>
+<p>When a function is referred to by name (without parenthesis), C++ converts the function into a function pointer (holding the address of the function). Then <code>operator&lt;&lt;</code> tries to print the function pointer, which it fails at because <code>operator&lt;&lt;</code> does not know how to print function pointers. The standard says that in this case, <code>foo</code> should be converted to a <code>bool</code> (which <code>operator&lt;&lt;</code> does know how to print). And since the function pointer for <code>foo</code> is a non-null pointer, it should always evaluate to Boolean <code>true</code>. Thus, this should print:</p>
+<pre><code class="language-cpp">1
+</code></pre>
+<blockquote>
+<p><strong>Tip</strong></p>
+<p>Some compilers (e.g. Visual Studio) have a compiler extension that prints the address of the function instead:</p>
+<pre><code>0x002717f0
+</code></pre>
+<p>If your platform doesn’t print the function’s address and you want it to, you may be able to force it to do so by converting the function to a void pointer and printing that:</p>
+<pre><code>#include &lt;iostream&gt;
+
+int foo() // code starts at memory address 0x002717f0
+{
+    return 5;
+}
+
+int main()
+{
+    std::cout &lt;&lt; reinterpret_cast&lt;void*&gt;(foo) &lt;&lt; '\n'; // Tell C++ to interpret function foo as a void pointer (implementation-defined behavior)
+
+    return 0;
+}
+</code></pre>
+<p>This is implementation-defined behavior, so it may not work on all platforms.</p>
+</blockquote>
+<p>Just like it is possible to declare a non-constant pointer to a normal variable, it’s also possible to declare a non-constant pointer to a function. In the rest of this lesson, we’ll examine these function pointers and their uses. Function pointers are a fairly advanced topic, and the rest of this lesson can be safely skipped or skimmed by those only looking for C++ basics.</p>
+<h2 id="pointers-to-functions"><a class="header" href="#pointers-to-functions">Pointers to functions</a></h2>
+<p>The syntax for creating a non-const function pointer is one of the ugliest things you will ever see in C++:</p>
+<pre><code class="language-cpp">// fcnPtr is a pointer to a function that takes no arguments and returns an integer
+int (*fcnPtr)();
+</code></pre>
+<p>In the above snippet, fcnPtr is a pointer to a function that has no parameters and returns an integer. fcnPtr can point to any function that matches this type.</p>
+<p>The parentheses around *fcnPtr are necessary for precedence reasons, as <code>int* fcnPtr()</code> would be interpreted as a forward declaration for a function named fcnPtr that takes no parameters and returns a pointer to an integer.</p>
+<p>To make a const function pointer, the const goes after the asterisk:</p>
+<pre><code class="language-cpp">int (*const fcnPtr)();
+</code></pre>
+<p>If you put the const before the int, then that would indicate the function being pointed to would return a const int.</p>
+<blockquote>
+<p><strong>Tip</strong></p>
+<p>The function pointer syntax can be hard to understand. The following articles demonstrates a method for parsing such declarations:</p>
+<ul>
+<li><a href="https://c-faq.com/decl/spiral.anderson.html">https://c-faq.com/decl/spiral.anderson.html</a></li>
+<li><a href="https://web.archive.org/web/20110818081319/http://ieng9.ucsd.edu/~cs30x/rt_lt.rule.html">https://web.archive.org/web/20110818081319/http://ieng9.ucsd.edu/~cs30x/rt_lt.rule.html</a></li>
+</ul>
+</blockquote>
+<h2 id="assigning-a-function-to-a-function-pointer"><a class="header" href="#assigning-a-function-to-a-function-pointer">Assigning a function to a function pointer</a></h2>
+<p>Function pointers can be initialized with a function (and non-const function pointers can be assigned a function). Like with pointers to variables, we can also use &amp;foo to get a function pointer to foo.</p>
+<pre><code class="language-cpp">int foo()
+{
+    return 5;
+}
+
+int goo()
+{
+    return 6;
+}
+
+int main()
+{
+    int (*fcnPtr)(){ &amp;foo }; // fcnPtr points to function foo
+    fcnPtr = &amp;goo; // fcnPtr now points to function goo
+
+    return 0;
+}
+</code></pre>
+<p>One common mistake is to do this:</p>
+<pre><code class="language-cpp">fcnPtr = goo();
+</code></pre>
+<p>This tries to assign the return value from a call to function goo() (which has type <code>int</code>) to fcnPtr (which is expecting a value of type <code>int(*)()</code>), which isn’t what we want. We want fcnPtr to be assigned the address of function goo, not the return value from function goo(). So no parentheses are needed.</p>
+<p>Note that the type (parameters and return type) of the function pointer must match the type of the function. Here are some examples of this:</p>
+<pre><code class="language-cpp">// function prototypes
+int foo();
+double goo();
+int hoo(int x);
+
+// function pointer initializers
+int (*fcnPtr1)(){ &amp;foo };    // okay
+int (*fcnPtr2)(){ &amp;goo };    // wrong -- return types don't match!
+double (*fcnPtr4)(){ &amp;goo }; // okay
+fcnPtr1 = &amp;hoo;              // wrong -- fcnPtr1 has no parameters, but hoo() does
+int (*fcnPtr3)(int){ &amp;hoo }; // okay
+</code></pre>
+<p>Unlike fundamental types, C++ <em>will</em> implicitly convert a function into a function pointer if needed (so you don’t need to use the address-of operator (&amp;) to get the function’s address). However, function pointers will not convert to void pointers, or vice-versa (though some compilers like Visual Studio may allow this anyway).</p>
+<pre><code class="language-cpp">	// function prototypes
+	int foo();
+
+	// function initializations
+	int (*fcnPtr5)() { foo }; // okay, foo implicitly converts to function pointer to foo
+	void* vPtr { foo };       // not okay, though some compilers may allow
+</code></pre>
+<p>Function pointers can also be initialized or assigned the value nullptr:</p>
+<pre><code class="language-cpp">int (*fcnptr)() { nullptr }; // okay
+</code></pre>
+<h2 id="calling-a-function-using-a-function-pointer"><a class="header" href="#calling-a-function-using-a-function-pointer">Calling a function using a function pointer</a></h2>
+<p>The other primary thing you can do with a function pointer is use it to actually call the function. There are two ways to do this. The first is via explicit dereference:</p>
+<pre><code class="language-cpp">int foo(int x)
+{
+    return x;
+}
+
+int main()
+{
+    int (*fcnPtr)(int){ &amp;foo }; // Initialize fcnPtr with function foo
+    (*fcnPtr)(5); // call function foo(5) through fcnPtr.
+
+    return 0;
+}
+</code></pre>
+<p>The second way is via implicit dereference:</p>
+<pre><code class="language-cpp">int foo(int x)
+{
+    return x;
+}
+
+int main()
+{
+    int (*fcnPtr)(int){ &amp;foo }; // Initialize fcnPtr with function foo
+    fcnPtr(5); // call function foo(5) through fcnPtr.
+
+    return 0;
+}
+</code></pre>
+<p>As you can see, the implicit dereference method looks just like a normal function call -- which is what you’d expect, since normal function names are pointers to functions anyway! However, some older compilers do not support the implicit dereference method, but all modern compilers should.</p>
+<p>Also note that because function pointers can be set to nullptr, it’s a good idea to assert or conditionally test whether your function pointer is a null pointer before calling it. Just like with normal pointers, dereferencing a null function pointer leads to undefined behavior.</p>
+<pre><code class="language-cpp">int foo(int x)
+{
+    return x;
+}
+
+int main()
+{
+    int (*fcnPtr)(int){ &amp;foo }; // Initialize fcnPtr with function foo
+    if (fcnPtr) // make sure fcnPtr isn't a null pointer    
+        fcnPtr(5); // otherwise this will lead to undefined behavior
+
+    return 0;
+}
+</code></pre>
+<h2 id="default-arguments-dont-work-for-functions-called-through-function-pointers-advanced"><a class="header" href="#default-arguments-dont-work-for-functions-called-through-function-pointers-advanced">Default arguments don’t work for functions called through function pointers Advanced</a></h2>
+<p>When the compiler encounters a normal function call to a function with one or more default arguments, it rewrites the function call to include the default arguments. This process happens at compile-time, and thus can only be applied to functions that can be resolved at compile time.</p>
+<p>However, when a function is called through a function pointer, it is resolved at runtime. In this case, there is no rewriting of the function call to include default arguments.</p>
+<blockquote>
+<p><strong>Key insight</strong></p>
+<p>Because the resolution happens at runtime, default arguments are not resolved when a function is called through a function pointer.</p>
+</blockquote>
+<p>This means that we can use a function pointer to disambiguate a function call that would otherwise be ambiguous due to default arguments. In the following example, we show two ways to do this:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+void print(int x)
+{
+    std::cout &lt;&lt; "print(int)\n";
+}
+
+void print(int x, int y = 10)
+{
+    std::cout &lt;&lt; "print(int, int)\n";
+}
+
+int main()
+{
+//    print(1); // ambiguous function call
+
+    // Deconstructed method
+    using vnptr = void(*)(int); // define a type alias for a function pointer to a void(int) function
+    vnptr pi { print }; // initialize our function pointer with function print
+    pi(1); // call the print(int) function through the function pointer
+
+    // Concise method
+    static_cast&lt;void(*)(int)&gt;(print)(1); // call void(int) version of print with argument 1
+    
+    return 0;
+}
+</code></pre>
+<h2 id="passing-functions-as-arguments-to-other-functions"><a class="header" href="#passing-functions-as-arguments-to-other-functions">Passing functions as arguments to other functions</a></h2>
+<p>One of the most useful things to do with function pointers is pass a function as an argument to another function. Functions used as arguments to another function are sometimes called <strong>callback functions</strong>.</p>
+<p>Consider a case where you are writing a function to perform a task (such as sorting an array), but you want the user to be able to define how a particular part of that task will be performed (such as whether the array is sorted in ascending or descending order). Let’s take a closer look at this problem as applied specifically to sorting, as an example that can be generalized to other similar problems.</p>
+<p>Many comparison-based sorting algorithms work on a similar concept: the sorting algorithm iterates through a list of numbers, does comparisons on pairs of numbers, and reorders the numbers based on the results of those comparisons. Consequently, by varying the comparison, we can change the way the algorithm sorts without affecting the rest of the sorting code.</p>
+<p>Here is our selection sort routine from a previous lesson:</p>
+<pre><code class="language-cpp">#include &lt;utility&gt; // for std::swap
+
+void SelectionSort(int* array, int size)
+{
+    if (!array)
+        return;
+
+    // Step through each element of the array
+    for (int startIndex{ 0 }; startIndex &lt; (size - 1); ++startIndex)
+    {
+        // smallestIndex is the index of the smallest element we've encountered so far.
+        int smallestIndex{ startIndex };
+ 
+        // Look for smallest element remaining in the array (starting at startIndex+1)
+        for (int currentIndex{ startIndex + 1 }; currentIndex &lt; size; ++currentIndex)
+        {
+            // If the current element is smaller than our previously found smallest
+            if (array[smallestIndex] &gt; array[currentIndex]) // COMPARISON DONE HERE
+            {
+                // This is the new smallest number for this iteration
+                smallestIndex = currentIndex;
+            }
+        }
+ 
+        // Swap our start element with our smallest element
+        std::swap(array[startIndex], array[smallestIndex]);
+    }
+}
+</code></pre>
+<p>Let’s replace that comparison with a function to do the comparison. Because our comparison function is going to compare two integers and return a boolean value to indicate whether the elements should be swapped, it will look something like this:</p>
+<pre><code class="language-cpp">bool ascending(int x, int y)
+{
+    return x &gt; y; // swap if the first element is greater than the second
+}
+</code></pre>
+<p>And here’s our selection sort routine using the ascending() function to do the comparison:</p>
+<pre><code class="language-cpp">#include &lt;utility&gt; // for std::swap
+
+void SelectionSort(int* array, int size)
+{
+    if (!array)
+        return;
+
+    // Step through each element of the array
+    for (int startIndex{ 0 }; startIndex &lt; (size - 1); ++startIndex)
+    {
+        // smallestIndex is the index of the smallest element we've encountered so far.
+        int smallestIndex{ startIndex };
+ 
+        // Look for smallest element remaining in the array (starting at startIndex+1)
+        for (int currentIndex{ startIndex + 1 }; currentIndex &lt; size; ++currentIndex)
+        {
+            // If the current element is smaller than our previously found smallest
+            if (ascending(array[smallestIndex], array[currentIndex])) // COMPARISON DONE HERE
+            {
+                // This is the new smallest number for this iteration
+                smallestIndex = currentIndex;
+            }
+        }
+ 
+        // Swap our start element with our smallest element
+        std::swap(array[startIndex], array[smallestIndex]);
+    }
+}
+</code></pre>
+<p>Now, in order to let the caller decide how the sorting will be done, instead of using our own hard-coded comparison function, we’ll allow the caller to provide their own sorting function! This is done via a function pointer.</p>
+<p>Because the caller’s comparison function is going to compare two integers and return a boolean value, a pointer to such a function would look something like this:</p>
+<pre><code class="language-cpp">bool (*comparisonFcn)(int, int);
+</code></pre>
+<p>So, we’ll allow the caller to pass our sort routine a pointer to their desired comparison function as the third parameter, and then we’ll use the caller’s function to do the comparison.</p>
+<p>Here’s a full example of a selection sort that uses a function pointer parameter to do a user-defined comparison, along with an example of how to call it:</p>
+<pre><code class="language-cpp">#include &lt;utility&gt; // for std::swap
+#include &lt;iostream&gt;
+
+// Note our user-defined comparison is the third parameter
+void selectionSort(int* array, int size, bool (*comparisonFcn)(int, int))
+{
+    if (!array || !comparisonFcn)
+        return;
+
+    // Step through each element of the array
+    for (int startIndex{ 0 }; startIndex &lt; (size - 1); ++startIndex)
+    {
+        // bestIndex is the index of the smallest/largest element we've encountered so far.
+        int bestIndex{ startIndex };
+ 
+        // Look for smallest/largest element remaining in the array (starting at startIndex+1)
+        for (int currentIndex{ startIndex + 1 }; currentIndex &lt; size; ++currentIndex)
+        {
+            // If the current element is smaller/larger than our previously found smallest
+            if (comparisonFcn(array[bestIndex], array[currentIndex])) // COMPARISON DONE HERE
+            {
+                // This is the new smallest/largest number for this iteration
+                bestIndex = currentIndex;
+            }
+        }
+ 
+        // Swap our start element with our smallest/largest element
+        std::swap(array[startIndex], array[bestIndex]);
+    }
+}
+
+// Here is a comparison function that sorts in ascending order
+// (Note: it's exactly the same as the previous ascending() function)
+bool ascending(int x, int y)
+{
+    return x &gt; y; // swap if the first element is greater than the second
+}
+
+// Here is a comparison function that sorts in descending order
+bool descending(int x, int y)
+{
+    return x &lt; y; // swap if the second element is greater than the first
+}
+
+// This function prints out the values in the array
+void printArray(int* array, int size)
+{
+    if (!array)
+        return;
+
+    for (int index{ 0 }; index &lt; size; ++index)
+    {
+        std::cout &lt;&lt; array[index] &lt;&lt; ' ';
+    }
+    
+    std::cout &lt;&lt; '\n';
+}
+
+int main()
+{
+    int array[9]{ 3, 7, 9, 5, 6, 1, 8, 2, 4 };
+
+    // Sort the array in descending order using the descending() function
+    selectionSort(array, 9, descending);
+    printArray(array, 9);
+
+    // Sort the array in ascending order using the ascending() function
+    selectionSort(array, 9, ascending);
+    printArray(array, 9);
+
+    return 0;
+}
+</code></pre>
+<p>This program produces the result:</p>
+<pre><code class="language-cpp">9 8 7 6 5 4 3 2 1
+1 2 3 4 5 6 7 8 9
+</code></pre>
+<p>Is that cool or what? We’ve given the caller the ability to control how our selection sort does its job.</p>
+<p>The caller can even define their own “strange” comparison functions:</p>
+<pre><code class="language-cpp">bool evensFirst(int x, int y)
+{
+	// if x is even and y is odd, x goes first (no swap needed)
+	if ((x % 2 == 0) &amp;&amp; !(y % 2 == 0))
+		return false;
+ 
+	// if x is odd and y is even, y goes first (swap needed)
+	if (!(x % 2 == 0) &amp;&amp; (y % 2 == 0))
+		return true;
+
+        // otherwise sort in ascending order
+	return ascending(x, y);
+}
+
+int main()
+{
+    int array[9]{ 3, 7, 9, 5, 6, 1, 8, 2, 4 };
+
+    selectionSort(array, 9, evensFirst);
+    printArray(array, 9);
+
+    return 0;
+}
+</code></pre>
+<p>The above snippet produces the following result:</p>
+<pre><code class="language-cpp">2 4 6 8 1 3 5 7 9
+</code></pre>
+<p>As you can see, using a function pointer in this context provides a nice way to allow a caller to “hook” their own functionality into something you’ve previously written and tested, which helps facilitate code reuse! Previously, if you wanted to sort one array in descending order and another in ascending order, you’d need multiple versions of the sort routine. Now you can have one version that can sort any way the caller desires!</p>
+<p>Note: If a function parameter is of a function type, it will be converted to a pointer to the function type. This means:</p>
+<pre><code class="language-cpp">void selectionSort(int* array, int size, bool (*comparisonFcn)(int, int))
+</code></pre>
+<p>can be equivalently written as:</p>
+<pre><code class="language-cpp">void selectionSort(int* array, int size, bool comparisonFcn(int, int))
+</code></pre>
+<p>This only works for function parameters, and so is of somewhat limited use. On a non-function parameter, the latter is interpreted as a forward declaration:</p>
+<pre><code class="language-cpp">    bool (*ptr)(int, int); // definition of function pointer ptr
+    bool fcn(int, int);    // forward declaration of function fcn
+</code></pre>
+<h2 id="providing-default-functions"><a class="header" href="#providing-default-functions">Providing default functions</a></h2>
+<p>If you’re going to allow the caller to pass in a function as a parameter, it can often be useful to provide some standard functions for the caller to use for their convenience. For example, in the selection sort example above, providing the ascending() and descending() function along with the selectionSort() function would make the caller’s life easier, as they wouldn’t have to rewrite ascending() or descending() every time they want to use them.</p>
+<p>You can even set one of these as a default parameter:</p>
+<pre><code class="language-cpp">// Default the sort to ascending sort
+void selectionSort(int* array, int size, bool (*comparisonFcn)(int, int) = ascending);
+</code></pre>
+<p>In this case, as long as the user calls selectionSort normally (not through a function pointer), the comparisonFcn parameter will default to ascending. You will need to make sure that the <code>ascending</code> function is declared prior to this point, otherwise the compiler will complain it doesn’t know what <code>ascending</code> is.</p>
+<h2 id="making-function-pointers-prettier-with-type-aliases"><a class="header" href="#making-function-pointers-prettier-with-type-aliases">Making function pointers prettier with type aliases</a></h2>
+<p>Let’s face it -- the syntax for pointers to functions is ugly. However, type aliases can be used to make pointers to functions look more like regular variables:</p>
+<pre><code class="language-cpp">using ValidateFunction = bool(*)(int, int);
+</code></pre>
+<p>This defines a type alias called “ValidateFunction” that is a pointer to a function that takes two ints and returns a bool.</p>
+<p>Now instead of doing this:</p>
+<pre><code class="language-cpp">bool validate(int x, int y, bool (*fcnPtr)(int, int)); // ugly
+</code></pre>
+<p>You can do this:</p>
+<pre><code class="language-cpp">bool validate(int x, int y, ValidateFunction pfcn) // clean
+</code></pre>
+<h2 id="using-stdfunction"><a class="header" href="#using-stdfunction">Using std::function</a></h2>
+<p>An alternate method of defining and storing function pointers is to use std::function, which is part of the standard library <functional> header. To define a function pointer using this method, declare a std::function object like so:</p>
+<pre><code class="language-cpp">#include &lt;functional&gt;
+bool validate(int x, int y, std::function&lt;bool(int, int)&gt; fcn); // std::function method that returns a bool and takes two int parameters
+</code></pre>
+<p>As you see, both the return type and parameters go inside angled brackets, with the parameters inside parentheses. If there are no parameters, the parentheses can be left empty.</p>
+<p>Updating our earlier example with std::function:</p>
+<pre><code class="language-cpp">#include &lt;functional&gt;
+#include &lt;iostream&gt;
+
+int foo()
+{
+    return 5;
+}
+
+int goo()
+{
+    return 6;
+}
+
+int main()
+{
+    std::function&lt;int()&gt; fcnPtr{ &amp;foo }; // declare function pointer that returns an int and takes no parameters
+    fcnPtr = &amp;goo; // fcnPtr now points to function goo
+    std::cout &lt;&lt; fcnPtr() &lt;&lt; '\n'; // call the function just like normal
+
+    std::function fcnPtr2{ &amp;foo }; // can also use CTAD to infer template arguments
+
+    return 0;
+}
+</code></pre>
+<p>Type aliasing std::function can be helpful for readability:</p>
+<pre><code class="language-cpp">using ValidateFunctionRaw = bool(*)(int, int); // type alias to raw function pointer
+using ValidateFunction = std::function&lt;bool(int, int)&gt;; // type alias to std::function
+</code></pre>
+<p>Also note that std::function only allows calling the function via implicit dereference (e.g. <code>fcnPtr()</code>), not explicit dereference (e.g. <code>(*fcnPtr)()</code>).</p>
+<p>When defining a type alias, we must explicitly specify any template arguments. We can’t use CTAD in this case since there is no initializer to deduce the template arguments from.</p>
+<h2 id="type-inference-for-function-pointers"><a class="header" href="#type-inference-for-function-pointers">Type inference for function pointers</a></h2>
+<p>Much like the <em>auto</em> keyword can be used to infer the type of normal variables, the <em>auto</em> keyword can also infer the type of a function pointer.</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int foo(int x)
+{
+	return x;
+}
+
+int main()
+{
+	auto fcnPtr{ &amp;foo };
+	std::cout &lt;&lt; fcnPtr(5) &lt;&lt; '\n';
+
+	return 0;
+}
+</code></pre>
+<p>This works exactly like you’d expect, and the syntax is very clean. The downside is, of course, that all of the details about the function’s parameters types and return type are hidden, so it’s easier to make a mistake when making a call with the function, or using its return value.</p>
+<h2 id="conclusion"><a class="header" href="#conclusion">Conclusion</a></h2>
+<p>Function pointers are useful primarily when you want to store functions in an array (or other structure), or when you need to pass a function to another function. Because the native syntax to declare function pointers is ugly and error prone, we recommend using std::function. In places where a function pointer type is only used once (e.g. a single parameter or return value), std::function can be used directly. In places where a function pointer type is used multiple times, a type alias to a std::function is a better choice (to prevent repeating yourself).</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="chapter-Functions.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="the-stack-and-the-heap.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="chapter-Functions.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="the-stack-and-the-heap.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

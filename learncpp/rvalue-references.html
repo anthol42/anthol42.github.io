@@ -1,0 +1,379 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>R-value references - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="r-value-references"><a class="header" href="#r-value-references">R-value references</a></h1>
+<p>In chapter 12, we introduced the concept of value categories (<a href="value-categories-lvalues-and-rvalues.html">12.2 -- Value categories (lvalues and rvalues)</a>), which is a property of expressions that helps determine whether an expression resolves to a value, function, or object. We also introduced l-values and r-values so that we could discuss l-value references.</p>
+<p>If you’re hazy on l-values and r-values, now would be a good time to refresh on that topic since we’ll be talking a lot about them in this chapter.</p>
+<h2 id="l-value-references-recap"><a class="header" href="#l-value-references-recap">L-value references recap</a></h2>
+<p>Prior to C++11, only one type of reference existed in C++, and so it was just called a “reference”. However, in C++11, it’s called an l-value reference. L-value references can only be initialized with modifiable l-values.</p>
+<div class="table-wrapper"><table><thead><tr><th>L-value reference</th><th>Can be initialized with</th><th>Can modify</th></tr></thead><tbody>
+<tr><td>Modifiable l-values</td><td>Yes</td><td>Yes</td></tr>
+<tr><td>Non-modifiable l-values</td><td>No</td><td>No</td></tr>
+<tr><td>R-values</td><td>No</td><td>No</td></tr>
+</tbody></table>
+</div>
+<p>L-value references to const objects can be initialized with modifiable and non-modifiable l-values and r-values alike. However, those values can’t be modified.</p>
+<div class="table-wrapper"><table><thead><tr><th>L-value reference to const</th><th>Can be initialized with</th><th>Can modify</th></tr></thead><tbody>
+<tr><td>Modifiable l-values</td><td>Yes</td><td>No</td></tr>
+<tr><td>Non-modifiable l-values</td><td>Yes</td><td>No</td></tr>
+<tr><td>R-values</td><td>Yes</td><td>No</td></tr>
+</tbody></table>
+</div>
+<p>L-value references to const objects are particularly useful because they allow us to pass any type of argument (l-value or r-value) into a function without making a copy of the argument.</p>
+<h2 id="r-value-references-1"><a class="header" href="#r-value-references-1">R-value references</a></h2>
+<p>C++11 adds a new type of reference called an r-value reference. An r-value reference is a reference that is designed to be initialized with an r-value (only). While an l-value reference is created using a single ampersand, an r-value reference is created using a double ampersand:</p>
+<pre><code class="language-cpp">int x{ 5 };
+int&amp; lref{ x }; // l-value reference initialized with l-value x
+int&amp;&amp; rref{ 5 }; // r-value reference initialized with r-value 5
+</code></pre>
+<p>R-values references cannot be initialized with l-values.</p>
+<div class="table-wrapper"><table><thead><tr><th>R-value reference</th><th>Can be initialized with</th><th>Can modify</th></tr></thead><tbody>
+<tr><td>Modifiable l-values</td><td>No</td><td>No</td></tr>
+<tr><td>Non-modifiable l-values</td><td>No</td><td>No</td></tr>
+<tr><td>R-values</td><td>Yes</td><td>Yes</td></tr>
+</tbody></table>
+</div><div class="table-wrapper"><table><thead><tr><th>R-value reference to const</th><th>Can be initialized with</th><th>Can modify</th></tr></thead><tbody>
+<tr><td>Modifiable l-values</td><td>No</td><td>No</td></tr>
+<tr><td>Non-modifiable l-values</td><td>No</td><td>No</td></tr>
+<tr><td>R-values</td><td>Yes</td><td>No</td></tr>
+</tbody></table>
+</div>
+<p>R-value references have two properties that are useful. First, r-value references extend the lifespan of the object they are initialized with to the lifespan of the r-value reference (l-value references to const objects can do this too). Second, non-const r-value references allow you to modify the r-value!</p>
+<p>Let’s take a look at some examples:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+ 
+class Fraction
+{
+private:
+	int m_numerator { 0 };
+	int m_denominator { 1 };
+ 
+public:
+	Fraction(int numerator = 0, int denominator = 1) :
+		m_numerator{ numerator }, m_denominator{ denominator }
+	{
+	}
+ 
+	friend std::ostream&amp; operator&lt;&lt;(std::ostream&amp; out, const Fraction&amp; f1)
+	{
+		out &lt;&lt; f1.m_numerator &lt;&lt; '/' &lt;&lt; f1.m_denominator;
+		return out;
+	}
+};
+ 
+int main()
+{
+	auto&amp;&amp; rref{ Fraction{ 3, 5 } }; // r-value reference to temporary Fraction
+	
+	// f1 of operator&lt;&lt; binds to the temporary, no copies are created.
+	std::cout &lt;&lt; rref &lt;&lt; '\n';
+ 
+	return 0;
+} // rref (and the temporary Fraction) goes out of scope here
+</code></pre>
+<p>This program prints:</p>
+<pre><code class="language-cpp">3/5
+</code></pre>
+<p>As an anonymous object, Fraction(3, 5) would normally go out of scope at the end of the expression in which it is defined. However, since we’re initializing an r-value reference with it, its duration is extended until the end of the block. We can then use that r-value reference to print the Fraction’s value.</p>
+<p>Now let’s take a look at a less intuitive example:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+    int&amp;&amp; rref{ 5 }; // because we're initializing an r-value reference with a literal, a temporary with value 5 is created here
+    rref = 10;
+    std::cout &lt;&lt; rref &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>This program prints:</p>
+<pre><code class="language-cpp">10
+</code></pre>
+<p>While it may seem weird to initialize an r-value reference with a literal value and then be able to change that value, when initializing an r-value reference with a literal, a temporary object is constructed from the literal so that the reference is referencing a temporary object, not a literal value.</p>
+<p>R-value references are not very often used in either of the manners illustrated above.</p>
+<h2 id="r-value-references-as-function-parameters"><a class="header" href="#r-value-references-as-function-parameters">R-value references as function parameters</a></h2>
+<p>R-value references are more often used as function parameters. This is most useful for function overloads when you want to have different behavior for l-value and r-value arguments.</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+void fun(const int&amp; lref) // l-value arguments will select this function
+{
+	std::cout &lt;&lt; "l-value reference to const: " &lt;&lt; lref &lt;&lt; '\n';
+}
+
+void fun(int&amp;&amp; rref) // r-value arguments will select this function
+{
+	std::cout &lt;&lt; "r-value reference: " &lt;&lt; rref &lt;&lt; '\n';
+}
+
+int main()
+{
+	int x{ 5 };
+	fun(x); // l-value argument calls l-value version of function
+	fun(5); // r-value argument calls r-value version of function
+
+	return 0;
+}
+</code></pre>
+<p>This prints:</p>
+<pre><code class="language-cpp">l-value reference to const: 5
+r-value reference: 5
+</code></pre>
+<p>As you can see, when passed an l-value, the overloaded function resolved to the version with the l-value reference. When passed an r-value, the overloaded function resolved to the version with the r-value reference (this is considered a better match than an l-value reference to const).</p>
+<p>Why would you ever want to do this? We’ll discuss this in more detail in the next lesson. Needless to say, it’s an important part of move semantics.</p>
+<h2 id="rvalue-reference-variables-are-lvalues"><a class="header" href="#rvalue-reference-variables-are-lvalues">Rvalue reference variables are lvalues</a></h2>
+<p>Consider the following snippet:</p>
+<pre><code class="language-cpp">	int&amp;&amp; ref{ 5 };
+	fun(ref);
+</code></pre>
+<p>Which version of <code>fun</code> would you expect the above to call: <code>fun(const int&amp;)</code> or <code>fun(int&amp;&amp;)</code>?</p>
+<p>The answer might surprise you. This calls <code>fun(const int&amp;)</code>.</p>
+<p>Although variable <code>ref</code> has type <code>int&amp;&amp;</code>, when used in an expression it is an lvalue (as are all named variables). The type of an object and its value category are independent.</p>
+<p>You already know that literal <code>5</code> is an rvalue of type <code>int</code>, and <code>int x</code> is an lvalue of type <code>int</code>. Similarly, <code>int&amp;&amp; ref</code> is an lvalue of type <code>int&amp;&amp;</code>.</p>
+<p>So not only does <code>fun(ref)</code> call <code>fun(const int&amp;)</code>, it does not even match <code>fun(int&amp;&amp;)</code>, as rvalue references can’t bind to lvalues.</p>
+<h2 id="returning-an-r-value-reference"><a class="header" href="#returning-an-r-value-reference">Returning an r-value reference</a></h2>
+<p>You should almost never return an r-value reference, for the same reason you should almost never return an l-value reference. In most cases, you’ll end up returning a hanging reference when the referenced object goes out of scope at the end of the function.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="introduction-to-smart-pointers-move-semantics.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="move-constructors-and-move-assignment.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="introduction-to-smart-pointers-move-semantics.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="move-constructors-and-move-assignment.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

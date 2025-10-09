@@ -1,0 +1,578 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Constexpr aggregates and classes - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="constexpr-aggregates-and-classes"><a class="header" href="#constexpr-aggregates-and-classes">Constexpr aggregates and classes</a></h1>
+<p>In lesson <a href="constexpr-functions.html">F.1 -- Constexpr functions</a>, we covered constexpr functions, which are functions that may be evaluated at either compile-time or runtime. For example:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+constexpr int greater(int x, int y)
+{
+    return (x &gt; y ? x : y);
+}
+
+int main()
+{
+    std::cout &lt;&lt; greater(5, 6) &lt;&lt; '\n'; // greater(5, 6) may be evaluated at compile-time or runtime
+
+    constexpr int g { greater(5, 6) };  // greater(5, 6) must be evaluated at compile-time
+    std::cout &lt;&lt; g &lt;&lt; '\n';             // prints 6
+
+    return 0;
+}
+</code></pre>
+<p>In this example, <code>greater()</code> is a constexpr function, and <code>greater(5, 6)</code> is a constant expression, which may be evaluated at either compile-time or runtime. Because <code>std::cout &lt;&lt; greater(5, 6)</code> calls <code>greater(5, 6)</code> in a non-constexpr context, the compiler is free to choose whether to evaluate <code>greater(5, 6</code>) at compile-time or runtime. When <code>greater(5, 6)</code> is used to initialize constexpr variable <code>g</code>, <code>greater(5, 6)</code> is called in a constexpr context, and must be evaluated at compile-time.</p>
+<p>Now consider the following similar example:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+struct Pair
+{
+    int m_x {};
+    int m_y {};
+
+    int greater() const
+    {
+        return (m_x &gt; m_y  ? m_x : m_y);
+    }
+};
+
+int main()
+{
+    Pair p { 5, 6 };                  // inputs are constexpr values
+    std::cout &lt;&lt; p.greater() &lt;&lt; '\n'; // p.greater() evaluates at runtime
+
+    constexpr int g { p.greater() };  // compile error: greater() not constexpr
+    std::cout &lt;&lt; g &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>In this version, we have an aggregate struct named <code>Pair</code>, and <code>greater()</code> is now a member function. However, because member function <code>greater()</code> is not constexpr, <code>p.greater()</code> is not a constant expression. When <code>std::cout &lt;&lt; p.greater()</code> calls <code>p.greater()</code> (in a non-constexpr context), <code>p.greater()</code> will be evaluated at runtime. However, when we try to use <code>p.greater()</code> to initialize constexpr variable <code>g</code>, we get a compile error, as <code>p.greater()</code> cannot be evaluated at compile-time.</p>
+<p>Since the inputs to <code>p</code> are constexpr values (<code>5</code> and <code>6</code>), it seems like <code>p.greater()</code> should be capable of being evaluated at compile-time. But how do we do that?</p>
+<h2 id="constexpr-member-functions"><a class="header" href="#constexpr-member-functions">Constexpr member functions</a></h2>
+<p>Just like non-member functions, member functions can be made constexpr via use of the <code>constexpr</code> keyword. Constexpr member functions can be evaluated at either compile-time or runtime.</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+struct Pair
+{
+    int m_x {};
+    int m_y {};
+
+    constexpr int greater() const // can evaluate at either compile-time or runtime
+    {
+        return (m_x &gt; m_y  ? m_x : m_y);
+    }
+};
+
+int main()
+{
+    Pair p { 5, 6 };
+    std::cout &lt;&lt; p.greater() &lt;&lt; '\n'; // okay: p.greater() evaluates at runtime
+
+    constexpr int g { p.greater() };  // compile error: p not constexpr
+    std::cout &lt;&lt; g &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>In this example, we’ve made <code>greater()</code> a constexpr function, so the compiler can evaluate it at either runtime or compile-time.</p>
+<p>When we call <code>p.greater()</code> in runtime expression <code>std::cout &lt;&lt; p.greater()</code>, it evaluates at runtime.</p>
+<p>However, when <code>p.greater()</code> is used to initialize constexpr variable <code>g</code>, we get a compiler error. Although <code>greater()</code> is now constexpr, <code>p</code> is still not constexpr, therefore <code>p.greater()</code> is not a constant expression.</p>
+<h2 id="constexpr-aggregates"><a class="header" href="#constexpr-aggregates">Constexpr aggregates</a></h2>
+<p>Okay, so if we need <code>p</code> to be constexpr, let’s just make it constexpr:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+struct Pair // Pair is an aggregate
+{
+    int m_x {};
+    int m_y {};
+
+    constexpr int greater() const
+    {
+        return (m_x &gt; m_y  ? m_x : m_y);
+    }
+};
+
+int main()
+{
+    constexpr Pair p { 5, 6 };        // now constexpr
+    std::cout &lt;&lt; p.greater() &lt;&lt; '\n'; // p.greater() evaluates at runtime or compile-time
+
+    constexpr int g { p.greater() };  // p.greater() must evaluate at compile-time
+    std::cout &lt;&lt; g &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>Since <code>Pair</code> is an aggregate, and aggregates implicitly support constexpr, we’re done. This works! Since <code>p</code> is a constexpr type, and <code>greater()</code> is a constexpr member function, <code>p.greater()</code> is a constant expression and can be used in places where only constant expressions are allowed.</p>
+<blockquote>
+<p><strong>Related content</strong></p>
+<p>Related content</p>
+<p>We covered aggregates in lesson <a href="struct-aggregate-initialization">13.8 -- Struct aggregate initialization</a>.</p>
+</blockquote>
+<h2 id="constexpr-class-objects-and-constexpr-constructors"><a class="header" href="#constexpr-class-objects-and-constexpr-constructors">Constexpr class objects and constexpr constructors</a></h2>
+<p>Now let’s make our <code>Pair</code> a non-aggregate:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+class Pair // Pair is no longer an aggregate
+{
+private:
+    int m_x {};
+    int m_y {};
+
+public:
+    Pair(int x, int y): m_x { x }, m_y { y } {}
+
+    constexpr int greater() const
+    {
+        return (m_x &gt; m_y  ? m_x : m_y);
+    }
+};
+
+int main()
+{
+    constexpr Pair p { 5, 6 };       // compile error: p is not a literal type
+    std::cout &lt;&lt; p.greater() &lt;&lt; '\n';
+
+    constexpr int g { p.greater() };
+    std::cout &lt;&lt; g &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>This example is almost identical to the prior one, except <code>Pair</code> is no longer an aggregate (due to having private data members and a constructor).</p>
+<p>When we compile this program, we get a compiler error about <code>Pair</code> not being a “literal type”. Say what?</p>
+<p>In C++, a <strong>literal type</strong> is any type for which it might be possible to create an object within a constant expression. Put another way, an object can’t be constexpr unless the type qualifies as a literal type. And our non-aggregate <code>Pair</code> does not qualify.</p>
+<blockquote>
+<p><strong>Nomenclature</strong></p>
+<p>Nomenclature</p>
+<p>A literal and a literal type are distinct (but related) things. A literal is a constexpr value that is inserted into the source code. A literal type is a type that can be used as the type of a constexpr value. A literal always has a literal type. However, a value or object with a literal type need not be a literal.</p>
+</blockquote>
+<p>The definition of a literal type is complex, and a summary can be found on <a href="https://en.cppreference.com/w/cpp/named_req/LiteralType">cppreference</a>. However, it’s worth noting that literal types include:</p>
+<ul>
+<li>Scalar types (those holding a single value, such as fundamental types and pointers)</li>
+<li>Reference types</li>
+<li>Most aggregates</li>
+<li>Classes that have a constexpr constructor</li>
+</ul>
+<p>And now we see why our <code>Pair</code> isn’t a literal type. When a class object is instantiated, the compiler will call the constructor function to initialize the object. And the constructor function in our <code>Pair</code> class is not constexpr, so it can’t be invoked at compile-time. Therefore, <code>Pair</code> objects cannot be constexpr.</p>
+<p>The fix for this is simple: we just make our constructor <code>constexpr</code> as well:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+class Pair
+{
+private:
+    int m_x {};
+    int m_y {};
+
+public:
+    constexpr Pair(int x, int y): m_x { x }, m_y { y } {} // now constexpr
+
+    constexpr int greater() const
+    {
+        return (m_x &gt; m_y  ? m_x : m_y);
+    }
+};
+
+int main()
+{
+    constexpr Pair p { 5, 6 };
+    std::cout &lt;&lt; p.greater() &lt;&lt; '\n';
+
+    constexpr int g { p.greater() };
+    std::cout &lt;&lt; g &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>This works as expected, just like our aggregate version of <code>Pair</code> did.</p>
+<div id="admonition-best-practices" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices"></a>
+</div>
+<div>
+<p>Best practice</p>
+<p>If you want your class to be able to be evaluated at compile-time, make your member functions and constructor constexpr.</p>
+</div>
+</div>
+<p>Implicitly defined constructors are constexpr if they can be defined as such. Explicitly defaulted constructors must be explicitly defined as constexpr.</p>
+<blockquote>
+<p><strong>Tip</strong></p>
+<p>Tip</p>
+<p>Constexpr is part of the interface of the class, and removing it later will break callers who are calling the function in a constant context.</p>
+</blockquote>
+<h2 id="constexpr-members-may-be-needed-with-non-constexprnon-const-objects"><a class="header" href="#constexpr-members-may-be-needed-with-non-constexprnon-const-objects">Constexpr members may be needed with non-constexpr/non-const objects</a></h2>
+<p>In the above example, since the initializer of constexpr variable <code>g</code> must be a constant expression, it’s clear that <code>p.greater()</code> must be a constant expression, and therefore <code>p</code>, the <code>Pair</code> constructor, and <code>greater()</code> must all be constexpr.</p>
+<p>However, if we replace <code>p.greater()</code> with a constexpr function, things get a little less obvious:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+class Pair
+{
+private:
+    int m_x {};
+    int m_y {};
+
+public:
+    constexpr Pair(int x, int y): m_x { x }, m_y { y } {}
+
+    constexpr int greater() const
+    {
+        return (m_x &gt; m_y  ? m_x : m_y);
+    }
+};
+
+constexpr int init()
+{
+    Pair p { 5, 6 };    // requires constructor to be constexpr when evaluated at compile-time
+    return p.greater(); // requires greater() to be constexpr when evaluated at compile-time
+}
+
+int main()
+{
+    constexpr int g { init() }; // init() evaluated in compile-time context
+    std::cout &lt;&lt; g &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>Remember that a constexpr function can evaluate at either runtime or compile-time. And when a constexpr function evaluates at compile-time, it can only call functions capable of evaluating at compile-time. In the case of a class type, that means constexpr member functions.</p>
+<p>Since <code>g</code> is constexpr, <code>init()</code> must be evaluated at compile-time. Within the <code>init()</code> function, we define <code>p</code> as non-constexpr/non-const (because we can, not because we should). Even though <code>p</code> is not defined as constexpr, <code>p</code> still needs to be created at compile-time, and therefore requires a constexpr <code>Pair</code> constructor. Similarly, in order for <code>p.greater()</code> to evaluate at compile-time, <code>greater()</code> must be a constexpr member function. If either the <code>Pair</code> constructor or <code>greater()</code> were not constexpr, the compiler would error.</p>
+<blockquote>
+<p><strong>Key insight</strong></p>
+<p>Key insight</p>
+<p>When a constexpr function is evaluating in a compile-time context, only constexpr functions can be called.</p>
+</blockquote>
+<h2 id="constexpr-member-functions-may-be-const-or-non-const-c14"><a class="header" href="#constexpr-member-functions-may-be-const-or-non-const-c14">Constexpr member functions may be const or non-const C++14</a></h2>
+<p>In C++11, non-static constexpr member functions are implicitly const (except constructors).</p>
+<p>However, as of C++14, constexpr member functions are no longer implicitly const. This means that if you want a constexpr function to be a const function, you must explicitly mark it as such.</p>
+<h2 id="constexpr-non-const-member-functions-can-change-data-members-optional"><a class="header" href="#constexpr-non-const-member-functions-can-change-data-members-optional">Constexpr non-const member functions can change data members Optional</a></h2>
+<p>A constexpr non-const member function can change data members of the class, so long as the implicit object isn’t const. This is true even if the function is evaluating at compile-time.</p>
+<p>Here’s a contrived example of this:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+class Pair
+{
+private:
+    int m_x {};
+    int m_y {};
+
+public:
+    constexpr Pair(int x, int y): m_x { x }, m_y { y } {}
+
+    constexpr int greater() const // constexpr and const
+    {
+        return (m_x &gt; m_y  ? m_x : m_y);
+    }
+
+    constexpr void reset() // constexpr but non-const
+    {
+        m_x = m_y = 0; // non-const member function can change members
+    }
+
+    constexpr const int&amp; getX() const { return m_x; }
+};
+
+// This function is constexpr
+constexpr Pair zero()
+{
+    Pair p { 1, 2 }; // p is non-const
+    p.reset();       // okay to call non-const member function on non-const object
+    return p;
+}
+
+int main()
+{
+    Pair p1 { 3, 4 };
+    p1.reset();                     // okay to call non-const member function on non-const object
+    std::cout &lt;&lt; p1.getX() &lt;&lt; '\n'; // prints 0
+    
+    Pair p2 { zero() };             // zero() will be evaluated at runtime
+    p2.reset();                     // okay to call non-const member function on non-const object
+    std::cout &lt;&lt; p2.getX() &lt;&lt; '\n'; // prints 0
+
+    constexpr Pair p3 { zero() };   // zero() will be evaluated at compile-time
+//    p3.reset();                   // Compile error: can't call non-const member function on const object
+    std::cout &lt;&lt; p3.getX() &lt;&lt; '\n'; // prints 0
+
+    return 0;
+}
+</code></pre>
+<p>As we work through this example, remember:</p>
+<ul>
+<li>A non-const member function can modify members of non-const objects.</li>
+<li>A constexpr member function can be called in either runtime contexts or compile-time contexts.</li>
+</ul>
+<p>These two things work independently.</p>
+<p>In the case of <code>p1</code>, <code>p1</code> is non-const. Therefore, we are allowed to call non-const member function <code>p1.reset()</code> to modify <code>p1</code>. The fact that <code>reset()</code> is constexpr doesn’t matter here because nothing we’re doing requires compile-time evaluation.</p>
+<p>The <code>p2</code> case is similar. In this case, the initializer to <code>p2</code> is a function call to <code>zero()</code>. Even though <code>zero()</code> is a constexpr function, in this case it is invoked in a runtime context, and acts just like a normal function. Within <code>zero()</code>, we instantiate non-const <code>p</code>, call non-const member function <code>p.reset()</code> on it, and then return <code>p</code>. The returned <code>Pair</code> is used as the initializer for <code>p2</code>. The fact that <code>zero()</code> and <code>reset()</code> are constexpr don’t matter in this case, because nothing we’re doing requires compile-time evaluation.</p>
+<p>The <code>p3</code> case is the interesting one. Because <code>p3</code> is constexpr, it must have a constant expression initializer. Therefore, this call to <code>zero()</code> must evaluate at compile-time. And because we’re evaluating in a compile-time context, we can only call constexpr functions. Inside <code>zero()</code>, <code>p</code> is non-const (which is allowed, even though we’re evaluating at compile-time). However, because we’re in a compile-time context, the constructor used to create <code>p</code> must be constexpr. And just like the <code>p2</code> case, we’re allowed to call non-const member function <code>p.reset()</code> on non-const object <code>p</code>. But because we’re in a compile-time context, the <code>reset()</code> member function must be constexpr. The function then returns <code>p</code>, which is used to initialize <code>p3</code>.</p>
+<blockquote>
+<p><strong>Author’s note</strong></p>
+<p>Author’s note</p>
+<p>Yes, we used a non-const object to initialize a constexpr object. If this breaks your brain, it’s probably because you haven’t fully separated const from constexpr.</p>
+<p>There is no requirement that a constexpr variable be initialized with a const value. It may seem that way because most of the time we initialize constexpr variable using literals (which are const) or other constexpr variables (which are implicitly const), and because the terms <code>const</code> and <code>constexpr</code> have similar names.</p>
+<p>The requirement is actually that a constexpr variable be initialized with a constant expression. For functions (and operators), constexpr does not imply const, and constexpr functions (and operators) can make use of non-const objects and even return them.</p>
+<p>The important thing isn’t the const, its that the compiler can determine the value of the object at compile-time. And in the case of constexpr functions, that’s possible even when they return a non-const object!</p>
+</blockquote>
+<h2 id="constexpr-functions-that-return-const-references-or-pointers-optional"><a class="header" href="#constexpr-functions-that-return-const-references-or-pointers-optional">Constexpr functions that return const references (or pointers) Optional</a></h2>
+<p>Normally you won’t see <code>constexpr</code> and <code>const</code> used right next to each other, but one case where this does happen is when you have a constexpr member function that returns a const reference (or (const) pointer-to-const).</p>
+<p>In our <code>Pair</code> class above, <code>getX()</code> is a constexpr member function that returns a const reference:</p>
+<pre><code class="language-cpp">    constexpr const int&amp; getX() const { return m_x; }
+</code></pre>
+<p>That’s a lot of const-ing!</p>
+<p>The <code>constexpr</code> indicates that the member function can be evaluated at compile-time. The <code>const int&amp;</code> is the return type of the function. The rightmost <code>const</code> means the member-function itself is const so it can be called on const objects.</p>
+<blockquote>
+<p><strong>As an aside…</strong></p>
+<p>As an aside…</p>
+<p>A member function that returned a const pointer to const instead might look something like this:</p>
+<pre><code>constexpr const int* const getXPtr() const { return &amp;m_x; }
+</code></pre>
+<p>Isn’t it beautiful? No? Okay, fine.</p>
+</blockquote>
+<p>AI CONTENT END 1</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="converting-constructors-and-the-explicit-keyword.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="chapter-14-summary-and-quiz.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="converting-constructors-and-the-explicit-keyword.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="chapter-14-summary-and-quiz.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,406 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Basic exception handling - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="basic-exception-handling"><a class="header" href="#basic-exception-handling">Basic exception handling</a></h1>
+<p>In the previous lesson on <a href="151-the-need-for-exceptions.html">the need for exceptions</a>, we talked about how using return codes causes your control flow and error flow to be intermingled, constraining both. Exceptions in C++ are implemented using three keywords that work in conjunction with each other: <strong>throw</strong>, <strong>try</strong>, and <strong>catch</strong>.</p>
+<h2 id="throwing-exceptions"><a class="header" href="#throwing-exceptions">Throwing exceptions</a></h2>
+<p>We use signals all the time in real life to note that particular events have occurred. For example, during American football, if a player has committed a foul, the referee will throw a flag on the ground and whistle the play dead. A penalty is then assessed and executed. Once the penalty has been taken care of, play generally resumes as normal.</p>
+<p>In C++, a <strong>throw statement</strong> is used to signal that an exception or error case has occurred (think of throwing a penalty flag). Signaling that an exception has occurred is also commonly called <strong>raising</strong> an exception.</p>
+<p>To use a throw statement, simply use the throw keyword, followed by a value of any data type you wish to use to signal that an error has occurred. Typically, this value will be an error code, a description of the problem, or a custom exception class.</p>
+<p>Here are some examples:</p>
+<pre><code class="language-cpp">throw -1; // throw a literal integer value
+throw ENUM_INVALID_INDEX; // throw an enum value
+throw "Can not take square root of negative number"; // throw a literal C-style (const char*) string
+throw dX; // throw a double variable that was previously defined
+throw MyException("Fatal Error"); // Throw an object of class MyException
+</code></pre>
+<p>Each of these statements acts as a signal that some kind of problem that needs to be handled has occurred.</p>
+<h2 id="looking-for-exceptions"><a class="header" href="#looking-for-exceptions">Looking for exceptions</a></h2>
+<p>Throwing exceptions is only one part of the exception handling process. Let’s go back to our American football analogy: once a referee has thrown a penalty flag, what happens next? The players notice that a penalty has occurred and stop play. The normal flow of the football game is disrupted.</p>
+<p>In C++, we use the <strong>try</strong> keyword to define a block of statements (called a <strong>try block</strong>). The try block acts as an observer, looking for any exceptions that are thrown by any of the statements within the try block.</p>
+<p>Here’s an example of a try block:</p>
+<pre><code class="language-cpp">try
+{
+    // Statements that may throw exceptions you want to handle go here
+    throw -1; // here's a trivial throw statement
+}
+</code></pre>
+<p>Note that the try block doesn’t define HOW we’re going to handle the exception. It merely tells the program, “Hey, if any of the statements inside this try block throws an exception, grab it!”.</p>
+<h2 id="handling-exceptions"><a class="header" href="#handling-exceptions">Handling exceptions</a></h2>
+<p>Finally, the end of our American football analogy: After the penalty has been called and play has stopped, the referee assesses the penalty and executes it. In other words, the penalty must be handled before normal play can resume.</p>
+<p>Actually handling exceptions is the job of the catch block(s). The <strong>catch</strong> keyword is used to define a block of code (called a <strong>catch block</strong>) that handles exceptions for a single data type.</p>
+<p>Here’s an example of a catch block that will catch integer exceptions:</p>
+<pre><code class="language-cpp">catch (int x)
+{
+    // Handle an exception of type int here
+    std::cerr &lt;&lt; "We caught an int exception with value" &lt;&lt; x &lt;&lt; '\n';
+}
+</code></pre>
+<p>Try blocks and catch blocks work together -- a try block detects any exceptions that are thrown by statements within the try block, and routes them to a catch block with a matching type for handling. A try block must have at least one catch block immediately following it, but may have multiple catch blocks listed in sequence.</p>
+<p>Once an exception has been caught by the try block and routed to a matching catch block for handling, the exception is considered handled. After the matching catch block executes, execution then resumes as normal, starting with the first statement after the last catch block.</p>
+<p>Catch parameters work just like function parameters, with the parameter being available within the subsequent catch block. Exceptions of fundamental types can be caught by value, but exceptions of non-fundamental types should be caught by const reference to avoid making an unnecessary copy (and, in some cases, to prevent slicing).</p>
+<p>Just like with functions, if the parameter is not going to be used in the catch block, the variable name can be omitted:</p>
+<pre><code class="language-cpp">catch (double) // note: no variable name since we don't use it in the catch block below
+{
+    // Handle exception of type double here
+    std::cerr &lt;&lt; "We caught an exception of type double\n";
+}
+</code></pre>
+<p>This can help prevent compiler warnings about unused variables.</p>
+<p>No type conversion is done for exceptions (so an int exception will not be converted to match a catch block with a double parameter).</p>
+<h2 id="putting-throw-try-and-catch-together"><a class="header" href="#putting-throw-try-and-catch-together">Putting throw, try, and catch together</a></h2>
+<p>Here’s a full program that uses throw, try, and multiple catch blocks:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+int main()
+{
+    try
+    {
+        // Statements that may throw exceptions you want to handle go here
+        throw -1; // here's a trivial example
+    }
+    catch (double) // no variable name since we don't use the exception itself in the catch block below
+    {
+        // Any exceptions of type double thrown within the above try block get sent here
+        std::cerr &lt;&lt; "We caught an exception of type double\n";
+    }
+    catch (int x)
+    {
+        // Any exceptions of type int thrown within the above try block get sent here
+        std::cerr &lt;&lt; "We caught an int exception with value: " &lt;&lt; x &lt;&lt; '\n';
+    }
+    catch (const std::string&amp;) // catch classes by const reference
+    {
+        // Any exceptions of type std::string thrown within the above try block get sent here
+        std::cerr &lt;&lt; "We caught an exception of type std::string\n";
+    }
+
+    // Execution continues here after the exception has been handled by any of the above catch blocks
+    std::cout &lt;&lt; "Continuing on our merry way\n";
+
+    return 0;
+}
+</code></pre>
+<p>On the authors machine, running the above try/catch block produces the following result:</p>
+<pre><code class="language-cpp">We caught an int exception with value -1
+Continuing on our merry way
+</code></pre>
+<p>A throw statement was used to raise an exception with the value -1, which is of type int. The throw statement was then caught by the enclosing try block, and routed to the appropriate catch block that handles exceptions of type int. This catch block printed the appropriate error message.</p>
+<p>Once the exception was handled, the program continued as normal after the catch blocks, printing “Continuing on our merry way”.</p>
+<h2 id="recapping-exception-handling"><a class="header" href="#recapping-exception-handling">Recapping exception handling</a></h2>
+<p>Exception handling is actually quite simple, and the following two paragraphs cover most of what you need to remember about it:</p>
+<p>When an exception is raised (using <strong>throw</strong>), the running program finds the nearest enclosing <strong>try</strong> block (propagating up the stack if necessary to find an enclosing try block -- we’ll discuss this in more detail next lesson) to see if any of the <strong>catch</strong> handlers attached to the try block can handle that type of exception. If so, execution jumps to the top of the catch block, the exception is considered handled.</p>
+<p>If no appropriate catch handlers exist in the nearest enclosing try block, the program continues to look at subsequent enclosing try blocks for a catch handler. If no appropriate catch handlers can be found before the end of the program, the program will fail with a runtime exception error.</p>
+<p>Note that the program will not perform implicit conversions or promotions when matching exceptions with catch blocks! For example, a char exception will not match with an int catch block. An int exception will not match a float catch block. However, casts from a derived class to one of its parent classes will be performed.</p>
+<p>That’s really all there is to it. The rest of this chapter will be dedicated to showing examples of these principles at work.</p>
+<h2 id="exceptions-are-handled-immediately"><a class="header" href="#exceptions-are-handled-immediately">Exceptions are handled immediately</a></h2>
+<p>Here’s a short program that demonstrates how exceptions are handled immediately:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+    try
+    {
+        throw 4.5; // throw exception of type double
+        std::cout &lt;&lt; "This never prints\n";
+    }
+    catch (double x) // handle exception of type double
+    {
+        std::cerr &lt;&lt; "We caught a double of value: " &lt;&lt; x &lt;&lt; '\n';
+    }
+
+    return 0;
+}
+</code></pre>
+<p>This program is about as simple as it gets. Here’s what happens: the throw statement is the first statement that gets executed -- this causes an exception of type double to be raised. Execution <em>immediately</em> moves to the nearest enclosing try block, which is the only try block in this program. The catch handlers are then checked to see if any handler matches. Our exception is of type double, so we’re looking for a catch handler of type double. We have one, so it executes.</p>
+<p>Consequently, the result of this program is as follows:</p>
+<pre><code class="language-cpp">We caught a double of value: 4.5
+</code></pre>
+<p>Note that “This never prints” is never printed, because the exception caused the execution path to jump immediately to the exception handler for doubles.</p>
+<h2 id="a-more-realistic-example"><a class="header" href="#a-more-realistic-example">A more realistic example</a></h2>
+<p>Let’s take a look at an example that’s not quite so academic:</p>
+<pre><code class="language-cpp">#include &lt;cmath&gt; // for sqrt() function
+#include &lt;iostream&gt;
+
+int main()
+{
+    std::cout &lt;&lt; "Enter a number: ";
+    double x {};
+    std::cin &gt;&gt; x;
+
+    try // Look for exceptions that occur within try block and route to attached catch block(s)
+    {
+        // If the user entered a negative number, this is an error condition
+        if (x &lt; 0.0)
+            throw "Can not take sqrt of negative number"; // throw exception of type const char*
+
+        // Otherwise, print the answer
+        std::cout &lt;&lt; "The sqrt of " &lt;&lt; x &lt;&lt; " is " &lt;&lt; std::sqrt(x) &lt;&lt; '\n';
+    }
+    catch (const char* exception) // catch exceptions of type const char*
+    {
+        std::cerr &lt;&lt; "Error: " &lt;&lt; exception &lt;&lt; '\n';
+    }
+}
+</code></pre>
+<p>In this code, the user is asked to enter a number. If they enter a positive number, the if statement does not execute, no exception is thrown, and the square root of the number is printed. Because no exception is thrown in this case, the code inside the catch block never executes. The result is something like this:</p>
+<pre><code class="language-cpp">Enter a number: 9
+The sqrt of 9 is 3
+</code></pre>
+<p>If the user enters a negative number, we throw an exception of type const char*. Because we’re within a try block and a matching exception handler is found, control immediately transfers to the const char* exception handler. The result is:</p>
+<pre><code class="language-cpp">Enter a number: -4
+Error: Can not take sqrt of negative number
+</code></pre>
+<p>By now, you should be getting the basic idea behind exceptions. In the next lesson, we’ll do quite a few more examples to show how flexible exceptions are.</p>
+<h2 id="what-catch-blocks-typically-do"><a class="header" href="#what-catch-blocks-typically-do">What catch blocks typically do</a></h2>
+<p>If an exception is routed to a catch block, it is considered “handled” even if the catch block is empty. However, typically you’ll want your catch blocks to do something useful. There are four common things that catch blocks do when they catch an exception:</p>
+<p>First, catch blocks may print an error (either to the console, or a log file) and then allow the function to proceed.</p>
+<p>Second, catch blocks may return a value or error code back to the caller.</p>
+<p>Third, a catch block may throw another exception. Because the catch block is outside of the try block, the newly thrown exception in this case is not handled by the preceding try block -- it’s handled by the next enclosing try block.</p>
+<p>Fourth, a catch block in main() may be used to catch fatal errors and terminate the program in a clean way.</p>
+<p>AI CONTENT END 1</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="the-need-for-exceptions.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="exceptions-functions-and-stack-unwinding.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="the-need-for-exceptions.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="exceptions-functions-and-stack-unwinding.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

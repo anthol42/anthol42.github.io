@@ -1,0 +1,559 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>std::array and enumerations - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="stdarray-and-enumerations"><a class="header" href="#stdarray-and-enumerations">std::array and enumerations</a></h1>
+<p>In lesson <a href="array-indexing-and-length-using-enumerators.html">16.9 -- Array indexing and length using enumerators</a>, we discussed arrays and enumerations.</p>
+<p>Now that we have <code>constexpr std::array</code> in our toolkit, we’re going to continue that discussion and show a few additional tricks.</p>
+<h2 id="using-static-assert-to-ensure-the-proper-number-of-array-initializers"><a class="header" href="#using-static-assert-to-ensure-the-proper-number-of-array-initializers">Using static assert to ensure the proper number of array initializers</a></h2>
+<p>When initializing a <code>constexpr std::array</code> using CTAD, the compiler will deduce how long the array should be from the number of initializers. If less initializers are provided than there should be, the array will be shorter than expected, and indexing it can lead to undefined behavior.</p>
+<p>For example:</p>
+<pre><code class="language-cpp">#include &lt;array&gt;
+#include &lt;iostream&gt;
+
+enum StudentNames
+{
+    kenny, // 0
+    kyle, // 1
+    stan, // 2
+    butters, // 3
+    cartman, // 4
+    max_students // 5
+};
+
+int main()
+{
+    constexpr std::array testScores { 78, 94, 66, 77 }; // oops, only 4 values
+
+    std::cout &lt;&lt; "Cartman got a score of " &lt;&lt; testScores[StudentNames::cartman] &lt;&lt; '\n'; // undefined behavior due to invalid index
+
+    return 0;
+}
+</code></pre>
+<p>Whenever the number of initializers in a <code>constexpr std::array</code> can be reasonably sanity checked, you can do so using a static assert:</p>
+<pre><code class="language-cpp">#include &lt;array&gt;
+#include &lt;iostream&gt;
+
+enum StudentNames
+{
+    kenny, // 0
+    kyle, // 1
+    stan, // 2
+    butters, // 3
+    cartman, // 4
+    max_students // 5
+};
+
+int main()
+{
+    constexpr std::array testScores { 78, 94, 66, 77 };
+
+    // Ensure the number of test scores is the same as the number of students
+    static_assert(std::size(testScores) == max_students); // compile error: static_assert condition failed
+
+    std::cout &lt;&lt; "Cartman got a score of " &lt;&lt; testScores[StudentNames::cartman] &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>That way, if you add a new enumerator later but forget to add a corresponding initializer to <code>testScores</code>, the program will fail to compile.</p>
+<p>You can also use a static assert to ensure two different <code>constexpr std::array</code> have the same length.</p>
+<h2 id="using-constexpr-arrays-for-better-enumeration-input-and-output"><a class="header" href="#using-constexpr-arrays-for-better-enumeration-input-and-output">Using constexpr arrays for better enumeration input and output</a></h2>
+<p>In lesson <a href="introduction-to-overloading-the-i-o-operators.html">13.5 -- Introduction to overloading the I/O operators</a>, we covered a few ways to input and output the names of enumerators. To assist in this task, we had helper functions that converted an enumerator to a string and vice-versa. These functions each had their own (duplicate) set of string literals, and we had to specifically code logic to check each:</p>
+<pre><code class="language-cpp">constexpr std::string_view getPetName(Pet pet)
+{
+    switch (pet)
+    {
+    case cat:   return "cat";
+    case dog:   return "dog";
+    case pig:   return "pig";
+    case whale: return "whale";
+    default:    return "???";
+    }
+}
+
+constexpr std::optional&lt;Pet&gt; getPetFromString(std::string_view sv)
+{
+    if (sv == "cat")   return cat;
+    if (sv == "dog")   return dog;
+    if (sv == "pig")   return pig;
+    if (sv == "whale") return whale;
+
+    return {};
+}
+</code></pre>
+<p>This means that if we were to add a new enumerator, we’d have to remember to update these functions.</p>
+<p>Let’s improve these functions a bit. In cases where the value of our enumerators start at 0 and proceed sequentially (which is true for most enumerations), we can use an array to hold the name of each enumerator.</p>
+<p>This allows us to do two things:</p>
+<ol>
+<li>Index the array using the enumerator’s value to get the name of that enumerator.</li>
+<li>Use a loop to iterate through all of the names, and be able to correlate a name back to the enumerator based on index.</li>
+</ol>
+<pre><code class="language-cpp">#include &lt;array&gt;
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;string_view&gt;
+
+namespace Color
+{
+    enum Type
+    {
+        black,
+        red,
+        blue,
+        max_colors
+    };
+
+    // use sv suffix so std::array will infer type as std::string_view
+    using namespace std::string_view_literals; // for sv suffix
+    constexpr std::array colorName { "black"sv, "red"sv, "blue"sv };
+
+    // Make sure we've defined strings for all our colors
+    static_assert(std::size(colorName) == max_colors);
+};
+
+constexpr std::string_view getColorName(Color::Type color)
+{
+    // We can index the array using the enumerator to get the name of the enumerator
+    return Color::colorName[static_cast&lt;std::size_t&gt;(color)];
+}
+
+// Teach operator&lt;&lt; how to print a Color
+// std::ostream is the type of std::cout
+// The return type and parameter type are references (to prevent copies from being made)!
+std::ostream&amp; operator&lt;&lt;(std::ostream&amp; out, Color::Type color)
+{
+    return out &lt;&lt; getColorName(color);
+}
+
+// Teach operator&gt;&gt; how to input a Color by name
+// We pass color by non-const reference so we can have the function modify its value
+std::istream&amp; operator&gt;&gt; (std::istream&amp; in, Color::Type&amp; color)
+{
+    std::string input {};
+    std::getline(in &gt;&gt; std::ws, input);
+
+    // Iterate through the list of names to see if we can find a matching name
+    for (std::size_t index=0; index &lt; Color::colorName.size(); ++index)
+    {
+        if (input == Color::colorName[index])
+        {
+            // If we found a matching name, we can get the enumerator value based on its index
+            color = static_cast&lt;Color::Type&gt;(index);
+            return in;
+        }
+    }
+
+    // We didn't find a match, so input must have been invalid
+    // so we will set input stream to fail state
+    in.setstate(std::ios_base::failbit);
+
+    // On an extraction failure, operator&gt;&gt; zero-initializes fundamental types
+    // Uncomment the following line to make this operator do the same thing
+    // color = {};
+    return in;
+}
+
+int main()
+{
+    auto shirt{ Color::blue };
+    std::cout &lt;&lt; "Your shirt is " &lt;&lt; shirt &lt;&lt; '\n';
+
+    std::cout &lt;&lt; "Enter a new color: ";
+    std::cin &gt;&gt; shirt;
+    if (!std::cin)
+        std::cout &lt;&lt; "Invalid\n";
+    else
+        std::cout &lt;&lt; "Your shirt is now " &lt;&lt; shirt &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>This prints:</p>
+<pre><code class="language-cpp">Your shirt is blue
+Enter a new color: red
+Your shirt is now red
+</code></pre>
+<h2 id="range-based-for-loops-and-enumerations"><a class="header" href="#range-based-for-loops-and-enumerations">Range-based for-loops and enumerations</a></h2>
+<p>Occasionally we run across situations where it would be useful to iterate through the enumerators of an enumeration. While we can do this using a for-loop with an integer index, this is likely to require a lot of static casting of the integer index to our enumeration type.</p>
+<pre><code class="language-cpp">#include &lt;array&gt;
+#include &lt;iostream&gt;
+#include &lt;string_view&gt;
+
+namespace Color
+{
+    enum Type
+    {
+        black,
+        red,
+        blue,
+        max_colors
+    };
+
+    // use sv suffix so std::array will infer type as std::string_view
+    using namespace std::string_view_literals; // for sv suffix
+    constexpr std::array colorName { "black"sv, "red"sv, "blue"sv };
+
+    // Make sure we've defined strings for all our colors
+    static_assert(std::size(colorName) == max_colors);
+};
+
+constexpr std::string_view getColorName(Color::Type color)
+{
+    return Color::colorName[color];
+}
+
+// Teach operator&lt;&lt; how to print a Color
+// std::ostream is the type of std::cout
+// The return type and parameter type are references (to prevent copies from being made)!
+std::ostream&amp; operator&lt;&lt;(std::ostream&amp; out, Color::Type color)
+{
+    return out &lt;&lt; getColorName(color);
+}
+
+int main()
+{
+    // Use a for loop to iterate through all our colors
+    for (int i=0; i &lt; Color::max_colors; ++i )
+        std::cout &lt;&lt; static_cast&lt;Color::Type&gt;(i) &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>Unfortunately, range-based for-loops won’t allow you to iterate over the enumerators of an enumeration:</p>
+<pre><code class="language-cpp">#include &lt;array&gt;
+#include &lt;iostream&gt;
+#include &lt;string_view&gt;
+
+namespace Color
+{
+    enum Type
+    {
+        black,
+        red,
+        blue,
+        max_colors
+    };
+
+    // use sv suffix so std::array will infer type as std::string_view
+    using namespace std::string_view_literals; // for sv suffix
+    constexpr std::array colorName { "black"sv, "red"sv, "blue"sv };
+
+    // Make sure we've defined strings for all our colors
+    static_assert(std::size(colorName) == max_colors);
+};
+
+constexpr std::string_view getColorName(Color::Type color)
+{
+    return Color::colorName[color];
+}
+
+// Teach operator&lt;&lt; how to print a Color
+// std::ostream is the type of std::cout
+// The return type and parameter type are references (to prevent copies from being made)!
+std::ostream&amp; operator&lt;&lt;(std::ostream&amp; out, Color::Type color)
+{
+    return out &lt;&lt; getColorName(color);
+}
+
+int main()
+{
+    for (auto c: Color::Type) // compile error: can't traverse enumeration
+        std::cout &lt;&lt; c &lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>There are many creative solutions for this. Since we can use a range-based for-loop on an array, one of the most straightforward solutions is to create a <code>constexpr std::array</code> containing each of our enumerators, and then iterate over that. This method only works if the enumerators have unique values.</p>
+<pre><code class="language-cpp">#include &lt;array&gt;
+#include &lt;iostream&gt;
+#include &lt;string_view&gt;
+
+namespace Color
+{
+    enum Type
+    {
+        black,     // 0
+        red,       // 1
+        blue,      // 2
+        max_colors // 3
+    };
+
+    using namespace std::string_view_literals; // for sv suffix
+    constexpr std::array colorName { "black"sv, "red"sv, "blue"sv };
+    static_assert(std::size(colorName) == max_colors);
+
+    constexpr std::array types { black, red, blue }; // A std::array containing all our enumerators
+    static_assert(std::size(types) == max_colors);
+};
+
+constexpr std::string_view getColorName(Color::Type color)
+{
+    return Color::colorName[color];
+}
+
+// Teach operator&lt;&lt; how to print a Color
+// std::ostream is the type of std::cout
+// The return type and parameter type are references (to prevent copies from being made)!
+std::ostream&amp; operator&lt;&lt;(std::ostream&amp; out, Color::Type color)
+{
+    return out &lt;&lt; getColorName(color);
+}
+
+int main()
+{
+    for (auto c: Color::types) // ok: we can do a range-based for on a std::array
+        std::cout &lt;&lt; c &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>In the above example, since the element type of <code>Color::types</code> is <code>Color::Type</code>, variable <code>c</code> will be deduced as a <code>Color::Type</code>, which is exactly what we want!</p>
+<p>This prints:</p>
+<pre><code class="language-cpp">black
+red
+blue
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="arrays-of-references-via-stdreference_wrapper.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="introduction-to-c-style-arrays.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="arrays-of-references-via-stdreference_wrapper.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="introduction-to-c-style-arrays.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

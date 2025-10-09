@@ -1,0 +1,414 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Local variables - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="local-variables"><a class="header" href="#local-variables">Local variables</a></h1>
+<p>In lesson <a href="introduction-to-local-scope.html">2.5 -- Introduction to local scope</a>, we introduced <code>local variables</code>, which are variables that are defined inside a function (including function parameters).</p>
+<p>It turns out that C++ actually doesn’t have a single attribute that defines a variable as being a local variable. Instead, local variables have several different properties that differentiate how these variables behave from other kinds of (non-local) variables. We’ll explore these properties in this and upcoming lessons.</p>
+<p>In lesson <a href="introduction-to-local-scope.html">2.5 -- Introduction to local scope</a>, we also introduced the concept of scope. An identifier’s <code>scope</code> determines where an identifier can be accessed within the source code. When an identifier can be accessed, we say it is <code>in scope</code>. When an identifier can not be accessed, we say it is <code>out of scope</code>. Scope is a compile-time property, and trying to use an identifier when it is out of scope will result in a compile error.</p>
+<h2 id="local-variables-have-block-scope"><a class="header" href="#local-variables-have-block-scope">Local variables have block scope</a></h2>
+<p>Local variables have <strong>block scope</strong>, which means they are <em>in scope</em> from their point of definition to the end of the block they are defined within.</p>
+<blockquote>
+<p><strong>Related content</strong></p>
+<p>Please review lesson <a href="compound-statements-blocks">7.1 -- Compound statements (blocks)</a> if you need a refresher on blocks.</p>
+</blockquote>
+<pre><code class="language-cpp">int main()
+{
+    int i { 5 }; // i enters scope here
+    double d { 4.0 }; // d enters scope here
+
+    return 0;
+} // d and i go out of scope here
+</code></pre>
+<p>Although function parameters are not defined inside the function body, for typical functions they can be considered to be part of the scope of the function body block.</p>
+<pre><code class="language-cpp">int max(int x, int y) // x and y enter scope here
+{
+    // assign the greater of x or y to max
+    int max{ (x &gt; y) ? x : y }; // max enters scope here
+
+    return max;
+} // max, y, and x leave scope here
+</code></pre>
+<h2 id="all-variable-names-within-a-scope-must-be-unique"><a class="header" href="#all-variable-names-within-a-scope-must-be-unique">All variable names within a scope must be unique</a></h2>
+<p>Variable names must be unique within a given scope, otherwise any reference to the name will be ambiguous. Consider the following program:</p>
+<pre><code class="language-cpp">void someFunction(int x)
+{
+    int x{}; // compilation failure due to name collision with function parameter
+}
+
+int main()
+{
+    return 0;
+}
+</code></pre>
+<p>The above program doesn’t compile because the variable <code>x</code> defined inside the function body and the function parameter <code>x</code> have the same name and both are in the same block scope.</p>
+<h2 id="local-variables-have-automatic-storage-duration"><a class="header" href="#local-variables-have-automatic-storage-duration">Local variables have automatic storage duration</a></h2>
+<p>A variable’s <strong>storage duration</strong> (usually just called <strong>duration</strong>) determines what rules govern when and how a variable will be created (instantiated) and destroyed. In most cases, a variable’s storage duration directly determines its <code>lifetime</code>.</p>
+<blockquote>
+<p><strong>Related content</strong></p>
+<p>We discuss what a lifetime is in lesson <a href="introduction-to-local-scope">2.5 -- Introduction to local scope</a>.</p>
+</blockquote>
+<p>For example, local variables have <strong>automatic storage duration</strong>, which means they are created at the point of definition and destroyed at the end of the block they are defined in. For example:</p>
+<pre><code class="language-cpp">int main()
+{
+    int i { 5 }; // i created and initialized here
+    double d { 4.0 }; // d created and initialized here
+
+    return 0;
+} // d and i are destroyed here
+</code></pre>
+<p>For this reason, local variables are sometimes called <strong>automatic variables</strong>.</p>
+<h2 id="local-variables-in-nested-blocks"><a class="header" href="#local-variables-in-nested-blocks">Local variables in nested blocks</a></h2>
+<p>Local variables can be defined inside nested blocks. This works identically to local variables in function body blocks:</p>
+<pre><code class="language-cpp">int main() // outer block
+{
+    int x { 5 }; // x enters scope and is created here
+
+    { // nested block
+        int y { 7 }; // y enters scope and is created here
+    } // y goes out of scope and is destroyed here
+
+    // y can not be used here because it is out of scope in this block
+
+    return 0;
+} // x goes out of scope and is destroyed here
+</code></pre>
+<p>In the above example, variable <code>y</code> is defined inside a nested block. Its scope is limited from its point of definition to the end of the nested block, and its lifetime is the same. Because the scope of variable <code>y</code> is limited to the inner block in which it is defined, it’s not accessible anywhere in the outer block.</p>
+<p>Note that nested blocks are considered part of the scope of the outer block in which they are defined. Consequently, variables defined in the outer block <em>can</em> be seen inside a nested block:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{ // outer block
+
+    int x { 5 }; // x enters scope and is created here
+
+    { // nested block
+        int y { 7 }; // y enters scope and is created here
+
+        // x and y are both in scope here
+        std::cout &lt;&lt; x &lt;&lt; " + " &lt;&lt; y &lt;&lt; " = " &lt;&lt; x + y &lt;&lt; '\n';
+    } // y goes out of scope and is destroyed here
+
+    // y can not be used here because it is out of scope in this block
+
+    return 0;
+} // x goes out of scope and is destroyed here
+</code></pre>
+<h2 id="local-variables-have-no-linkage"><a class="header" href="#local-variables-have-no-linkage">Local variables have no linkage</a></h2>
+<p>Identifiers have another property named <em>linkage</em>. An identifier’s <strong>linkage</strong> determines whether a declaration of that same identifier in a different scope refers to the same object (or function).</p>
+<p>Local variables have no linkage. Each declaration of an identifier with no linkage refers to a unique object or function.</p>
+<p>For example:</p>
+<pre><code class="language-cpp">int main()
+{
+    int x { 2 }; // local variable, no linkage
+
+    {
+        int x { 3 }; // this declaration of x refers to a different object than the previous x
+    }
+
+    return 0;
+}
+</code></pre>
+<p>Scope and linkage may seem somewhat similar. However, scope determines where declaration of a single identifier can be seen and used in the code. Linkage determines whether multiple declarations of the same identifier refer to the same object or not.</p>
+<blockquote>
+<p><strong>Related content</strong></p>
+<p>We discuss what happens when variables with the same name appear in nested blocks in lesson <a href="variable-shadowing-name-hiding">7.5 -- Variable shadowing (name hiding)</a>.</p>
+</blockquote>
+<p>Linkage isn’t very interesting in the context of local variables, but we’ll talk about it more in the next few lessons.</p>
+<h2 id="variables-should-be-defined-in-the-most-limited-scope"><a class="header" href="#variables-should-be-defined-in-the-most-limited-scope">Variables should be defined in the most limited scope</a></h2>
+<p>If a variable is only used within a nested block, it should be defined inside that nested block:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+    // do not define y here
+
+    {
+        // y is only used inside this block, so define it here
+        int y { 5 };
+        std::cout &lt;&lt; y &lt;&lt; '\n';
+    }
+
+    // otherwise y could still be used here, where it's not needed
+
+    return 0;
+}
+</code></pre>
+<p>By limiting the scope of a variable, you reduce the complexity of the program because the number of active variables is reduced. Further, it makes it easier to see where variables are used (or aren’t used). A variable defined inside a block can only be used within that block (or nested blocks). This can make the program easier to understand.</p>
+<p>If a variable is needed in an outer block, it needs to be declared in the outer block:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+    int y { 5 }; // we're declaring y here because we need it in this outer block later
+
+    {
+        int x{};
+        std::cin &gt;&gt; x;
+
+        // if we declared y here, immediately before its actual first use...
+        if (x == 4)
+            y = 4;
+    } // ... it would be destroyed here
+
+    std::cout &lt;&lt; y; // and we need y to exist here
+
+    return 0;
+}
+</code></pre>
+<p>The above example shows one of the rare cases where you may need to declare a variable well before its first use.</p>
+<p>New developers sometimes wonder whether it’s worth creating a nested block just to intentionally limit a variable’s scope (and force it to go out of scope / be destroyed early). Doing so makes that variable simpler, but the overall function becomes longer and more complex as a result. The tradeoff generally isn’t worth it. If creating a nested block seems useful to intentionally limit the scope of a chunk of code, that code might be better to put in a separate function instead.</p>
+<div id="admonition-best-practices" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices"></a>
+</div>
+<div>
+<p>Define variables in the most limited existing scope. Avoid creating new blocks whose only purpose is to limit the scope of variables.</p>
+</div>
+</div>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="user-defined-namespaces-and-the-scope-resolution-operator.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="introduction-to-global-variables.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="user-defined-namespaces-and-the-scope-resolution-operator.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="introduction-to-global-variables.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

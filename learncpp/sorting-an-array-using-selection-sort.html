@@ -1,0 +1,377 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Sorting an array using selection sort - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="sorting-an-array-using-selection-sort"><a class="header" href="#sorting-an-array-using-selection-sort">Sorting an array using selection sort</a></h1>
+<h2 id="a-case-for-sorting"><a class="header" href="#a-case-for-sorting">A case for sorting</a></h2>
+<p>Sorting an array is the process of arranging all of the elements in the array in a particular order. There are many different cases in which sorting an array can be useful. For example, your email program generally displays emails in order of time received, because more recent emails are typically considered more relevant. When you go to your contact list, the names are typically in alphabetical order, because it’s easier to find the name you are looking for that way. Both of these presentations involve sorting data before presentation.</p>
+<p>Sorting an array can make searching an array more efficient, not only for humans, but also for computers. For example, consider the case where we want to know whether a name appears in a list of names. In order to see whether a name was on the list, we’d have to check every element in the array to see if the name appears. For an array with many elements, searching through them all can be expensive.</p>
+<p>However, now assume our array of names is sorted alphabetically. In this case, we only need to search up to the point where we encounter a name that is alphabetically greater than the one we are looking for. At that point, if we haven’t found the name, we know it doesn’t exist in the rest of the array, because all of the names we haven’t looked at in the array are guaranteed to be alphabetically greater!</p>
+<p>It turns out that there are even better algorithms to search sorted arrays. Using a simple algorithm, we can search a sorted array containing 1,000,000 elements using only 20 comparisons! The downside is, of course, that sorting an array is comparatively expensive, and it often isn’t worth sorting an array in order to make searching fast unless you’re going to be searching it many times.</p>
+<p>In some cases, sorting an array can make searching unnecessary. Consider another example where we want to find the best test score. If the array is unsorted, we have to look through every element in the array to find the greatest test score. If the list is sorted, the best test score will be in the first or last position (depending on whether we sorted in ascending or descending order), so we don’t need to search at all!</p>
+<h2 id="how-sorting-works"><a class="header" href="#how-sorting-works">How sorting works</a></h2>
+<p>Sorting is generally performed by repeatedly comparing pairs of array elements, and swapping them if they meet some predefined criteria. The order in which these elements are compared differs depending on which sorting algorithm is used. The criteria depends on how the list will be sorted (e.g. in ascending or descending order).</p>
+<p>To swap two elements, we can use the std::swap() function from the C++ standard library, which is defined in the utility header.</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;utility&gt;
+
+int main()
+{
+    int x{ 2 };
+    int y{ 4 };
+    std::cout &lt;&lt; "Before swap: x = " &lt;&lt; x &lt;&lt; ", y = " &lt;&lt; y &lt;&lt; '\n';
+    std::swap(x, y); // swap the values of x and y
+    std::cout &lt;&lt; "After swap:  x = " &lt;&lt; x &lt;&lt; ", y = " &lt;&lt; y &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>This program prints:</p>
+<pre><code class="language-cpp">Before swap: x = 2, y = 4
+After swap:  x = 4, y = 2
+</code></pre>
+<p>Note that after the swap, the values of x and y have been interchanged!</p>
+<h2 id="selection-sort"><a class="header" href="#selection-sort">Selection sort</a></h2>
+<p>There are many ways to sort an array. Selection sort is probably the easiest sort to understand, which makes it a good candidate for teaching even though it is one of the slower sorts.</p>
+<p>Selection sort performs the following steps to sort an array from smallest to largest:</p>
+<ol>
+<li>Starting at array index 0, search the entire array to find the smallest value</li>
+<li>Swap the smallest value found in the array with the value at index 0</li>
+<li>Repeat steps 1 &amp; 2 starting from the next index</li>
+</ol>
+<p>In other words, we’re going to find the smallest element in the array, and swap it into the first position. Then we’re going to find the next smallest element, and swap it into the second position. This process will be repeated until we run out of elements.</p>
+<p>Here is an example of this algorithm working on 5 elements. Let’s start with a sample array:</p>
+<p>{ 30, 50, 20, 10, 40 }</p>
+<p>First, we find the smallest element, starting from index 0:</p>
+<p>{ 30, 50, 20, <strong>10</strong>, 40 }</p>
+<p>We then swap this with the element at index 0:</p>
+<p>{ <strong>10</strong>, 50, 20, <strong>30</strong>, 40 }</p>
+<p>Now that the first element is sorted, we can ignore it. Now, we find the smallest element, starting from index 1:</p>
+<p>{ <em>10</em>, 50, <strong>20</strong>, 30, 40 }</p>
+<p>And swap it with the element in index 1:</p>
+<p>{ <em>10</em>, <strong>20</strong>, <strong>50</strong>, 30, 40 }</p>
+<p>Now we can ignore the first two elements. Find the smallest element starting at index 2:</p>
+<p>{ <em>10</em>, <em>20</em>, 50, <strong>30</strong>, 40 }</p>
+<p>And swap it with the element in index 2:</p>
+<p>{ <em>10</em>, <em>20</em>, <strong>30</strong>, <strong>50</strong>, 40 }</p>
+<p>Find the smallest element starting at index 3:</p>
+<p>{ <em>10</em>, <em>20</em>, <em>30</em>, 50, <strong>40</strong> }</p>
+<p>And swap it with the element in index 3:</p>
+<p>{ <em>10</em>, <em>20</em>, <em>30</em>, <strong>40</strong>, <strong>50</strong> }</p>
+<p>Finally, find the smallest element starting at index 4:</p>
+<p>{ <em>10</em>, <em>20</em>, <em>30</em>, <em>40</em>, <strong>50</strong> }</p>
+<p>And swap it with the element in index 4 (which doesn’t do anything):</p>
+<p>{ <em>10</em>, <em>20</em>, <em>30</em>, <em>40</em>, <strong>50</strong> }</p>
+<p>Done!</p>
+<p>{ 10, 20, 30, 40, 50 }</p>
+<p>Note that the last comparison will always be with itself (which is redundant), so we can actually stop 1 element before the end of the array.</p>
+<h2 id="selection-sort-in-c"><a class="header" href="#selection-sort-in-c">Selection sort in C++</a></h2>
+<p>Here’s how this algorithm is implemented in C++:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;iterator&gt;
+#include &lt;utility&gt;
+
+int main()
+{
+	int array[]{ 30, 50, 20, 10, 40 };
+	constexpr int length{ static_cast&lt;int&gt;(std::size(array)) };
+
+	// Step through each element of the array
+	// (except the last one, which will already be sorted by the time we get there)
+	for (int startIndex{ 0 }; startIndex &lt; length - 1; ++startIndex)
+	{
+		// smallestIndex is the index of the smallest element we’ve encountered this iteration
+		// Start by assuming the smallest element is the first element of this iteration
+		int smallestIndex{ startIndex };
+
+		// Then look for a smaller element in the rest of the array
+		for (int currentIndex{ startIndex + 1 }; currentIndex &lt; length; ++currentIndex)
+		{
+			// If we've found an element that is smaller than our previously found smallest
+			if (array[currentIndex] &lt; array[smallestIndex])
+				// then keep track of it
+				smallestIndex = currentIndex;
+		}
+
+		// smallestIndex is now the index of the smallest element in the remaining array
+                // swap our start element with our smallest element (this sorts it into the correct place)
+		std::swap(array[startIndex], array[smallestIndex]);
+	}
+
+	// Now that the whole array is sorted, print our sorted array as proof it works
+	for (int index{ 0 }; index &lt; length; ++index)
+		std::cout &lt;&lt; array[index] &lt;&lt; ' ';
+
+	std::cout &lt;&lt; '\n';
+
+	return 0;
+}
+</code></pre>
+<p>The most confusing part of this algorithm is the loop inside of another loop (called a <strong>nested loop</strong>). The outside loop (startIndex) iterates through each element one by one. For each iteration of the outer loop, the inner loop (currentIndex) is used to find the smallest element in the remaining array (starting from startIndex+1). smallestIndex keeps track of the index of the smallest element found by the inner loop. Then smallestIndex is swapped with startIndex. Finally, the outer loop (startIndex) advances one element, and the process is repeated.</p>
+<p>Hint: If you’re having trouble figuring out how the above program works, it can be helpful to work through a sample case on a piece of paper. Write the starting (unsorted) array elements horizontally at the top of the paper. Draw arrows indicating which elements startIndex, currentIndex, and smallestIndex are indexing. Manually trace through the program and redraw the arrows as the indices change. For each iteration of the outer loop, start a new line showing the current state of the array.</p>
+<p>Sorting names works using the same algorithm. Just change the array type from int to std::string, and initialize with the appropriate values.</p>
+<h2 id="stdsort"><a class="header" href="#stdsort">std::sort</a></h2>
+<p>Because sorting arrays is so common, the C++ standard library includes a sorting function named <code>std::sort</code>. <code>std::sort</code> lives in the <algorithm> header, and can be invoked on an array like so:</p>
+<pre><code class="language-cpp">#include &lt;algorithm&gt; // for std::sort
+#include &lt;iostream&gt;
+#include &lt;iterator&gt; // for std::size
+
+int main()
+{
+	int array[]{ 30, 50, 20, 10, 40 };
+
+	std::sort(std::begin(array), std::end(array));
+
+	for (int i{ 0 }; i &lt; static_cast&lt;int&gt;(std::size(array)); ++i)
+		std::cout &lt;&lt; array[i] &lt;&lt; ' ';
+
+	std::cout &lt;&lt; '\n';
+
+	return 0;
+}
+</code></pre>
+<p>By default, std::sort sorts in ascending order using operator&lt; to compare pairs of elements and swapping them if necessary (much like our selection sort example does above).</p>
+<p>We’ll talk more about <code>std::sort</code> in a future chapter.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="chapter-Iterators_and_Algorithms_(under_construction).html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="introduction-to-iterators.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="chapter-Iterators_and_Algorithms_(under_construction).html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="introduction-to-iterators.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

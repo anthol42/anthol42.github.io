@@ -1,0 +1,514 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Introduction to C-style arrays - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="introduction-to-c-style-arrays"><a class="header" href="#introduction-to-c-style-arrays">Introduction to C-style arrays</a></h1>
+<p>Now that we’ve covered <code>std::vector</code> and <code>std::array</code>, we’ll complete our coverage of arrays by covering the last array type: C-style arrays.</p>
+<p>As mentioned in lesson <a href="introduction-to-containers-and-arrays.html">16.1 -- Introduction to containers and arrays</a>, C-style arrays were inherited from the C language, and are built-in to the core language of C++ (unlike the rest of the array types, which are standard library container classes). This means we don’t need to #include a header file to use them.</p>
+<blockquote>
+<p><strong>As an aside…</strong></p>
+<p>Because they are the only array type natively supported by the language, the standard library array container types (e.g. <code>std::array</code> and <code>std::vector</code>) are typically implemented using a C-style array.</p>
+</blockquote>
+<h2 id="declaring-a-c-style-array"><a class="header" href="#declaring-a-c-style-array">Declaring a C-style array</a></h2>
+<p>Because they are part of the core language, C-style arrays have their own special declaration syntax. In an C-style array declaration, we use square brackets (<code>[]</code>) to tell the compiler that a declared object is a C-style array. Inside the square brackets, we can optionally provide the length of the array, which is an integral value of type <code>std::size_t</code> that tells the compiler how many elements are in the array.</p>
+<p>The following definition creates a C-style array variable named <code>testScore</code> which contains 30 elements of type <code>int</code>:</p>
+<pre><code class="language-cpp">int main()
+{
+    int testScore[30] {};      // Defines a C-style array named testScore that contains 30 value-initialized int elements (no include required)
+
+//  std::array&lt;int, 30&gt; arr{}; // For comparison, here's a std::array of 30 value-initialized int elements (requires #including &lt;array&gt;)
+
+    return 0;
+}
+</code></pre>
+<p>The length of a C-style array must be at least 1. The compiler will error if the array length is zero, negative, or a non-integral value.</p>
+<blockquote>
+<p><strong>For advanced readers</strong></p>
+<p>C-style arrays dynamically allocated on the heap are allowed to have length 0.</p>
+</blockquote>
+<h2 id="the-array-length-of-a-c-style-array-must-be-a-constant-expression"><a class="header" href="#the-array-length-of-a-c-style-array-must-be-a-constant-expression">The array length of a c-style array must be a constant expression</a></h2>
+<p>Just like <code>std::array</code>, when declaring a C-style array, the length of the array must be a constant expression (of type <code>std::size_t</code>, though this typically doesn’t matter).</p>
+<blockquote>
+<p><strong>Tip</strong></p>
+<p>Some compilers may allow creation of arrays with non-constexpr lengths, for compatibility with a C99 feature called variable-length arrays (VLAs).</p>
+<p>Variable-length arrays are not valid C++, and should not be used in C++ programs. If your compiler allows these arrays, you probably forgot to disable compiler extensions (see <a href="configuring-your-compiler-compiler-extensions">0.10 -- Configuring your compiler: Compiler extensions</a>).</p>
+</blockquote>
+<h2 id="subscripting-a-c-style-array"><a class="header" href="#subscripting-a-c-style-array">Subscripting a C-style array</a></h2>
+<p>Just like with a <code>std::array</code>, C-style arrays can be indexed using the subscript operator (<code>operator[]</code>):</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+    int arr[5]; // define an array of 5 int values
+
+    arr[1] = 7; // use subscript operator to index array element 1
+    std::cout &lt;&lt; arr[1]; // prints 7
+
+    return 0;
+}
+</code></pre>
+<p>Unlike the standard library container classes (which use unsigned indices of type <code>std::size_t</code> only), the index of a C-style array can be a value of any integral type (signed or unsigned) or an unscoped enumeration. This means that C-style arrays are not subject to all of the sign conversion indexing issues that the standard library container classes have!</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+    const int arr[] { 9, 8, 7, 6, 5 };
+
+    int s { 2 };
+    std::cout &lt;&lt; arr[s] &lt;&lt; '\n'; // okay to use signed index
+
+    unsigned int u { 2 };
+    std::cout &lt;&lt; arr[u] &lt;&lt; '\n'; // okay to use unsigned index
+
+    return 0;
+}
+</code></pre>
+<blockquote>
+<p><strong>Tip</strong></p>
+<p>C-style arrays will accept signed or unsigned indexes (or unscoped enumerations).</p>
+</blockquote>
+<p><code>operator[]</code> does not do any bounds checking, and passing in an out-of-bounds index will result in undefined behavior.</p>
+<blockquote>
+<p><strong>As an aside…</strong></p>
+<p>When declaring an array (e.g. <code>int arr[5]</code>), the use of <code>[]</code> is part of the declaration syntax, not an invocation of the subscript operator <code>operator[]</code>.</p>
+</blockquote>
+<h2 id="aggregate-initialization-of-c-style-arrays"><a class="header" href="#aggregate-initialization-of-c-style-arrays">Aggregate initialization of C-style arrays</a></h2>
+<p>Just like <code>std::array</code>, C-style arrays are aggregates, which means they can be initialized using aggregate initialization.</p>
+<p>As a quick recap, aggregate initialization allows us to directly initialize the members of aggregates. To do this, we provide an initializer list, which is a brace-enclosed list of comma-separated initialization values.</p>
+<pre><code class="language-cpp">int main()
+{
+    int fibonnaci[6] = { 0, 1, 1, 2, 3, 5 }; // copy-list initialization using braced list
+    int prime[5] { 2, 3, 5, 7, 11 };         // list initialization using braced list (preferred)
+
+    return 0;
+}
+</code></pre>
+<p>Each of these initialization forms initializes the array members in sequence, starting with element 0.</p>
+<p>If you do not provide an initializer for a C-style array, the elements will be default initialized. In most cases, this will result in elements being left uninitialized. Because we generally want our elements to be initialized, C-style arrays should be value initialized (using empty braces) when defined with no initializers.</p>
+<pre><code class="language-cpp">int main()
+{
+    int arr1[5];    // Members default initialized int elements are left uninitialized)
+    int arr2[5] {}; // Members value initialized (int elements are zero uninitialized) (preferred)
+
+    return 0;
+}
+</code></pre>
+<p>If more initializers are provided in an initializer list than the defined array length, the compiler will error. If fewer initializers are provided in an initializer list than the defined array length, the remaining elements without initializers are value initialized:</p>
+<pre><code class="language-cpp">int main()
+{
+    int a[4] { 1, 2, 3, 4, 5 }; // compile error: too many initializers
+    int b[4] { 1, 2 };          // arr[2] and arr[3] are value initialized
+
+    return 0;
+}
+</code></pre>
+<p>One downside of using a C-style array is that the element’s type must be explicitly specified. CTAD doesn’t work because C-style arrays aren’t class templates. And using <code>auto</code> to try to deduce the element type of an array from the list of initializers doesn’t work either:</p>
+<pre><code class="language-cpp">int main()
+{
+    auto squares[5] { 1, 4, 9, 16, 25 }; // compile error: can't use type deduction on C-style arrays
+
+    return 0;
+}
+</code></pre>
+<h2 id="omitted-length"><a class="header" href="#omitted-length">Omitted length</a></h2>
+<p>There’s a subtle redundancy in the following array definition. See it?</p>
+<pre><code class="language-cpp">int main()
+{
+    const int prime[5] { 2, 3, 5, 7, 11 }; // prime has length 5
+
+    return 0;
+}
+</code></pre>
+<p>We’re explicitly telling the compiler the array has length 5, and then we’re also initializing it with 5 elements. When we initialize a C-style array with an initializer list, we can omit the length (in the array definition) and let the compiler deduce the length of the array from the number of initializers.</p>
+<p>The following array definitions behave identically:</p>
+<pre><code class="language-cpp">int main()
+{
+    const int prime1[5] { 2, 3, 5, 7, 11 }; // prime1 explicitly defined to have length 5
+    const int prime2[] { 2, 3, 5, 7, 11 };  // prime2 deduced by compiler to have length 5
+
+    return 0;
+}
+</code></pre>
+<p>This only works when initializers are explicitly provided for all array members.</p>
+<pre><code class="language-cpp">int main()
+{
+    int bad[] {}; // error: the compiler will deduce this to be a zero-length array, which is disallowed!
+
+    return 0;
+}
+</code></pre>
+<p>When using an initializer list to initialize all elements of a C-style array, it’s preferable to omit the length and let the compiler calculate the length of the array. That way, if initializers are added or removed, the length of the array will automatically adjust, and we are not at risk for a mismatch between the defined array length and number of initializers provided.</p>
+<div id="admonition-best-practices" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices"></a>
+</div>
+<div>
+<p>Prefer omitting the length of a C-style array when explicitly initializing every array element with a value.</p>
+</div>
+</div>
+<h2 id="const-and-constexpr-c-style-arrays"><a class="header" href="#const-and-constexpr-c-style-arrays">Const and constexpr C-style arrays</a></h2>
+<p>Just like <code>std::array</code>, C-style arrays can be <code>const</code> or <code>constexpr</code>. Just like other const variables, const arrays must be initialized, and the value of the elements cannot be changed afterward.</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+namespace ProgramData
+{
+    constexpr int squares[5] { 1, 4, 9, 16, 25 }; // an array of constexpr int
+}
+
+int main()
+{
+    const int prime[5] { 2, 3, 5, 7, 11 }; // an array of const int
+    prime[0] = 17; // compile error: can't change const int
+
+    return 0;
+}
+</code></pre>
+<h2 id="the-sizeof-a-c-style-array"><a class="header" href="#the-sizeof-a-c-style-array">The sizeof a C-style array</a></h2>
+<p>In previous lessons, we used the <code>sizeof()</code> operator to get the size of an object or type in bytes. Applied to a C-style array, <code>sizeof()</code> returns the number of bytes used by the entire array:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+    const int prime[] { 2, 3, 5, 7, 11 }; // the compiler will deduce prime to have length 5
+    
+    std::cout &lt;&lt; sizeof(prime); // prints 20 (assuming 4 byte ints)
+
+    return 0;
+}
+</code></pre>
+<p>Assuming 4 byte ints, the above program prints <code>20</code>. The <code>prime</code> array contains 5 <code>int</code> elements that are 4 bytes each, so 5 * 4 = 20 bytes.</p>
+<p>Note that there is no overhead here. An C-style array object contains its elements and nothing more.</p>
+<h2 id="getting-the-length-of-a-c-style-array"><a class="header" href="#getting-the-length-of-a-c-style-array">Getting the length of a C-style array</a></h2>
+<p>In C++17, we can use <code>std::size()</code> (defined in the <iterator> header), which returns the array length as an unsigned integral value (of type <code>std::size_t</code>). In C++20, we can also use <code>std::ssize()</code>, which returns the array length as a signed integral value (of a large signed integral type, probably <code>std::ptrdiff_t</code>).</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;iterator&gt; // for std::size and std::ssize
+
+int main()
+{
+    const int prime[] { 2, 3, 5, 7, 11 };   // the compiler will deduce prime to have length 5
+
+    std::cout &lt;&lt; std::size(prime) &lt;&lt; '\n';  // C++17, returns unsigned integral value 5
+    std::cout &lt;&lt; std::ssize(prime) &lt;&lt; '\n'; // C++20, returns signed integral value 5
+
+    return 0;
+}
+</code></pre>
+<blockquote>
+<p><strong>Tip</strong></p>
+<p>The canonical header for the definition of <code>std::size()</code> and <code>std::ssize()</code> is <iterator>. However, because these functions are so useful, many other headers also make them available, including <array> and <vector>. When using <code>std::size()</code> or <code>std::ssize()</code> on a C-style array, we may not have already included one of the other headers. In such a case, the <iterator> header is the one that’s conventionally included.</p>
+<p>You can see the full list of headers that define these functions in the <a href="https://en.cppreference.com/w/cpp/iterator/size">cppreference documentation for the size functions</a>.</p>
+</blockquote>
+<h2 id="getting-the-length-of-a-c-style-array-c14-or-older"><a class="header" href="#getting-the-length-of-a-c-style-array-c14-or-older">Getting the length of a C-style array (C++14 or older)</a></h2>
+<p>Prior to C++17, there was no standard library function to get the length of a C-style array.</p>
+<p>If you’re using C++11 or C++14, you can use this function instead:</p>
+<pre><code class="language-cpp">#include &lt;cstddef&gt; // for std::size_t
+#include &lt;iostream&gt;
+
+template &lt;typename T, std::size_t N&gt;
+constexpr std::size_t length(const T(&amp;)[N]) noexcept
+{
+	return N;
+}
+
+int main() {
+
+	int array[]{ 1, 1, 2, 3, 5, 8, 13, 21 };
+	std::cout &lt;&lt; "The array has: " &lt;&lt; length(array) &lt;&lt; " elements\n";
+
+	return 0;
+}
+</code></pre>
+<p>This uses a function template that takes a C-style array by reference and then returns the non-type template parameter representing the array’s length.</p>
+<p>In much older codebases, you may see the length of a C-style array determined by dividing the size of the entire array by the size of an array element:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+    int array[8] {};
+    std::cout &lt;&lt; "The array has: " &lt;&lt; sizeof(array) / sizeof(array[0]) &lt;&lt; " elements\n";
+
+    return 0;
+}
+</code></pre>
+<p>This prints:</p>
+<pre><code class="language-cpp">The array has: 8 elements
+</code></pre>
+<p>How does this work? First, note that the size of the entire array is equal to the array’s length multiplied by the size of an element. Put more compactly: <code>array size = length * element size</code>.</p>
+<p>Using algebra, we can rearrange this equation: <code>length = array size / element size</code>. We typically use <code>sizeof(array[0])</code> for the element size. Therefore, length = <code>sizeof(array) / sizeof(array[0])</code>. You may also occasionally see this written as <code>sizeof(array) / sizeof(*array)</code>, which does the same thing.</p>
+<p>However, as we will show you in the next lesson, this formula can fail quite easily (when passed a decayed array), leaving the program unexpectedly broken. C++17’s <code>std::size()</code> and the <code>length()</code> function template shown above will both cause compilation errors in this case, so they are safe to use.</p>
+<blockquote>
+<p><strong>Related content</strong></p>
+<p>We cover array decay in the next lesson <a href="c-style-array-decay">17.8 -- C-style array decay</a>.</p>
+</blockquote>
+<h2 id="c-style-arrays-dont-support-assignment"><a class="header" href="#c-style-arrays-dont-support-assignment">C-style arrays don’t support assignment</a></h2>
+<p>Perhaps surprisingly, C++ arrays don’t support assignment:</p>
+<pre><code class="language-cpp">int main()
+{
+    int arr[] { 1, 2, 3 }; // okay: initialization is fine
+    arr[0] = 4;            // assignment to individual elements is fine
+    arr = { 5, 6, 7 };     // compile error: array assignment not valid
+
+    return 0;
+}
+</code></pre>
+<p>Technically, this doesn’t work because assignment requires the left-operand to be a modifiable lvalue, and C-style arrays are not considered to be modifiable lvalues.</p>
+<p>If you need to assign a new list of values to an C-style array, it’s best to use a <code>std::vector</code> instead. Alternatively, you can assign new values to a C-style array element-by-element, or use <code>std::copy</code> to copy an existing C-style array:</p>
+<pre><code class="language-cpp">#include &lt;algorithm&gt; // for std::copy
+
+int main()
+{
+    int arr[] { 1, 2, 3 };
+    int src[] { 5, 6, 7 };
+
+    // Copy src into arr
+    std::copy(std::begin(src), std::end(src), std::begin(arr));
+
+    return 0;
+}
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="stdarray-and-enumerations.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="c-style-array-decay.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="stdarray-and-enumerations.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="c-style-array-decay.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

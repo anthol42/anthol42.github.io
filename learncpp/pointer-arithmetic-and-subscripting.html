@@ -1,0 +1,545 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Pointer arithmetic and subscripting - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="pointer-arithmetic-and-subscripting"><a class="header" href="#pointer-arithmetic-and-subscripting">Pointer arithmetic and subscripting</a></h1>
+<p>In lesson <a href="introduction-to-containers-and-arrays.html">16.1 -- Introduction to containers and arrays</a>, we mentioned that arrays are stored sequentially in memory. In this lesson, we’ll take a deeper look at how arrays indexing math works.</p>
+<p>Although we won’t use the indexing math in future lessons, the topics covered in this lesson will give you insight into how range-based for loops actually work, and will come in handy again later when we cover iterators.</p>
+<h2 id="what-is-pointer-arithmetic"><a class="header" href="#what-is-pointer-arithmetic">What is pointer arithmetic?</a></h2>
+<p><strong>Pointer arithmetic</strong> is a feature that allows us to apply certain integer arithmetic operators (addition, subtraction, increment, or decrement) to a pointer to produce a new memory address.</p>
+<p>Given some pointer <code>ptr</code>, <code>ptr + 1</code> returns the address of the <em>next object</em> in memory (based on the type being pointed to). So if <code>ptr</code> is an <code>int*</code>, and an <code>int</code> is 4 bytes, <code>ptr + 1</code> will return the memory address that is 4 bytes after <code>ptr</code>, and <code>ptr + 2</code> will return the memory address that is 8 bytes after <code>ptr</code>.</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+    int x {};
+    const int* ptr{ &amp;x }; // assume 4 byte ints
+
+    std::cout &lt;&lt; ptr &lt;&lt; ' ' &lt;&lt; (ptr + 1) &lt;&lt; ' ' &lt;&lt; (ptr + 2) &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>On the author’s machine, this printed:</p>
+<pre><code class="language-cpp">00AFFD80 00AFFD84 00AFFD88
+</code></pre>
+<p>Note that each memory address is 4 bytes greater than the previous.</p>
+<p>Although less common, pointer arithmetic also works with subtraction. Given some pointer <code>ptr</code>, <code>ptr - 1</code> returns the address of the <em>previous object</em> in memory (based on the type being pointed to).</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+    int x {};
+    const int* ptr{ &amp;x }; // assume 4 byte ints
+
+    std::cout &lt;&lt; ptr &lt;&lt; ' ' &lt;&lt; (ptr - 1) &lt;&lt; ' ' &lt;&lt; (ptr - 2) &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>On the author’s machine, this printed:</p>
+<pre><code class="language-cpp">00AFFD80 00AFFD7C 00AFFD78
+</code></pre>
+<p>In this case, each memory address is 4 bytes less than the previous.</p>
+<blockquote>
+<p><strong>Key insight</strong></p>
+<p>Key insight</p>
+<p>Pointer arithmetic returns the address of the next/previous object (based on the type being pointed to), not the next/previous address.</p>
+</blockquote>
+<p>Applying the increment (<code>++</code>) and decrement (<code>--</code>) operators to a pointer do the same thing as pointer addition and pointer subtraction respectively, but actually modify the address held by the pointer.</p>
+<p>Given some int value <code>x</code>, <code>++x</code> is shorthand for <code>x = x + 1</code>. Similarly, given some pointer <code>ptr</code>, <code>++ptr</code> is shorthand for <code>ptr = ptr + 1</code>, which does pointer arithmetic and assigns the result back to <code>ptr</code>.</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+    int x {};
+    const int* ptr{ &amp;x }; // assume 4 byte ints
+
+    std::cout &lt;&lt; ptr &lt;&lt; '\n';
+
+    ++ptr; // ptr = ptr + 1
+    std::cout &lt;&lt; ptr &lt;&lt; '\n';
+
+    --ptr; // ptr = ptr - 1
+    std::cout &lt;&lt; ptr &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>On the author’s machine, this printed:</p>
+<pre><code class="language-cpp">00AFFD80 00AFFD84 00AFFD80
+</code></pre>
+<div id="admonition-warning" class="admonition admonish-warning" role="note" aria-labelledby="admonition-warning-title">
+<div class="admonition-title">
+<div id="admonition-warning-title">
+<p>Warning</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-warning"></a>
+</div>
+<div>
+<p>Warning</p>
+<p>Technically, the above is undefined behavior. According to the C++ standard, <a href="https://eel.is/c++draft/expr.add#4">pointer arithmetic is only defined behavior when the pointer and the result are within the same array (or one-past-the-end)</a>. However, modern C++ implementations generally do not enforce this, and will typically not disallow you from using pointer arithmetic outside of arrays.</p>
+</div>
+</div>
+<h2 id="subscripting-is-implemented-via-pointer-arithmetic"><a class="header" href="#subscripting-is-implemented-via-pointer-arithmetic">Subscripting is implemented via pointer arithmetic</a></h2>
+<p>In the prior lesson (<a href="c-style-array-decay.html">17.8 -- C-style array decay</a>), we noted that <code>operator[]</code> can be applied to a pointer:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+    const int arr[] { 9, 7, 5, 3, 1 };
+    
+    const int* ptr{ arr }; // a normal pointer holding the address of element 0
+    std::cout &lt;&lt; ptr[2];   // subscript ptr to get element 2, prints 5
+
+    return 0;
+}
+</code></pre>
+<p>Let’s take a deeper look at what’s happening here.</p>
+<p>It turns out that subscript operation <code>ptr[n]</code> is a concise syntax equivalent to the more verbose expression <code>*((ptr) + (n))</code>. You’ll note that this is just pointer arithmetic, with some additional parenthesis to ensure things evaluate in the correct order, and an implicit dereference to get the object at that address.</p>
+<p>First, we initialize <code>ptr</code> with <code>arr</code>. When <code>arr</code> is used as an initializer, it decays into a pointer holding the address of the element with index 0. So <code>ptr</code> now holds the address of element 0.</p>
+<p>Next, we print <code>ptr[2]</code>. <code>ptr[2]</code> is equivalent to <code>*((ptr) + (2))</code>, which is equivalent to <code>*(ptr + 2)</code>. <code>ptr + 2</code> returns the address of the object that is two objects past <code>ptr</code>, which is the element with index 2. The object at that address is then returned to the caller.</p>
+<p>Let’s take a look at another example:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+    const int arr[] { 3, 2, 1 };
+
+    // First, let's use subscripting to get the address and values of our array elements
+    std::cout &lt;&lt; &amp;arr[0] &lt;&lt; ' ' &lt;&lt; &amp;arr[1] &lt;&lt; ' ' &lt;&lt; &amp;arr[2] &lt;&lt; '\n';
+    std::cout &lt;&lt; arr[0] &lt;&lt; ' ' &lt;&lt; arr[1] &lt;&lt; ' ' &lt;&lt; arr[2] &lt;&lt; '\n';
+
+    // Now let's do the equivalent using pointer arithmetic
+    std::cout &lt;&lt; arr&lt;&lt; ' ' &lt;&lt; (arr+ 1) &lt;&lt; ' ' &lt;&lt; (arr+ 2) &lt;&lt; '\n';
+    std::cout &lt;&lt; *arr&lt;&lt; ' ' &lt;&lt; *(arr+ 1) &lt;&lt; ' ' &lt;&lt; *(arr+ 2) &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>On the author’s machine, this printed:</p>
+<pre><code class="language-cpp">00AFFD80 00AFFD84 00AFFD88
+3 2 1
+00AFFD80 00AFFD84 00AFFD88
+3 2 1
+</code></pre>
+<p>You’ll note that <code>arr</code> is holding address <code>00AFFD80</code>, <code>(arr + 1)</code> returns an address 4 bytes later, and <code>(arr + 2)</code> returns an address 8 bytes later. We can dereference these addresses to get the elements at those addresses.</p>
+<p>Because array elements are always sequential in memory, if <code>arr</code> is a pointer to element 0 of an array, <code>*(arr + n)</code> will return the n-th element in the array.</p>
+<p>This is the primary reason arrays are 0-based rather than 1-based. It makes the math more efficient (because the compiler doesn’t have to subtract 1 whenever subscripting)!</p>
+<blockquote>
+<p><strong>As an aside…</strong></p>
+<p>As an aside…</p>
+<p>As a neat bit of trivia, because the compiler converts <code>ptr[n]</code> into <code>*((ptr) + (n))</code> when subscripting a pointer, this means we can also subscript a pointer as <code>n[ptr]</code>! The compiler converts this into <code>*((n) + (ptr))</code>, which is behaviorally identical to <code>*((ptr) + (n))</code>. Don’t actually do this though, as it’s confusing.</p>
+</blockquote>
+<h2 id="pointer-arithmetic-and-subscripting-are-relative-addresses"><a class="header" href="#pointer-arithmetic-and-subscripting-are-relative-addresses">Pointer arithmetic and subscripting are relative addresses</a></h2>
+<p>When first learning about array subscripting, it’s natural to assume that the index represents a fixed element within the array: Index 0 is always the first element, index 1 is always the second element, etc…</p>
+<p>This is a illusion. Array indices are actually relative positions. The indices just appear fixed because we almost always index from the start (element 0) of the array!</p>
+<p>Remember, given some pointer <code>ptr</code>, both <code>*(ptr + 1)</code> and <code>ptr[1]</code> return the <em>next object</em> in memory (based on the type being pointed to). Next is a relative term, not an absolute one. Thus, if <code>ptr</code> is pointing to element 0, then both <code>*(ptr + 1)</code> and <code>ptr[1]</code> will return element 1. But if <code>ptr</code> is pointing to element 3 instead, then both <code>*(ptr + 1)</code> and <code>ptr[1]</code> will return element 4!</p>
+<p>The following example demonstrates this:</p>
+<pre><code class="language-cpp">#include &lt;array&gt;
+#include &lt;iostream&gt;
+
+int main()
+{
+    const int arr[] { 9, 8, 7, 6, 5 };
+    const int *ptr { arr }; // arr decays into a pointer to element 0
+
+    // Prove that we're pointing at element 0
+    std::cout &lt;&lt; *ptr &lt;&lt; ptr[0] &lt;&lt; '\n'; // prints 99
+    // Prove that ptr[1] is element 1
+    std::cout &lt;&lt; *(ptr+1) &lt;&lt; ptr[1] &lt;&lt; '\n'; // prints 88
+
+    // Now set ptr to point at element 3
+    ptr = &amp;arr[3];
+
+    // Prove that we're pointing at element 3
+    std::cout &lt;&lt; *ptr &lt;&lt; ptr[0] &lt;&lt; '\n'; // prints 66
+    // Prove that ptr[1] is element 4!
+    std::cout &lt;&lt; *(ptr+1) &lt;&lt; ptr[1] &lt;&lt; '\n'; // prints 55
+ 
+    return 0;
+}
+</code></pre>
+<p>However, you’ll also note that our program is a lot more confusing if we can’t assume that <code>ptr[1]</code> is always the element with index 1. For this reason, we recommend using subscripting only when indexing from the start of the array (element 0). Use pointer arithmetic only when doing relative positioning.</p>
+<div id="admonition-best-practices" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices"></a>
+</div>
+<div>
+<p>Best practice</p>
+<p>Favor subscripting when indexing from the start of the array (element 0), so the array indices line up with the element.</p>
+<p>Favor pointer arithmetic when doing relative positioning from a given element.</p>
+</div>
+</div>
+<h2 id="negative-indices"><a class="header" href="#negative-indices">Negative indices</a></h2>
+<p>In the last lesson, we mentioned that (unlike the standard library container classes) the index of a C-style array can be either an unsigned integer or a signed integer. This wasn’t done just for convenience -- it’s actually possible to index a C-style array with a negative subscript. It sounds funny, but it makes sense.</p>
+<p>We just covered that <code>*(ptr+1)</code> returns the <em>next object</em> in memory. And <code>ptr[1]</code> is just a convenient syntax to do the same.</p>
+<p>At the top of this lesson, we noted that <code>*(ptr-1)</code> returns the <em>previous object</em> in memory. Want to guess what the subscript equivalent is? Yup, <code>ptr[-1]</code>.</p>
+<pre><code class="language-cpp">#include &lt;array&gt;
+#include &lt;iostream&gt;
+
+int main()
+{
+    const int arr[] { 9, 8, 7, 6, 5 };
+
+    // Set ptr to point at element 3
+    const int* ptr { &amp;arr[3] };
+
+    // Prove that we're pointing at element 3
+    std::cout &lt;&lt; *ptr &lt;&lt; ptr[0] &lt;&lt; '\n'; // prints 66
+    // Prove that ptr[-1] is element 2!
+    std::cout &lt;&lt; *(ptr-1) &lt;&lt; ptr[-1] &lt;&lt; '\n'; // prints 77
+ 
+    return 0;
+}
+</code></pre>
+<h2 id="pointer-arithmetic-can-be-used-to-traverse-an-array"><a class="header" href="#pointer-arithmetic-can-be-used-to-traverse-an-array">Pointer arithmetic can be used to traverse an array</a></h2>
+<p>One of the most common uses of pointer arithmetic is to iterate through a C-style array without explicit indexing. The following example illustrates how this is done:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+	constexpr int arr[]{ 9, 7, 5, 3, 1 };
+
+	const int* begin{ arr };                // begin points to start element
+	const int* end{ arr + std::size(arr) }; // end points to one-past-the-end element
+
+	for (; begin != end; ++begin)           // iterate from begin up to (but excluding) end
+	{
+		std::cout &lt;&lt; *begin &lt;&lt; ' ';     // dereference our loop variable to get the current element
+	}
+
+	return 0;
+}
+</code></pre>
+<p>In the above example, we start our traversal at the element pointed to by <code>begin</code> (which in this case is element 0 of the array). Since <code>begin != end</code> yet, the loop body executes. Inside the loop, we access the current element via <code>*begin</code>, which is just a pointer dereference. After the loop body, we do <code>++begin</code>, which uses pointer arithmetic to increment <code>begin</code> to point at the next element. Since <code>begin != end</code>, the loop body executes again. This continues until <code>begin != end</code> is <code>false</code>, which happens when <code>begin == end</code>.</p>
+<p>Thus, the above prints:</p>
+<pre><code class="language-cpp">9 7 5 3 1
+</code></pre>
+<p>Note that <code>end</code> is set to one-past-the-end of the array. Having <code>end</code> hold this address is fine (so long as we don’t dereference <code>end</code>, as there isn’t a valid element at that address). We do this because it makes our math and comparisons as simple as possible (no need to add or subtract 1 anywhere).</p>
+<blockquote>
+<p><strong>Tip</strong></p>
+<p>Tip</p>
+<p>For a pointer that is pointing to a C-style array element, pointer arithmetic is valid so long as the resulting address is the address of a valid array element, or one-past the last element. If pointer arithmetic results in an address beyond these bounds, it is undefined behavior (even if the result is not dereferenced).</p>
+</blockquote>
+<p>In the prior lesson <a href="c-style-array-decay.html">17.8 -- C-style array decay</a>, we mentioned that array decay makes refactoring functions difficult because certain things work with non-decayed arrays but not with decayed arrays (like <code>std::size</code>). One neat thing about this traversing an array this way is that we can refactor the loop part of the above example into a separate function exactly as written, and it will still work:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+void printArray(const int* begin, const int* end)
+{
+	for (; begin != end; ++begin)   // iterate from begin up to (but excluding) end
+	{
+		std::cout &lt;&lt; *begin &lt;&lt; ' '; // dereference our loop variable to get the current element
+	}
+    
+	std::cout &lt;&lt; '\n';
+}
+
+int main()
+{
+	constexpr int arr[]{ 9, 7, 5, 3, 1 };
+
+	const int* begin{ arr };                // begin points to start element
+	const int* end{ arr + std::size(arr) }; // end points to one-past-the-end element
+
+	printArray(begin, end);
+
+	return 0;
+}
+</code></pre>
+<p>Note that this program compiles and produces the correct result even though we never explicitly pass the array to the function! And because we’re not passing <code>arr</code>, we don’t have to deal with a decayed <code>arr</code> in <code>printArray()</code>. Instead, <code>begin</code> and <code>end</code> contain all the information we need to traverse the array.</p>
+<p>In future lessons (when we cover iterators and algorithms), we’ll see that the standard library is full of functions that use a <code>begin</code> and <code>end</code> pair to define what elements of a container the function should operate on.</p>
+<h2 id="range-based-for-loops-over-c-style-arrays-are-implemented-using-pointer-arithmetic"><a class="header" href="#range-based-for-loops-over-c-style-arrays-are-implemented-using-pointer-arithmetic">Range-based for loops over C-style arrays are implemented using pointer arithmetic</a></h2>
+<p>Consider the following range-based for loop:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+	constexpr int arr[]{ 9, 7, 5, 3, 1 };
+
+	for (auto e : arr)         // iterate from `begin` up to (but excluding) `end`
+	{
+		std::cout &lt;&lt; e &lt;&lt; ' '; // dereference our loop variable to get the current element
+	}
+
+	return 0;
+}
+</code></pre>
+<p>If you look at the <a href="https://en.cppreference.com/w/cpp/language/range-for">documentation</a> for range-based for loops, you’ll see that they are typically implemented something like this:</p>
+<pre><code class="language-cpp">{
+    auto __begin = begin-expr;
+    auto __end = end-expr;
+
+    for ( ; __begin != __end; ++__begin)
+    {
+        range-declaration = *__begin;
+        loop-statement;
+    }
+}
+</code></pre>
+<p>Let’s replace the range-based for loop in the prior example with this implementation:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+	constexpr int arr[]{ 9, 7, 5, 3, 1 };
+
+	auto __begin = arr;                // arr is our begin-expr
+	auto __end = arr + std::size(arr); // arr + std::size(arr) is our end-expr
+
+	for ( ; __begin != __end; ++__begin)
+	{
+		auto e = *__begin;         // e is our range-declaration
+		std::cout &lt;&lt; e &lt;&lt; ' ';     // here is our loop-statement
+	}
+
+	return 0;
+}
+</code></pre>
+<p>Note how similar this is to the example we wrote in the prior section! The only difference is that we’re assigning <code>*__begin</code> to <code>e</code> and using <code>e</code> rather than just using <code>*__begin</code> directly!</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="c-style-array-decay.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="c-style-strings.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="c-style-array-decay.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="c-style-strings.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

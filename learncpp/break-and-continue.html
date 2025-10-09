@@ -1,0 +1,573 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Break and continue - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="break-and-continue"><a class="header" href="#break-and-continue">Break and continue</a></h1>
+<h2 id="break"><a class="header" href="#break">Break</a></h2>
+<p>Although you have already seen the <code>break</code> statement in the context of <code>switch</code> statements (<a href="switch-statement-basics.html">8.5 -- Switch statement basics</a>), it deserves a fuller treatment since it can be used with other types of control flow statements as well. The <strong>break statement</strong> causes a while loop, do-while loop, for loop, or switch statement to end, with execution continuing with the next statement after the loop or switch being broken out of.</p>
+<h2 id="breaking-a-switch"><a class="header" href="#breaking-a-switch">Breaking a switch</a></h2>
+<p>In the context of a <code>switch</code> statement, a <code>break</code> is typically used at the end of each case to signify the case is finished (which prevents fallthrough into subsequent cases):</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+void printMath(int x, int y, char ch)
+{
+    switch (ch)
+    {
+    case '+':
+        std::cout &lt;&lt; x &lt;&lt; " + " &lt;&lt; y &lt;&lt; " = " &lt;&lt; x + y &lt;&lt; '\n';
+        break; // don't fall-through to next case
+    case '-':
+        std::cout &lt;&lt; x &lt;&lt; " - " &lt;&lt; y &lt;&lt; " = " &lt;&lt; x - y &lt;&lt; '\n';
+        break; // don't fall-through to next case
+    case '*':
+        std::cout &lt;&lt; x &lt;&lt; " * " &lt;&lt; y &lt;&lt; " = " &lt;&lt; x * y &lt;&lt; '\n';
+        break; // don't fall-through to next case
+    case '/':
+        std::cout &lt;&lt; x &lt;&lt; " / " &lt;&lt; y &lt;&lt; " = " &lt;&lt; x / y &lt;&lt; '\n';
+        break;
+    }
+}
+
+int main()
+{
+    printMath(2, 3, '+');
+
+    return 0;
+}
+</code></pre>
+<p>See lesson <a href="switch-fallthrough-and-scoping.html">8.6 -- Switch fallthrough and scoping</a> for more information about fallthrough, along with some additional examples.</p>
+<h2 id="breaking-a-loop"><a class="header" href="#breaking-a-loop">Breaking a loop</a></h2>
+<p>In the context of a loop, a <code>break</code> statement can be used to end the loop early. Execution continues with the next statement after the end of the loop.</p>
+<p>For example:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+    int sum{ 0 };
+
+    // Allow the user to enter up to 10 numbers
+    for (int count{ 0 }; count &lt; 10; ++count)
+    {
+        std::cout &lt;&lt; "Enter a number to add, or 0 to exit: ";
+        int num{};
+        std::cin &gt;&gt; num;
+
+        // exit loop if user enters 0
+        if (num == 0)
+            break; // exit the loop now
+
+        // otherwise add number to our sum
+        sum += num;
+    }
+
+    // execution will continue here after the break
+    std::cout &lt;&lt; "The sum of all the numbers you entered is: " &lt;&lt; sum &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>This program allows the user to type up to 10 numbers, and displays the sum of all the numbers entered at the end. If the user enters 0, the break causes the loop to terminate early (before 10 numbers have been entered).</p>
+<p>Here’s a sample execution of the above program:</p>
+<pre><code class="language-cpp">Enter a number to add, or 0 to exit: 5
+Enter a number to add, or 0 to exit: 2
+Enter a number to add, or 0 to exit: 1
+Enter a number to add, or 0 to exit: 0
+The sum of all the numbers you entered is: 8
+</code></pre>
+<p>A <code>break</code> is also a common way to get out of an intentional infinite loop:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+    while (true) // infinite loop
+    {
+        std::cout &lt;&lt; "Enter 0 to exit or any other integer to continue: ";
+        int num{};
+        std::cin &gt;&gt; num;
+
+        // exit loop if user enters 0
+        if (num == 0)
+            break;
+    }
+
+    std::cout &lt;&lt; "We're out!\n";
+
+    return 0;
+}
+</code></pre>
+<p>A sample run of the above program:</p>
+<pre><code class="language-cpp">Enter 0 to exit or any other integer to continue: 5
+Enter 0 to exit or any other integer to continue: 3
+Enter 0 to exit or any other integer to continue: 0
+We're out!
+</code></pre>
+<h2 id="break-vs-return"><a class="header" href="#break-vs-return">Break vs return</a></h2>
+<p>New programmers sometimes have trouble understanding the difference between <code>break</code> and <code>return</code>. A <code>break</code> statement terminates the switch or loop, and execution continues at the first statement beyond the switch or loop. A <code>return</code> statement terminates the entire function that the loop is within, and execution continues at point where the function was called.</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int breakOrReturn()
+{
+    while (true) // infinite loop
+    {
+        std::cout &lt;&lt; "Enter 'b' to break or 'r' to return: ";
+        char ch{};
+        std::cin &gt;&gt; ch;
+
+        if (ch == 'b')
+            break; // execution will continue at the first statement beyond the loop
+
+        if (ch == 'r')
+            return 1; // return will cause the function to immediately return to the caller (in this case, main())
+    }
+
+    // breaking the loop causes execution to resume here
+
+    std::cout &lt;&lt; "We broke out of the loop\n";
+
+    return 0;
+}
+
+int main()
+{
+    int returnValue{ breakOrReturn() };
+    std::cout &lt;&lt; "Function breakOrReturn returned " &lt;&lt; returnValue &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>Here are two runs of this program:</p>
+<pre><code class="language-cpp">Enter 'b' to break or 'r' to return: r
+Function breakOrReturn returned 1
+</code></pre>
+<pre><code class="language-cpp">Enter 'b' to break or 'r' to return: b
+We broke out of the loop
+Function breakOrReturn returned 0
+</code></pre>
+<h2 id="continue"><a class="header" href="#continue">Continue</a></h2>
+<p>The <strong>continue statement</strong> provides a convenient way to end the current iteration of a loop without terminating the entire loop.</p>
+<p>Here’s an example of using continue:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+    for (int count{ 0 }; count &lt; 10; ++count)
+    {
+        // if the number is divisible by 4, skip this iteration
+        if ((count % 4) == 0)
+            continue; // go to next iteration
+
+        // If the number is not divisible by 4, keep going
+        std::cout &lt;&lt; count &lt;&lt; '\n';
+
+        // The continue statement jumps to here
+    }
+
+    return 0;
+}
+</code></pre>
+<p>This program prints all of the numbers from 0 to 9 that aren’t divisible by 4:</p>
+<pre><code class="language-cpp">1
+2
+3
+5
+6
+7
+9
+</code></pre>
+<p>A <code>continue</code> statement works by causing the current point of execution to jump to the bottom of the current loop.</p>
+<p>In the case of a for-loop, the end-statement of the for-loop (in the above example, <code>++count</code>) still executes after a continue (since this happens after the end of the loop body).</p>
+<p>Be careful when using a <code>continue</code> statement with while or do-while loops. These loops typically change the value of variables used in the condition inside the loop body. If use of a <code>continue</code> statement causes these lines to be skipped, then the loop can become infinite!</p>
+<p>Consider the following program:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+    int count{ 0 };
+    while (count &lt; 10)
+    {
+        if (count == 5)
+            continue; // jump to end of loop body
+
+        std::cout &lt;&lt; count &lt;&lt; '\n';
+
+        ++count; // this statement is never executed after count reaches 5
+
+        // The continue statement jumps to here
+    }
+
+    return 0;
+}
+</code></pre>
+<p>This program is intended to print every number between 0 and 9 except 5. But it actually prints:</p>
+<pre><code class="language-cpp">0
+1
+2
+3
+4
+</code></pre>
+<p>and then goes into an infinite loop. When <code>count</code> is <code>5</code>, the <code>if</code> statement evaluates to <code>true</code>, and the <code>continue</code> causes the execution to jump to the bottom of the loop. The <code>count</code> variable is never incremented. Consequently, on the next pass, <code>count</code> is still <code>5</code>, the <code>if</code> statement is still <code>true</code>, and the program continues to loop forever.</p>
+<p>Of course, you already know that if you have an obvious counter variable, you should be using a <code>for</code> loop, not a <code>while</code> or <code>do while</code> loop.</p>
+<h2 id="the-debate-over-use-of-break-and-continue"><a class="header" href="#the-debate-over-use-of-break-and-continue">The debate over use of break and continue</a></h2>
+<p>Many textbooks caution readers not to use <code>break</code> and <code>continue</code> in loops, both because it causes the execution flow to jump around, and because it can make the flow of logic harder to follow. For example, a <code>break</code> in the middle of a complicated piece of logic could either be missed, or it may not be obvious under what conditions it should be triggered.</p>
+<p>However, used judiciously, <code>break</code> and <code>continue</code> can help make loops more readable by keeping the number of nested blocks down and reducing the need for complicated looping logic.</p>
+<p>For example, consider the following program:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+    int count{ 0 }; // count how many times the loop iterates
+    bool keepLooping { true }; // controls whether the loop ends or not
+    while (keepLooping)
+    {
+        std::cout &lt;&lt; "Enter 'e' to exit this loop or any other character to continue: ";
+        char ch{};
+        std::cin &gt;&gt; ch;
+
+        if (ch == 'e')
+            keepLooping = false;
+        else
+        {
+            ++count;
+            std::cout &lt;&lt; "We've iterated " &lt;&lt; count &lt;&lt; " times\n";
+        }
+    }
+
+    return 0;
+}
+</code></pre>
+<p>This program uses a Boolean variable to control whether the loop continues or not, as well as a nested block that only runs if the user doesn’t exit.</p>
+<p>Here’s a version that’s easier to understand, using a <code>break</code> statement:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+    int count{ 0 }; // count how many times the loop iterates
+    while (true) // loop until user terminates
+    {
+        std::cout &lt;&lt; "Enter 'e' to exit this loop or any other character to continue: ";
+        char ch{};
+        std::cin &gt;&gt; ch;
+
+        if (ch == 'e')
+            break;
+
+        ++count;
+        std::cout &lt;&lt; "We've iterated " &lt;&lt; count &lt;&lt; " times\n";
+    }
+
+    return 0;
+}
+</code></pre>
+<p>In this version, by using a single <code>break</code> statement, we’ve avoided the use of a Boolean variable (and having to understand both what its intended use is, and where its value is changed), an <code>else</code> statement, and a nested block.</p>
+<p>The <code>continue</code> statement is most effectively used at the top of a for-loop to skip loop iterations when some condition is met. This can allow us to avoid a nested block.</p>
+<p>For example, instead of this:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+    for (int count{ 0 }; count &lt; 10; ++count)
+    {
+        // if the number is not divisible by 4...
+        if ((count % 4) != 0) // nested block
+        {
+                // Print the number
+                std::cout &lt;&lt; count &lt;&lt; '\n';
+        }
+    }
+
+    return 0;
+}
+</code></pre>
+<p>We can write this:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+    for (int count{ 0 }; count &lt; 10; ++count)
+    {
+        // if the number is divisible by 4, skip this iteration
+        if ((count % 4) == 0)
+            continue;
+
+        // no nested block needed
+
+        std::cout &lt;&lt; count &lt;&lt; '\n';
+    }
+
+    return 0;
+}
+</code></pre>
+<p>Minimizing the number of variables used and keeping the number of nested blocks down both improve code comprehensibility more than a <code>break</code> or <code>continue</code> harms it. For that reason, we believe judicious use of <code>break</code> or <code>continue</code> is acceptable.</p>
+<div id="admonition-best-practices" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices"></a>
+</div>
+<div>
+<p>Best practice</p>
+<p>Use break and continue when they simplify your loop logic.</p>
+</div>
+</div>
+<h2 id="the-debate-over-use-of-early-returns"><a class="header" href="#the-debate-over-use-of-early-returns">The debate over use of early returns</a></h2>
+<p>There’s a similar argument to be made for return statements. A return statement that is not the last statement in a function is called an <strong>early return</strong>. Many programmers believe early returns should be avoided. A function that only has one return statement at the bottom of the function has a simplicity to it -- you can assume the function will take its arguments, do whatever logic it has implemented, and return a result without deviation. Having extra returns complicates the logic.</p>
+<p>The counter-argument is that using early returns allows your function to exit as soon as it is done, which reduces having to read through unnecessary logic and minimizes the need for conditional nested blocks, which makes your code more readable.</p>
+<p>Some developers take a middle ground, and only use early returns at the top of a function to do parameter validation (catch bad arguments passed in), and then a single return thereafter.</p>
+<p>Our stance is that early returns are more helpful than harmful, but we recognize that there is a bit of art to the practice.</p>
+<div id="admonition-best-practices-1" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-1-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-1-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices-1"></a>
+</div>
+<div>
+<p>Best practice</p>
+<p>Use early returns when they simplify your function’s logic.</p>
+</div>
+</div>
+<p>AI CONTENT END 1</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="for-statements.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="halts-exiting-your-program-early.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="for-statements.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="halts-exiting-your-program-early.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

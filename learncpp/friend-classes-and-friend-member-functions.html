@@ -1,0 +1,485 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Friend classes and friend member functions - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="friend-classes-and-friend-member-functions"><a class="header" href="#friend-classes-and-friend-member-functions">Friend classes and friend member functions</a></h1>
+<h2 id="friend-classes"><a class="header" href="#friend-classes">Friend classes</a></h2>
+<p>A <strong>friend class</strong> is a class that can access the private and protected members of another class.</p>
+<p>Here is an example:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+class Storage
+{
+private:
+    int m_nValue {};
+    double m_dValue {};
+public:
+    Storage(int nValue, double dValue)
+       : m_nValue { nValue }, m_dValue { dValue }
+    { }
+
+    // Make the Display class a friend of Storage
+    friend class Display;
+};
+
+class Display
+{
+private:
+    bool m_displayIntFirst {};
+
+public:
+    Display(bool displayIntFirst)
+         : m_displayIntFirst { displayIntFirst }
+    {
+    }
+
+    // Because Display is a friend of Storage, Display members can access the private members of Storage
+    void displayStorage(const Storage&amp; storage)
+    {
+        if (m_displayIntFirst)
+            std::cout &lt;&lt; storage.m_nValue &lt;&lt; ' ' &lt;&lt; storage.m_dValue &lt;&lt; '\n';
+        else // display double first
+            std::cout &lt;&lt; storage.m_dValue &lt;&lt; ' ' &lt;&lt; storage.m_nValue &lt;&lt; '\n';
+    }
+
+    void setDisplayIntFirst(bool b)
+    {
+         m_displayIntFirst = b;
+    }
+};
+
+int main()
+{
+    Storage storage { 5, 6.7 };
+    Display display { false };
+
+    display.displayStorage(storage);
+
+    display.setDisplayIntFirst(true);
+    display.displayStorage(storage);
+
+    return 0;
+}
+</code></pre>
+<p>Because the <code>Display</code> class is a friend of <code>Storage</code>, <code>Display</code> members can access the private members of any <code>Storage</code> object they have access to.</p>
+<p>This program produces the following result:</p>
+<pre><code class="language-cpp">6.7 5
+5 6.7
+</code></pre>
+<p>A few additional notes on friend classes.</p>
+<p>First, even though <code>Display</code> is a friend of <code>Storage</code>, <code>Display</code> has no access to the <code>*this</code> pointer of <code>Storage</code> objects (because <code>*this</code> is actually a function parameter).</p>
+<p>Second, friendship is not reciprocal. Just because <code>Display</code> is a friend of <code>Storage</code> does not mean <code>Storage</code> is also a friend of <code>Display</code>. If you want two classes to be friends of each other, both must declare the other as a friend.</p>
+<blockquote>
+<p><strong>Author’s note</strong></p>
+<p>Author’s note</p>
+<p>Sorry if this one hits a little close to home!</p>
+</blockquote>
+<p>Class friendship is also not transitive. If class A is a friend of B, and B is a friend of C, that does not mean A is a friend of C.</p>
+<blockquote>
+<p><strong>For advanced readers</strong></p>
+<p>For advanced readers</p>
+<p>Nor is friendship inherited. If class A makes B a friend, classes derived from B are not friends of A.</p>
+</blockquote>
+<p>A friend class declaration acts as a forward declaration for the class being friended. This means we do not need to forward declare the class being friended before friending it. In the example above, <code>friend class Display</code> acts as both a forward declaration of <code>Display</code> and a friend declaration.</p>
+<h2 id="friend-member-functions"><a class="header" href="#friend-member-functions">Friend member functions</a></h2>
+<p>Instead of making an entire class a friend, you can make a single member function a friend. This is done similarly to making a non-member function a friend, except the name of the member function is used instead.</p>
+<p>However, in actuality, this can be a little trickier than expected. Let’s convert the previous example to make <code>Display::displayStorage</code> a friend member function. You might try something like this:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+class Display; // forward declaration for class Display
+
+class Storage
+{
+private:
+	int m_nValue {};
+	double m_dValue {};
+public:
+	Storage(int nValue, double dValue)
+		: m_nValue { nValue }, m_dValue { dValue }
+	{
+	}
+
+	// Make the Display::displayStorage member function a friend of the Storage class
+	friend void Display::displayStorage(const Storage&amp; storage); // error: Storage hasn't seen the full definition of class Display
+};
+
+class Display
+{
+private:
+	bool m_displayIntFirst {};
+
+public:
+	Display(bool displayIntFirst)
+		: m_displayIntFirst { displayIntFirst }
+	{
+	}
+
+	void displayStorage(const Storage&amp; storage)
+	{
+		if (m_displayIntFirst)
+			std::cout &lt;&lt; storage.m_nValue &lt;&lt; ' ' &lt;&lt; storage.m_dValue &lt;&lt; '\n';
+		else // display double first
+			std::cout &lt;&lt; storage.m_dValue &lt;&lt; ' ' &lt;&lt; storage.m_nValue &lt;&lt; '\n';
+	}
+};
+
+int main()
+{
+    Storage storage { 5, 6.7 };
+    Display display { false };
+    display.displayStorage(storage);
+
+    return 0;
+}
+</code></pre>
+<p>However, it turns out this won’t work. In order to make a single member function a friend, the compiler has to have seen the full definition for the class of the friend member function (not just a forward declaration). Since class <code>Storage</code> hasn’t seen the full definition for class <code>Display</code> yet, the compiler will error at the point where we try to make the member function a friend.</p>
+<p>Fortunately, this is easily resolved by moving the definition of class <code>Display</code> before the definition of class <code>Storage</code> (either in the same file, or by moving the definition of <code>Display</code> to a header file and #including it before <code>Storage</code> is defined).</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+class Display
+{
+private:
+	bool m_displayIntFirst {};
+
+public:
+	Display(bool displayIntFirst)
+		: m_displayIntFirst { displayIntFirst }
+	{
+	}
+
+	void displayStorage(const Storage&amp; storage) // compile error: compiler doesn't know what a Storage is
+	{
+		if (m_displayIntFirst)
+			std::cout &lt;&lt; storage.m_nValue &lt;&lt; ' ' &lt;&lt; storage.m_dValue &lt;&lt; '\n';
+		else // display double first
+			std::cout &lt;&lt; storage.m_dValue &lt;&lt; ' ' &lt;&lt; storage.m_nValue &lt;&lt; '\n';
+	}
+};
+
+class Storage
+{
+private:
+	int m_nValue {};
+	double m_dValue {};
+public:
+	Storage(int nValue, double dValue)
+		: m_nValue { nValue }, m_dValue { dValue }
+	{
+	}
+
+	// Make the Display::displayStorage member function a friend of the Storage class
+	friend void Display::displayStorage(const Storage&amp; storage); // okay now
+};
+
+int main()
+{
+    Storage storage { 5, 6.7 };
+    Display display { false };
+    display.displayStorage(storage);
+
+    return 0;
+}
+</code></pre>
+<p>However, we now have another problem. Because member function <code>Display::displayStorage()</code> uses <code>Storage</code> as a reference parameter, and we just moved the definition of <code>Storage</code> below the definition of <code>Display</code>, the compiler will complain it doesn’t know what a <code>Storage</code> is. We can’t fix this one by rearranging the definition order, because then we’ll undo our previous fix.</p>
+<p>Fortunately, this is also fixable in a couple of simple steps. First, we can add <code>class Storage</code> as a forward declaration so the compiler will be okay with a reference to <code>Storage</code> before it has seen the full definition of the class.</p>
+<p>Second, we can move the definition of <code>Display::displayStorage()</code> out of the class, after the full definition of <code>Storage</code> class.</p>
+<p>Here’s what this looks like:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+class Storage; // forward declaration for class Storage
+
+class Display
+{
+private:
+	bool m_displayIntFirst {};
+
+public:
+	Display(bool displayIntFirst)
+		: m_displayIntFirst { displayIntFirst }
+	{
+	}
+
+	void displayStorage(const Storage&amp; storage); // forward declaration for Storage needed for reference here
+};
+
+class Storage // full definition of Storage class
+{
+private:
+	int m_nValue {};
+	double m_dValue {};
+public:
+	Storage(int nValue, double dValue)
+		: m_nValue { nValue }, m_dValue { dValue }
+	{
+	}
+
+	// Make the Display::displayStorage member function a friend of the Storage class
+	// Requires seeing the full definition of class Display (as displayStorage is a member)
+	friend void Display::displayStorage(const Storage&amp; storage);
+};
+
+// Now we can define Display::displayStorage
+// Requires seeing the full definition of class Storage (as we access Storage members)
+void Display::displayStorage(const Storage&amp; storage)
+{
+	if (m_displayIntFirst)
+		std::cout &lt;&lt; storage.m_nValue &lt;&lt; ' ' &lt;&lt; storage.m_dValue &lt;&lt; '\n';
+	else // display double first
+		std::cout &lt;&lt; storage.m_dValue &lt;&lt; ' ' &lt;&lt; storage.m_nValue &lt;&lt; '\n';
+}
+
+int main()
+{
+    Storage storage { 5, 6.7 };
+    Display display { false };
+    display.displayStorage(storage);
+
+    return 0;
+}
+</code></pre>
+<p>Now everything will compile properly: the forward declaration of <code>class Storage</code> is enough to satisfy the declaration of <code>Display::displayStorage()</code> inside the <code>Display</code> class. The full definition of <code>Display</code> satisfies declaring <code>Display::displayStorage()</code> as a friend of <code>Storage</code>. And the full definition of class <code>Storage</code> is enough to satisfy the definition of member function <code>Display::displayStorage()</code>.</p>
+<p>If that’s a bit confusing, see the comments in the program above. The key points are that a class forward declaration satisfies references to the class. However, accessing members of a class requires that the compiler have seen the full class definition.</p>
+<p>If this seems like a pain -- it is. Fortunately, this dance is only necessary because we’re trying to do everything in a single file. A better solution is to put each class definition in a separate header file, with the member function definitions in corresponding .cpp files. That way, all of the class definitions would be available in the .cpp files, and no rearranging of classes or functions is necessary!</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="friend-non-member-functions.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ref-qualifiers.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="friend-non-member-functions.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ref-qualifiers.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

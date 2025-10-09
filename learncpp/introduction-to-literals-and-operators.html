@@ -1,0 +1,337 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Introduction to literals and operators - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="introduction-to-literals-and-operators"><a class="header" href="#introduction-to-literals-and-operators">Introduction to literals and operators</a></h1>
+<h2 id="literals"><a class="header" href="#literals">Literals</a></h2>
+<p>Consider the following two statements:</p>
+<pre><code class="language-cpp">std::cout &lt;&lt; "Hello world!";
+int x { 5 };
+</code></pre>
+<p>What are ‘”Hello world!”‘ and ‘5’? They are literals. A <strong>literal</strong> (also known as a <strong>literal constant</strong>) is a fixed value that has been inserted directly into the source code.</p>
+<p>Literals and variables both have a value (and a type). Unlike a variable (whose value can be set and changed through initialization and assignment respectively), the value of a literal is fixed and cannot be changed. The literal <code>5</code> always has value <code>5</code>. This is why literals are called constants.</p>
+<p>To further highlight the difference between literals and variables, let’s examine this short program:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+    std::cout &lt;&lt; 5 &lt;&lt; '\n'; // print the value of a literal
+
+    int x { 5 };
+    std::cout &lt;&lt; x &lt;&lt; '\n'; // print the value of a variable
+    return 0;
+}
+</code></pre>
+<p>On line 5, we’re printing the value <code>5</code> to the console. When the compiler compiles this, it will generate code that causes <code>std::cout</code> to print the value <code>5</code>. This value <code>5</code> is compiled into the executable and can be used directly.</p>
+<p>On line 7, we’re creating a variable named <code>x</code>, and initializing it with value <code>5</code>. The compiler will generate code that copies the literal value <code>5</code> into whatever memory location is given to <code>x</code>. On line 8, when we print <code>x</code>, the compiler will generate code that causes <code>std::cout</code> to print the value at the memory location of <code>x</code> (which has value <code>5</code>).</p>
+<p>Thus, both output statements do the same thing (print the value 5). But in the case of the literal, the value <code>5</code> can be printed directly. In the case of the variable, the value <code>5</code> must be fetched from the memory the variable represents.</p>
+<p>This also explains why a literal is constant while a variable can be changed. A literal’s value is placed directly in the executable, and the executable itself can’t be changed after it is created. A variable’s value is placed in memory, and the value of memory can be changed while the executable is running.</p>
+<blockquote>
+<p><strong>Key insight</strong></p>
+<p>Key insight</p>
+<p>Literals are values that are inserted directly into the source code. These values usually appear directly in the executable code (unless they are optimized out).</p>
+<p>Objects and variables represent memory locations that hold values. These values can be fetched on demand.</p>
+</blockquote>
+<blockquote>
+<p><strong>Related content</strong></p>
+<p>Related content</p>
+<p>We talk more about literals in lesson <a href="literals">5.2 -- Literals</a>.</p>
+</blockquote>
+<h2 id="operators"><a class="header" href="#operators">Operators</a></h2>
+<p>In mathematics, an <strong>operation</strong> is a process involving zero or more input values (called <strong>operands</strong>) that produces a new value (called an <em>output value</em>). The specific operation to be performed is denoted by a symbol called an <strong>operator</strong>.</p>
+<p>For example, as children we all learn that <em>2 + 3</em> equals <em>5</em>. In this case, the literals <em>2</em> and <em>3</em> are the operands, and the symbol <em>+</em> is the operator that tells us to apply mathematical addition on the operands to produce the new value <em>5</em>.</p>
+<p>In C++, operations work as you’d expect. For example:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+    std::cout &lt;&lt; 1 + 2 &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>In this program, the literals <code>1</code> and <code>2</code> are operands to the plus (<code>+</code>) operator, which produces the output value <code>3</code>. This output value is then printed to the console. In C++, the output value of an operation is often called a <strong>return value</strong>.</p>
+<p>You are likely already quite familiar with standard arithmetic operators from common usage in mathematics, including addition (<code>+</code>), subtraction (<code>-</code>), multiplication (<code>*</code>), and division (<code>/</code>). In C++, assignment (<code>=</code>) is an operator as well, as are insertion (<code>&lt;&lt;</code>), extraction (<code>&gt;&gt;</code>), and equality (<code>==</code>). While most operators have symbols for names (e.g. <code>+</code>, or <code>==</code>), there are also a number of operators that are keywords (e.g. <code>new</code>, <code>delete</code>, and <code>throw</code>).</p>
+<blockquote>
+<p><strong>Author’s note</strong></p>
+<p>Author’s note</p>
+<p>For reasons that will become clear when we discuss operators in more detail, for operators that are symbols, it is common to append the operator’s symbol to the word <em>operator</em>.</p>
+<p>For example, the plus operator would be written <code>operator+</code>, and the extraction operator would be written <code>operator&gt;&gt;</code>.</p>
+</blockquote>
+<p>The number of operands that an operator takes as input is called the operator’s <strong>arity</strong>. Few people know what this word means, so don’t drop it in a conversation and expect anybody to have any idea what you’re talking about. Operators in C++ come in four different arities:</p>
+<p><strong>Unary</strong> operators act on one operand. An example of a unary operator is the <code>-</code> operator. For example, given <code>-5</code>, <code>operator-</code> takes literal operand <code>5</code> and flips its sign to produce new output value <code>-5</code>.</p>
+<p><strong>Binary</strong> operators act on two operands (often called <em>left</em> and <em>right</em>, as the left operand appears on the left side of the operator, and the right operand appears on the right side of the operator). An example of a binary operator is the <code>+</code> operator. For example, given <code>3 + 4</code>, <code>operator+</code> takes the left operand <code>3</code> and the right operand <code>4</code> and applies mathematical addition to produce new output value <code>7</code>. The insertion (<code>&lt;&lt;</code>) and extraction (<code>&gt;&gt;</code>) operators are binary operators, taking <code>std::cout</code> or <code>std::cin</code> on the left side, and the value to output or variable to input to on the right side.</p>
+<p><strong>Ternary</strong> operators act on three operands. There is only one of these in C++ (the conditional operator), which we’ll cover later.</p>
+<p><strong>Nullary</strong> operators act on zero operands. There is also only one of these in C++ (the throw operator), which we’ll also cover later.</p>
+<p>Note that some operators have more than one meaning depending on how they are used. For example, <code>operator-</code> has two contexts. It can be used in unary form to invert a number’s sign (e.g. to convert <code>5</code> to <code>-5</code>, or vice versa), or it can be used in binary form to do subtraction (e.g. <code>4 - 3</code>).</p>
+<h2 id="chaining-operators"><a class="header" href="#chaining-operators">Chaining operators</a></h2>
+<p>Operators can be chained together such that the output of one operator can be used as the input for another operator. For example, given the following: <code>2 * 3 + 4</code>, the multiplication operator goes first, and converts left operand <code>2</code> and right operand <code>3</code> into return value <code>6</code> (which becomes the left operand for the plus operator). Next, the plus operator executes, and converts left operand <code>6</code> and right operand <code>4</code> into new value <code>10</code>.</p>
+<p>We’ll talk more about the order in which operators execute when we do a deep dive into the topic of operators. For now, it’s enough to know that the arithmetic operators execute in the same order as they do in standard mathematics: Parenthesis first, then Exponents, then Multiplication &amp; Division, then Addition &amp; Subtraction. This ordering is sometimes abbreviated <em>PEMDAS</em>, or expanded to the mnemonic “Please Excuse My Dear Aunt Sally”.</p>
+<blockquote>
+<p><strong>Author’s note</strong></p>
+<p>Author’s note</p>
+<p>In some countries, PEMDAS is taught as PEDMAS, BEDMAS, BODMAS, or BIDMAS instead.</p>
+</blockquote>
+<h2 id="return-values-and-side-effects"><a class="header" href="#return-values-and-side-effects">Return values and side effects</a></h2>
+<p>Most operators in C++ just use their operands to calculate a return value. For example, <code>-5</code> produces return value <code>-5</code> and <code>2 + 3</code> produces return value <code>5</code>. There are a few operators that do not produce return values (such as <code>delete</code> and <code>throw</code>). We’ll cover what these do later.</p>
+<p>Some operators have additional behaviors. An operator (or function) that has some observable effect beyond producing a return value is said to have a <strong>side effect</strong>. For example, <code>x = 5</code> has the side effect of assigning value <code>5</code> to variable <code>x</code>. The changed value of <code>x</code> is observable (e.g. by printing the value of <code>x</code>) even after the operator has finished executing. <code>std::cout &lt;&lt; 5</code> has the side effect of printing <code>5</code> to the console. We can observe the fact that <code>5</code> has been printed to the console even after <code>std::cout &lt;&lt; 5</code> has finished executing.</p>
+<blockquote>
+<p><strong>Nomenclature</strong></p>
+<p>Nomenclature</p>
+<p>In common language, the term “side effect” is typically used to mean a secondary (often negative or unexpected) result of some other thing happening (such as taking medicine). For example, a common side effect of taking oral antibiotics is diarrhea. As such, we often think of side effects as things we want to avoid, or things that are incidental to the primary goal.</p>
+<p>In C++, the term “side effect” has a different meaning: it is an observable effect of an operator or function beyond producing a return value.</p>
+<p>Since assignment has the observable effect of changing the value of an object, this is considered a side effect. We use certain operators (e.g. the assignment operator) primarily for their side effects (rather than the return value those operators produce). In such cases, the side effect is both beneficial and predictable (and it is the return value that is often incidental).</p>
+</blockquote>
+<blockquote>
+<p><strong>For advanced readers</strong></p>
+<p>For advanced readers</p>
+<p>For the operators that we call primarily for their return values (e.g. <code>operator+</code> or <code>operator*</code>), it’s usually obvious what their return values will be (e.g. the sum or product of the operands).</p>
+<p>For the operators we call primarily for their side effects (e.g. <code>operator=</code> or <code>operator&lt;&lt;</code>), it’s not always obvious what return values they produce (if any). For example, what return value would you expect <code>x = 5</code> to have?</p>
+<p>Both <code>operator=</code> and <code>operator&lt;&lt;</code> (when used to output values to the console) return their left operand. Thus, <code>x = 5</code> returns <code>x</code>, and <code>std::cout &lt;&lt; 5</code> returns <code>std::cout</code>. This is done so that these operators can be chained.</p>
+<p>For example, <code>x = y = 5</code> evaluates as <code>x = (y = 5)</code>. First <code>y = 5</code> assigns <code>5</code> to <code>y</code>. This operation then returns <code>y</code>, which can then be assigned to <code>x</code>.</p>
+<p><code>std::cout &lt;&lt; "Hello " &lt;&lt; "world!"</code> evaluates as <code>(std::cout &lt;&lt; "Hello ") &lt;&lt; "world!"</code>. This first prints <code>"Hello "</code> to the console. This operation returns <code>std::cout</code>, which can then be used to print <code>"world!"</code> to the console as well.</p>
+<p>We talk more about the order in which operators evaluate in lesson <a href="operator-precedence-and-associativity">6.1 -- Operator precedence and associativity</a>.</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="whitespace-and-basic-formatting.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="introduction-to-expressions.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="whitespace-and-basic-formatting.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="introduction-to-expressions.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

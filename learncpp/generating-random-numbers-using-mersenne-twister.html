@@ -1,0 +1,547 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Generating random numbers using Mersenne Twister - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="generating-random-numbers-using-mersenne-twister"><a class="header" href="#generating-random-numbers-using-mersenne-twister">Generating random numbers using Mersenne Twister</a></h1>
+<p>In the previous lesson <a href="introduction-to-random-number-generation.html">8.13 -- Introduction to random number generation</a>, we introduced the concept of random number generation, and discussed how PRNG algorithms are typically used to simulate randomness in programs.</p>
+<p>In this lesson, we’ll take a look at how to generate random numbers in your programs. To access any of the randomization capabilities in C++, we include the <code>&lt;random&gt;</code> header of the standard library.</p>
+<h2 id="generating-random-numbers-in-c-using-mersenne-twister"><a class="header" href="#generating-random-numbers-in-c-using-mersenne-twister">Generating random numbers in C++ using Mersenne Twister</a></h2>
+<p>The Mersenne Twister PRNG, besides having a great name, is probably the most popular PRNG across all programming languages. Although it is a bit old by today’s standards, it generally produces quality results and has decent performance. The random library has support for two Mersenne Twister types:</p>
+<ul>
+<li><code>mt19937</code> is a Mersenne Twister that generates 32-bit unsigned integers</li>
+<li><code>mt19937_64</code> is a Mersenne Twister that generates 64-bit unsigned integers</li>
+</ul>
+<p>Using Mersenne Twister is straightforward:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;random&gt; // for std::mt19937
+
+int main()
+{
+	std::mt19937 mt{}; // Instantiate a 32-bit Mersenne Twister
+
+	// Print a bunch of random numbers
+	for (int count{ 1 }; count &lt;= 40; ++count)
+	{
+		std::cout &lt;&lt; mt() &lt;&lt; '\t'; // generate a random number
+
+		// If we've printed 5 numbers, start a new row
+		if (count % 5 == 0)
+			std::cout &lt;&lt; '\n';
+	}
+
+	return 0;
+}
+</code></pre>
+<p>This produces the result:</p>
+<pre><code class="language-cpp">3499211612      581869302       3890346734      3586334585      545404204
+4161255391      3922919429      949333985       2715962298      1323567403
+418932835       2350294565      1196140740      809094426       2348838239
+4264392720      4112460519      4279768804      4144164697      4156218106
+676943009       3117454609      4168664243      4213834039      4111000746
+471852626       2084672536      3427838553      3437178460      1275731771
+609397212       20544909        1811450929      483031418       3933054126
+2747762695      3402504553      3772830893      4120988587      2163214728
+</code></pre>
+<p>First, we include the <random> header, since that’s where all the random number capabilities live. Next, we instantiate a 32-bit Mersenne Twister engine via the statement <code>std::mt19937 mt</code>. Then, each time we want to generate a random 32-bit unsigned integer, we call <code>mt()</code>.</p>
+<blockquote>
+<p><strong>As an aside…</strong></p>
+<p>As an aside…</p>
+<p>Since <code>mt</code> is a variable, you may be wondering what <code>mt()</code> means.</p>
+<p>In lesson <a href="introduction-to-stdstring">5.7 -- Introduction to std::string</a>, we showed an example where we called the function <code>name.length()</code>, which invoked the <code>length()</code> function on <code>std::string</code> variable <code>name</code>.</p>
+<p><code>mt()</code> is a concise syntax for calling the function <code>mt.operator()</code>, which for these PRNG types has been defined to return the next random result in the sequence. The advantage of using <code>operator()</code> instead of a named function is that we don’t need to remember the function’s name, and the concise syntax is less typing.</p>
+</blockquote>
+<h2 id="rolling-a-dice-using-mersenne-twister"><a class="header" href="#rolling-a-dice-using-mersenne-twister">Rolling a dice using Mersenne Twister</a></h2>
+<p>A 32-bit PRNG will generate random numbers between 0 and 4,294,967,295, but we do not always want numbers in that range. If our program was simulating a board game or a dice game, we’d probably want to simulate the roll of a 6-sided dice by generating random numbers between 1 and 6. If our program was a dungeon adventure, and the player had a sword that did between 7 and 11 damage to monsters, then we’d want to generate random numbers between 7 and 11 whenever the player hit a monster.</p>
+<p>Unfortunately, PRNGs can’t do this. They can only generate numbers that use the full range. What we need is some way to convert a number that is output from our PRNG into a value in the smaller range we want (with an even probability of each value occurring). While we could write a function to do this ourselves, doing so in a way that produces non-biased results is non-trivial.</p>
+<p>Fortunately, the random library can help us here, in the form of random number distributions. A <strong>random number distribution</strong> converts the output of a PRNG into some other distribution of numbers.</p>
+<blockquote>
+<p><strong>As an aside…</strong></p>
+<p>As an aside…</p>
+<p>For the stats geeks: a random number distribution is just a probability distribution designed to take PRNG values as input.</p>
+</blockquote>
+<p>The random library has many random numbers distributions, most of which you will never use unless you’re doing some kind of statistical analysis. But there’s one random number distribution that’s extremely useful: a <strong>uniform distribution</strong> is a random number distribution that produces outputs between two numbers X and Y (inclusive) with equal probability.</p>
+<p>Here’s a similar program to the one above, using a uniform distribution to simulate the roll of a 6-sided dice:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;random&gt; // for std::mt19937 and std::uniform_int_distribution
+
+int main()
+{
+	std::mt19937 mt{};
+
+	// Create a reusable random number generator that generates uniform numbers between 1 and 6
+	std::uniform_int_distribution die6{ 1, 6 }; // for C++14, use std::uniform_int_distribution&lt;&gt; die6{ 1, 6 };
+
+	// Print a bunch of random numbers
+	for (int count{ 1 }; count &lt;= 40; ++count)
+	{
+		std::cout &lt;&lt; die6(mt) &lt;&lt; '\t'; // generate a roll of the die here
+
+		// If we've printed 10 numbers, start a new row
+		if (count % 10 == 0)
+			std::cout &lt;&lt; '\n';
+	}
+
+	return 0;
+}
+</code></pre>
+<p>This produces the result:</p>
+<pre><code class="language-cpp">3       1       3       6       5       2       6       6       1       2
+2       6       1       1       6       1       4       5       2       5
+6       2       6       2       1       3       5       4       5       6
+1       4       2       3       1       2       2       6       2       1
+</code></pre>
+<p>There are only two noteworthy differences in this example compared to the previous one. First, we’ve created a uniform distribution variable (named <code>die6</code>) to generate numbers between 1 and 6. Second, instead of calling <code>mt()</code> to generate 32-bit unsigned integer random numbers, we’re now calling <code>die6(mt)</code> to generate a value between 1 and 6.</p>
+<h2 id="the-above-program-isnt-as-random-as-it-seems"><a class="header" href="#the-above-program-isnt-as-random-as-it-seems">The above program isn’t as random as it seems</a></h2>
+<p>Although the results of our dice rolling example above are pretty random, there’s a major flaw with the program. Run the program 3 times and see if you can figure out what it is. Go ahead, we’ll wait.</p>
+<p><em>Jeopardy music</em></p>
+<p>If you run the program multiple times, you will note that it prints the same numbers every time! While each number in the sequence is random with regards to the previous one, the entire sequence is not random at all! Each run of our program produces the exact same result.</p>
+<p>Imagine that you’re writing a game of hi-lo, where the user has 10 tries to guess a number that has been picked randomly, and the computer tells the user whether their guess is too high or too low. If the computer picks the same random number every time, the game won’t be interesting past the first time it is played. So let’s take a deeper look at why this is happening, and how we can fix it.</p>
+<p>In the prior lesson (<a href="introduction-to-random-number-generation.html">8.13 -- Introduction to random number generation</a>), we covered that each number in a PRNG sequence is in a deterministic way. And that the state of the PRNG is initialized from the seed value. Thus, given any starting seed number, PRNGs will always generate the same sequence of numbers from that seed as a result.</p>
+<p>Because we are value initializing our Mersenne Twister, it is being initialized with the same seed every time the program is run. And because the seed is the same, the random numbers being generated are also the same.</p>
+<p>In order to make our entire sequence randomized differently each time the program is run, we need to pick a seed that’s not a fixed number. The first answer that probably comes to mind is that we need a random number for our seed! That’s a good thought, but if we need a random number to generate random numbers, then we’re in a catch-22. It turns out, we really don’t need our seed to be a random number -- we just need to pick something that changes each time the program is run. Then we can use our PRNG to generate a unique sequence of pseudo-random numbers from that seed.</p>
+<p>There are two methods that are commonly used to do this:</p>
+<ul>
+<li>Use the system clock</li>
+<li>Use the system’s random device</li>
+</ul>
+<h2 id="seeding-with-the-system-clock"><a class="header" href="#seeding-with-the-system-clock">Seeding with the system clock</a></h2>
+<p>What’s one thing that’s different every time you run your program? Unless you manage to run your program twice at exactly the same moment in time, the answer is that the current time is different. Therefore, if we use the current time as our seed value, then our program will produce a different set of random numbers each time it is run. C and C++ have a long history of PRNGs being seeded using the current time (using the <code>std::time()</code> function), so you will probably see this in a lot of existing code.</p>
+<p>Fortunately, C++ has a chrono library containing various clocks that we can use to generate a seed value. To minimize the chance of two time values being identical if the program is run quickly in succession, we want to use some time measure that changes as quickly as possible. For this, we’ll ask the clock how much time has passed since the earliest time it can measure. This time is measured in “ticks”, which is a very small unit of time (usually nanoseconds, but could be milliseconds).</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;random&gt; // for std::mt19937
+#include &lt;chrono&gt; // for std::chrono
+
+int main()
+{
+	// Seed our Mersenne Twister using steady_clock
+	std::mt19937 mt{ static_cast&lt;std::mt19937::result_type&gt;(
+		std::chrono::steady_clock::now().time_since_epoch().count()
+		) };
+
+	// Create a reusable random number generator that generates uniform numbers between 1 and 6
+	std::uniform_int_distribution die6{ 1, 6 }; // for C++14, use std::uniform_int_distribution&lt;&gt; die6{ 1, 6 };
+
+	// Print a bunch of random numbers
+	for (int count{ 1 }; count &lt;= 40; ++count)
+	{
+		std::cout &lt;&lt; die6(mt) &lt;&lt; '\t'; // generate a roll of the die here
+
+		// If we've printed 10 numbers, start a new row
+		if (count % 10 == 0)
+			std::cout &lt;&lt; '\n';
+	}
+
+	return 0;
+}
+</code></pre>
+<p>The above program has only two changes from the prior. First, we’re including <chrono>, which gives us access to the clock. Second, we’re using the current time from the clock as a seed value for our Mersenne Twister.</p>
+<p>The results generated by this program should now be different each time it is run, which you can verify experimentally by running it several times.</p>
+<p>The downside of this approach is that if the program is run several times in quick succession, the seeds generated for each run won’t be that different, which can impact the quality of the random results from a statistical standpoint. For normal programs, this doesn’t matter, but for programs that require high quality, independent results, this method of seeding may be insufficient.</p>
+<blockquote>
+<p><strong>Tip</strong></p>
+<p>Tip</p>
+<p><code>std::chrono::high_resolution_clock</code> is a popular choice instead of <code>std::chrono::steady_clock</code>. <code>std::chrono::high_resolution_clock</code> is the clock that uses the most granular unit of time, but it may use the system clock for the current time, which can be changed or rolled back by users. <code>std::chrono::steady_clock</code> may have a less granular tick time, but is the only clock with a guarantee that users cannot adjust it.</p>
+</blockquote>
+<h2 id="seeding-with-the-random-device"><a class="header" href="#seeding-with-the-random-device">Seeding with the random device</a></h2>
+<p>The random library contains a type called <code>std::random_device</code> that is an implementation-defined PRNG. Normally we avoid implementation-defined capabilities because they have no guarantees about quality or portability, but this is one of the exception cases. Typically <code>std::random_device</code> will ask the OS for a pseudo-random number (how it does this depends on the OS).</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;random&gt; // for std::mt19937 and std::random_device
+
+int main()
+{
+	std::mt19937 mt{ std::random_device{}() };
+
+	// Create a reusable random number generator that generates uniform numbers between 1 and 6
+	std::uniform_int_distribution die6{ 1, 6 }; // for C++14, use std::uniform_int_distribution&lt;&gt; die6{ 1, 6 };
+
+	// Print a bunch of random numbers
+	for (int count{ 1 }; count &lt;= 40; ++count)
+	{
+		std::cout &lt;&lt; die6(mt) &lt;&lt; '\t'; // generate a roll of the die here
+
+		// If we've printed 10 numbers, start a new row
+		if (count % 10 == 0)
+			std::cout &lt;&lt; '\n';
+	}
+
+	return 0;
+}
+</code></pre>
+<p>In the above program, we’re seeding our Mersenne Twister with one random number generated from a temporary instance of <code>std::random_device</code>. If you run this program multiple times, it should also produce different results each time.</p>
+<p>One potential problem with <code>std::random_device</code>: it isn’t required to be non-deterministic, meaning it <em>could</em>, on some systems, produce the same sequence every time the program is run, which is exactly what we’re trying to avoid. There was a <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=85494">bug in MinGW</a> (fixed in GCC 9.2) that would do exactly this, making <code>std::random_device</code> useless.</p>
+<p>However, the latest versions of the most popular compilers (GCC/MinGW, Clang, Visual Studio) support proper implementations of <code>std::random_device</code>.</p>
+<div id="admonition-best-practices" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices"></a>
+</div>
+<div>
+<p>Best practice</p>
+<p>Use <code>std::random_device</code> to seed your PRNGs (unless it’s not implemented properly for your target compiler/architecture).</p>
+</div>
+</div>
+<blockquote>
+<p><strong>Q: What does std::random_device{}() mean?</strong></p>
+<p>Q: What does <code>std::random_device{}()</code> mean?</p>
+<p><code>std::random_device{}</code> creates a value-initialized temporary object of type <code>std::random_device</code>. The <code>()</code> then calls <code>operator()</code> on that temporary object, which returns a randomized value (which we use as an initializer for our Mersenne Twister)</p>
+<p>It’s the equivalent of the calling the following function, which uses a syntax you should be more familiar with:</p>
+<pre><code>unsigned int getRandomDeviceValue()
+{
+   std::random_device rd{}; // create a value initialized std::random_device object
+   return rd(); // return the result of operator() to the caller
+}
+</code></pre>
+<p>Using <code>std::random_device{}()</code> allows us to get the same result without creating a named function or named variable, so it’s much more concise.</p>
+</blockquote>
+<blockquote>
+<p><strong>Q: If std::random_device is random itself, why don’t we just use that instead of Mersenne Twister?</strong></p>
+<p>Q: If std::random_device is random itself, why don’t we just use that instead of Mersenne Twister?</p>
+<p>Because std::random_device is implementation defined, we can’t assume much about it. It may be expensive to access or it may cause our program to pause while waiting for more random numbers to become available. The pool of numbers that it draws from may also be depleted quickly, which would impact the random results for other applications requesting random numbers via the same method. For this reason, std::random_device is better used to seed other PRNGs rather than as a PRNG itself.</p>
+</blockquote>
+<h2 id="only-seed-a-prng-once"><a class="header" href="#only-seed-a-prng-once">Only seed a PRNG once</a></h2>
+<p>Many PRNGs can be reseeded after the initial seeding. This essentially re-initializes the state of the random number generator, causing it to generate results starting from the new seed state. Reseeding should generally be avoided unless you have a specific reason to do so, as it can cause the results to be less random, or not random at all.</p>
+<div id="admonition-best-practices-1" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-1-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-1-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices-1"></a>
+</div>
+<div>
+<p>Best practice</p>
+<p>Only seed a given pseudo-random number generator once, and do not reseed it.</p>
+</div>
+</div>
+<p>Here’s an example of a common mistake that new programmers make:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;random&gt;
+
+int getCard()
+{
+    std::mt19937 mt{ std::random_device{}() }; // this gets created and seeded every time the function is called
+    std::uniform_int_distribution card{ 1, 52 };
+    return card(mt);
+}
+
+int main()
+{
+    std::cout &lt;&lt; getCard() &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>In the <code>getCard()</code> function, the random number generator is being created and seeded every time the function is called. This is inefficient at best, and will likely cause poor random results.</p>
+<h2 id="mersenne-twister-and-underseeding-issues"><a class="header" href="#mersenne-twister-and-underseeding-issues">Mersenne Twister and underseeding issues</a></h2>
+<p>The internal state of a Mersenne Twister requires 19937 bits (2493 bytes), which is 624 32-bit values or 312 64-bit values. As a result, <code>std::mt19937</code> allocates 624 integers, whereas <code>std::mt19937_64</code> allocates 312 integers.</p>
+<blockquote>
+<p><strong>As an aside…</strong></p>
+<p>As an aside…</p>
+<p>The integers allocated by <code>std::mt19937</code> are defined to be of type <code>std::uint_fast32_t</code>, which could be 32-bit or 64-bit integers depending on the architecture. If <code>std::uint_fast32_t</code> resolves to a 64-bit integer, <code>std::mt19937</code> will use 624 64-bit integers, making it double the size it needs to be.</p>
+</blockquote>
+<p>In the examples above, where we seed our <code>std::mt19937</code> from the clock or std::random_device, our seed is only a single integer. This means we’re essentially initializing 624 integers using a single integer, which is significantly underseeding the Mersenne Twister PRNG. The Random library does the best it can to fill in the remaining 623 values with “random” data… but it can’t work magic. Underseeded PRNG can generate results that are suboptimal for applications that need the highest quality results. For example, seeding <code>std::mt19937</code> with a single 32-bit value will never generate the number <code>42</code> as its first output.</p>
+<p>So how do we fix this? As of C++20, there’s no easy way. But we do have some suggestions.</p>
+<p>First, let’s talk about <code>std::seed_seq</code> (which stands for “seed sequence”). In the prior lesson, we mentioned that ideally we want our seed data to be as many bits as the state of our PRNG, or our PRNG will be underseeded. But in many cases (especially when our PRNG has a large state), we won’t have that many bits of randomized seed data.</p>
+<p><code>std::seed_seq</code> is a type that was designed to help with this. We can pass it as many randomized values as we have, and then it will generate as many additional unbiased seed values as needed to initialize a PRNG’s state. If you initialize <code>std::seed_seq</code> with a single value (e.g. from <code>std::random_device</code>) and then initialize a Mersenne Twister with the <code>std::seed_seq</code> object, <code>std::seed_seq</code> will generate 623 values of additional seed data. This won’t add randomness, but it will give us a better mix of 0 and 1 bits. However, the more random data we can provide <code>std::seed_seq</code>, the better job it will do for us. So the easiest idea is to simply use <code>std::random_device</code> to give <code>std::seed_seq</code> more data to work with. If we initialize <code>std::seed_seq</code> with 8 values from <code>std::random_device</code> instead of 1, then the remaining values generated by <code>std::seed_seq</code> should be much better:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;random&gt;
+
+int main()
+{
+	std::random_device rd{};
+	std::seed_seq ss{ rd(), rd(), rd(), rd(), rd(), rd(), rd(), rd() }; // get 8 integers of random numbers from std::random_device for our seed
+	std::mt19937 mt{ ss }; // initialize our Mersenne Twister with the std::seed_seq
+
+	// Create a reusable random number generator that generates uniform numbers between 1 and 6
+	std::uniform_int_distribution die6{ 1, 6 }; // for C++14, use std::uniform_int_distribution&lt;&gt; die6{ 1, 6 };
+
+	// Print a bunch of random numbers
+	for (int count{ 1 }; count &lt;= 40; ++count)
+	{
+		std::cout &lt;&lt; die6(mt) &lt;&lt; '\t'; // generate a roll of the die here
+
+		// If we've printed 10 numbers, start a new row
+		if (count % 10 == 0)
+			std::cout &lt;&lt; '\n';
+	}
+
+	return 0;
+}
+</code></pre>
+<p>This is pretty straightforward so there isn’t much reason not to do this at a minimum.</p>
+<blockquote>
+<p><strong>Q: Why not give std::seed_seq 624 values from std::random_device?</strong></p>
+<p>Q: Why not give std::seed_seq 624 values from <code>std::random_device</code>?</p>
+<p>You can, but this is likely to be slow, and risks depleting the pool of random numbers that <code>std::random_device</code> uses.</p>
+</blockquote>
+<p>You can also use other “random” inputs to <code>std::seed_seq</code>. We’ve already shown you how to get a value from the clock, so you can throw that in easily. Other things that are sometimes used include the current thread id, the address of particular functions, the user’s id, the process id, etc… Doing that is beyond the scope of this article, but <a href="https://www.pcg-random.org/posts/ease-of-use-without-loss-of-power.html">this article</a> has some context and a link to <a href="https://gist.github.com/imneme/540829265469e673d045">randutils.hpp</a> that implements this.</p>
+<p>An alternate path is to use a different PRNG with a smaller state. Many good PRNGs use 64 or 128 bits of state, which can easily be initialized using <code>std::seed_seq</code> filled with 8 calls to <code>std::random_device</code>.</p>
+<h2 id="warming-up-a-prng"><a class="header" href="#warming-up-a-prng">Warming up a PRNG</a></h2>
+<p>When a PRNG is given a poor quality seed (or underseeded), the initial results of the PRNG may not be high quality. For this reason, some PRNGs benefit from being “warmed up”, which is a technique where the first N results generated from the PRNG are discarded. This allows the internal state of the PRNG to be mixed up such that the subsequent results should be of higher quality. Typically a few hundred to a few thousand initial results are discarded. The longer the period of the PRNG, the more initial results should be discarded.</p>
+<blockquote>
+<p><strong>As an aside…</strong></p>
+<p>As an aside…</p>
+<p>Visual Studio’s implementation of <code>rand()</code> had (or still has?) a bug where the first generated result would not be sufficiently randomized. You may see older programs that use <code>rand()</code> discard a single result as a way to avoid this issue.</p>
+</blockquote>
+<p>The <code>seed_seq</code> initialization used by <code>std::mt19937</code> performs a warm up, so we don’t need to explicitly warm up <code>std::mt19937</code> objects.</p>
+<h2 id="random-numbers-across-multiple-functions-or-files-randomh"><a class="header" href="#random-numbers-across-multiple-functions-or-files-randomh">Random numbers across multiple functions or files (Random.h)</a></h2>
+<p>This content was moved to <a href="global-random-numbers-random-h.html">8.15 -- Global random numbers (Random.h)</a>.</p>
+<h2 id="debugging-programs-that-use-random-numbers"><a class="header" href="#debugging-programs-that-use-random-numbers">Debugging programs that use random numbers</a></h2>
+<p>Programs that use random numbers can be difficult to debug because the program may exhibit different behaviors each time it is run. When this is the case, the erroneous behavior you may happen, or it may not. This can waste a lot of time. When debugging, it’s helpful to ensure your program executes the same (incorrect) way each time. That way, you can run the program as many times as needed to isolate where the error is.</p>
+<p>For this reason, when debugging, it’s a useful technique to seed your PRNG with a specific fixed value (e.g. <code>5</code>) that causes the erroneous behavior to occur. If a given seed doesn’t cause your program to exhibit the error, keep incrementing the seed value until you find one that does. This will ensure your program generates the same results each time, making debugging easier. Once you’ve found the error, you can use your normal seeding method to start generating randomized results again.</p>
+<h2 id="random-faq"><a class="header" href="#random-faq">Random FAQ</a></h2>
+<blockquote>
+<p><strong>Q: Help! My random number generator is generating the same sequence of random numbers.</strong></p>
+<p>Q: Help! My random number generator is generating the same sequence of random numbers.</p>
+<p>If your random number generator is generating the same sequence of random numbers every time your program is run, you probably didn’t seed it properly (or at all). Make sure you’re seeding it with a value that changes each time the program is run.</p>
+</blockquote>
+<blockquote>
+<p><strong>Q: Help! My random number generator keeps generating the same number over and over.</strong></p>
+<p>Q: Help! My random number generator keeps generating the same number over and over.</p>
+<p>If your random number generator is generating the same number every time you ask it for a random number, then you are probably either reseeding the random number generator before generating a random number, or you’re creating a new random generator for each random number.</p>
+</blockquote>
+<p>AI CONTENT END 1</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="introduction-to-random-number-generation.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="global-random-numbers-random-h.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="introduction-to-random-number-generation.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="global-random-numbers-random-h.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,498 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Function templates with multiple template types - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="function-templates-with-multiple-template-types"><a class="header" href="#function-templates-with-multiple-template-types">Function templates with multiple template types</a></h1>
+<p>In lesson <a href="function-templates.html">11.6 -- Function templates</a>, we wrote a function template to calculate the maximum of two values:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+template &lt;typename T&gt;
+T max(T x, T y)
+{
+    return (x &lt; y) ? y : x;
+}
+
+int main()
+{
+    std::cout &lt;&lt; max(1, 2) &lt;&lt; '\n';   // will instantiate max(int, int)
+    std::cout &lt;&lt; max(1.5, 2.5) &lt;&lt; '\n'; // will instantiate max(double, double)
+
+    return 0;
+}
+</code></pre>
+<p>Now consider the following similar program:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+template &lt;typename T&gt;
+T max(T x, T y)
+{
+    return (x &lt; y) ? y : x;
+}
+
+int main()
+{
+    std::cout &lt;&lt; max(2, 3.5) &lt;&lt; '\n';  // compile error
+
+    return 0;
+}
+</code></pre>
+<p>You may be surprised to find that this program won’t compile. Instead, the compiler will issue a bunch of (probably crazy looking) error messages. On Visual Studio, the author got the following:</p>
+<pre><code class="language-cpp">Project3.cpp(11,18): error C2672: 'max': no matching overloaded function found
+Project3.cpp(11,28): error C2782: 'T max(T,T)': template parameter 'T' is ambiguous
+Project3.cpp(4): message : see declaration of 'max'
+Project3.cpp(11,28): message : could be 'double'
+Project3.cpp(11,28): message : or       'int'
+Project3.cpp(11,28): error C2784: 'T max(T,T)': could not deduce template argument for 'T' from 'double'
+Project3.cpp(4): message : see declaration of 'max'
+</code></pre>
+<p>In our function call <code>max(2, 3.5)</code>, we’re passing arguments of two different types: one <code>int</code> and one <code>double</code>. Because we’re making a function call without using angled brackets to specify an actual type, the compiler will first look to see if there is a non-template match for <code>max(int, double)</code>. It won’t find one.</p>
+<p>Next, the compiler will see if it can find a function template match (using template argument deduction, which we covered in lesson <a href="function-template-instantiation.html">11.7 -- Function template instantiation</a>). However, this will also fail, for a simple reason: <code>T</code> can only represent a single type. There is no type for <code>T</code> that would allow the compiler to instantiate function template <code>max&lt;T&gt;(T, T)</code> into a function with two different parameter types. Put another way, because both parameters in the function template are of type <code>T</code>, they must resolve to the same actual type.</p>
+<p>Since both a non-template match and a template match couldn’t be found, the function call fails to resolve, and we get a compile error.</p>
+<p>You might wonder why the compiler didn’t generate function <code>max&lt;double&gt;(double, double)</code> and then use numeric conversion to type convert the <code>int</code> argument to a <code>double</code>. The answer is simple: type conversion is done only when resolving function overloads, not when performing template argument deduction.</p>
+<p>This lack of type conversion is intentional for at least two reasons. First, it helps keep things simple: we either find an exact match between the function call arguments and template type parameters, or we don’t. Second, it allows us to create function templates for cases where we want to ensure that two or more parameters have the same type (as in the example above).</p>
+<p>We’ll have to find another solution. Fortunately, we can solve this problem in (at least) three ways.</p>
+<h2 id="use-static_cast-to-convert-the-arguments-to-matching-types"><a class="header" href="#use-static_cast-to-convert-the-arguments-to-matching-types">Use static_cast to convert the arguments to matching types</a></h2>
+<p>The first solution is to put the burden on the caller to convert the arguments into matching types. For example:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+template &lt;typename T&gt;
+T max(T x, T y)
+{
+    return (x &lt; y) ? y : x;
+}
+
+int main()
+{
+    std::cout &lt;&lt; max(static_cast&lt;double&gt;(2), 3.5) &lt;&lt; '\n'; // convert our int to a double so we can call max(double, double)
+
+    return 0;
+}
+</code></pre>
+<p>Now that both arguments are of type <code>double</code>, the compiler will be able to instantiate <code>max(double, double)</code> that will satisfy this function call.</p>
+<p>However, this solution is awkward and hard to read.</p>
+<h2 id="provide-an-explicit-type-template-argument"><a class="header" href="#provide-an-explicit-type-template-argument">Provide an explicit type template argument</a></h2>
+<p>If we had written a non-template <code>max(double, double)</code> function, then we would be able to call <code>max(int, double)</code> and let the implicit type conversion rules convert our <code>int</code> argument into a <code>double</code> so the function call could be resolved:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+double max(double x, double y)
+{
+    return (x &lt; y) ? y : x;
+}
+
+int main()
+{
+    std::cout &lt;&lt; max(2, 3.5) &lt;&lt; '\n'; // the int argument will be converted to a double
+
+    return 0;
+}
+</code></pre>
+<p>However, when the compiler is doing template argument deduction, it won’t do any type conversions. Fortunately, we don’t have to use template argument deduction if we specify an explicit type template argument to be used instead:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+template &lt;typename T&gt;
+T max(T x, T y)
+{
+    return (x &lt; y) ? y : x;
+}
+
+int main()
+{
+    // we've explicitly specified type double, so the compiler won't use template argument deduction
+    std::cout &lt;&lt; max&lt;double&gt;(2, 3.5) &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>In the above example, we call <code>max&lt;double&gt;(2, 3.5)</code>. Because we’ve explicitly specified that <code>T</code> should be replaced with <code>double</code>, the compiler won’t use template argument deduction. Instead, it will just instantiate the function <code>max&lt;double&gt;(double, double)</code>, and then type convert any mismatched arguments. Our <code>int</code> parameter will be implicitly converted to a <code>double</code>.</p>
+<p>While this is more readable than using <code>static_cast</code>, it would be even nicer if we didn’t even have to think about the types when making a function call to <code>max</code> at all.</p>
+<h2 id="function-templates-with-multiple-template-type-parameters"><a class="header" href="#function-templates-with-multiple-template-type-parameters">Function templates with multiple template type parameters</a></h2>
+<p>The root of our problem is that we’ve only defined the single template type (<code>T</code>) for our function template, and then specified that both parameters must be of this same type.</p>
+<p>The best way to solve this problem is to rewrite our function template in such a way that our parameters can resolve to different types. Rather than using one template type parameter <code>T</code>, we’ll now use two (<code>T</code> and <code>U</code>):</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+template &lt;typename T, typename U&gt; // We're using two template type parameters named T and U
+T max(T x, U y) // x can resolve to type T, and y can resolve to type U
+{
+    return (x &lt; y) ? y : x; // uh oh, we have a narrowing conversion problem here
+}
+
+int main()
+{
+    std::cout &lt;&lt; max(2, 3.5) &lt;&lt; '\n'; // resolves to max&lt;int, double&gt;
+
+    return 0;
+}
+</code></pre>
+<p>Because we’ve defined <code>x</code> with template type <code>T</code>, and <code>y</code> with template type <code>U</code>, <code>x</code> and <code>y</code> can now resolve their types independently. When we call <code>max(2, 3.5)</code>, <code>T</code> can be an <code>int</code> and <code>U</code> can be a <code>double</code>. The compiler will happily instantiate <code>max&lt;int, double&gt;(int, double)</code> for us.</p>
+<blockquote>
+<p><strong>Key insight</strong></p>
+<p>Key insight</p>
+<p>Because <code>T</code> and <code>U</code> are independent template parameters, they resolve their types independent of each other. This means <code>T</code> and <code>U</code> can resolve to different types, or they can resolve to the same type.</p>
+</blockquote>
+<p>However, this example doesn’t work right. If you compile and run the program (with “treat warnings as errors” turned off), it will produce the following result:</p>
+<pre><code class="language-cpp">3
+</code></pre>
+<p>What’s going on here? How can the max of <code>2</code> and <code>3.5</code> be <code>3</code>?</p>
+<p>The conditional operator (?:) requires its (non-condition) operands to be the same common type. The usual arithmetic rules (<a href="arithmetic-conversions.html">10.5 -- Arithmetic conversions</a>) are used to determine what the common type will be, and the result of the conditional operator will also use this common type. For example, the common type of <code>int</code> and <code>double</code> is <code>double</code>, so when the (non-condition) operands of our conditional operator are an <code>int</code> and a <code>double</code>, the value produced by the conditional operator will be of type <code>double</code>. In this case, that’s the value <code>3.5</code>, which is correct.</p>
+<p>However, the declared return type of our function is <code>T</code>. When <code>T</code> is an <code>int</code> and <code>U</code> is a <code>double</code>, the return type of the function is <code>int</code>. Our value <code>3.5</code> is undergoing a narrowing conversion to <code>int</code> value <code>3</code>, resulting in a loss of data (and possibly a compiler warning).</p>
+<p>So how do we solve this? Making the return type a <code>U</code> instead doesn’t solve the problem, as <code>max(3.5, 2)</code> has <code>U</code> as an <code>int</code> and will exhibit the same issue.</p>
+<p>In such cases, return type deduction (via <code>auto</code>) can be useful -- we’ll let the compiler deduce what the return type should be from the return statement:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+template &lt;typename T, typename U&gt;
+auto max(T x, U y) // ask compiler can figure out what the relevant return type is
+{
+    return (x &lt; y) ? y : x;
+}
+
+int main()
+{
+    std::cout &lt;&lt; max(2, 3.5) &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>This version of <code>max</code> now works fine with operands of different types. Just note that a function with an <code>auto</code> return type needs to be fully defined before it can be used (a forward declaration won’t suffice), since the compiler has to inspect the function implementation to determine the return type.</p>
+<blockquote>
+<p><strong>For advanced readers</strong></p>
+<p>For advanced readers</p>
+<p>If we need a function that can be forward declared, we have to be explicit about the return type. Since our return type needs to be the common type of <code>T</code> and <code>U</code>, we can use <code>std::common_type_t</code> (discussed in lesson <a href="arithmetic-conversions">10.5 -- Arithmetic conversions</a>) to fetch the common type of <code>T</code> and <code>U</code> to use as our explicit return type:</p>
+<pre><code>#include &lt;iostream&gt;
+#include &lt;type_traits&gt; // for std::common_type_t
+
+template &lt;typename T, typename U&gt;
+auto max(T x, U y) -&gt; std::common_type_t&lt;T, U&gt;; // returns the common type of T and U
+
+int main()
+{
+    std::cout &lt;&lt; max(2, 3.5) &lt;&lt; '\n';
+
+    return 0;
+}
+
+template &lt;typename T, typename U&gt;
+auto max(T x, U y) -&gt; std::common_type_t&lt;T, U&gt;
+{
+    return (x &lt; y) ? y : x;
+}
+</code></pre>
+</blockquote>
+<h2 id="abbreviated-function-templates-c20"><a class="header" href="#abbreviated-function-templates-c20">Abbreviated function templates C++20</a></h2>
+<p>C++20 introduces a new use of the <code>auto</code> keyword: When the <code>auto</code> keyword is used as a parameter type in a normal function, the compiler will automatically convert the function into a function template with each auto parameter becoming an independent template type parameter. This method for creating a function template is called an <strong>abbreviated function template</strong>.</p>
+<p>For example:</p>
+<pre><code class="language-cpp">auto max(auto x, auto y)
+{
+    return (x &lt; y) ? y : x;
+}
+</code></pre>
+<p>is shorthand in C++20 for the following:</p>
+<pre><code class="language-cpp">template &lt;typename T, typename U&gt;
+auto max(T x, U y)
+{
+    return (x &lt; y) ? y : x;
+}
+</code></pre>
+<p>which is the same as the <code>max</code> function template we wrote above.</p>
+<p>In cases where you want each template type parameter to be an independent type, this form is preferred as the removal of the template parameter declaration line makes your code more concise and readable.</p>
+<p>There isn’t a concise way to use abbreviated function templates when you want more than one auto parameter to be the same type. That is, there isn’t an easy abbreviated function template for something like this:</p>
+<pre><code class="language-cpp">template &lt;typename T&gt;
+T max(T x, T y) // two parameters of the same type
+{
+    return (x &lt; y) ? y : x;
+}
+</code></pre>
+<div id="admonition-best-practices" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices"></a>
+</div>
+<div>
+<p>Best practice</p>
+<p>Feel free to use abbreviated function templates with a single auto parameter, or where each auto parameter should be an independent type (and your language standard is set to C++20 or newer).</p>
+</div>
+</div>
+<h2 id="function-templates-may-be-overloaded"><a class="header" href="#function-templates-may-be-overloaded">Function templates may be overloaded</a></h2>
+<p>Just like functions may be overloaded, function templates may also be overloaded. Such overloads can have a different number of template types and/or a different number or type of function parameters:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+// Add two values with matching types
+template &lt;typename T&gt;
+auto add(T x, T y)
+{
+    return x + y;
+}
+
+// Add two values with non-matching types
+// As of C++20 we could also use auto add(auto x, auto y)
+template &lt;typename T, typename U&gt;
+auto add(T x, U y)
+{
+    return x + y;
+}
+
+// Add three values with any type
+// As of C++20 we could also use auto add(auto x, auto y, auto z)
+template &lt;typename T, typename U, typename V&gt;
+auto add(T x, U y, V z)
+{
+    return x + y + z;
+}
+
+int main()
+{
+    std::cout &lt;&lt; add(1.2, 3.4) &lt;&lt; '\n'; // instantiates and calls add&lt;double&gt;()
+    std::cout &lt;&lt; add(5.6, 7) &lt;&lt; '\n';   // instantiates and calls add&lt;double, int&gt;()
+    std::cout &lt;&lt; add(8, 9, 10) &lt;&lt; '\n'; // instantiates and calls add&lt;int, int, int&gt;()
+
+    return 0;
+}
+</code></pre>
+<p>One interesting note here is that for the call to <code>add(1.2, 3.4)</code>, the compiler will prefer <code>add&lt;T&gt;(T, T)</code> over <code>add&lt;T, U&gt;(T, U)</code> even though both could possibly match.</p>
+<p>The rules for determining which of multiple matching function templates should be preferred are called “partial ordering of function templates”. In short, whichever function template is more restrictive/specialized will be preferred. <code>add&lt;T&gt;(T, T)</code> is the more restrictive function template in this case (since it only has one template parameter), so it is preferred.</p>
+<p>If multiple function templates can match a call and the compiler can’t determine which is more restrictive, the compiler will error with an ambiguous match.</p>
+<p>AI CONTENT END 1</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="function-template-instantiation.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="non-type-template-parameters.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="function-template-instantiation.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="non-type-template-parameters.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

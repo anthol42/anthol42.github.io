@@ -1,0 +1,465 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Introduction to std::string_view - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="introduction-to-stdstring_view"><a class="header" href="#introduction-to-stdstring_view">Introduction to std::string_view</a></h1>
+<p>Consider the following program:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+    int x { 5 }; // x makes a copy of its initializer
+    std::cout &lt;&lt; x &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>When the definition for <code>x</code> is executed, the initialization value <code>5</code> is copied into the memory allocated for variable <code>int x</code>. For fundamental types, initializing and copying a variable is fast.</p>
+<p>Now consider this similar program:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+int main()
+{
+    std::string s{ "Hello, world!" }; // s makes a copy of its initializer
+    std::cout &lt;&lt; s &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>When <code>s</code> is initialized, the C-style string literal <code>"Hello, world!"</code> is copied into memory allocated for <code>std::string s</code>. Unlike fundamental types, initializing and copying a <code>std::string</code> is slow.</p>
+<p>In the above program, all we do with <code>s</code> is print the value to the console, and then <code>s</code> is destroyed. We’ve essentially made a copy of “Hello, world!” just to print and then destroy that copy. That’s inefficient.</p>
+<p>We see something similar in this example:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+void printString(std::string str) // str makes a copy of its initializer
+{
+    std::cout &lt;&lt; str &lt;&lt; '\n';
+}
+
+int main()
+{
+    std::string s{ "Hello, world!" }; // s makes a copy of its initializer
+    printString(s);
+
+    return 0;
+}
+</code></pre>
+<p>This example makes two copies of the C-style string “Hello, world!”: one when we initialize <code>s</code> in <code>main()</code>, and another when we initialize parameter <code>str</code> in <code>printString()</code>. That’s a lot of needless copying just to print a string!</p>
+<h2 id="stdstring_view-c17"><a class="header" href="#stdstring_view-c17">std::string_view C++17</a></h2>
+<p>To address the issue with <code>std::string</code> being expensive to initialize (or copy), C++17 introduced <code>std::string_view</code> (which lives in the &lt;string_view&gt; header). <code>std::string_view</code> provides read-only access to an <em>existing</em> string (a C-style string, a <code>std::string</code>, or another <code>std::string_view</code>) without making a copy. <strong>Read-only</strong> means that we can access and use the value being viewed, but we can not modify it.</p>
+<p>The following example is identical to the prior one, except we’ve replaced <code>std::string</code> with <code>std::string_view</code>.</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string_view&gt; // C++17
+
+// str provides read-only access to whatever argument is passed in
+void printSV(std::string_view str) // now a std::string_view
+{
+    std::cout &lt;&lt; str &lt;&lt; '\n';
+}
+
+int main()
+{
+    std::string_view s{ "Hello, world!" }; // now a std::string_view
+    printSV(s);
+
+    return 0;
+}
+</code></pre>
+<p>This program produces the same output as the prior one, but no copies of the string “Hello, world!” are made.</p>
+<p>When we initialize <code>std::string_view s</code> with C-style string literal <code>"Hello, world!"</code>, <code>s</code> provides read-only access to “Hello, world!” without making a copy of the string. When we pass <code>s</code> to <code>printSV()</code>, parameter <code>str</code> is initialized from <code>s</code>. This allows us to access “Hello, world!” through <code>str</code>, again without making a copy of the string.</p>
+<div id="admonition-best-practices" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices"></a>
+</div>
+<div>
+<p>Best practice</p>
+<p>Prefer <code>std::string_view</code> over <code>std::string</code> when you need a read-only string, especially for function parameters.</p>
+</div>
+</div>
+<h2 id="stdstring_view-can-be-initialized-with-many-different-types-of-strings"><a class="header" href="#stdstring_view-can-be-initialized-with-many-different-types-of-strings"><code>std::string_view</code> can be initialized with many different types of strings</a></h2>
+<p>One of the neat things about a <code>std::string_view</code> is how flexible it is. A <code>std::string_view</code> object can be initialized with a C-style string, a <code>std::string</code>, or another <code>std::string_view</code>:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;string_view&gt;
+
+int main()
+{
+    std::string_view s1 { "Hello, world!" }; // initialize with C-style string literal
+    std::cout &lt;&lt; s1 &lt;&lt; '\n';
+
+    std::string s{ "Hello, world!" };
+    std::string_view s2 { s };  // initialize with std::string
+    std::cout &lt;&lt; s2 &lt;&lt; '\n';
+
+    std::string_view s3 { s2 }; // initialize with std::string_view
+    std::cout &lt;&lt; s3 &lt;&lt; '\n';
+       
+    return 0;
+}
+</code></pre>
+<h2 id="stdstring_view-parameters-will-accept-many-different-types-of-string-arguments"><a class="header" href="#stdstring_view-parameters-will-accept-many-different-types-of-string-arguments"><code>std::string_view</code> parameters will accept many different types of string arguments</a></h2>
+<p>Both a C-style string and a <code>std::string</code> will implicitly convert to a <code>std::string_view</code>. Therefore, a <code>std::string_view</code> parameter will accept arguments of type C-style string, a <code>std::string</code>, or <code>std::string_view</code>:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;string_view&gt;
+
+void printSV(std::string_view str)
+{
+    std::cout &lt;&lt; str &lt;&lt; '\n';
+}
+
+int main()
+{
+    printSV("Hello, world!"); // call with C-style string literal
+
+    std::string s2{ "Hello, world!" };
+    printSV(s2); // call with std::string
+
+    std::string_view s3 { s2 };
+    printSV(s3); // call with std::string_view
+       
+    return 0;
+}
+</code></pre>
+<h2 id="stdstring_view-will-not-implicitly-convert-to-stdstring"><a class="header" href="#stdstring_view-will-not-implicitly-convert-to-stdstring"><code>std::string_view</code> will not implicitly convert to <code>std::string</code></a></h2>
+<p>Because <code>std::string</code> makes a copy of its initializer (which is expensive), C++ won’t allow implicit conversion of a <code>std::string_view</code> to a <code>std::string</code>. This is to prevent accidentally passing a <code>std::string_view</code> argument to a <code>std::string</code> parameter, and inadvertently making an expensive copy where such a copy may not be required.</p>
+<p>However, if this is desired, we have two options:</p>
+<ol>
+<li>Explicitly create a <code>std::string</code> with a <code>std::string_view</code> initializer (which is allowed, since this will rarely be done unintentionally)</li>
+<li>Convert an existing <code>std::string_view</code> to a <code>std::string</code> using <code>static_cast</code></li>
+</ol>
+<p>The following example shows both options:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;string_view&gt;
+
+void printString(std::string str)
+{
+	std::cout &lt;&lt; str &lt;&lt; '\n';
+}
+
+int main()
+{
+	std::string_view sv{ "Hello, world!" };
+
+	// printString(sv);   // compile error: won't implicitly convert std::string_view to a std::string
+
+	std::string s{ sv }; // okay: we can create std::string using std::string_view initializer
+	printString(s);      // and call the function with the std::string
+
+	printString(static_cast&lt;std::string&gt;(sv)); // okay: we can explicitly cast a std::string_view to a std::string
+
+	return 0;
+}
+</code></pre>
+<h2 id="assignment-changes-what-the-stdstring_view-is-viewing"><a class="header" href="#assignment-changes-what-the-stdstring_view-is-viewing">Assignment changes what the <code>std::string_view</code> is viewing</a></h2>
+<p>Assigning a new string to a <code>std::string_view</code> causes the <code>std::string_view</code> to view the new string. It does not modify the prior string being viewed in any way.</p>
+<p>The following example illustrates this:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;string_view&gt;
+
+int main()
+{
+    std::string name { "Alex" };
+    std::string_view sv { name }; // sv is now viewing name
+    std::cout &lt;&lt; sv &lt;&lt; '\n'; // prints Alex
+
+    sv = "John"; // sv is now viewing "John" (does not change name)
+    std::cout &lt;&lt; sv &lt;&lt; '\n'; // prints John
+
+    std::cout &lt;&lt; name &lt;&lt; '\n'; // prints Alex
+
+    return 0;
+}
+</code></pre>
+<p>In the above example, <code>sv = "John"</code> causes <code>sv</code> to now view the string <code>"John"</code>. It does not change the value held by <code>name</code> (which is still <code>"Alex"</code>).</p>
+<h2 id="literals-for-stdstring_view"><a class="header" href="#literals-for-stdstring_view">Literals for <code>std::string_view</code></a></h2>
+<p>Double-quoted string literals are C-style string literals by default. We can create string literals with type <code>std::string_view</code> by using a <code>sv</code> suffix after the double-quoted string literal. The <code>sv</code> must be lower case.</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;      // for std::string
+#include &lt;string_view&gt; // for std::string_view
+
+int main()
+{
+    using namespace std::string_literals;      // access the s suffix
+    using namespace std::string_view_literals; // access the sv suffix
+
+    std::cout &lt;&lt; "foo\n";   // no suffix is a C-style string literal
+    std::cout &lt;&lt; "goo\n"s;  // s suffix is a std::string literal
+    std::cout &lt;&lt; "moo\n"sv; // sv suffix is a std::string_view literal
+
+    return 0;
+}
+</code></pre>
+<blockquote>
+<p><strong>Related content</strong></p>
+<p>Related content</p>
+<p>We discuss this use of <code>using namespace</code> in lesson <a href="introduction-to-stdstring">5.7 -- Introduction to std::string</a>. The same advice applies here.</p>
+</blockquote>
+<p>It’s fine to initialize a <code>std::string_view</code> object with a C-style string literal (you don’t need to initialize it with a <code>std::string_view</code> literal).</p>
+<p>That said, initializing a <code>std::string_view</code> using a <code>std::string_view</code> literal won’t cause problems (as such literals are actually C-style string literals in disguise).</p>
+<h2 id="constexpr-stdstring_view"><a class="header" href="#constexpr-stdstring_view">constexpr <code>std::string_view</code></a></h2>
+<p>Unlike <code>std::string</code>, <code>std::string_view</code> has full support for constexpr:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string_view&gt;
+
+int main()
+{
+    constexpr std::string_view s{ "Hello, world!" }; // s is a string symbolic constant
+    std::cout &lt;&lt; s &lt;&lt; '\n'; // s will be replaced with "Hello, world!" at compile-time
+
+    return 0;
+}
+</code></pre>
+<p>This makes <code>constexpr std::string_view</code> the preferred choice when string symbolic constants are needed.</p>
+<p>We will continue discussing <code>std::string_view</code> in the next lesson.</p>
+<p>AI CONTENT END 1</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="introduction-to-stdstring.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="stdstring_view-part-2.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="introduction-to-stdstring.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="stdstring_view-part-2.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

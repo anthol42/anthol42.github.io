@@ -1,0 +1,526 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Public and private members and access specifiers - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="public-and-private-members-and-access-specifiers"><a class="header" href="#public-and-private-members-and-access-specifiers">Public and private members and access specifiers</a></h1>
+<p>Let’s say you’re walking down the street on a brisk autumn day, eating a burrito. You want somewhere to sit, so you look around. To your left is a park, with mowed grass and shade trees, a few uncomfortable benches, and screaming kids on the nearby playground. To your right is a stranger’s residence. Through the window, you see a comfy reclining chair and a crackling fireplace.</p>
+<p>With a heavy sigh, you choose the park.</p>
+<p>The key determinant for your choice is that the park is a public space, whereas the residence is private. You (and anyone else) are allowed to freely access public spaces. But only the members of the residence (or those given explicit permission to enter) are permitted to access the private residence.</p>
+<h2 id="member-access"><a class="header" href="#member-access">Member access</a></h2>
+<p>A similar concept applies to the members of a class type. Each member of a class type has a property called an <strong>access level</strong> that determines who can access that member.</p>
+<p>C++ has three different access levels: <em>public</em>, <em>private</em>, and <em>protected</em>. In this lesson, we’ll cover the two commonly used access levels: public and private.</p>
+<blockquote>
+<p><strong>Related content</strong></p>
+<p>Related content</p>
+<p>We discuss the protected access level in the chapter on inheritance (lesson <a href="inheritance-and-access-specifiers">24.5 -- Inheritance and access specifiers</a>).</p>
+</blockquote>
+<p>Whenever a member is accessed, the compiler checks whether the access level of the member permits that member to be accessed. If the access is not permitted, the compiler will generate a compilation error. This access level system is sometimes informally called <strong>access controls</strong>.</p>
+<h2 id="the-members-of-a-struct-are-public-by-default"><a class="header" href="#the-members-of-a-struct-are-public-by-default">The members of a struct are public by default</a></h2>
+<p>Members that have the <em>public</em> access level are called <em>public members</em>. <strong>Public members</strong> are members of a class type that do not have any restrictions on how they can be accessed. Much like the park in our opening analogy, public members can be accessed by anyone (as long as they are in scope).</p>
+<p>Public members can be accessed by other members of the same class. Notably, public members can also be accessed by <strong>the public</strong>, which is what we call code that exists <em>outside</em> the members of a given class type. Examples of <em>the public</em> include non-member functions, as well as the members of other class types.</p>
+<blockquote>
+<p><strong>Key insight</strong></p>
+<p>Key insight</p>
+<p>The members of a struct are public by default. Public members can be accessed by other members of the class type, and by the public.</p>
+<p>The term “the public” is used to refer to code that exists outside of the members of a given class type. This includes non-member functions, as well as the members of other class types.</p>
+</blockquote>
+<p>By default, all members of a struct are public members.</p>
+<p>Consider the following struct:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+struct Date
+{
+    // struct members are public by default, can be accessed by anyone
+    int year {};       // public by default
+    int month {};      // public by default
+    int day {};        // public by default
+
+    void print() const // public by default
+    {
+        // public members can be accessed in member functions of the class type
+        std::cout &lt;&lt; year &lt;&lt; '/' &lt;&lt; month &lt;&lt; '/' &lt;&lt; day;
+    }
+};
+
+// non-member function main is part of "the public"
+int main()
+{
+    Date today { 2020, 10, 14 }; // aggregate initialize our struct
+
+    // public members can be accessed by the public
+    today.day = 16; // okay: the day member is public
+    today.print();  // okay: the print() member function is public
+
+    return 0;
+}
+</code></pre>
+<p>In this example, members are accessed in three places:</p>
+<ul>
+<li>Within member function <code>print()</code>, we access the <code>year</code>, <code>month</code>, and <code>day</code> members of the implicit object.</li>
+<li>In <code>main()</code>, we directly access <code>today.day</code> to set its value.</li>
+<li>In <code>main()</code>, we call member function <code>today.print()</code>.</li>
+</ul>
+<p>All three of these accesses are allowed because public members can be accessed from anywhere.</p>
+<p>Because <code>main()</code> is not a member of <code>Date</code>, it is considered to be part of <em>the public</em>. However, because <em>the public</em> has access to public members, <code>main()</code> can directly access the members of <code>Date</code> (which includes the call to <code>today.print()</code>).</p>
+<h2 id="the-members-of-a-class-are-private-by-default"><a class="header" href="#the-members-of-a-class-are-private-by-default">The members of a class are private by default</a></h2>
+<p>Members that have the <em>private</em> access level are called <em>private members</em>. <strong>Private members</strong> are members of a class type that can only be accessed by other members of the same class.</p>
+<p>Consider the following example, which is almost identical to the one above:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+class Date // now a class instead of a struct
+{
+    // class members are private by default, can only be accessed by other members
+    int m_year {};     // private by default
+    int m_month {};    // private by default
+    int m_day {};      // private by default
+
+    void print() const // private by default
+    {
+        // private members can be accessed in member functions
+        std::cout &lt;&lt; m_year &lt;&lt; '/' &lt;&lt; m_month &lt;&lt; '/' &lt;&lt; m_day;
+    }
+};
+
+int main()
+{
+    Date today { 2020, 10, 14 }; // compile error: can no longer use aggregate initialization
+
+    // private members can not be accessed by the public
+    today.m_day = 16; // compile error: the m_day member is private
+    today.print();    // compile error: the print() member function is private
+
+    return 0;
+}
+</code></pre>
+<p>In this example, members are accessed in the same three places:</p>
+<ul>
+<li>Within member function <code>print()</code>, we access the <code>m_year</code>, <code>m_month</code>, and <code>m_day</code> members of the implicit object.</li>
+<li>In <code>main()</code>, we directly access <code>today.m_day</code> to set its value.</li>
+<li>In <code>main()</code>, we call member function <code>today.print()</code>.</li>
+</ul>
+<p>However, if you compile this program, you will note that three compilation errors are generated.</p>
+<p>Within <code>main()</code>, the statements <code>today.m_day = 16</code> and <code>today.print()</code> now both generate compilation errors. This is because <code>main()</code> is part of the public, and the public is not allowed to directly access private members.</p>
+<p>Within <code>print()</code>, access to members <code>m_year</code>, <code>m_month</code>, and <code>m_day</code> is allowed. This is because <code>print()</code> is a member of the class, and members of the class are allowed to access private members.</p>
+<p>So where does the third compilation error come from? Perhaps surprisingly, the initialization of <code>today</code> now causes a compilation error. In lesson <a href="struct-aggregate-initialization.html">13.8 -- Struct aggregate initialization</a>, we noted that an aggregate can have “no private or protected non-static data members.” Our <code>Date</code> class has private data members (because the members of classes are private by default), so our <code>Date</code> class does not qualify as an aggregate. Therefore, we can not use aggregate initialization to initialize it any more.</p>
+<p>We’ll discuss how to properly initialize classes (which are generally non-aggregates) in upcoming lesson <a href="introduction-to-constructors.html">14.9 -- Introduction to constructors</a>.</p>
+<blockquote>
+<p><strong>Key insight</strong></p>
+<p>Key insight</p>
+<p>The members of a class are private by default. Private members can be accessed by other members of the class, but can not be accessed by the public.</p>
+<p>A class with private members is no longer an aggregate, and therefore can no longer use aggregate initialization.</p>
+</blockquote>
+<h2 id="naming-your-private-member-variables"><a class="header" href="#naming-your-private-member-variables">Naming your private member variables</a></h2>
+<p>In C++, it is a common convention to name private data members starting with an “m_” prefix. This is done for a couple of important reasons.</p>
+<p>Consider the following member function of some class:</p>
+<pre><code class="language-cpp">// Some member function that sets private member m_name to the value of the name parameter
+void setName(std::string_view name)
+{
+    m_name = name;
+}
+</code></pre>
+<p>First, the “m_” prefix allows us to easily differentiate data members from function parameters or local variables within a member function. We can easily see that “m_name” is a member, and “name” is not. This helps make it clear that this function is changing the state of the class. And that is important because when we change the value of a data member, it persists beyond the scope of the member function (whereas changes to function parameters or local variables typically do not).</p>
+<p>This is the same reason we recommend using “s_” prefixes for local static variables, and “g_” prefixes for globals.</p>
+<p>Second, the “m_” prefix helps prevent naming collisions between private member variables and the names of local variables, function parameters, and member functions.</p>
+<p>If we had named our private member <code>name</code> instead of <code>m_name</code>, then:</p>
+<ul>
+<li>Our <code>name</code> function parameter would have shadowed the <code>name</code> private data member.</li>
+<li>If we had a member function named <code>name</code>, we’d get a compile error due to a redefinition of identifier <code>name</code>.</li>
+</ul>
+<div id="admonition-best-practices" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices"></a>
+</div>
+<div>
+<p>Best practice</p>
+<p>Consider naming your private data members starting with an “m_” prefix to help distinguish them from the names of local variables, function parameters, and member functions.</p>
+<p>Public members of classes may also follow this convention if desired. However, the public members of structs typically do not use this prefix since structs generally do not have many member functions (if any).</p>
+</div>
+</div>
+<h2 id="setting-access-levels-via-access-specifiers"><a class="header" href="#setting-access-levels-via-access-specifiers">Setting access levels via access specifiers</a></h2>
+<p>By default, the members of structs (and unions) are public, and the members of classes are private.</p>
+<p>However, we can explicitly set the access level of our members by using an <strong>access specifier</strong>. An access specifier sets the access level of <em>all members</em> that follow the specifier. C++ provides three access specifiers: <code>public:</code>, <code>private:</code>, and <code>protected:</code>.</p>
+<p>In the following example, we use both the <code>public:</code> access specifier to make sure the <code>print()</code> member function can be used by the public, and the <code>private:</code> access specifier to make our data members private.</p>
+<pre><code class="language-cpp">class Date
+{
+// Any members defined here would default to private
+
+public: // here's our public access specifier
+
+    void print() const // public due to above public: specifier
+    {
+        // members can access other private members
+        std::cout &lt;&lt; m_year &lt;&lt; '/' &lt;&lt; m_month &lt;&lt; '/' &lt;&lt; m_day;
+    }
+
+private: // here's our private access specifier 
+
+    int m_year { 2020 };  // private due to above private: specifier
+    int m_month { 14 }; // private due to above private: specifier
+    int m_day { 10 };   // private due to above private: specifier
+};
+
+int main()
+{
+    Date d{};
+    d.print();  // okay, main() allowed to access public members
+
+    return 0;
+}
+</code></pre>
+<p>This example compiles. Because <code>print()</code> is a public member due to the <code>public:</code> access specifier, <code>main()</code> (which is part of the public) is allowed to access it.</p>
+<p>Because we have private members, we can not aggregate initialize <code>d</code>. For this example, we’re using default member initialization instead (as a temporary workaround).</p>
+<p>Since classes default to private access, you can omit a leading <code>private:</code> access specifier:</p>
+<pre><code class="language-cpp">class Foo
+{
+// private access specifier not required here since classes default to private members
+    int m_something {};  // private by default
+};
+</code></pre>
+<p>However, because classes and structs have different access level defaults, many developers prefer to be explicit:</p>
+<pre><code class="language-cpp">class Foo
+{
+private: // redundant, but makes it clear that what follows is private
+    int m_something {};  // private by default
+};
+</code></pre>
+<p>Although this is technically redundant, use of an explicit <code>private:</code> specifier makes it clear that the following members are private, without having to infer what the default access level is based on whether <code>Foo</code> was defined as a class or a struct.</p>
+<h2 id="access-level-summary"><a class="header" href="#access-level-summary">Access level summary</a></h2>
+<p>Here’s a quick summary table of the different access levels:</p>
+<div class="table-wrapper"><table><thead><tr><th>Access level</th><th>Access specifier</th><th>Member access</th><th>Derived class access</th><th>Public access</th></tr></thead><tbody>
+<tr><td>Public</td><td>public:</td><td>yes</td><td>yes</td><td>yes</td></tr>
+<tr><td>Protected</td><td>protected:</td><td>yes</td><td>yes</td><td>no</td></tr>
+<tr><td>Private</td><td>private:</td><td>yes</td><td>no</td><td>no</td></tr>
+</tbody></table>
+</div>
+<p>A class type is allowed to use any number of access specifiers in any order, and they can be used repeatedly (e.g. you can have some public members, then some private ones, then more public ones).</p>
+<p>Most classes make use of both the private and public access specifiers for various members. We’ll see an example of this in the next section.</p>
+<h2 id="access-level-best-practices-for-structs-and-classes"><a class="header" href="#access-level-best-practices-for-structs-and-classes">Access level best practices for structs and classes</a></h2>
+<p>Now that we’ve covered what access levels are, let’s talk about how we should use them.</p>
+<p>Structs should avoid access specifiers altogether, meaning all struct members will be public by default. We want our structs to be aggregates, and aggregates can only have public members. Using the <code>public:</code> access specifier would be redundant with the default, and using <code>private:</code> or <code>protected:</code> would make the struct a non-aggregate.</p>
+<p>Classes should generally only have private (or protected) data members (either by using the default private access level, or the <code>private:</code> (or <code>protected:</code>) access specifier). We’ll discuss the rationale for this in the next lesson <a href="access-functions.html">14.6 -- Access functions</a>.</p>
+<p>Classes normally have public member functions (so those member functions can be used by the public after the object is created). However, occasionally member functions are made private (or protected) if they are not intended to be used by the public.</p>
+<div id="admonition-best-practices-1" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-1-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-1-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices-1"></a>
+</div>
+<div>
+<p>Best practice</p>
+<p>Classes should generally make member variables private (or protected), and member functions public.</p>
+<p>Structs should generally avoid using access specifiers (all members will default to public).</p>
+</div>
+</div>
+<h2 id="access-levels-work-on-a-per-class-basis"><a class="header" href="#access-levels-work-on-a-per-class-basis">Access levels work on a per-class basis</a></h2>
+<p>One nuance of C++ access levels that is often missed or misunderstood is that access to members is defined on a per-class basis, not on a per-object basis.</p>
+<p>You already know that a member function can directly access private members (of the implicit object). However, because access levels are per-class, not per-object, a member function can also directly access the private members of ANY other object of the same class type that is in scope.</p>
+<p>Let’s illustrate this with an example:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;string_view&gt;
+
+class Person
+{
+private:
+    std::string m_name{};
+
+public:
+    void kisses(const Person&amp; p) const
+    {
+        std::cout &lt;&lt; m_name &lt;&lt; " kisses " &lt;&lt; p.m_name &lt;&lt; '\n';
+    }
+
+    void setName(std::string_view name)
+    {
+        m_name = name;
+    }
+};
+
+int main()
+{
+    Person joe;
+    joe.setName("Joe");
+    
+    Person kate;
+    kate.setName("Kate");
+
+    joe.kisses(kate);
+
+    return 0;
+}
+</code></pre>
+<p>This prints:</p>
+<pre><code class="language-cpp">Joe kisses Kate
+</code></pre>
+<p>There are a few things to note here.</p>
+<p>First, <code>m_name</code> has been made private, so it can only be accessed by members of the <code>Person</code> class (not the public).</p>
+<p>Second, because our class has private members, it is not an aggregate, and we can’t use aggregate initialization to initialize our Person objects. As a workaround (until we cover a proper solution to this issue), we’ve created a public member function named <code>setName()</code> that allows us to assign a name to our Person objects.</p>
+<p>Third, because <code>kisses()</code> is a member function, it has direct access to private member <code>m_name</code>. However, you might be surprised to see that it also has direct access to <code>p.m_name</code>! This works because <code>p</code> is a <code>Person</code> object, and <code>kisses()</code> can access the private members of any <code>Person</code> object in scope!</p>
+<p>We’ll see additional examples where we make use of this in the chapter on operator overloading.</p>
+<h2 id="the-technical-and-practical-difference-between-structs-and-classes"><a class="header" href="#the-technical-and-practical-difference-between-structs-and-classes">The technical and practical difference between structs and classes</a></h2>
+<p>Now that we’ve covered access levels, we can finally discuss the technical differences between structs and classes. Ready?</p>
+<p>A class defaults its members to private, whereas a struct defaults its members to public.</p>
+<p>…</p>
+<p>Yup, that’s it.</p>
+<blockquote>
+<p><strong>Author’s note</strong></p>
+<p>Author’s note</p>
+<p>To be pedantic, there’s one more minor difference -- structs inherit from other class types publicly and classes inherit privately. We’ll cover what this means in the chapter on inheritance, but this particular point is practically irrelevant since you shouldn’t rely on the defaults for inheritance anyway.</p>
+</blockquote>
+<p>In practice, we use structs and classes differently.</p>
+<p>As a rule of thumb, use a struct when all of the following are true:</p>
+<ul>
+<li>You have a simple collection of data that doesn’t benefit from restricting access.</li>
+<li>Aggregate initialization is sufficient.</li>
+<li>You have no class invariants, setup needs, or cleanup needs.</li>
+</ul>
+<p>A few examples of where structs might be used: constexpr global program data, a point struct (a simple collection of int members that don’t benefit from being made private), structs used to return a set of data from a function.</p>
+<p>Use a class otherwise.</p>
+<p>We want our structs to be aggregates. So if you use any capabilities that makes your struct a non-aggregate, you should probably be using a class instead (and following all of the best practices for classes).</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="const-class-objects-and-const-member-functions.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="access-functions.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="const-class-objects-and-const-member-functions.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="access-functions.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

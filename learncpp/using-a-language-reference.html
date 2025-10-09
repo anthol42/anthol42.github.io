@@ -1,0 +1,389 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Using a language reference - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="using-a-language-reference"><a class="header" href="#using-a-language-reference">Using a language reference</a></h1>
+<p>Depending on where you’re at in your journey with learning programming languages (and specifically, C++), LearnCpp.com might be the only resource you’re using to learn C++ or to look something up. LearnCpp.com is designed to explain concepts in a beginner-friendly fashion, but it simply can’t cover every aspect of the language. As you begin to explore outside the topics that these tutorials cover, you’ll inevitably run into questions that these tutorials don’t answer. In that case, you’ll need to leverage outside resources.</p>
+<p>One such resource is <a href="https://stackoverflow.com">Stack Overflow</a>, where you can ask questions (or better, read the answer to the same question someone before you asked). But sometimes a better first stop is a reference guide. Unlike tutorials, which tend to focus on the most important topics and use informal/common language to make learning easier, reference guides describe C++ precisely using formal terminology. Because of this, reference material tends to be comprehensive, accurate, and… hard to understand.</p>
+<p>In this lesson, we’ll show how to use <a href="https://cppreference.com">cppreference</a>, a popular standard reference that we refer to throughout the lessons, by researching 3 examples.</p>
+<h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
+<p>Cppreference greets you with an <a href="https://en.cppreference.com/w/cpp">overview</a> of the core language and libraries:</p>
+<p><img src="https://www.learncpp.com/blog/wp-content/uploads/images/CppTutorial/cppreference/overview-min.png" alt="cppreference overview" /></p>
+<p>From here, you can get to everything cppreference has to offer, but it’s easier to use the search function, or a search engine. The overview is a great place to visit once you’ve finished the tutorials on LearnCpp.com, to delve deeper into the libraries, and to see what else the language has to offer that you might not be aware of.</p>
+<p>The upper half of the table shows features currently in the language, while the bottom half shows technical specifications, which are features that may or may not be added to C++ in a future version, or have already been partially accepted into the language. This can be useful if you want to see what new capabilities are coming soon.</p>
+<p>Starting with C++11, cppreference marks all features with the language standard version they’ve been added in. The standard version is the little green number you can see next to some of the links in the above image. Features without a version number have been available since C++98/03. The version numbers are not only in the overview, but everywhere on cppreference, letting you know exactly what you can or cannot use in a specific C++ version.</p>
+<div id="admonition-warning" class="admonition admonish-warning" role="note" aria-labelledby="admonition-warning-title">
+<div class="admonition-title">
+<div id="admonition-warning-title">
+<p>Warning</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-warning"></a>
+</div>
+<div>
+<p>Warning</p>
+<p>If you use a search engine and a technical specification has just been accepted into the standard, you might get linked to a technical specification rather than the official reference, which can differ.</p>
+</div>
+</div>
+<blockquote>
+<p><strong>Tip</strong></p>
+<p>Tip</p>
+<p>Cppreference is a reference for both C++ and C. Since C++ shares some function names with C, you may find yourself in the C reference after searching for something. The URL and the navigation bar at the top of cppreference always show you if you’re browsing the C or C++ reference.</p>
+</blockquote>
+<h2 id="stdstringlength"><a class="header" href="#stdstringlength">std::string::length</a></h2>
+<p>We’ll start by researching a function that you know from a previous lesson, <code>std::string::length</code>, which returns the length of a string.</p>
+<p>On the top right of cppreference, search for “string”. Doing so shows a long list of types and functions, of which only the top is relevant for now.</p>
+<p><img src="https://www.learncpp.com/blog/wp-content/uploads/images/CppTutorial/cppreference/string-search-ddg-min.png" alt="string search" /></p>
+<p>We could have searched for “string length” right away, but for the purpose of showing as much as possible in this lesson, we’re taking the long route. Clicking on “Strings library” takes us to a page talking about the various kinds of strings that C++ supports.</p>
+<p><img src="https://www.learncpp.com/blog/wp-content/uploads/images/CppTutorial/cppreference/strings-lib-min.png" alt="strings library page" /></p>
+<p>If we look under the “std::basic_string” section, we can see a list of typedefs, and within that list is std::string.</p>
+<p>Clicking on “std::string” leads to the page for <a href="https://en.cppreference.com/w/cpp/string/basic_string"><code>std::basic_string</code></a>. There is no page for <code>std::string</code>, because <code>std::string</code> is a <code>typedef</code> for <code>std::basic_string&lt;char&gt;</code>, which again can be seen in the <code>typedef</code> list:</p>
+<p><img src="https://www.learncpp.com/blog/wp-content/uploads/images/CppTutorial/cppreference/typedef-min.png" alt="typedef" /></p>
+<p>The <code>&lt;char&gt;</code> means that each character of the string is of type <code>char</code>. You’ll note that C++ offers other strings that use different character types. These can be useful when using Unicode instead of ASCII.</p>
+<p>Further down the same page, there’s a <a href="https://en.cppreference.com/w/cpp/string/basic_string#Member_functions">list of member functions</a> (the behaviors that a type has). If you want to know what you can do with a type, this list is very convenient. In this list, you’ll find a row for <code>length</code> (and <code>size</code>).</p>
+<p>Following the link brings us to the detailed function description of <a href="https://en.cppreference.com/w/cpp/string/basic_string/size"><code>length</code> and <code>size</code></a>, which both do the same thing.</p>
+<p>The top of each page starts with a short summary of the feature and syntax, overloads, or declarations:</p>
+<p><img src="https://www.learncpp.com/blog/wp-content/uploads/images/CppTutorial/cppreference/string-length-overloads-min.png" alt="string length overloads" /></p>
+<p>The title of the page shows the name of the class and function with all template parameters. We can ignore this part. Below the title, we see all of the different function overloads (different versions of the function that share the same name) and which language standard they apply to.</p>
+<p>Below that, we can see the parameters that the function takes, and what the return value means.</p>
+<p>Because <code>std::string::length</code> is a simple function, there’s not a lot of content on this page. Many pages show example uses of the feature they’re documenting, as does this one:</p>
+<p><img src="https://www.learncpp.com/blog/wp-content/uploads/images/CppTutorial/cppreference/string-length-example-min.png" alt="string length example" /></p>
+<p>While you’re still learning C++, there will be features in the examples that you haven’t seen before. If there are enough examples, you’re probably able to understand a sufficient amount of it to get an idea of how the function is used and what it does. If the example is too complicated, you can search for an example somewhere else or read the reference of the parts you don’t understand (you can click on functions and types in the examples to see what they do).</p>
+<p>Now we know what <code>std::string::length</code> does, but we knew that before. Let’s have a look at something new!</p>
+<h2 id="stdcinignore"><a class="header" href="#stdcinignore">std::cin.ignore</a></h2>
+<p>In lesson <a href="stdcin-and-handling-invalid-input.html">9.5 -- std::cin and handling invalid input</a>, we talked about <code>std::cin.ignore</code>, which is used to ignore everything up to a line break. One of the parameters of this function is some long and verbose value. What was that again? Can’t you just use a big number? What does this argument do anyway? Let’s figure it out!</p>
+<p>Typing “std::cin.ignore” into the cppreference search yields the following results:</p>
+<p><img src="https://www.learncpp.com/blog/wp-content/uploads/images/CppTutorial/cppreference/ignore-ddg-min.png" alt="Search engine results" /></p>
+<ul>
+<li><code>std::cin, std::wcin</code>  - We want <code>.ignore</code>, not plain <code>std::cin</code>.</li>
+<li><code>std::basic_istream&lt;CharT,Traits&gt;::ignore</code> - Eew, what is this? Let’s skip for now.</li>
+<li><code>std::ignore</code> - No, that’s not it.</li>
+<li><code>std::basic_istream</code> - That’s not it either.</li>
+</ul>
+<p>It’s not there, what now? Let’s go to <a href="https://en.cppreference.com/w/cpp/io/cin"><code>std::cin</code></a> and work our way from there. There’s nothing immediately obvious on that page. On the top, we can see the declaration of <code>std::cin</code> and <code>std::wcin</code>, and it tells us which header we need to include to use <code>std::cin</code>:</p>
+<p><img src="https://www.learncpp.com/blog/wp-content/uploads/images/CppTutorial/cppreference/cintop-min.png" alt="Declaration" /></p>
+<p>We can see that <code>std::cin</code> is an object of type <code>std::istream</code>. Let’s follow the link to <a href="https://en.cppreference.com/w/cpp/io/basic_istream"><code>std::istream</code></a>:</p>
+<p><img src="https://www.learncpp.com/blog/wp-content/uploads/images/CppTutorial/cppreference/basic_istream-min.png" alt="basic_istream" /></p>
+<p>Hold up! We’ve seen <code>std::basic_istream</code> before when we searched for “std::cin.ignore” in our search engine. It turns out that <code>istream</code> is a typedef name for <code>basic_istream</code>, so maybe our search wasn’t so wrong after all.</p>
+<p>Scrolling down on that page, we’re greeted with familiar functions:</p>
+<p><img src="https://www.learncpp.com/blog/wp-content/uploads/images/CppTutorial/cppreference/members-min.png" alt="Member functions" /></p>
+<p>We’ve used many of these functions already: <code>operator&gt;&gt;</code>, <code>get</code>, <code>getline</code>, <code>ignore</code>. Scroll around on that page to get an idea of what else there is in <code>std::cin</code>. Then click <a href="https://en.cppreference.com/w/cpp/io/basic_istream/ignore"><code>ignore</code></a>, since that’s what we’re interested in.</p>
+<p><img src="https://www.learncpp.com/blog/wp-content/uploads/images/CppTutorial/cppreference/ignore-top-min.png" alt="ignore" /></p>
+<p>On the top of the page there’s the function signature and a description of what the function and its two parameters do. The <code>=</code> signs after the parameters indicate a <strong>default argument</strong> (we cover this in lesson <a href="default-arguments.html">11.5 -- Default arguments</a>). If we don’t provide an argument for a parameter that has a default value, the default value is used.</p>
+<p>The first bullet point answers all of our questions. We can see that <code>std::numeric_limits&lt;std::streamsize&gt;::max()</code> has special meaning to <code>std::cin.ignore</code>, in that it disables the character count check. This means <code>std::cin.ignore</code> will continue ignoring characters until it finds the delimiter, or until it runs out of characters to look at.</p>
+<p>Many times, you don’t need to read the entire description of a function if you already know it but forgot what the parameters or return value mean. In such situations, reading the parameter or return value description suffices.</p>
+<p><img src="https://www.learncpp.com/blog/wp-content/uploads/images/CppTutorial/cppreference/parameters-return-min.png" alt="Parameters and return value" /></p>
+<p>The parameter description is brief. It doesn’t contain the special handling of <code>std::numeric_limits&lt;std::streamsize&gt;::max()</code> or the other stop conditions, but serves as a good reminder.</p>
+<h2 id="a-language-grammar-example"><a class="header" href="#a-language-grammar-example">A language grammar example</a></h2>
+<p>Alongside the standard library, cppreference also documents the language grammar. Here’s a valid program:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int getUserInput()
+{
+  int i{};
+  std::cin &gt;&gt; i;
+  return i;
+}
+
+int main()
+{
+  std::cout &lt;&lt; "How many bananas did you eat today? \n";
+
+  if (int iBananasEaten{ getUserInput() }; iBananasEaten &lt;= 2)
+  {
+    std::cout &lt;&lt; "Yummy\n";
+  }
+  else
+  {
+    std::cout &lt;&lt; iBananasEaten &lt;&lt; " is a lot!\n";
+  }
+
+  return 0;  
+}
+</code></pre>
+<p>Why is there a variable definition inside the condition of the <code>if-statement</code>? Let’s use cppreference to figure out what it does by searching for “cppreference if statement” in our favorite search engine. Doing so leads us to <a href="https://en.cppreference.com/w/cpp/language/if">if statements</a>. At the top, there’s a syntax reference.</p>
+<p><img src="https://www.learncpp.com/blog/wp-content/uploads/images/CppTutorial/cppreference/syntax-min.png" alt="" /></p>
+<p>Look at the syntax for the <code>if-statement</code>. If you remove all of the optional parts, you get an <code>if-statement</code> that you already know. Before the <code>condition</code>, there’s an optional <code>init-statement</code>, that looks like what’s happening in the code above.</p>
+<pre><code class="language-cpp">if ( init-statement condition ) statement-true
+if ( init-statement condition ) statement-true else statement-false
+</code></pre>
+<p>Below the syntax reference, there’s an explanation of each part of the syntax, including the <code>init-statement</code>. It says that the <code>init-statement</code> is typically a declaration of a variable with an initializer.</p>
+<p>Following the syntax is an explanation of <code>if-statements</code> and simple examples:</p>
+<p><img src="https://www.learncpp.com/blog/wp-content/uploads/images/CppTutorial/cppreference/explanation-min.png" alt="Explanation on examples" /></p>
+<p>We already know how <code>if-statements</code> work, and the examples don’t include an <code>init-statement</code>, so we scroll down a little to find a section dedicated to <code>if-statements</code> with initializers:</p>
+<p><img src="https://www.learncpp.com/blog/wp-content/uploads/images/CppTutorial/cppreference/if-init-min.png" alt="If Statements with Initializer" /></p>
+<p>First, it is shown how the <code>init-statement</code> can be written without actually using an <code>init-statement</code>. Now we know what the code in question is doing. It’s a normal variable declaration, just merged into the <code>if-statement</code>.</p>
+<p>The sentence after that is interesting, because it lets us know that the names from the <code>init-statement</code> are available in <em>both</em> statements (<code>statement-true</code> and <code>statement-false</code>). This may be surprising, since you might otherwise assume the variable is only available in the <code>statement-true</code>.</p>
+<p>The <code>init-statement</code> examples use features and types that we haven’t covered yet. You don’t have to understand everything you see to understand how the <code>init-statement</code> works. Let’s skip everything that’s too confusing until we find something we can work with:</p>
+<pre><code class="language-cpp">// Iterators, we don't know them. Skip.
+if (auto it = m.find(10); it != m.end()) { return it-&gt;second.size(); }
+
+// [10], what's that? Skip.
+if (char buf[10]; std::fgets(buf, 10, stdin)) { m[0] += buf; }
+
+// std::lock_guard, we don't know that, but it's some type. We know what types are!
+if (std::lock_guard lock(mx); shared_flag) { unsafe_ping(); shared_flag = false; }
+
+// This is easy, that's an int!
+if (int s; int count = ReadBytesWithSignal(&amp;s)) { publish(count); raise(s); }
+
+// Whew, no thanks!
+if (auto keywords = {"if", "for", "while"};
+    std::any_of(keywords.begin(), keywords.end(),
+                [&amp;s](const char* kw) { return s == kw; })) {
+  std::cerr &lt;&lt; "Token must not be a keyword\n";
+}
+</code></pre>
+<p>The easiest example seems to be the one with an <code>int</code>. Then we look after the semicolon and there’s another definition, odd… Let’s go back to the <code>std::lock_guard</code> example.</p>
+<pre><code class="language-cpp">if (std::lock_guard lock(mx); shared_flag)
+{
+  unsafe_ping();
+  shared_flag = false;
+}
+</code></pre>
+<p>From this, it’s relatively easy to see how an <code>init-statement</code> works. Define some variable (<code>lock</code>), then a semicolon, then the condition. That’s exactly what happened in our example.</p>
+<h2 id="a-warning-about-the-accuracy-of-cppreference"><a class="header" href="#a-warning-about-the-accuracy-of-cppreference">A warning about the accuracy of cppreference</a></h2>
+<p>Cppreference is not an official documentation source -- rather, it is a wiki. With wikis, anyone can add and modify content -- the content is sourced from the community. Although this means that it’s easy for someone to add wrong information, that misinformation is typically quickly caught and removed, making cppreference a reliable source.</p>
+<p>The only official source for C++ is <a href="https://isocpp.org/std/the-standard">the standard</a> (Free drafts on <a href="https://github.com/cplusplus/draft/tree/master/papers">github</a>), which is a formal document and not easily usable as a reference.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="chapter-13-summary-and-quiz.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="chapter-Introduction_to_Classes.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="chapter-13-summary-and-quiz.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="chapter-Introduction_to_Classes.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

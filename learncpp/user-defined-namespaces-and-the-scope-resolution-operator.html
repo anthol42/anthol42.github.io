@@ -1,0 +1,726 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>User-defined namespaces and the scope resolution operator - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="user-defined-namespaces-and-the-scope-resolution-operator"><a class="header" href="#user-defined-namespaces-and-the-scope-resolution-operator">User-defined namespaces and the scope resolution operator</a></h1>
+<p>In lesson <a href="naming-collisions-and-an-introduction-to-namespaces.html">2.9 -- Naming collisions and an introduction to namespaces</a>, we introduced the concept of <code>naming collisions</code> and <code>namespaces</code>. As a reminder, a naming collision occurs when two identical identifiers are introduced into the same scope, and the compiler can’t disambiguate which one to use. When this happens, compiler or linker will produce an error because they do not have enough information to resolve the ambiguity.</p>
+<blockquote>
+<p><strong>Key insight</strong></p>
+<p>As programs become larger, the number of identifiers increases, which in turn causes the probability of a naming collision occurring to increase significantly. Because every name in a given scope can potentially collide with every other name in the same scope, a linear increase in identifiers will result in an exponential increase in potential collisions! This is one of the key reasons for defining identifiers in the smallest scope possible.</p>
+</blockquote>
+<p>Let’s revisit an example of a naming collision, and then show how we can improve things using namespaces. In the following example, <code>foo.cpp</code> and <code>goo.cpp</code> are the source files that contain functions that do different things but have the same name and parameters.</p>
+<p>foo.cpp:</p>
+<pre><code class="language-cpp">// This doSomething() adds the value of its parameters
+int doSomething(int x, int y)
+{
+    return x + y;
+}
+</code></pre>
+<p>goo.cpp:</p>
+<pre><code class="language-cpp">// This doSomething() subtracts the value of its parameters
+int doSomething(int x, int y)
+{
+    return x - y;
+}
+</code></pre>
+<p>main.cpp:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int doSomething(int x, int y); // forward declaration for doSomething
+
+int main()
+{
+    std::cout &lt;&lt; doSomething(4, 3) &lt;&lt; '\n'; // which doSomething will we get?
+    return 0;
+}
+</code></pre>
+<p>If this project contains only <code>foo.cpp</code> <em>or</em> <code>goo.cpp</code> (but not both), it will compile and run without incident. However, by compiling both into the same program, we have now introduced two different functions with the same name and parameters into the same scope (the global scope), which causes a naming collision. As a result, the linker will issue an error:</p>
+<pre><code class="language-cpp">goo.cpp:3: multiple definition of `doSomething(int, int)'; foo.cpp:3: first defined here
+</code></pre>
+<p>Note that this error happens at the point of redefinition, so it doesn’t matter whether function <code>doSomething</code> is ever called.</p>
+<p>One way to resolve this would be to rename one of the functions, so the names no longer collide. But this would also require changing the names of all the function calls, which can be a pain, and is subject to error. A better way to avoid collisions is to put your functions into your own namespaces. For this reason the standard library was moved into the <code>std</code> namespace.</p>
+<h2 id="defining-your-own-namespaces"><a class="header" href="#defining-your-own-namespaces">Defining your own namespaces</a></h2>
+<p>C++ allows us to define our own namespaces via the <code>namespace</code> keyword. Namespaces that you create in your own programs are casually called <strong>user-defined namespaces</strong> (though it would be more accurate to call them <strong>program-defined namespaces</strong>).</p>
+<p>The syntax for a namespace is as follows:</p>
+<pre><code class="language-cpp">namespace NamespaceIdentifier
+{
+    // content of namespace here
+}
+</code></pre>
+<p>We start with the <code>namespace</code> keyword, followed by an identifier for the namespace, and then curly braces with the content of the namespace inside.</p>
+<p>Historically, namespace names have not been capitalized, and many style guides still recommend this convention.</p>
+<blockquote>
+<p><strong>For advanced readers</strong></p>
+<p>Some reasons to prefer namespace names starting with a capital letter:</p>
+<ul>
+<li>It is convention to name program-defined types starting with a capital letter. Using the same convention for program-defined namespaces is consistent (especially when using a qualified name such as <code>Foo::x</code>, where <code>Foo</code> could be a namespace or a class type).</li>
+<li>It helps prevent naming collisions with other system-provided or library-provided lower-cased names.</li>
+<li>The C++20 standards document uses this style.</li>
+<li>The C++ Core guidelines document uses this style.</li>
+</ul>
+</blockquote>
+<p>We recommend starting namespace names with a capital letter. However, either style should be seen as acceptable.</p>
+<p>A namespace must be defined either in the global scope, or inside another namespace. Much like the content of a function, the content of a namespace is conventionally indented one level. You may occasionally see an optional semicolon placed after the closing brace of a namespace.</p>
+<p>Here is an example of the files in the prior example rewritten using namespaces:</p>
+<p>foo.cpp:</p>
+<pre><code class="language-cpp">namespace Foo // define a namespace named Foo
+{
+    // This doSomething() belongs to namespace Foo
+    int doSomething(int x, int y)
+    {
+        return x + y;
+    }
+}
+</code></pre>
+<p>goo.cpp:</p>
+<pre><code class="language-cpp">namespace Goo // define a namespace named Goo
+{
+    // This doSomething() belongs to namespace Goo
+    int doSomething(int x, int y)
+    {
+        return x - y;
+    }
+}
+</code></pre>
+<p>Now <code>doSomething()</code> inside of <code>foo.cpp</code> is inside the <code>Foo</code> namespace, and the <code>doSomething()</code> inside of <code>goo.cpp</code> is inside the <code>Goo</code> namespace. Let’s see what happens when we recompile our program.</p>
+<p>main.cpp:</p>
+<pre><code class="language-cpp">int doSomething(int x, int y); // forward declaration for doSomething
+
+int main()
+{
+    std::cout &lt;&lt; doSomething(4, 3) &lt;&lt; '\n'; // which doSomething will we get?
+    return 0;
+}
+</code></pre>
+<p>The answer is that we now get another error!</p>
+<pre><code class="language-cpp">ConsoleApplication1.obj : error LNK2019: unresolved external symbol "int __cdecl doSomething(int,int)" (?doSomething@@YAHHH@Z) referenced in function _main
+</code></pre>
+<p>In this case, the compiler was satisfied (by our forward declaration), but the linker could not find a definition for <code>doSomething</code> in the global namespace. This is because both of our versions of <code>doSomething</code> are no longer in the global namespace! They are now in the scope of their respective namespaces!</p>
+<p>There are two different ways to tell the compiler which version of <code>doSomething()</code> to use, via the <code>scope resolution operator</code>, or via <code>using statements</code> (which we’ll discuss in a later lesson in this chapter).</p>
+<p>For the subsequent examples, we’ll collapse our examples down to a one-file solution for ease of reading.</p>
+<h2 id="accessing-a-namespace-with-the-scope-resolution-operator-"><a class="header" href="#accessing-a-namespace-with-the-scope-resolution-operator-">Accessing a namespace with the scope resolution operator (::)</a></h2>
+<p>The best way to tell the compiler to look in a particular namespace for an identifier is to use the <strong>scope resolution operator</strong> (::). The scope resolution operator tells the compiler that the identifier specified by the right-hand operand should be looked for in the scope of the left-hand operand.</p>
+<p>Here is an example of using the scope resolution operator to tell the compiler that we explicitly want to use the version of <code>doSomething()</code> that lives in the <code>Foo</code> namespace:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+namespace Foo // define a namespace named Foo
+{
+    // This doSomething() belongs to namespace Foo
+    int doSomething(int x, int y)
+    {
+        return x + y;
+    }
+}
+
+namespace Goo // define a namespace named Goo
+{
+    // This doSomething() belongs to namespace Goo
+    int doSomething(int x, int y)
+    {
+        return x - y;
+    }
+}
+
+int main()
+{
+    std::cout &lt;&lt; Foo::doSomething(4, 3) &lt;&lt; '\n'; // use the doSomething() that exists in namespace Foo
+    return 0;
+}
+</code></pre>
+<p>This produces the expected result:</p>
+<pre><code class="language-cpp">7
+</code></pre>
+<p>If we wanted to use the version of <code>doSomething()</code> that lives in <code>Goo</code> instead:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+namespace Foo // define a namespace named Foo
+{
+    // This doSomething() belongs to namespace Foo
+    int doSomething(int x, int y)
+    {
+        return x + y;
+    }
+}
+
+namespace Goo // define a namespace named Goo
+{
+    // This doSomething() belongs to namespace Goo
+    int doSomething(int x, int y)
+    {
+        return x - y;
+    }
+}
+
+int main()
+{
+    std::cout &lt;&lt; Goo::doSomething(4, 3) &lt;&lt; '\n'; // use the doSomething() that exists in namespace Goo
+    return 0;
+}
+</code></pre>
+<p>This produces the result:</p>
+<pre><code class="language-cpp">1
+</code></pre>
+<p>The scope resolution operator is great because it allows us to <em>explicitly</em> pick which namespace we want to look in, so there’s no potential ambiguity. We can even do the following:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+namespace Foo // define a namespace named Foo
+{
+    // This doSomething() belongs to namespace Foo
+    int doSomething(int x, int y)
+    {
+        return x + y;
+    }
+}
+
+namespace Goo // define a namespace named Goo
+{
+    // This doSomething() belongs to namespace Goo
+    int doSomething(int x, int y)
+    {
+        return x - y;
+    }
+}
+
+int main()
+{
+    std::cout &lt;&lt; Foo::doSomething(4, 3) &lt;&lt; '\n'; // use the doSomething() that exists in namespace Foo
+    std::cout &lt;&lt; Goo::doSomething(4, 3) &lt;&lt; '\n'; // use the doSomething() that exists in namespace Goo
+    return 0;
+}
+</code></pre>
+<p>This produces the result:</p>
+<pre><code class="language-cpp">7
+1
+</code></pre>
+<h2 id="using-the-scope-resolution-operator-with-no-name-prefix"><a class="header" href="#using-the-scope-resolution-operator-with-no-name-prefix">Using the scope resolution operator with no name prefix</a></h2>
+<p>The scope resolution operator can also be used in front of an identifier without providing a namespace name (e.g. <code>::doSomething</code>). In such a case, the identifier (e.g. <code>doSomething</code>) is looked for in the global namespace.</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+void print() // this print() lives in the global namespace
+{
+	std::cout &lt;&lt; " there\n";
+}
+
+namespace Foo
+{
+	void print() // this print() lives in the Foo namespace
+	{
+		std::cout &lt;&lt; "Hello";
+	}
+}
+
+int main()
+{
+	Foo::print(); // call print() in Foo namespace
+	::print();    // call print() in global namespace (same as just calling print() in this case)
+
+	return 0;
+}
+</code></pre>
+<p>In the above example, the <code>::print()</code> performs the same as if we’d called <code>print()</code> with no scope resolution, so use of the scope resolution operator is superfluous in this case. But the next example will show a case where the scope resolution operator with no namespace can be useful.</p>
+<h2 id="identifier-resolution-from-within-a-namespace"><a class="header" href="#identifier-resolution-from-within-a-namespace">Identifier resolution from within a namespace</a></h2>
+<p>If an identifier inside a namespace is used and no scope resolution is provided, the compiler will first try to find a matching declaration in that same namespace. If no matching identifier is found, the compiler will then check each containing namespace in sequence to see if a match is found, with the global namespace being checked last.</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+void print() // this print() lives in the global namespace
+{
+	std::cout &lt;&lt; " there\n";
+}
+
+namespace Foo
+{
+	void print() // this print() lives in the Foo namespace
+	{
+		std::cout &lt;&lt; "Hello";
+	}
+
+	void printHelloThere()
+	{
+		print();   // calls print() in Foo namespace
+		::print(); // calls print() in global namespace
+	}
+}
+
+int main()
+{
+	Foo::printHelloThere();
+
+	return 0;
+}
+</code></pre>
+<p>This prints:</p>
+<pre><code class="language-cpp">Hello there
+</code></pre>
+<p>In the above example, <code>print()</code> is called with no scope resolution provided. Because this use of <code>print()</code> is inside the <code>Foo</code> namespace, the compiler will first see if a declaration for <code>Foo::print()</code> can be found. Since one exists, <code>Foo::print()</code> is called.</p>
+<p>If <code>Foo::print()</code> had not been found, the compiler would have checked the containing namespace (in this case, the global namespace) to see if it could match a <code>print()</code> there.</p>
+<p>Note that we also make use of the scope resolution operator with no namespace (<code>::print()</code>) to explicitly call the global version of <code>print()</code>.</p>
+<h2 id="forward-declaration-of-content-in-namespaces"><a class="header" href="#forward-declaration-of-content-in-namespaces">Forward declaration of content in namespaces</a></h2>
+<p>In lesson <a href="header-files.html">2.11 -- Header files</a>, we discussed how we can use header files to propagate forward declarations. For identifiers inside a namespace, those forward declarations also need to be inside the same namespace:</p>
+<p>add.h</p>
+<pre><code class="language-cpp">#ifndef ADD_H
+#define ADD_H
+
+namespace BasicMath
+{
+    // function add() is part of namespace BasicMath
+    int add(int x, int y);
+}
+
+#endif
+</code></pre>
+<p>add.cpp</p>
+<pre><code class="language-cpp">#include "add.h"
+
+namespace BasicMath
+{
+    // define the function add() inside namespace BasicMath
+    int add(int x, int y)
+    {
+        return x + y;
+    }
+}
+</code></pre>
+<p>main.cpp</p>
+<pre><code class="language-cpp">#include "add.h" // for BasicMath::add()
+
+#include &lt;iostream&gt;
+
+int main()
+{
+    std::cout &lt;&lt; BasicMath::add(4, 3) &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>If the forward declaration for <code>add()</code> wasn’t placed inside namespace <code>BasicMath</code>, then <code>add()</code> would be declared in the global namespace instead, and the compiler would complain that it hadn’t seen a declaration for the call to <code>BasicMath::add(4, 3)</code>. If the definition of function <code>add()</code> wasn’t inside namespace <code>BasicMath</code>, the linker would complain that it couldn’t find a matching definition for the call to <code>BasicMath::add(4, 3)</code>.</p>
+<h2 id="multiple-namespace-blocks-are-allowed"><a class="header" href="#multiple-namespace-blocks-are-allowed">Multiple namespace blocks are allowed</a></h2>
+<p>It’s legal to declare namespace blocks in multiple locations (either across multiple files, or multiple places within the same file). All declarations within the namespace are considered part of the namespace.</p>
+<p>circle.h:</p>
+<pre><code class="language-cpp">#ifndef CIRCLE_H
+#define CIRCLE_H
+
+namespace BasicMath
+{
+    constexpr double pi{ 3.14 };
+}
+
+#endif
+</code></pre>
+<p>growth.h:</p>
+<pre><code class="language-cpp">#ifndef GROWTH_H
+#define GROWTH_H
+
+namespace BasicMath
+{
+    // the constant e is also part of namespace BasicMath
+    constexpr double e{ 2.7 };
+}
+
+#endif
+</code></pre>
+<p>main.cpp:</p>
+<pre><code class="language-cpp">#include "circle.h" // for BasicMath::pi
+#include "growth.h" // for BasicMath::e
+
+#include &lt;iostream&gt;
+
+int main()
+{
+    std::cout &lt;&lt; BasicMath::pi &lt;&lt; '\n';
+    std::cout &lt;&lt; BasicMath::e &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>This works exactly as you would expect:</p>
+<pre><code class="language-cpp">3.14
+2.7
+</code></pre>
+<p>The standard library makes extensive use of this feature, as each standard library header file contains its declarations inside a <code>namespace std</code> block contained within that header file. Otherwise the entire standard library would have to be defined in a single header file!</p>
+<p>Note that this capability also means you could add your own functionality to the <code>std</code> namespace. Doing so causes undefined behavior most of the time, because the <code>std</code> namespace has a special rule prohibiting extension from user code.</p>
+<div id="admonition-warning" class="admonition admonish-warning" role="note" aria-labelledby="admonition-warning-title">
+<div class="admonition-title">
+<div id="admonition-warning-title">
+<p>Warning</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-warning"></a>
+</div>
+<div>
+<p>Do not add custom functionality to the std namespace.</p>
+</div>
+</div>
+<h2 id="nested-namespaces"><a class="header" href="#nested-namespaces">Nested namespaces</a></h2>
+<p>Namespaces can be nested inside other namespaces. For example:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+namespace Foo
+{
+    namespace Goo // Goo is a namespace inside the Foo namespace
+    {
+        int add(int x, int y)
+        {
+            return x + y;
+        }
+    }
+}
+
+int main()
+{
+    std::cout &lt;&lt; Foo::Goo::add(1, 2) &lt;&lt; '\n';
+    return 0;
+}
+</code></pre>
+<p>Note that because namespace <code>Goo</code> is inside of namespace <code>Foo</code>, we access <code>add</code> as <code>Foo::Goo::add</code>.</p>
+<p>Since C++17, nested namespaces can also be declared this way:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+namespace Foo::Goo // Goo is a namespace inside the Foo namespace (C++17 style)
+{
+    int add(int x, int y)
+    {
+        return x + y;
+    }
+}
+
+int main()
+{
+    std::cout &lt;&lt; Foo::Goo::add(1, 2) &lt;&lt; '\n';
+    return 0;
+}
+</code></pre>
+<p>This is equivalent to the prior example.</p>
+<p>If you later need to add declarations to the <code>Foo</code> namespace (only), you can define a separate <code>Foo</code> namespace to do so:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+namespace Foo::Goo // Goo is a namespace inside the Foo namespace (C++17 style)
+{
+    int add(int x, int y)
+    {
+        return x + y;
+    }
+}
+
+namespace Foo
+{
+     void someFcn() {} // This function is in Foo only
+}
+
+int main()
+{
+    std::cout &lt;&lt; Foo::Goo::add(1, 2) &lt;&lt; '\n';
+    return 0;
+}
+</code></pre>
+<p>Whether you keep the separate <code>Foo::Goo</code> definition or nest <code>Goo</code> inside <code>Foo</code> is a stylistic choice.</p>
+<h2 id="namespace-aliases"><a class="header" href="#namespace-aliases">Namespace aliases</a></h2>
+<p>Because typing the qualified name of a variable or function inside a nested namespace can be painful, C++ allows you to create <strong>namespace aliases</strong>, which allow us to temporarily shorten a long sequence of namespaces into something shorter:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+namespace Foo::Goo
+{
+    int add(int x, int y)
+    {
+        return x + y;
+    }
+}
+
+int main()
+{
+    namespace Active = Foo::Goo; // active now refers to Foo::Goo
+
+    std::cout &lt;&lt; Active::add(1, 2) &lt;&lt; '\n'; // This is really Foo::Goo::add()
+
+    return 0;
+} // The Active alias ends here
+</code></pre>
+<p>One nice advantage of namespace aliases: If you ever want to move the functionality within <code>Foo::Goo</code> to a different place, you can just update the <code>Active</code> alias to reflect the new destination, rather than having to find/replace every instance of <code>Foo::Goo</code>.</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+ 
+namespace Foo::Goo
+{
+}
+
+namespace V2
+{
+    int add(int x, int y)
+    {
+        return x + y;
+    }
+}
+ 
+int main()
+{
+    namespace Active = V2; // active now refers to V2
+ 
+    std::cout &lt;&lt; Active::add(1, 2) &lt;&lt; '\n'; // We don't have to change this
+ 
+    return 0;
+}
+</code></pre>
+<h2 id="how-to-use-namespaces"><a class="header" href="#how-to-use-namespaces">How to use namespaces</a></h2>
+<p>It’s worth noting that namespaces in C++ were not originally designed as a way to implement an information hierarchy -- they were designed primarily as a mechanism for preventing naming collisions. As evidence of this, note that the entirety of the standard library lives under the single top-level namespace <code>std</code>. Newer standard library features that introduce lots of names have started using nested namespaces (e.g. <code>std::ranges</code>) to avoid naming collisions within the <code>std</code> namespace.</p>
+<ul>
+<li>Small applications developed for your own use typically do not need to be placed in namespaces. However, for larger personal projects that include lots of third party libraries, namespacing your code can help prevent naming collisions with libraries that aren’t properly namespaced.</li>
+</ul>
+<blockquote>
+<p><strong>Author’s note</strong></p>
+<p>The examples in these tutorials will typically not be namespaced unless we are illustrating something specific about namespaces, to help keep the examples concise.</p>
+</blockquote>
+<ul>
+<li>Any code that will be distributed to others should definitely be namespaced to prevent conflicts with the code it is integrated into. Often a single top-level namespace will suffice (e.g. <code>Foologger</code>). As an additional advantage, placing library code inside a namespace also allows the user to see the contents of your library by using their editor’s auto-complete and suggestion feature (e.g. if you type <code>Foologger</code>, autocomplete will show you all of the names inside <code>Foologger</code>).</li>
+<li>In multi-team organizations, two-level or even three-level namespaces are often used to prevent naming conflicts between code generated by different teams. These often take the form of one of the following:</li>
+</ul>
+<ol>
+<li>Project or library :: module (e.g. <code>Foologger::Lang</code>)</li>
+<li>Company or org :: project or library (e.g. <code>Foosoft::Foologger</code>)</li>
+<li>Company or org :: project or library :: module (e.g. <code>Foosoft::Foologger::Lang</code>)</li>
+</ol>
+<p>Use of module-level namespaces can help separate code that might be reusable later from application-specific code that will not be reusable. For example, physics and math functions could go into one namespace (e.g. <code>Math::</code>). Language and localization functions in another (e.g. <code>Lang::</code>). However, directory structures can also be used for this (with app-specific code in the project directory tree, and reusable code in a separate shared directory tree).</p>
+<p>In general, you should avoid deeply nested namespaces (more than 3 levels).</p>
+<blockquote>
+<p><strong>Related content</strong></p>
+<p>C++ provides other useful namespace functionality. We cover unnamed namespaces and inline namespaces later in this chapter, in lesson <a href="unnamed-and-inline-namespaces">7.14 -- Unnamed and inline namespaces</a>.</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="compound-statements-blocks.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="local-variables.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="compound-statements-blocks.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="local-variables.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

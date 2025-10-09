@@ -1,0 +1,584 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Multidimensional std::array - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="multidimensional-stdarray"><a class="header" href="#multidimensional-stdarray">Multidimensional std::array</a></h1>
+<p>In the prior lesson (<a href="multidimensional-c-style-arrays.html">17.12 -- Multidimensional C-style Arrays</a>), we discussed C-style multidimensional arrays.</p>
+<pre><code class="language-cpp">    // C-style 2d array
+    int arr[3][4] { 
+        { 1, 2, 3, 4 },
+        { 5, 6, 7, 8 },
+        { 9, 10, 11, 12 }};
+</code></pre>
+<p>But as you’re aware, we generally want to avoid C-style arrays (unless they are being used to store global data).</p>
+<p>In this lesson, we’ll take a look at how multidimensional arrays work with <code>std::array</code>.</p>
+<h2 id="there-is-no-standard-library-multidimensional-array-class"><a class="header" href="#there-is-no-standard-library-multidimensional-array-class">There is no standard library multidimensional array class</a></h2>
+<p>Note that <code>std::array</code> is implemented as a single-dimensional array. So the first question you should ask is, “is there a standard library class for multidimensional arrays?” And the answer is… no. Too bad. Womp womp.</p>
+<h2 id="a-two-dimensional-stdarray"><a class="header" href="#a-two-dimensional-stdarray">A two-dimensional <code>std::array</code></a></h2>
+<p>The canonical way to create a two-dimensional array of <code>std::array</code> is to create a <code>std::array</code> where the template type argument is another <code>std::array</code>. That leads to something like this:</p>
+<pre><code class="language-cpp">    std::array&lt;std::array&lt;int, 4&gt;, 3&gt; arr {{  // note double braces
+        { 1, 2, 3, 4 },
+        { 5, 6, 7, 8 },
+        { 9, 10, 11, 12 }}};
+</code></pre>
+<p>There are a number of “interesting” things to note about this:</p>
+<ul>
+<li>When initializing a multidimensional <code>std::array</code>, we need to use double-braces (we discuss why in lesson <a href="stdarray-of-class-types-and-brace-elision.html">17.4 -- std::array of class types, and brace elision</a>).</li>
+<li>The syntax is verbose and hard to read.</li>
+<li>Because of the way templates get nested, the array dimensions are switched. We want an array with 3 rows of 4 elements, so <code>arr[3][4]</code> is natural. <code>std::array&lt;std::array&lt;int, 4&gt;, 3&gt;</code> is backwards.</li>
+</ul>
+<p>Indexing a two-dimensional <code>std::array</code> element works just like indexing a two-dimensional C-style array:</p>
+<pre><code class="language-cpp">    std::cout &lt;&lt; arr[1][2]; // print the element in row 1, column 2
+</code></pre>
+<p>We can also pass a two-dimensional <code>std::array</code> to a function just like a one-dimensional <code>std::array</code>:</p>
+<pre><code class="language-cpp">#include &lt;array&gt;
+#include &lt;iostream&gt;
+
+template &lt;typename T, std::size_t Row, std::size_t Col&gt;
+void printArray(const std::array&lt;std::array&lt;T, Col&gt;, Row&gt; &amp;arr)
+{
+    for (const auto&amp; arow: arr)   // get each array row
+    {
+        for (const auto&amp; e: arow) // get each element of the row
+            std::cout &lt;&lt; e &lt;&lt; ' ';
+
+        std::cout &lt;&lt; '\n';
+    }
+}
+
+int main()
+{
+    std::array&lt;std::array&lt;int, 4&gt;, 3&gt;  arr {{
+        { 1, 2, 3, 4 },
+        { 5, 6, 7, 8 },
+        { 9, 10, 11, 12 }}};
+
+    printArray(arr);
+
+    return 0;
+}
+</code></pre>
+<p>Yuck. And this is for a two-dimensional <code>std::array</code>. A three-dimensional or higher <code>std::array</code> is even more verbose!</p>
+<h2 id="making-two-dimensional-stdarray-easier-using-an-alias-templates"><a class="header" href="#making-two-dimensional-stdarray-easier-using-an-alias-templates">Making two-dimensional <code>std::array</code> easier using an alias templates</a></h2>
+<p>In lesson <a href="typedefs-and-type-aliases.html">10.7 -- Typedefs and type aliases</a>, we introduced type aliases, and noted that one of the uses of type aliases is to make complex types simpler to use. However, with a normal type alias, we must explicitly specify all template arguments. e.g.</p>
+<pre><code class="language-cpp">using Array2dint34 = std::array&lt;std::array&lt;int, 4&gt;, 3&gt;;
+</code></pre>
+<p>This allows us to use <code>Array2dint34</code> wherever we want a 3×4 two-dimensional std::array of <code>int</code>. But note we’d need one such alias for every combination of element type and dimensions we want to use!</p>
+<p>This is a perfect place to use an alias template, which will lets us specify the element type, row length, and column length for a type alias as template arguments!</p>
+<pre><code class="language-cpp">// An alias template for a two-dimensional std::array
+template &lt;typename T, std::size_t Row, std::size_t Col&gt;
+using Array2d = std::array&lt;std::array&lt;T, Col&gt;, Row&gt;;
+</code></pre>
+<p>We can then use <code>Array2d&lt;int, 3, 4&gt;</code> anywhere we want a 3×4 two-dimensional std::array of <code>int</code>. That’s much better!</p>
+<p>Here’s a full example:</p>
+<pre><code class="language-cpp">#include &lt;array&gt;
+#include &lt;iostream&gt;
+
+// An alias template for a two-dimensional std::array
+template &lt;typename T, std::size_t Row, std::size_t Col&gt;
+using Array2d = std::array&lt;std::array&lt;T, Col&gt;, Row&gt;;
+
+// When using Array2d as a function parameter, we need to respecify the template parameters
+template &lt;typename T, std::size_t Row, std::size_t Col&gt;
+void printArray(const Array2d&lt;T, Row, Col&gt; &amp;arr)
+{
+    for (const auto&amp; arow: arr)   // get each array row
+    {
+        for (const auto&amp; e: arow) // get each element of the row
+            std::cout &lt;&lt; e &lt;&lt; ' ';
+
+        std::cout &lt;&lt; '\n';
+    }
+}
+
+int main()
+{
+    // Define a two-dimensional array of int with 3 rows and 4 columns
+    Array2d&lt;int, 3, 4&gt; arr {{
+        { 1, 2, 3, 4 },
+        { 5, 6, 7, 8 },
+        { 9, 10, 11, 12 }}};
+
+    printArray(arr);
+
+    return 0;
+}
+</code></pre>
+<p>Note how much more concise and easy to use this is!</p>
+<p>One neat thing about our alias template is that we can define our template parameters in whatever order we like. Since a <code>std::array</code> specifies element type first and then dimension, we stick with that convention. But we have the flexibility to define either <code>Row</code> or <code>Col</code> first. Since C-style array definitions are defined row-first, we define our alias template with <code>Row</code> before <code>Col</code>.</p>
+<p>This method also scales up nicely to higher-dimensional <code>std::array</code>:</p>
+<pre><code class="language-cpp">// An alias template for a three-dimensional std::array
+template &lt;typename T, std::size_t Row, std::size_t Col, std::size_t Depth&gt;
+using Array3d = std::array&lt;std::array&lt;std::array&lt;T, Depth&gt;, Col&gt;, Row&gt;;
+</code></pre>
+<h2 id="getting-the-dimensional-lengths-of-a-two-dimensional-array"><a class="header" href="#getting-the-dimensional-lengths-of-a-two-dimensional-array">Getting the dimensional lengths of a two-dimensional array</a></h2>
+<p>With a one-dimensional <code>std::array</code>, we can use the <code>size()</code> member function (or <code>std::size()</code>) to get the length of the array. But what do we do when we have a two-dimensional <code>std::array</code>? In this case, <code>size()</code> will only return the length of the first dimension.</p>
+<p>One seemingly appealing (but potentially dangerous) option is to get an element of the desired dimension, and then call <code>size()</code> on that element:</p>
+<pre><code class="language-cpp">#include &lt;array&gt;
+#include &lt;iostream&gt;
+
+// An alias template for a two-dimensional std::array
+template &lt;typename T, std::size_t Row, std::size_t Col&gt;
+using Array2d = std::array&lt;std::array&lt;T, Col&gt;, Row&gt;;
+
+int main()
+{
+    // Define a two-dimensional array of int with 3 rows and 4 columns
+    Array2d&lt;int, 3, 4&gt; arr {{
+        { 1, 2, 3, 4 },
+        { 5, 6, 7, 8 },
+        { 9, 10, 11, 12 }}};
+
+    std::cout &lt;&lt; "Rows: " &lt;&lt; arr.size() &lt;&lt; '\n';    // get length of first dimension (rows)
+    std::cout &lt;&lt; "Cols: " &lt;&lt; arr[0].size() &lt;&lt; '\n'; // get length of second dimension (cols), undefined behavior if length of first dimension is zero!
+
+    return 0;
+}
+</code></pre>
+<p>In order to get the length of the first dimension, we call <code>size()</code> on the array. To get the length of the second dimension, we first call <code>arr[0]</code> to get the first element, and then call <code>size()</code> on that. To get the length of the third dimension of a 3-dimensional array, we would call <code>arr[0][0].size()</code>.</p>
+<p>However, the above code is flawed, as it will produce undefined behavior if any dimension other than the last has a length of 0!</p>
+<p>A better option is to use a function template to return the length of the dimension directly from the associated non-type template parameter:</p>
+<pre><code class="language-cpp">#include &lt;array&gt;
+#include &lt;iostream&gt;
+
+// An alias template for a two-dimensional std::array
+template &lt;typename T, std::size_t Row, std::size_t Col&gt;
+using Array2d = std::array&lt;std::array&lt;T, Col&gt;, Row&gt;;
+
+// Fetch the number of rows from the Row non-type template parameter
+template &lt;typename T, std::size_t Row, std::size_t Col&gt;
+constexpr int rowLength(const Array2d&lt;T, Row, Col&gt;&amp;) // you can return std::size_t if you prefer
+{
+    return Row;
+}
+
+// Fetch the number of cols from the Col non-type template parameter
+template &lt;typename T, std::size_t Row, std::size_t Col&gt;
+constexpr int colLength(const Array2d&lt;T, Row, Col&gt;&amp;) // you can return std::size_t if you prefer
+{
+    return Col;
+}
+
+int main()
+{
+    // Define a two-dimensional array of int with 3 rows and 4 columns
+    Array2d&lt;int, 3, 4&gt; arr {{
+        { 1, 2, 3, 4 },
+        { 5, 6, 7, 8 },
+        { 9, 10, 11, 12 }}};
+
+    std::cout &lt;&lt; "Rows: " &lt;&lt; rowLength(arr) &lt;&lt; '\n'; // get length of first dimension (rows)
+    std::cout &lt;&lt; "Cols: " &lt;&lt; colLength(arr) &lt;&lt; '\n'; // get length of second dimension (cols)
+
+    return 0;
+}
+</code></pre>
+<p>This avoids any undefined behavior if the length of any dimension is zero, as it only uses the type information of the array, rather than the actual data of the array. This also allows us to easily return the length as an <code>int</code> if we desire (no static_cast is required, as converting from a <code>constexpr std::size_t</code> to <code>constexpr int</code> is non-narrowing, so an implicit conversion is fine).</p>
+<h2 id="flatting-a-two-dimensional-array"><a class="header" href="#flatting-a-two-dimensional-array">Flatting a two-dimensional array</a></h2>
+<p>Arrays with two or more dimensions have some challenges:</p>
+<ul>
+<li>They are more verbose to define and work with.</li>
+<li>It is awkward to get the length of dimensions greater than the first.</li>
+<li>They are increasingly hard to iterate over (requiring one more loop for each dimension).</li>
+</ul>
+<p>One approach to make multidimensional arrays easier to work with is to flatten them. <strong>Flattening</strong> an array is a process of reducing the dimensionality of an array (often down to a single dimension).</p>
+<p>For example, instead of creating a two-dimensional array with <code>Row</code> rows and <code>Col</code> columns, we can create a one-dimensional array with <code>Row * Col</code> elements. This gives us the same amount of storage using a single dimension.</p>
+<p>However, because our one-dimensional array only has a single dimension, we cannot work with it as a multidimensional array. To address this, we can provide an interface that mimics a multidimensional array. This interface will accept two-dimensional coordinates, and then map them to a unique position in the one-dimensional array.</p>
+<p>Here’s an example of that approach that works in C++11 or newer:</p>
+<pre><code class="language-cpp">#include &lt;array&gt;
+#include &lt;iostream&gt;
+#include &lt;functional&gt;
+
+// An alias template to allow us to define a one-dimensional std::array using two dimensions
+template &lt;typename T, std::size_t Row, std::size_t Col&gt;
+using ArrayFlat2d = std::array&lt;T, Row * Col&gt;;
+
+// A modifiable view that allows us to work with an ArrayFlat2d using two dimensions
+// This is a view, so the ArrayFlat2d being viewed must stay in scope
+template &lt;typename T, std::size_t Row, std::size_t Col&gt;
+class ArrayView2d
+{
+private:
+    // You might be tempted to make m_arr a reference to an ArrayFlat2d,
+    // but this makes the view non-copy-assignable since references can't be reseated.
+    // Using std::reference_wrapper gives us reference semantics and copy assignability.
+    std::reference_wrapper&lt;ArrayFlat2d&lt;T, Row, Col&gt;&gt; m_arr {};
+
+public:
+    ArrayView2d(ArrayFlat2d&lt;T, Row, Col&gt; &amp;arr)
+        : m_arr { arr }
+    {}
+
+    // Get element via single subscript (using operator[])
+    T&amp; operator[](int i) { return m_arr.get()[static_cast&lt;std::size_t&gt;(i)]; }
+    const T&amp; operator[](int i) const { return m_arr.get()[static_cast&lt;std::size_t&gt;(i)]; }
+
+    // Get element via 2d subscript (using operator(), since operator[] doesn't support multiple dimensions prior to C++23)
+    T&amp; operator()(int row, int col) { return m_arr.get()[static_cast&lt;std::size_t&gt;(row * cols() + col)]; }
+    const T&amp; operator()(int row, int col) const { return m_arr.get()[static_cast&lt;std::size_t&gt;(row * cols() + col)]; }
+
+    // in C++23, you can uncomment these since multidimensional operator[] is supported
+//    T&amp; operator[](int row, int col) { return m_arr.get()[static_cast&lt;std::size_t&gt;(row * cols() + col)]; }
+//    const T&amp; operator[](int row, int col) const { return m_arr.get()[static_cast&lt;std::size_t&gt;(row * cols() + col)]; }
+
+    int rows() const { return static_cast&lt;int&gt;(Row); }
+    int cols() const { return static_cast&lt;int&gt;(Col); }
+    int length() const { return static_cast&lt;int&gt;(Row * Col); }
+};
+
+int main()
+{
+    // Define a one-dimensional std::array of int (with 3 rows and 4 columns)
+    ArrayFlat2d&lt;int, 3, 4&gt; arr {
+        1, 2, 3, 4,
+        5, 6, 7, 8,
+        9, 10, 11, 12 };
+
+    // Define a two-dimensional view into our one-dimensional array
+    ArrayView2d&lt;int, 3, 4&gt; arrView { arr };
+
+    // print array dimensions
+    std::cout &lt;&lt; "Rows: " &lt;&lt; arrView.rows() &lt;&lt; '\n';
+    std::cout &lt;&lt; "Cols: " &lt;&lt; arrView.cols() &lt;&lt; '\n';
+
+    // print array using a single dimension
+    for (int i=0; i &lt; arrView.length(); ++i)
+        std::cout &lt;&lt; arrView[i] &lt;&lt; ' ';
+
+    std::cout &lt;&lt; '\n';
+
+    // print array using two dimensions
+    for (int row=0; row &lt; arrView.rows(); ++row)
+    {
+        for (int col=0; col &lt; arrView.cols(); ++col)
+            std::cout &lt;&lt; arrView(row, col) &lt;&lt; ' ';
+        std::cout &lt;&lt; '\n';
+    }
+
+    std::cout &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>This prints:</p>
+<pre><code class="language-cpp">Rows: 3
+Cols: 4
+1 2 3 4 5 6 7 8 9 10 11 12
+1 2 3 4
+5 6 7 8
+9 10 11 12
+</code></pre>
+<p>Because <code>operator[]</code> can only accept a single subscript prior to C++23, there are two alternate approaches:</p>
+<ul>
+<li>Use <code>operator()</code> instead, which can accept multiple subscripts. This lets you use <code>[]</code> for single index indexing and <code>()</code> for multiple-dimension indexing. We’ve opted for this approach above.</li>
+<li>Have <code>operator[]</code> return a subview that also overloads <code>operator[]</code> so that you can chain <code>operator[]</code>. This is more complex and doesn’t scale well to higher dimensions.</li>
+</ul>
+<p>In C++23, <code>operator[]</code> was extended to accept multiple subscripts, so you can overload it to handle both single and multiple subscripts (instead of using <code>operator()</code> for multiple subscripts).</p>
+<blockquote>
+<p><strong>Related content</strong></p>
+<p>Related content</p>
+<p>We cover <code>std::reference_wrapper</code> in lesson <a href="arrays-of-references-via-stdreference_wrapper">17.5 -- Arrays of references via std::reference_wrapper</a>.</p>
+</blockquote>
+<h2 id="stdmdspan-c23"><a class="header" href="#stdmdspan-c23">std::mdspan C++23</a></h2>
+<p>Introduced in C++23, <code>std::mdspan</code> is a modifiable view that provides a multidimensional array interface for a contiguous sequence of elements. By modifiable view, we mean that a <code>std::mdspan</code> is not just a read-only view (like <code>std::string_view</code>) -- if the underlying sequence of elements is non-const, those elements can be modified.</p>
+<p>The following example prints the same output as the prior example, but uses <code>std::mdspan</code> instead of our own custom view:</p>
+<pre><code class="language-cpp">#include &lt;array&gt;
+#include &lt;iostream&gt;
+#include &lt;mdspan&gt;
+
+// An alias template to allow us to define a one-dimensional std::array using two dimensions
+template &lt;typename T, std::size_t Row, std::size_t Col&gt;
+using ArrayFlat2d = std::array&lt;T, Row * Col&gt;;
+
+int main()
+{
+    // Define a one-dimensional std::array of int (with 3 rows and 4 columns)
+    ArrayFlat2d&lt;int, 3, 4&gt; arr {
+        1, 2, 3, 4,
+        5, 6, 7, 8,
+        9, 10, 11, 12 };
+
+    // Define a two-dimensional span into our one-dimensional array
+    // We must pass std::mdspan a pointer to the sequence of elements
+    // which we can do via the data() member function of std::array or std::vector
+    std::mdspan mdView { arr.data(), 3, 4 };
+
+    // print array dimensions
+    // std::mdspan calls these extents
+    std::size_t rows { mdView.extents().extent(0) };
+    std::size_t cols { mdView.extents().extent(1) };
+    std::cout &lt;&lt; "Rows: " &lt;&lt; rows &lt;&lt; '\n';
+    std::cout &lt;&lt; "Cols: " &lt;&lt; cols &lt;&lt; '\n';
+
+    // print array in 1d
+    // The data_handle() member gives us a pointer to the sequence of elements
+    // which we can then index
+    for (std::size_t i=0; i &lt; mdView.size(); ++i)
+        std::cout &lt;&lt; mdView.data_handle()[i] &lt;&lt; ' ';
+    std::cout &lt;&lt; '\n';
+
+    // print array in 2d
+    // We use multidimensional [] to access elements
+    for (std::size_t row=0; row &lt; rows; ++row)
+    {
+        for (std::size_t col=0; col &lt; cols; ++col)
+            std::cout &lt;&lt; mdView[row, col] &lt;&lt; ' ';
+        std::cout &lt;&lt; '\n';
+    }
+    std::cout &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>This should be fairly straightforward, but there are a few things worth noting:</p>
+<ul>
+<li><code>std::mdspan</code> let us define a view with as many dimensions as we want.</li>
+<li>The first parameter to the constructor of <code>std::mdspan</code> should be a pointer to the array data. This can be a decayed C-style array, or we can use the <code>data()</code> member function of <code>std::array</code> or <code>std::vector</code> to get this data.</li>
+<li>To index a <code>std::mdspan</code> in one-dimension, we must fetch the pointer to the array data, which we can do using the <code>data_handle()</code> member function. We can then subscript that.</li>
+<li>In C++23, <code>operator[]</code> accepts multiple indices, so we use <code>[row, col]</code> as our index instead of <code>[row][col]</code>.</li>
+</ul>
+<p>C++26 will include <code>std::mdarray</code>, which essentially combines <code>std::array</code> and <code>std::mdspan</code> into an owning multidimensional array!</p>
+<p>AI CONTENT END 1</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="multidimensional-c-style-arrays.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="chapter-17-summary-and-quiz.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="multidimensional-c-style-arrays.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="chapter-17-summary-and-quiz.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

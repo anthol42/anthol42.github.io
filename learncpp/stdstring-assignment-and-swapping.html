@@ -1,0 +1,272 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>std::string assignment and swapping - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="stdstring-assignment-and-swapping"><a class="header" href="#stdstring-assignment-and-swapping">std::string assignment and swapping</a></h1>
+<p><strong>String assignment</strong></p>
+<p>The easiest way to assign a value to a string is to use the overloaded operator= function. There is also an assign() member function that duplicates some of this functionality.</p>
+<div class="table-wrapper"><table><thead><tr><th></th></tr></thead><tbody>
+<tr><td><strong>string&amp; string::operator= (const string&amp; str)</strong>  <strong>string&amp; string::assign (const string&amp; str)</strong>  <strong>string&amp; string::operator= (const char* str)</strong>  <strong>string&amp; string::assign (const char* str)</strong>  <strong>string&amp; string::operator= (char c)</strong>     * These functions assign values of various types to the string. * These functions return *this so they can be “chained”. * Note that there is no assign() function that takes a single char.   Sample code:   <code>std::string sString;  // Assign a string value sString = std::string("One"); std::cout &lt;&lt; sString &lt;&lt; '\n';  const std::string sTwo("Two"); sString.assign(sTwo); std::cout &lt;&lt; sString &lt;&lt; '\n';  // Assign a C-style string sString = "Three"; std::cout &lt;&lt; sString &lt;&lt; '\n';  sString.assign("Four"); std::cout &lt;&lt; sString &lt;&lt; '\n';  // Assign a char sString = '5'; std::cout &lt;&lt; sString &lt;&lt; '\n';  // Chain assignment std::string sOther; sString = sOther = "Six"; std::cout &lt;&lt; sString &lt;&lt; ' ' &lt;&lt; sOther &lt;&lt; '\n';</code>   Output:   <code>One Two Three Four 5 Six Six</code></td></tr>
+</tbody></table>
+</div>
+<p>The assign() member function also comes in a few other flavors:</p>
+<div class="table-wrapper"><table><thead><tr><th></th></tr></thead><tbody>
+<tr><td><strong>string&amp; string::assign (const string&amp; str, size_type index, size_type len)</strong>    * Assigns a substring of str, starting from index, and of length len * Throws an out_of_range exception if the index is out of bounds * Returns *this so it can be “chained”.   Sample code:   <code>const std::string sSource("abcdefg"); std::string sDest;  sDest.assign(sSource, 2, 4); // assign a substring of source from index 2 of length 4 std::cout &lt;&lt; sDest &lt;&lt; '\n';</code>   Output:   <code>cdef</code></td></tr>
+</tbody></table>
+</div><div class="table-wrapper"><table><thead><tr><th></th></tr></thead><tbody>
+<tr><td><strong>string&amp; string::assign (const char* chars, size_type len)</strong>    * Assigns len characters from the C-style array chars * Throws an length_error exception if the result exceeds the maximum number of characters * Returns *this so it can be “chained”.   Sample code:   <code>std::string sDest;  sDest.assign("abcdefg", 4); std::cout &lt;&lt; sDest &lt;&lt; '\n';</code>   Output:   <code>abcd</code>   This function is potentially dangerous and its use is not recommended.</td></tr>
+</tbody></table>
+</div><div class="table-wrapper"><table><thead><tr><th></th></tr></thead><tbody>
+<tr><td><strong>string&amp; string::assign (size_type len, char c)</strong>    * Assigns len occurrences of the character c * Throws a length_error exception if the result exceeds the maximum number of characters * Returns *this so it can be “chained”.   Sample code:   <code>std::string sDest;  sDest.assign(4, 'g'); std::cout &lt;&lt; sDest &lt;&lt; '\n';</code>   Output:   <code>gggg</code></td></tr>
+</tbody></table>
+</div>
+<p><strong>Swapping</strong></p>
+<p>If you have two strings and want to swap their values, there are two functions both named swap() that you can use.</p>
+<div class="table-wrapper"><table><thead><tr><th></th></tr></thead><tbody>
+<tr><td><strong>void string::swap (string&amp; str)</strong>  <strong>void swap (string&amp; str1, string&amp; str2)</strong>    * Both functions swap the value of the two strings. The member function swaps *this and str, the global function swaps str1 and str2. * These functions are efficient and should be used instead of assignments to perform a string swap.   Sample code:   <code>std::string sStr1("red"); std::string sStr2("blue");  std::cout &lt;&lt; sStr1 &lt;&lt; ' ' &lt;&lt; sStr2 &lt;&lt; '\n'; swap(sStr1, sStr2); std::cout &lt;&lt; sStr1 &lt;&lt; ' ' &lt;&lt; sStr2 &lt;&lt; '\n'; sStr1.swap(sStr2); std::cout &lt;&lt; sStr1 &lt;&lt; ' ' &lt;&lt; sStr2 &lt;&lt; '\n';</code>   Output:   <code>red blue blue red red blue</code></td></tr>
+</tbody></table>
+</div>
+<p>AI CONTENT END 1</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="stdstring-character-access-and-conversion-to-c-style-arrays.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="stdstring-appending.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="stdstring-character-access-and-conversion-to-c-style-arrays.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="stdstring-appending.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

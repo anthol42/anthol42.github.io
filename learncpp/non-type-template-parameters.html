@@ -1,0 +1,503 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Non-type template parameters - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="non-type-template-parameters"><a class="header" href="#non-type-template-parameters">Non-type template parameters</a></h1>
+<p>In the previous lessons, we discussed how to create function templates that use type template parameters. A type template parameter serves as a placeholder for an actual type that is passed in as a template argument.</p>
+<p>While type template parameters are by far the most common type of template parameter used, there is another kind of template parameter worth knowing about: the non-type template parameter.</p>
+<h2 id="non-type-template-parameters-1"><a class="header" href="#non-type-template-parameters-1">Non-type template parameters</a></h2>
+<p>A <strong>non-type template parameter</strong> is a template parameter with a fixed type that serves as a placeholder for a constexpr value passed in as a template argument.</p>
+<p>A non-type template parameter can be any of the following types:</p>
+<ul>
+<li>An integral type</li>
+<li>An enumeration type</li>
+<li><code>std::nullptr_t</code></li>
+<li>A floating point type (since C++20)</li>
+<li>A pointer or reference to an object</li>
+<li>A pointer or reference to a function</li>
+<li>A pointer or reference to a member function</li>
+<li>A literal class type (since C++20)</li>
+</ul>
+<p>We saw our first example of a non-type template parameter when we discussed <code>std::bitset</code> in lesson <a href="bit-flags-and-bit-manipulation-via-stdbitset.html">O.1 -- Bit flags and bit manipulation via std::bitset</a>:</p>
+<pre><code class="language-cpp">#include &lt;bitset&gt;
+
+int main()
+{
+    std::bitset&lt;8&gt; bits{ 0b0000'0101 }; // The &lt;8&gt; is a non-type template parameter
+
+    return 0;
+}
+</code></pre>
+<p>In the case of <code>std::bitset</code>, the non-type template parameter is used to tell the <code>std::bitset</code> how many bits we want it to store.</p>
+<h2 id="defining-our-own-non-type-template-parameters"><a class="header" href="#defining-our-own-non-type-template-parameters">Defining our own non-type template parameters</a></h2>
+<p>Here’s a simple example of a function that uses an int non-type template parameter:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+template &lt;int N&gt; // declare a non-type template parameter of type int named N
+void print()
+{
+    std::cout &lt;&lt; N &lt;&lt; '\n'; // use value of N here
+}
+
+int main()
+{
+    print&lt;5&gt;(); // 5 is our non-type template argument
+
+    return 0;
+}
+</code></pre>
+<p>This example prints:</p>
+<pre><code class="language-cpp">5
+</code></pre>
+<p>On line 3, we have our template parameter declaration. Inside the angled brackets, we’re defining a non-type template parameter named <code>N</code> that will be a placeholder for a value of type <code>int</code>. Inside the <code>print()</code> function, we use the value of <code>N</code>.</p>
+<p>On line 11, we have our call to function <code>print()</code>, which uses int value <code>5</code> as the non-type template argument. When the compiler sees this call, it will instantiate a function that looks something like this:</p>
+<pre><code class="language-cpp">template &lt;&gt;
+void print&lt;5&gt;()
+{
+    std::cout &lt;&lt; 5 &lt;&lt; '\n';
+}
+</code></pre>
+<p>At runtime, when this function is called from <code>main()</code>, it prints <code>5</code>.</p>
+<p>Then the program ends. Pretty simple, right?</p>
+<p>Much like <code>T</code> is typically used as the name for the first type template parameter, <code>N</code> is conventionally used as the name of an int non-type template parameter.</p>
+<div id="admonition-best-practices" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices"></a>
+</div>
+<div>
+<p>Best practice</p>
+<p>Use <code>N</code> as the name of an int non-type template parameter.</p>
+</div>
+</div>
+<h2 id="what-are-non-type-template-parameters-useful-for"><a class="header" href="#what-are-non-type-template-parameters-useful-for">What are non-type template parameters useful for?</a></h2>
+<p>As of C++20, function parameters cannot be constexpr. This is true for normal functions, constexpr functions (which makes sense, as they must be able to be run at runtime), and perhaps surprisingly, even consteval functions.</p>
+<p>So let’s say we have some function like this one:</p>
+<pre><code class="language-cpp">#include &lt;cassert&gt;
+#include &lt;cmath&gt; // for std::sqrt
+#include &lt;iostream&gt;
+
+double getSqrt(double d)
+{
+    assert(d &gt;= 0.0 &amp;&amp; "getSqrt(): d must be non-negative");
+
+    // The assert above will probably be compiled out in non-debug builds
+    if (d &gt;= 0)
+        return std::sqrt(d);
+
+    return 0.0;
+}
+
+int main()
+{
+    std::cout &lt;&lt; getSqrt(5.0) &lt;&lt; '\n';
+    std::cout &lt;&lt; getSqrt(-5.0) &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>When run, the call to <code>getSqrt(-5.0)</code> will runtime assert out. While this is better than nothing, because <code>-5.0</code> is a literal (and implicitly constexpr), it would be better if we could static_assert so that errors such as this one would be caught at compile-time. However, static_assert requires a constant expression, and function parameters can’t be constexpr…</p>
+<p>However, if we change the function parameter to a non-type template parameter instead, then we can do exactly as we want:</p>
+<pre><code class="language-cpp">#include &lt;cmath&gt; // for std::sqrt
+#include &lt;iostream&gt;
+
+template &lt;double D&gt; // requires C++20 for floating point non-type parameters
+double getSqrt()
+{
+    static_assert(D &gt;= 0.0, "getSqrt(): D must be non-negative");
+
+    if constexpr (D &gt;= 0) // ignore the constexpr here for this example
+        return std::sqrt(D); // strangely, std::sqrt isn't a constexpr function (until C++26)
+
+    return 0.0;
+}
+
+int main()
+{
+    std::cout &lt;&lt; getSqrt&lt;5.0&gt;() &lt;&lt; '\n';
+    std::cout &lt;&lt; getSqrt&lt;-5.0&gt;() &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>This version fails to compile. When the compiler encounters <code>getSqrt&lt;-5.0&gt;()</code>, it will instantiate and call a function that looks something like this:</p>
+<pre><code class="language-cpp">template &lt;&gt;
+double getSqrt&lt;-5.0&gt;()
+{
+    static_assert(-5.0 &gt;= 0.0, "getSqrt(): D must be non-negative");
+
+    if constexpr (-5.0 &gt;= 0) // ignore the constexpr here for this example
+        return std::sqrt(-5.0);
+
+    return 0.0;
+}
+</code></pre>
+<p>The static_assert condition is false, so the compiler asserts out.</p>
+<blockquote>
+<p><strong>Key insight</strong></p>
+<p>Key insight</p>
+<p>Non-type template parameters are used primarily when we need to pass constexpr values to functions (or class types) so they can be used in contexts that require a constant expression.</p>
+<p>The class type <code>std::bitset</code> uses a non-type template parameter to define the number of bits to store because the number of bits must be a constexpr value.</p>
+</blockquote>
+<blockquote>
+<p><strong>Author’s note</strong></p>
+<p>Author’s note</p>
+<p>Having to use non-type template parameters to circumvent the restriction that function parameters can’t be constexpr isn’t great. There are quite a few different proposals being evaluated to help address situations like this. I expect that we might see a better solution to this in a future C++ language standard.</p>
+</blockquote>
+<h2 id="implicit-conversions-for-non-type-template-arguments-optional"><a class="header" href="#implicit-conversions-for-non-type-template-arguments-optional">Implicit conversions for non-type template arguments Optional</a></h2>
+<p>Certain non-type template arguments can be implicitly converted in order to match a non-type template parameter of a different type. For example:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+template &lt;int N&gt; // int non-type template parameter
+void print()
+{
+    std::cout &lt;&lt; N &lt;&lt; '\n';
+}
+
+int main()
+{
+    print&lt;5&gt;();   // no conversion necessary
+    print&lt;'c'&gt;(); // 'c' converted to type int, prints 99
+
+    return 0;
+}
+</code></pre>
+<p>This prints:</p>
+<pre><code class="language-cpp">5
+99
+</code></pre>
+<p>In the above example, <code>'c'</code> is converted to an <code>int</code> in order to match the non-type template parameter of function template <code>print()</code>, which then prints the value as an <code>int</code>.</p>
+<p>In this context, only certain types of constexpr conversions are allowed. The most common types of allowed conversions include:</p>
+<ul>
+<li>Integral promotions (e.g. <code>char</code> to <code>int</code>)</li>
+<li>Integral conversions (e.g. <code>char</code> to <code>long</code> or <code>int</code> to <code>char</code>)</li>
+<li>User-defined conversions (e.g. some program-defined class to <code>int</code>)</li>
+<li>Lvalue to rvalue conversions (e.g. some variable <code>x</code> to the value of <code>x</code>)</li>
+</ul>
+<p>Note that this list is less permissive than the type of implicit conversions allowed for list initialization. For example, you can list initialize a variable of type <code>double</code> using a <code>constexpr int</code>, but a <code>constexpr int</code> non-type template argument will not convert to a <code>double</code> non-type template parameter.</p>
+<p>The full list of allowed conversions can be found <a href="https://en.cppreference.com/w/cpp/language/constant_expression">here</a> under the subsection “Converted constant expression”.</p>
+<p>Unlike with normal functions, the algorithm for matching function template calls to function template definitions is not sophisticated, and certain matches are not prioritized over others based on the type of conversion required (or lack thereof). This means that if a function template is overloaded for different kinds of non-type template parameters, it can very easily result in an ambiguous match:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+template &lt;int N&gt; // int non-type template parameter
+void print()
+{
+    std::cout &lt;&lt; N &lt;&lt; '\n';
+}
+
+template &lt;char N&gt; // char non-type template parameter
+void print()
+{
+    std::cout &lt;&lt; N &lt;&lt; '\n';
+}
+
+int main()
+{
+    print&lt;5&gt;();   // ambiguous match with int N = 5 and char N = 5
+    print&lt;'c'&gt;(); // ambiguous match with int N = 99 and char N = 'c'
+
+    return 0;
+}
+</code></pre>
+<p>Perhaps surprisingly, both of these calls to <code>print()</code> result in ambiguous matches.</p>
+<h2 id="type-deduction-for-non-type-template-parameters-using-auto-c17"><a class="header" href="#type-deduction-for-non-type-template-parameters-using-auto-c17">Type deduction for non-type template parameters using <code>auto</code> C++17</a></h2>
+<p>As of C++17, non-type template parameters may use <code>auto</code> to have the compiler deduce the non-type template parameter from the template argument:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+template &lt;auto N&gt; // deduce non-type template parameter from template argument
+void print()
+{
+    std::cout &lt;&lt; N &lt;&lt; '\n';
+}
+
+int main()
+{
+    print&lt;5&gt;();   // N deduced as int `5`
+    print&lt;'c'&gt;(); // N deduced as char `c`
+
+    return 0;
+}
+</code></pre>
+<p>This compiles and produces the expected result:</p>
+<pre><code class="language-cpp">5
+c
+</code></pre>
+<blockquote>
+<p><strong>For advanced readers</strong></p>
+<p>For advanced readers</p>
+<p>You may be wondering why this example doesn’t produce an ambiguous match like the example in the prior section. The compiler looks for ambiguous matches first, and then instantiates the function template if no ambiguous matches exist. In this case, there is only one function template, so there is no possible ambiguity.</p>
+<p>After instantiating the function template for the above example, the program looks something like this:</p>
+<pre><code>#include &lt;iostream&gt;
+
+template &lt;auto N&gt;
+void print()
+{
+    std::cout &lt;&lt; N &lt;&lt; '\n';
+}
+
+template &lt;&gt;
+void print&lt;5&gt;() // note that this is print&lt;5&gt; and not print&lt;int&gt;
+{
+    std::cout &lt;&lt; 5 &lt;&lt; '\n';
+}
+
+template &lt;&gt;
+void print&lt;'c'&gt;() // note that this is print&lt;`c`&gt; and not print&lt;char&gt;
+{
+    std::cout &lt;&lt; 'c' &lt;&lt; '\n';
+}
+
+int main()
+{
+    print&lt;5&gt;();   // calls print&lt;5&gt;
+    print&lt;'c'&gt;(); // calls print&lt;'c'&gt;
+
+    return 0;
+}
+</code></pre>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="function-templates-with-multiple-template-types.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="using-function-templates-in-multiple-files.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="function-templates-with-multiple-template-types.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="using-function-templates-in-multiple-files.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

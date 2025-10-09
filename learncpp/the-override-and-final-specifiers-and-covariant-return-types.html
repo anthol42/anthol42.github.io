@@ -1,0 +1,430 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>The override and final specifiers, and covariant return types - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="the-override-and-final-specifiers-and-covariant-return-types"><a class="header" href="#the-override-and-final-specifiers-and-covariant-return-types">The override and final specifiers, and covariant return types</a></h1>
+<p>To address some common challenges with inheritance, C++ has two inheritance-related identifiers: <code>override</code> and <code>final</code>. Note that these identifiers are not keywords -- they are normal words that have special meaning only when used in certain contexts. The C++ standard calls them “identifiers with special meaning”, but they are often referred to as “specifiers”.</p>
+<p>Although final isn’t used very much, override is a fantastic addition that you should use regularly. In this lesson, we’ll take a look at both, as well as one exception to the rule that virtual function override return types must match.</p>
+<h2 id="the-override-specifier"><a class="header" href="#the-override-specifier">The override specifier</a></h2>
+<p>As we mentioned in the previous lesson, a derived class virtual function is only considered an override if its signature and return types match exactly. That can lead to inadvertent issues, where a function that was intended to be an override actually isn’t.</p>
+<p>Consider the following example:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string_view&gt;
+
+class A
+{
+public:
+	virtual std::string_view getName1(int x) { return "A"; }
+	virtual std::string_view getName2(int x) { return "A"; }
+};
+
+class B : public A
+{
+public:
+	virtual std::string_view getName1(short x) { return "B"; } // note: parameter is a short
+	virtual std::string_view getName2(int x) const { return "B"; } // note: function is const
+};
+
+int main()
+{
+	B b{};
+	A&amp; rBase{ b };
+	std::cout &lt;&lt; rBase.getName1(1) &lt;&lt; '\n';
+	std::cout &lt;&lt; rBase.getName2(2) &lt;&lt; '\n';
+
+	return 0;
+}
+</code></pre>
+<p>Because rBase is an A reference to a B object, the intention here is to use virtual functions to access B::getName1() and B::getName2(). However, because B::getName1() takes a different parameter (a short instead of an int), it’s not considered an override of A::getName1(). More insidiously, because B::getName2() is const and A::getName2() isn’t, B::getName2() isn’t considered an override of A::getName2().</p>
+<p>Consequently, this program prints:</p>
+<pre><code class="language-cpp">A
+A
+</code></pre>
+<p>In this particular case, because A and B just print their names, it’s fairly easy to see that we messed up our overrides, and that the wrong virtual function is being called. However, in a more complicated program, where the functions have behaviors or return values that aren’t printed, such issues can be very difficult to debug.</p>
+<p>To help address the issue of functions that are meant to be overrides but aren’t, the <code>override</code> specifier can be applied to any virtual function to tell the compiler to enforce that the function is an override. The <code>override</code> specifier is placed at the end of a member function declaration (in the same place where a function-level <code>const</code> goes). If a member function is <code>const</code> and an override, the <code>const</code> must come before <code>override</code>.</p>
+<p>If a function marked as <code>override</code> does not override a base class function (or is applied to a non-virtual function), the compiler will flag the function as an error.</p>
+<pre><code class="language-cpp">#include &lt;string_view&gt;
+
+class A
+{
+public:
+	virtual std::string_view getName1(int x) { return "A"; }
+	virtual std::string_view getName2(int x) { return "A"; }
+	virtual std::string_view getName3(int x) { return "A"; }
+};
+
+class B : public A
+{
+public:
+	std::string_view getName1(short int x) override { return "B"; } // compile error, function is not an override
+	std::string_view getName2(int x) const override { return "B"; } // compile error, function is not an override
+	std::string_view getName3(int x) override { return "B"; } // okay, function is an override of A::getName3(int)
+
+};
+
+int main()
+{
+	return 0;
+}
+</code></pre>
+<p>The above program produces two compile errors: one for B::getName1(), and one for B::getName2(), because neither override a prior function. B::getName3() does override A::getName3(), so no error is produced for that line.</p>
+<p>Because there is no performance penalty for using the override specifier and it helps ensure you’ve actually overridden the function you think you have, all virtual override functions should be tagged using the override specifier. Additionally, because the override specifier implies virtual, there’s no need to tag functions using the override specifier with the virtual keyword.</p>
+<div id="admonition-best-practices" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices"></a>
+</div>
+<div>
+<p>Best practice</p>
+<p>Use the virtual keyword on virtual functions in a base class.</p>
+<p>Use the override specifier (but not the virtual keyword) on override functions in derived classes. This includes virtual destructors.</p>
+</div>
+</div>
+<div id="admonition-rule" class="admonition admonish-tip" role="note" aria-labelledby="admonition-rule-title">
+<div class="admonition-title">
+<div id="admonition-rule-title">
+<p>Rule</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-rule"></a>
+</div>
+<div>
+<p>Rule</p>
+<p>If a member function is both <code>const</code> and an <code>override</code>, the <code>const</code> must be listed first. <code>const override</code> is correct, <code>override const</code> is not.</p>
+</div>
+</div>
+<h2 id="the-final-specifier"><a class="header" href="#the-final-specifier">The final specifier</a></h2>
+<p>There may be cases where you don’t want someone to be able to override a virtual function, or inherit from a class. The final specifier can be used to tell the compiler to enforce this. If the user tries to override a function or inherit from a class that has been specified as final, the compiler will give a compile error.</p>
+<p>In the case where we want to restrict the user from overriding a function, the <strong>final specifier</strong> is used in the same place the override specifier is, like so:</p>
+<pre><code class="language-cpp">#include &lt;string_view&gt;
+
+class A
+{
+public:
+	virtual std::string_view getName() const { return "A"; }
+};
+
+class B : public A
+{
+public:
+	// note use of final specifier on following line -- that makes this function not able to be overridden in derived classes
+	std::string_view getName() const override final { return "B"; } // okay, overrides A::getName()
+};
+
+class C : public B
+{
+public:
+	std::string_view getName() const override { return "C"; } // compile error: overrides B::getName(), which is final
+};
+</code></pre>
+<p>In the above code, B::getName() overrides A::getName(), which is fine. But B::getName() has the final specifier, which means that any further overrides of that function should be considered an error. And indeed, C::getName() tries to override B::getName() (the override specifier here isn’t relevant, it’s just there for good practice), so the compiler will give a compile error.</p>
+<p>In the case where we want to prevent inheriting from a class, the final specifier is applied after the class name:</p>
+<pre><code class="language-cpp">#include &lt;string_view&gt;
+
+class A
+{
+public:
+	virtual std::string_view getName() const { return "A"; }
+};
+
+class B final : public A // note use of final specifier here
+{
+public:
+	std::string_view getName() const override { return "B"; }
+};
+
+class C : public B // compile error: cannot inherit from final class
+{
+public:
+	std::string_view getName() const override { return "C"; }
+};
+</code></pre>
+<p>In the above example, class B is declared final. Thus, when C tries to inherit from B, the compiler will give a compile error.</p>
+<h2 id="covariant-return-types"><a class="header" href="#covariant-return-types">Covariant return types</a></h2>
+<p>There is one special case in which a derived class virtual function override can have a different return type than the base class and still be considered a matching override. If the return type of a virtual function is a pointer or a reference to some class, override functions can return a pointer or a reference to a derived class. These are called <strong>covariant return types</strong>. Here is an example:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string_view&gt;
+
+class Base
+{
+public:
+	// This version of getThis() returns a pointer to a Base class
+	virtual Base* getThis() { std::cout &lt;&lt; "called Base::getThis()\n"; return this; }
+	void printType() { std::cout &lt;&lt; "returned a Base\n"; }
+};
+
+class Derived : public Base
+{
+public:
+	// Normally override functions have to return objects of the same type as the base function
+	// However, because Derived is derived from Base, it's okay to return Derived* instead of Base*
+	Derived* getThis() override { std::cout &lt;&lt; "called Derived::getThis()\n";  return this; }
+	void printType() { std::cout &lt;&lt; "returned a Derived\n"; }
+};
+
+int main()
+{
+	Derived d{};
+	Base* b{ &amp;d };
+	d.getThis()-&gt;printType(); // calls Derived::getThis(), returns a Derived*, calls Derived::printType
+	b-&gt;getThis()-&gt;printType(); // calls Derived::getThis(), returns a Base*, calls Base::printType
+
+	return 0;
+}
+</code></pre>
+<p>This prints:</p>
+<pre><code class="language-cpp">called Derived::getThis()
+returned a Derived
+called Derived::getThis()
+returned a Base
+</code></pre>
+<p>One interesting note about covariant return types: C++ can’t dynamically select types, so you’ll always get the type that matches the actual version of the function being called.</p>
+<p>In the above example, we first call d.getThis(). Since d is a Derived, this calls Derived::getThis(), which returns a <code>Derived*</code>. This <code>Derived*</code> is then used to call non-virtual function Derived::printType().</p>
+<p>Now the interesting case. We then call b-&gt;getThis(). Variable b is a Base pointer to a Derived object. Base::getThis() is a virtual function, so this calls Derived::getThis(). Although Derived::getThis() returns a <code>Derived*</code>, because Base version of the function returns a <code>Base*</code>, the returned Derived* is upcast to a <code>Base*</code>. Because Base::printType() is non-virtual, Base::printType() is called.</p>
+<p>In other words, in the above example, you only get a <code>Derived*</code> if you call getThis() with an object that is typed as a Derived object in the first place.</p>
+<p>Note that if printType() were virtual instead of non-virtual, the result of b-&gt;getThis() (an object of type <code>Base*</code>) would have undergone virtual function resolution, and Derived::printType() would have been called.</p>
+<p>Covariant return types are often used in cases where a virtual member function returns a pointer or reference to the class containing the member function (e.g. Base::getThis() returns a <code>Base*</code>, and Derived::getThis() returns a <code>Derived*</code>). However, this isn’t strictly necessary. Covariant return types can be used in any case where the return type of the override member function is derived from the return type of the base virtual member function.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="virtual-functions.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="virtual-destructors-virtual-assignment-and-overriding-virtualization.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="virtual-functions.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="virtual-destructors-virtual-assignment-and-overriding-virtualization.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

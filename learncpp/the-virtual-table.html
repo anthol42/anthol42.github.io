@@ -1,0 +1,388 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>The virtual table - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="the-virtual-table"><a class="header" href="#the-virtual-table">The virtual table</a></h1>
+<p>Consider the following program:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string_view&gt;
+
+class Base
+{
+public:
+    std::string_view getName() const { return "Base"; }                // not virtual
+    virtual std::string_view getNameVirtual() const { return "Base"; } // virtual
+};
+
+class Derived: public Base
+{
+public:
+    std::string_view getName() const { return "Derived"; }
+    virtual std::string_view getNameVirtual() const override { return "Derived"; }
+};
+
+int main()
+{
+    Derived derived {};
+    Base&amp; base { derived };
+
+    std::cout &lt;&lt; "base has static type " &lt;&lt; base.getName() &lt;&lt; '\n';
+    std::cout &lt;&lt; "base has dynamic type " &lt;&lt; base.getNameVirtual() &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>First, let’s look at the call to <code>base.getName()</code>. Because this is a non-virtual function, the compiler can use the actual type of <code>base</code> (<code>Base</code>) to determine (at compile-time) that this should resolve to <code>Base::getName()</code>.</p>
+<p>Although it looks almost identical, the call to <code>base.getNameVirtual()</code> must be resolved differently. Because this is a virtual function call, the compiler must use the dynamic type of <code>base</code> to resolve the call, and the dynamic type of <code>base</code> is not knowable until runtime. Therefore, only at runtime will it be determined that this particular call to <code>base.getNameVirtual()</code> resolves to <code>Derived::getNameVirtual()</code>, not <code>Base::getNameVirtual()</code>.</p>
+<p>So how do virtual functions actually work?</p>
+<h2 id="the-virtual-table-1"><a class="header" href="#the-virtual-table-1">The virtual table</a></h2>
+<p>The C++ standard does not specify how virtual functions should be implemented (this detail is left up to the implementation).</p>
+<p>However, C++ implementations typically implement virtual functions using a form of late binding known as the virtual table.</p>
+<p>The <strong>virtual table</strong> is a lookup table of functions used to resolve function calls in a dynamic/late binding manner. The virtual table sometimes goes by other names, such as “vtable”, “virtual function table”, “virtual method table”, or “dispatch table”. In C++, virtual function resolution is sometimes called <strong>dynamic dispatch</strong>.</p>
+<blockquote>
+<p><strong>Nomenclature</strong></p>
+<p>Nomenclature</p>
+<p>Here’s an easier way of thinking about it in C++:<br />
+Early binding/static dispatch = direct function call overload resolution<br />
+Late binding = indirect function call resolution<br />
+Dynamic dispatch = virtual function override resolution</p>
+</blockquote>
+<p>Because knowing how the virtual table works is not necessary to use virtual functions, this section can be considered optional reading.</p>
+<p>The virtual table is actually quite simple, though it’s a little complex to describe in words. First, every class that uses virtual functions (or is derived from a class that uses virtual functions) has a corresponding virtual table. This table is simply a static array that the compiler sets up at compile time. A virtual table contains one entry for each virtual function that can be called by objects of the class. Each entry in this table is simply a function pointer that points to the most-derived function accessible by that class.</p>
+<p>Second, the compiler also adds a hidden pointer that is a member of the base class, which we will call <code>*__vptr</code>. <code>*__vptr</code> is set (automatically) when a class object is created so that it points to the virtual table for that class. Unlike the <code>this</code> pointer, which is actually a function parameter used by the compiler to resolve self-references, <code>*__vptr</code> is a real pointer member. Consequently, it makes each class object allocated bigger by the size of one pointer. It also means that <code>*__vptr</code> is inherited by derived classes, which is important.</p>
+<p>By now, you’re probably confused as to how these things all fit together, so let’s take a look at a simple example:</p>
+<pre><code class="language-cpp">class Base
+{
+public:
+    virtual void function1() {};
+    virtual void function2() {};
+};
+
+class D1: public Base
+{
+public:
+    void function1() override {};
+};
+
+class D2: public Base
+{
+public:
+    void function2() override {};
+};
+</code></pre>
+<p>Because there are 3 classes here, the compiler will set up 3 virtual tables: one for Base, one for D1, and one for D2.</p>
+<p>The compiler also adds a hidden pointer member to the most base class that uses virtual functions. Although the compiler does this automatically, we’ll put it in the next example just to show where it’s added:</p>
+<pre><code class="language-cpp">class Base
+{
+public:
+    VirtualTable* __vptr;
+    virtual void function1() {};
+    virtual void function2() {};
+};
+
+class D1: public Base
+{
+public:
+    void function1() override {};
+};
+
+class D2: public Base
+{
+public:
+    void function2() override {};
+};
+</code></pre>
+<p>When a class object is created, <code>*__vptr</code> is set to point to the virtual table for that class. For example, when an object of type Base is created, <code>*__vptr</code> is set to point to the virtual table for Base. When objects of type D1 or D2 are constructed, <code>*__vptr</code> is set to point to the virtual table for D1 or D2 respectively.</p>
+<p>Now, let’s talk about how these virtual tables are filled out. Because there are only two virtual functions here, each virtual table will have two entries (one for function1() and one for function2()). Remember that when these virtual tables are filled out, each entry is filled out with the most-derived function an object of that class type can call.</p>
+<p>The virtual table for Base objects is simple. An object of type Base can only access the members of Base. Base has no access to D1 or D2 functions. Consequently, the entry for function1 points to Base::function1() and the entry for function2 points to Base::function2().</p>
+<p>The virtual table for D1 is slightly more complex. An object of type D1 can access members of both D1 and Base. However, D1 has overridden function1(), making D1::function1() more derived than Base::function1(). Consequently, the entry for function1 points to D1::function1(). D1 hasn’t overridden function2(), so the entry for function2 will point to Base::function2().</p>
+<p>The virtual table for D2 is similar to D1, except the entry for function1 points to Base::function1(), and the entry for function2 points to D2::function2().</p>
+<p>Here’s a picture of this graphically:</p>
+<p><img src="https://www.learncpp.com/images/CppTutorial/Section12/VTable.gif" alt="" /></p>
+<p>Although this diagram is kind of crazy looking, it’s really quite simple: the <code>*__vptr</code> in each class points to the virtual table for that class. The entries in the virtual table point to the most-derived version of the function that objects of that class are allowed to call.</p>
+<p>So consider what happens when we create an object of type D1:</p>
+<pre><code class="language-cpp">int main()
+{
+    D1 d1 {};
+}
+</code></pre>
+<p>Because d1 is a D1 object, d1 has its *__vptr set to the D1 virtual table.</p>
+<p>Now, let’s set a base pointer to D1:</p>
+<pre><code class="language-cpp">int main()
+{
+    D1 d1 {};
+    Base* dPtr = &amp;d1;
+
+    return 0;
+}
+</code></pre>
+<p>Note that because dPtr is a base pointer, it only points to the Base portion of d1. However, also note that <code>*__vptr</code> is in the Base portion of the class, so dPtr has access to this pointer. Finally, note that <code>dPtr-&gt;__vptr</code> points to the D1 virtual table! Consequently, even though dPtr is of type <code>Base*</code>, it still has access to D1’s virtual table (through <code>__vptr</code>).</p>
+<p>So what happens when we try to call dPtr-&gt;function1()?</p>
+<pre><code class="language-cpp">int main()
+{
+    D1 d1 {};
+    Base* dPtr = &amp;d1;
+    dPtr-&gt;function1();
+
+    return 0;
+}
+</code></pre>
+<p>First, the program recognizes that function1() is a virtual function. Second, the program uses <code>dPtr-&gt;__vptr</code> to get to D1’s virtual table. Third, it looks up which version of function1() to call in D1’s virtual table. This has been set to D1::function1(). Therefore, <code>dPtr-&gt;function1()</code> resolves to D1::function1()!</p>
+<p>Now, you might be saying, “But what if dPtr really pointed to a Base object instead of a D1 object. Would it still call D1::function1()?”. The answer is no.</p>
+<pre><code class="language-cpp">int main()
+{
+    Base b {};
+    Base* bPtr = &amp;b;
+    bPtr-&gt;function1();
+
+    return 0;
+}
+</code></pre>
+<p>In this case, when b is created, b.__vptr points to Base’s virtual table, not D1’s virtual table. Since bPtr is pointing to b, <code>bPtr-&gt;__vptr</code> points to Base’s virtual table as well. Base’s virtual table entry for function1() points to Base::function1(). Thus, <code>bPtr-&gt;function1()</code> resolves to Base::function1(), which is the most-derived version of function1() that a Base object should be able to call.</p>
+<p>By using these tables, the compiler and program are able to ensure function calls resolve to the appropriate virtual function, even if you’re only using a pointer or reference to a base class!</p>
+<p>Calling a virtual function is slower than calling a non-virtual function for a couple of reasons: First, we have to use the <code>*__vptr</code> to get to the appropriate virtual table. Second, we have to index the virtual table to find the correct function to call. Only then can we call the function. As a result, we have to do 3 operations to find the function to call, as opposed to 2 operations for a normal indirect function call, or one operation for a direct function call. However, with modern computers, this added time is usually fairly insignificant.</p>
+<p>Also as a reminder, any class that uses virtual functions has a <code>*__vptr</code>, and thus each object of that class will be bigger by one pointer. Virtual functions are powerful, but they do have a performance cost.</p>
+<p>AI CONTENT END 1</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="early-binding-and-late-binding.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="pure-virtual-functions-abstract-base-classes-and-interface-classes.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="early-binding-and-late-binding.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="pure-virtual-functions-abstract-base-classes-and-interface-classes.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

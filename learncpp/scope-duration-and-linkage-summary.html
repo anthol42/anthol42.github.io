@@ -1,0 +1,359 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Scope, duration, and linkage summary - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="scope-duration-and-linkage-summary"><a class="header" href="#scope-duration-and-linkage-summary">Scope, duration, and linkage summary</a></h1>
+<p>The concepts of scope, duration, and linkage cause a lot of confusion, so we’re going to take an extra lesson to summarize everything. Some of these things we haven’t covered yet, and they’re here just for completeness / reference later.</p>
+<h2 id="scope-summary"><a class="header" href="#scope-summary">Scope summary</a></h2>
+<p>An identifier’s <em>scope</em> determines where the identifier can be accessed within the source code.</p>
+<ul>
+<li>Variables with <strong>block (local) scope</strong> can only be accessed from the point of declaration until the end of the block in which they are declared (including nested blocks). This includes:</li>
+</ul>
+<ul>
+<li>Local variables</li>
+<li>Function parameters</li>
+<li>Program-defined type definitions (such as enums and classes) declared inside a block</li>
+</ul>
+<ul>
+<li>Variables and functions with <strong>global scope</strong> can be accessed from the point of declaration until the end of the file. This includes:</li>
+</ul>
+<ul>
+<li>Global variables</li>
+<li>Functions</li>
+<li>Program-defined type definitions (such as enums and classes) declared inside a namespace or in the global scope</li>
+</ul>
+<h2 id="duration-summary"><a class="header" href="#duration-summary">Duration summary</a></h2>
+<p>A variable’s <em>duration</em> determines when it is created and destroyed.</p>
+<ul>
+<li>Variables with <strong>automatic duration</strong> are created at the point of definition, and destroyed when the block they are part of is exited. This includes:</li>
+</ul>
+<ul>
+<li>Local variables</li>
+<li>Function parameters</li>
+</ul>
+<ul>
+<li>Variables with <strong>static duration</strong> are created when the program begins and destroyed when the program ends. This includes:</li>
+</ul>
+<ul>
+<li>Global variables</li>
+<li>Static local variables</li>
+</ul>
+<ul>
+<li>Variables with <strong>dynamic duration</strong> are created and destroyed by programmer request. This includes:</li>
+</ul>
+<ul>
+<li>Dynamically allocated variables</li>
+</ul>
+<h2 id="linkage-summary"><a class="header" href="#linkage-summary">Linkage summary</a></h2>
+<p>An identifier’s <strong>linkage</strong> determines whether a declaration of that same identifier in a different scope refers to the same entity (object, function, reference, etc…) or not.</p>
+<p>Local variables have no linkage. Each declaration of an identifier with no linkage refers to a unique object or function.</p>
+<ul>
+<li>An identifier with <strong>no linkage</strong> means another declaration of the same identifier refers to a unique entity. Entities whose identifiers have no linkage include:</li>
+</ul>
+<ul>
+<li>Local variables</li>
+<li>Program-defined type identifiers (such as enums and classes) declared inside a block</li>
+</ul>
+<ul>
+<li>An identifier with <strong>internal linkage</strong> means a declaration of the same identifier within the same translation unit refers to the same object or function. Entities whose identifiers have internal linkage include:</li>
+</ul>
+<ul>
+<li>Static global variables (initialized or uninitialized)</li>
+<li>Static functions</li>
+<li>Const global variables</li>
+<li>Unnamed namespaces and anything defined within them</li>
+</ul>
+<ul>
+<li>An identifier with <strong>external linkage</strong> means a declaration of the same identifier within the entire program refers to the same object or function. Entities whose identifiers have external linkage include:</li>
+</ul>
+<ul>
+<li>Non-static functions</li>
+<li>Non-const global variables (initialized or uninitialized)</li>
+<li>Extern const global variables</li>
+<li>Inline const global variables</li>
+<li>Namespaces</li>
+</ul>
+<p>Identifiers with external linkage will generally cause a duplicate definition linker error if the definitions are compiled into more than one .cpp file (due to violating the one-definition rule). There are some exceptions to this rule (for types, templates, and inline functions and variables) -- we’ll cover these further in future lessons when we talk about those topics.</p>
+<p>Also note that functions have external linkage by default. They can be made internal by using the static keyword.</p>
+<h2 id="variable-scope-duration-and-linkage-summary"><a class="header" href="#variable-scope-duration-and-linkage-summary">Variable scope, duration, and linkage summary</a></h2>
+<p>Because variables have scope, duration, and linkage, let’s summarize in a chart:</p>
+<div class="table-wrapper"><table><thead><tr><th>Type</th><th>Example</th><th>Scope</th><th>Duration</th><th>Linkage</th><th>Notes</th></tr></thead><tbody>
+<tr><td>Local variable</td><td>int x;</td><td>Block</td><td>Automatic</td><td>None</td><td></td></tr>
+<tr><td>Static local variable</td><td>static int s_x;</td><td>Block</td><td>Static</td><td>None</td><td></td></tr>
+<tr><td>Dynamic local variable</td><td>int* x { new int{} };</td><td>Block</td><td>Dynamic</td><td>None</td><td></td></tr>
+<tr><td>Function parameter</td><td>void foo(int x)</td><td>Block</td><td>Automatic</td><td>None</td><td></td></tr>
+<tr><td>Internal non-const global variable</td><td>static int g_x;</td><td>Global</td><td>Static</td><td>Internal</td><td>Initialized or uninitialized</td></tr>
+<tr><td>External non-const global variable</td><td>int g_x;</td><td>Global</td><td>Static</td><td>External</td><td>Initialized or uninitialized</td></tr>
+<tr><td>Inline non-const global variable (C++17)</td><td>inline int g_x;</td><td>Global</td><td>Static</td><td>External</td><td>Initialized or uninitialized</td></tr>
+<tr><td>Internal constant global variable</td><td>constexpr int g_x { 1 };</td><td>Global</td><td>Static</td><td>Internal</td><td>Must be initialized</td></tr>
+<tr><td>External constant global variable</td><td>extern const int g_x { 1 };</td><td>Global</td><td>Static</td><td>External</td><td>Must be initialized</td></tr>
+<tr><td>Inline constant global variable (C++17)</td><td>inline constexpr int g_x { 1 };</td><td>Global</td><td>Static</td><td>External</td><td>Must be initialized</td></tr>
+</tbody></table>
+</div>
+<h2 id="forward-declaration-summary"><a class="header" href="#forward-declaration-summary">Forward declaration summary</a></h2>
+<p>You can use a forward declaration to access a function or variable in another file. The scope of the declared variable is as per usual (global scope for globals, block scope for locals).</p>
+<div class="table-wrapper"><table><thead><tr><th>Type</th><th>Example</th><th>Notes</th></tr></thead><tbody>
+<tr><td>Function forward declaration</td><td>void foo(int x);</td><td>Prototype only, no function body</td></tr>
+<tr><td>Non-constant variable forward declaration</td><td>extern int g_x;</td><td>Must be uninitialized</td></tr>
+<tr><td>Const variable forward declaration</td><td>extern const int g_x;</td><td>Must be uninitialized</td></tr>
+<tr><td>Constexpr variable forward declaration</td><td>extern constexpr int g_x;</td><td>Not allowed, constexpr cannot be forward declared</td></tr>
+</tbody></table>
+</div>
+<p>A constexpr variable (which is implicitly const) can be forward declared using a const variable forward declaration. When accessed through the forward declaration, the variable will be considered const (not constexpr).</p>
+<h2 id="what-the-heck-is-a-storage-class-specifier"><a class="header" href="#what-the-heck-is-a-storage-class-specifier">What the heck is a storage class specifier?</a></h2>
+<p>When used as part of an identifier declaration, the <code>static</code> and <code>extern</code> keywords are called <strong>storage class specifiers</strong>. In this context, they set the storage duration and linkage of the identifier.</p>
+<p>C++ supports 4 active storage class specifiers:</p>
+<div class="table-wrapper"><table><thead><tr><th>Specifier</th><th>Meaning</th><th>Note</th></tr></thead><tbody>
+<tr><td>extern</td><td>static (or thread_local) storage duration and external linkage</td><td></td></tr>
+<tr><td>static</td><td>static (or thread_local) storage duration and internal linkage</td><td></td></tr>
+<tr><td>thread_local</td><td>thread storage duration</td><td></td></tr>
+<tr><td>mutable</td><td>object allowed to be modified even if containing class is const</td><td></td></tr>
+<tr><td>auto</td><td>automatic storage duration</td><td>Deprecated in C++11</td></tr>
+<tr><td>register</td><td>automatic storage duration and hint to the compiler to place in a register</td><td>Deprecated in C++17</td></tr>
+</tbody></table>
+</div>
+<p>The term <em>storage class specifier</em> is typically only used in formal documentation.</p>
+<p>AI CONTENT END 1</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="static-local-variables.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="using-declarations-and-using-directives.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="static-local-variables.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="using-declarations-and-using-directives.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

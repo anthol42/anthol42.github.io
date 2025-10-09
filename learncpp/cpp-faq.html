@@ -1,0 +1,430 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>C++ FAQ - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="c-faq"><a class="header" href="#c-faq">C++ FAQ</a></h1>
+<p>There are certain questions that tend to get asked over and over. This FAQ will attempt to answer the most common ones.</p>
+<h2 id="q1-why-shouldnt-we-use-using-namespace-std"><a class="header" href="#q1-why-shouldnt-we-use-using-namespace-std">Q1: Why shouldn’t we use “using namespace std”?</a></h2>
+<p>The statement <code>using namespace std;</code> is a <strong>using directive</strong>. A using-directive allows all of the identifiers from a given namespace to be accessed within the scope of the using-directive statement.</p>
+<p>You may have seen something like this:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+using namespace std;
+
+int main()
+{
+    cout &lt;&lt; "Hello world!";
+
+    return 0;
+}
+</code></pre>
+<p>This allows us to use names from the <code>std</code> namespace without having to explicitly type <code>std::</code> over and over. In the above program, we can just type <code>cout</code> instead of <code>std::cout</code>. Sounds great, right?</p>
+<p>However, when the compiler encounters <code>using namespace std</code>, it will make every single identifier in the <code>std</code> namespace available from the global scope (since that’s where the using directive has been placed). This introduces 3 key challenges:</p>
+<ul>
+<li>The chance for a naming collision between a name you’ve picked and something that already exists in the <code>std</code> namespace is massively increased.</li>
+<li>New versions of the standard library may break your currently working program. These future versions could introduce names that cause new naming collisions, or in the worst case, the behavior of your program might change silently and unexpectedly!</li>
+<li>The lack of <code>std::</code> prefixes makes it harder for readers to understand what is a <code>std</code> library name and what is a user-defined name.</li>
+</ul>
+<p>For these reasons, we recommend avoiding <code>using namespace std</code> (or any other using-directive) entirely. The small savings in typing isn’t worth the additional headaches and future risks.</p>
+<blockquote>
+<p><strong>Related content</strong></p>
+<p>Related content</p>
+<p>See lesson <a href="using-declarations-and-using-directives">7.13 -- Using declarations and using directives</a> for more detail and examples.</p>
+</blockquote>
+<h2 id="q2-why-can-i-use-some-function-or-type-without-including-the-header-that-declares-that-function-or-type"><a class="header" href="#q2-why-can-i-use-some-function-or-type-without-including-the-header-that-declares-that-function-or-type">Q2: Why can I use some function or type without including the header that declares that function or type?</a></h2>
+<p>For example, many readers ask why their program that uses <code>std::string_view</code> needs to <code>#include &lt;string_view&gt;</code> when it seems to work fine without the #include.</p>
+<p>Headers can #include other headers. When you #include a header, you also get all of the additional headers that it includes (and all of the headers that those headers include too). All of the additional headers that come along for the ride that you didn’t explicitly include are called “transitive includes”.</p>
+<p>In your <em>main.cpp</em> file, you probably <code>#include &lt;iostream&gt;</code>. On your compiler, if your <iostream> header includes the &lt;string_view&gt; header (for its own use), then when you <code>#include &lt;iostream&gt;</code> you will get the contents of the &lt;string_view&gt; header (and any other headers that <iostream> includes). This means your <em>main.cpp</em> will be able to use the <code>std::string_view</code> type without explicitly including &lt;string_view&gt; header.</p>
+<p>Even though this may compile on your compiler, you should not rely on this. What compiles for you now may not compile on another compiler, or even on a future version of your compiler.</p>
+<p>There is no way to warn when this happens, or prevent it from happening. The best you can do is take care to explicitly include the proper headers for all of the things you use. Compiling your program on several different compilers may help identify headers that are being transitively included on other compilers.</p>
+<blockquote>
+<p><strong>Related content</strong></p>
+<p>Related content</p>
+<p>Covered in lesson <a href="header-files">2.11 -- Header files</a>.</p>
+</blockquote>
+<h2 id="q3-my-code-that-produces-undefined-behavior-appears-to-be-working-fine-is-this-okay"><a class="header" href="#q3-my-code-that-produces-undefined-behavior-appears-to-be-working-fine-is-this-okay">Q3: My code that produces undefined behavior appears to be working fine. Is this okay?</a></h2>
+<p>aka: “I did that thing you told me not to do, and it worked. So what’s the issue?”</p>
+<p>Undefined behavior occurs when you perform an operation whose behavior is not defined by the C++ language. Code implementing undefined behavior may exhibit <em>any</em> of the following symptoms:</p>
+<ul>
+<li>Your program produces a different result every time it is run.</li>
+<li>Your program behaves inconsistently (sometimes produces the desired result, sometimes not).</li>
+<li>Your program consistently produces the same incorrect result.</li>
+<li>Your program initially seems like its working but produces some incorrect result later in the program.</li>
+<li>Your program crashes, either immediately or later.</li>
+<li>Your program works on some compilers or platforms but not others.</li>
+<li>Your program works until you change some other seemingly unrelated code.</li>
+<li>Your program appears to produce the desired result anyway.</li>
+</ul>
+<p>One of the biggest problems with undefined behavior is that the behavior exhibited by the program may change at any point, for any reason. So while such code may appear to work now, there is no guarantee it will do so when run again later.</p>
+<blockquote>
+<p><strong>Related content</strong></p>
+<p>Related content</p>
+<p>Undefined behavior is covered in lesson <a href="uninitialized-variables-and-undefined-behavior">1.6 -- Uninitialized variables and undefined behavior</a>.</p>
+</blockquote>
+<h2 id="q4-why-does-my-code-that-produces-undefined-behavior-generate-a-certain-result"><a class="header" href="#q4-why-does-my-code-that-produces-undefined-behavior-generate-a-certain-result">Q4: Why does my code that produces undefined behavior generate a certain result?</a></h2>
+<p>Readers often ask what is happening to produce a specific result on their system. In most cases, it’s difficult to say, as the result produced may be dependent upon the current program state, your compiler settings, how the compiler implements a feature, the computer’s architecture, and/or the operating system. For example, if you print the value of an uninitialized variable, you might get garbage, or you might always get a particular value. It depends on what type of variable it is, how the compiler lays out the variable in memory, and what’s in that memory beforehand (which might be impacted by the OS or the state of the program prior to that point).</p>
+<p>And while such an answer may be interesting mechanically, it’s rarely useful overall (and likely to change if and when anything else changes). It’s like asking, “When I put my seat belt through the steering wheel and connect it to the accelerator, why does the car pull left when I turn my head on a rainy day?” The best answer isn’t a physical explanation of what’s occurring, it’s “don’t do that”.</p>
+<h2 id="q5-why-am-i-getting-a-compile-error-when-i-try-to-compile-an-example-that-seems-like-it-should-work"><a class="header" href="#q5-why-am-i-getting-a-compile-error-when-i-try-to-compile-an-example-that-seems-like-it-should-work">Q5: Why am I getting a compile error when I try to compile an example that seems like it should work?</a></h2>
+<p>The most common reason for this is that your project is being compiled using the wrong language standard.</p>
+<p>C++ introduces many new features with each new language standard. If one of our examples uses a feature that was introduced in C++17, but your program is compiling using the C++14 language standard, then it probably won’t compile because the feature we’re using isn’t supported by the language standard we’ve selected.</p>
+<p>Try setting your language standard to the latest version your compiler supports and see if that resolves the issue. You can also check that your compiler is properly configured to use the language standard you’re expecting by running the program here: <a href="what-language-standard-is-my-compiler-using.html">0.13 -- What language standard is my compiler using?</a>.</p>
+<blockquote>
+<p><strong>Related content</strong></p>
+<p>Related content</p>
+<p>Covered in lesson <a href="configuring-your-compiler-choosing-a-language-standard">0.12 -- Configuring your compiler: Choosing a language standard</a>.</p>
+</blockquote>
+<p>It is also possible that your compiler either doesn’t support a specific feature yet, or has a bug preventing use in some cases. In this case, try updating your compiler to the latest version available.</p>
+<p>The CPPReference website tracks compiler support for each feature per language standard. You can find those support tables linked from their <a href="https://en.cppreference.com/w/cpp">home page</a>, top right, under “Compiler Support” (by language standard). For example, you can see which C++23 features are supported <a href="https://en.cppreference.com/w/cpp/compiler_support/23">here</a>.</p>
+<h2 id="q6-why-should-i-include-fooh-from-foocpp"><a class="header" href="#q6-why-should-i-include-fooh-from-foocpp">Q6: Why should I #include “foo.h” from foo.cpp?</a></h2>
+<p>It is a best practice for a source file (e.g. foo.cpp) to include its paired header (e.g. foo.h). In many cases, foo.h will contain definitions that foo.cpp will need to compile correctly.</p>
+<p>However, even if foo.cpp compiles file without foo.h, including the paired header allows the compiler to discover certain types of inconsistencies between the two files (e.g. when the return type of a function doesn’t match the return type of its forward declaration). Without the inclusion, this might cause undefined behavior.</p>
+<p>The cost of the #include is negligible, so there is little downside to including the header.</p>
+<blockquote>
+<p><strong>Related content</strong></p>
+<p>Related content</p>
+<p>Covered in lesson <a href="header-files/#corresponding_include">2.11 -- Header files</a>.</p>
+</blockquote>
+<h2 id="q7-why-does-my-project-only-compile-when-i-include-foocpp-from-maincpp"><a class="header" href="#q7-why-does-my-project-only-compile-when-i-include-foocpp-from-maincpp">Q7: Why does my project only compile when I #include “foo.cpp” from “main.cpp”?</a></h2>
+<p>This is almost always due to forgetting to add foo.cpp to your project and/or compilation command line. Update your project and/or command line to include each source (.cpp) file. When you compile your project, you should see each source file being compiled.</p>
+<p>Normally in a project that has multiple files, the compiler will compile each source (.cpp) file individually. After all the source files have been compiled, the linker links them together and creates the resulting output file (e.g. an executable). However, if you split your code between two or more files (e.g. main.cpp and foo.cpp) and then only compiles main.cpp, you will probably get a compilation error or linker error, since part of the code required for your project is not being compiled.</p>
+<p>New programmers sometimes discover that they can make their program work by adding <code>#include "foo.cpp"</code> to main.cpp instead of adding foo.cpp to the project or compilation command line. After doing so, when main.cpp is compiled, the will preprocessor will create a translation unit consisting of the code from both foo.cpp and main.cpp, which will then be compiled and linked. In smaller project, this may work. So why not do this?</p>
+<p>There are a few reasons:</p>
+<ol>
+<li>It can result in naming collisions between files.</li>
+<li>It can be hard to avoid ODR violations.</li>
+<li>Any change to any .cpp file will result in your entire project being recompiled. This can take a long time.</li>
+</ol>
+<blockquote>
+<p><strong>Related content</strong></p>
+<p>Related content</p>
+<p>Covered in lesson <a href="header-files/#includecpp">2.11 -- Header files</a>.</p>
+</blockquote>
+<h2 id="q8-why-do-i-need-to-return-0-at-the-bottom-of-main"><a class="header" href="#q8-why-do-i-need-to-return-0-at-the-bottom-of-main">Q8: Why do I need to <code>return 0</code> at the bottom of main?</a></h2>
+<p>You don’t. The <code>main()</code> function is special in that it will implicitly return 0 if you do not provide a return statement.</p>
+<p>However, any other value-returning function that reaches the end of its body without encountering a return statement will produce undefined behavior.</p>
+<p>For consistency, we recommend explicitly returning 0 from <code>main()</code>. But if you prefer to omit the return statement in <code>main()</code> for conciseness, you can. Just don’t make the mistake of thinking other value-returning functions work similarly.</p>
+<blockquote>
+<p><strong>Related content</strong></p>
+<p>Related content</p>
+<p>Covered in lesson <a href="function-return-values-value-returning-functions">2.2 -- Function return values (value-returning functions)</a>.</p>
+</blockquote>
+<h2 id="q9-when-i-compile-an-example-from-this-website-i-get-an-error-similar-to-argument-list-for-class-template-xxx-is-missing-why"><a class="header" href="#q9-when-i-compile-an-example-from-this-website-i-get-an-error-similar-to-argument-list-for-class-template-xxx-is-missing-why">Q9: When I compile an example from this website, I get an error similar to “argument list for class template XXX is missing”. Why?</a></h2>
+<p>The most likely reason is that the example makes use of a feature called Class Template Argument Deduction (CTAD), which is a C++17 feature. Many compilers default to C++14, which doesn’t support this feature.</p>
+<p>If the following program doesn’t compile for you, that’s the reason:</p>
+<pre><code class="language-cpp">#include &lt;utility&gt; // for std::pair
+
+int main()
+{
+    std::pair p2{ 1, 2 }; // CTAD used to deduce std::pair&lt;int, int&gt; from the initializers (C++17)
+
+    return 0;
+}
+</code></pre>
+<blockquote>
+<p><strong>Related content</strong></p>
+<p>Related content</p>
+<p>You can check which language standard your compiler is configured for using the program in lesson <a href="what-language-standard-is-my-compiler-using">0.13 -- What language standard is my compiler using?</a>.</p>
+<p>We cover CTAD in lesson <a href="class-template-argument-deduction-ctad-and-deduction-guides">13.14 -- Class template argument deduction (CTAD) and deduction guides</a>.</p>
+</blockquote>
+<h2 id="q10-why-dont-we-make-function-parameters-or-return-types-const-when-passing-or-returning-by-value"><a class="header" href="#q10-why-dont-we-make-function-parameters-or-return-types-const-when-passing-or-returning-by-value">Q10: Why don’t we make function parameters or return types const when passing or returning by value?</a></h2>
+<p>We typically don’t <code>const</code> by-value function parameters because:</p>
+<ul>
+<li>Making such parameters <code>const</code> offers no meaningful value to the caller of the function, but adds clutter to the function’s interface.</li>
+<li>We generally don’t care if the function modifies those parameters, since they are copies that will be destroyed at the end of the function anyway.</li>
+</ul>
+<p>We don’t <code>const</code> by-value return values because:</p>
+<ul>
+<li>If the return type is a non-class-type (e.g. a fundamental type), const will be ignored anyway.</li>
+<li>If the return type is a class type, const may inhibits certain kinds of optimizations (e.g. move semantics).</li>
+</ul>
+<p>Note: <code>const</code> is relevant when passing/returning by address or by reference.</p>
+<blockquote>
+<p><strong>Related content</strong></p>
+<p>Related content</p>
+<p>Covered in lesson <a href="constant-variables-named-constants">5.1 -- Constant variables (named constants)</a></p>
+</blockquote>
+<h2 id="q11-why-should-i-use-constexpr"><a class="header" href="#q11-why-should-i-use-constexpr">Q11: Why should I use constexpr?</a></h2>
+<p>Constexpr and other compile-time programming techniques provide many benefits, including:</p>
+<ul>
+<li>Smaller and faster code.</li>
+<li>We can have the compiler detect certain kinds of errors and halt compilation if they occur.</li>
+<li>Undefined behavior is not allowed at compile-time.</li>
+<li>The ability to use variables and functions in places that require a constant expression.</li>
+</ul>
+<p>The last point is perhaps the most unavoidable, as certain C++ features require values that are known at compile-time.</p>
+<blockquote>
+<p><strong>Related content</strong></p>
+<p>Related content</p>
+<p>Covered in lesson <a href="constant-expressions">5.5 -- Constant expressions</a></p>
+</blockquote>
+<h2 id="q12-why-should-i-constexpr-an-eligible-function-when-i-know-it-will-only-be-evaluated-at-runtime-in-my-program"><a class="header" href="#q12-why-should-i-constexpr-an-eligible-function-when-i-know-it-will-only-be-evaluated-at-runtime-in-my-program">Q12: Why should I constexpr an eligible function when I know it will only be evaluated at runtime in my program?</a></h2>
+<p>There are a few reasons you might want to do so:</p>
+<ol>
+<li>There’s little downside to using constexpr, and it may help the compiler optimize even in contexts where it isn’t evaluated at compile-time.</li>
+<li>Just because you’re not calling the function in a compile-time evaluatable context right now doesn’t mean you won’t call it in such a context when you modify or extend your program. And if you haven’t constexpr’d the function already, you may not think to when you do start to call it in such a context, and then you’ll miss out on the performance benefits. Or you may be forced to constexpr it later when you need to use the return value in a context that requires a constant expression somewhere.</li>
+<li>Repetition helps ingrain best practices.</li>
+</ol>
+<p>On a non-trivial project, it’s a good idea to implement your functions with the mindset that they may be reused (or extended) in the future. Any time you modify an existing function, you risk breaking it, and that means it needs to be retested, which takes time and energy. It’s often worth spending an extra minute or two “doing it right the first time” so you don’t have to redo (and retest) it again later.</p>
+<blockquote>
+<p><strong>Related content</strong></p>
+<p>Related content</p>
+<p>Covered in lesson <a href="constexpr-functions/#constexprruntimeeval">F.1 -- Constexpr functions</a></p>
+</blockquote>
+<h2 id="q13-why-shouldnt-i-call-the-same-input-function-more-than-once-in-an-expression"><a class="header" href="#q13-why-shouldnt-i-call-the-same-input-function-more-than-once-in-an-expression">Q13: Why shouldn’t I call the same input function more than once in an expression?</a></h2>
+<p>In most cases, the C++ standard does not specify the order in which operands (including function arguments) are evaluated. The precedence and associativity of operators is used only to determine how operands are grouped with operators, and the order of value computation.</p>
+<p>For example, given the statement <code>std::cout &lt;&lt; subtract(getUserInput(), getUserInput())</code>, either the left argument or the right argument in the function call to <code>subtract()</code> could be evaluated first. Let’s say the user inputs the values <code>5</code> and <code>2</code>. If the left argument was evaluated first, the left argument will evaluate to <code>5</code>, and the right argument will evaluate to <code>2</code>. <code>5 - 2</code> is <code>3</code>. If the right argument was evaluated first, the right argument will evaluate to <code>5</code>, and the left argument will evaluate to <code>2</code>. <code>2 - 5</code> is <code>-3</code>. Thus, this statement might print either <code>3</code> or <code>-3</code>.</p>
+<p>This can be disambiguated by making each function call to <code>getUserInput()</code> a separate statement (so the order is deterministic), and storing the return value in a variable until it is needed.</p>
+<blockquote>
+<p><strong>Related content</strong></p>
+<p>Related content</p>
+<p>Covered in lesson <a href="operator-precedence-and-associativity/#unspecified">6.1 -- Operator precedence and associativity</a></p>
+</blockquote>
+<h2 id="q14-there-arent-enough-quizzes-where-can-i-get-more-practice"><a class="header" href="#q14-there-arent-enough-quizzes-where-can-i-get-more-practice">Q14: There aren’t enough quizzes! Where can I get more practice?</a></h2>
+<p>We recommend <a href="https://www.codewars.com/">https://www.codewars.com/</a>, which has plenty of bite-sized exercises to help improve your general problem-solving and C++ implementation skills. It’s also fun!</p>
+<p>Once you have a solution, you can compare it with the answers of others to see alternative approaches, or understand where your own code might be improved.</p>
+<p>However, because disposable exercises have disposable answers, solving such quizzes doesn’t really encourage writing high quality code, or demonstrate what happens when you don’t follow best practices. For that, nothing is better than creating your own project.</p>
+<p>Start with something small -- a simple game or simulation. Then layer in features over time. As the complexity of your project increases, you’ll start the see the various deficiencies in your code show up. This will help you identify what areas of your code are in need of quality improvements.</p>
+<p>AI CONTENT END 1</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="a3-using-libraries-with-codeblocks.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="chapter-C++_Updates.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="a3-using-libraries-with-codeblocks.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="chapter-C++_Updates.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

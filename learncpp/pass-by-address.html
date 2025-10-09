@@ -1,0 +1,539 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Pass by address - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="pass-by-address"><a class="header" href="#pass-by-address">Pass by address</a></h1>
+<p>In prior lessons, we’ve covered two different ways to pass an argument to a function: pass by value (<a href="introduction-to-function-parameters-and-arguments.html">2.4 -- Introduction to function parameters and arguments</a>) and pass by reference (<a href="pass-by-lvalue-reference.html">12.5 -- Pass by lvalue reference</a>).</p>
+<p>Here’s a sample program that shows a <code>std::string</code> object being passed by value and by reference:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+void printByValue(std::string val) // The function parameter is a copy of str
+{
+    std::cout &lt;&lt; val &lt;&lt; '\n'; // print the value via the copy
+}
+
+void printByReference(const std::string&amp; ref) // The function parameter is a reference that binds to str
+{
+    std::cout &lt;&lt; ref &lt;&lt; '\n'; // print the value via the reference
+}
+
+int main()
+{
+    std::string str{ "Hello, world!" };
+    
+    printByValue(str); // pass str by value, makes a copy of str
+    printByReference(str); // pass str by reference, does not make a copy of str
+
+    return 0;
+}
+</code></pre>
+<p>When we pass argument <code>str</code> by value, the function parameter <code>val</code> receives a copy of the argument. Because the parameter is a copy of the argument, any changes to the <code>val</code> are made to the copy, not the original argument.</p>
+<p>When we pass argument <code>str</code> by reference, the reference parameter <code>ref</code> is bound to the actual argument. This avoids making a copy of the argument. Because our reference parameter is const, we are not allowed to change <code>ref</code>. But if <code>ref</code> were non-const, any changes we made to <code>ref</code> would change <code>str</code>.</p>
+<p>In both cases, the caller is providing the actual object (<code>str</code>) to be passed as an argument to the function call.</p>
+<h2 id="pass-by-address-1"><a class="header" href="#pass-by-address-1">Pass by address</a></h2>
+<p>C++ provides a third way to pass values to a function, called pass by address. With <strong>pass by address</strong>, instead of providing an object as an argument, the caller provides an object’s <em>address</em> (via a pointer). This pointer (holding the address of the object) is copied into a pointer parameter of the called function (which now also holds the address of the object). The function can then dereference that pointer to access the object whose address was passed.</p>
+<p>Here’s a version of the above program that adds a pass by address variant:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+void printByValue(std::string val) // The function parameter is a copy of str
+{
+    std::cout &lt;&lt; val &lt;&lt; '\n'; // print the value via the copy
+}
+
+void printByReference(const std::string&amp; ref) // The function parameter is a reference that binds to str
+{
+    std::cout &lt;&lt; ref &lt;&lt; '\n'; // print the value via the reference
+}
+
+void printByAddress(const std::string* ptr) // The function parameter is a pointer that holds the address of str
+{
+    std::cout &lt;&lt; *ptr &lt;&lt; '\n'; // print the value via the dereferenced pointer
+}
+
+int main()
+{
+    std::string str{ "Hello, world!" };
+    
+    printByValue(str); // pass str by value, makes a copy of str
+    printByReference(str); // pass str by reference, does not make a copy of str
+    printByAddress(&amp;str); // pass str by address, does not make a copy of str
+
+    return 0;
+}
+</code></pre>
+<p>Note how similar all three of these versions are. Let’s explore the pass by address version in more detail.</p>
+<p>First, because we want our <code>printByAddress()</code> function to use pass by address, we’ve made our function parameter a pointer named <code>ptr</code>. Since <code>printByAddress()</code> will use <code>ptr</code> in a read-only manner, <code>ptr</code> is a pointer to a const value.</p>
+<pre><code class="language-cpp">void printByAddress(const std::string* ptr)
+{
+    std::cout &lt;&lt; *ptr &lt;&lt; '\n'; // print the value via the dereferenced pointer
+}
+</code></pre>
+<p>Inside the <code>printByAddress()</code> function, we dereference <code>ptr</code> parameter to access the value of the object being pointed to.</p>
+<p>Second, when the function is called, we can’t just pass in the <code>str</code> object -- we need to pass in the address of <code>str</code>. The easiest way to do that is to use the address-of operator (&amp;) to get a pointer holding the address of <code>str</code>:</p>
+<pre><code class="language-cpp">printByAddress(&amp;str); // use address-of operator (&amp;) to get pointer holding address of str
+</code></pre>
+<p>When this call is executed, <code>&amp;str</code> will create a pointer holding the address of <code>str</code>. This address is then copied into function parameter <code>ptr</code> as part of the function call. Because <code>ptr</code> now holds the address of <code>str</code>, when the function dereferences <code>ptr</code>, it will get the value of <code>str</code>, which the function prints to the console.</p>
+<p>That’s it.</p>
+<p>Although we use the address-of operator in the above example to get the address of <code>str</code>, if we already had a pointer variable holding the address of <code>str</code>, we could use that instead:</p>
+<pre><code class="language-cpp">int main()
+{
+    std::string str{ "Hello, world!" };
+    
+    printByValue(str); // pass str by value, makes a copy of str
+    printByReference(str); // pass str by reference, does not make a copy of str
+    printByAddress(&amp;str); // pass str by address, does not make a copy of str
+
+    std::string* ptr { &amp;str }; // define a pointer variable holding the address of str
+    printByAddress(ptr); // pass str by address, does not make a copy of str    
+
+    return 0;
+}
+</code></pre>
+<blockquote>
+<p><strong>Nomenclature</strong></p>
+<p>When we pass the address of a variable as an argument using <code>operator&amp;</code>, we say the variable is passed by address.</p>
+<p>When we have a pointer variable holding the address of an object, and we pass the pointer as an argument to a parameter of the same type, we say the object is passed by address, and the pointer is passed by value.</p>
+</blockquote>
+<h2 id="pass-by-address-does-not-make-a-copy-of-the-object-being-pointed-to"><a class="header" href="#pass-by-address-does-not-make-a-copy-of-the-object-being-pointed-to">Pass by address does not make a copy of the object being pointed to</a></h2>
+<p>Consider the following statements:</p>
+<pre><code class="language-cpp">std::string str{ "Hello, world!" };
+printByAddress(&amp;str); // use address-of operator (&amp;) to get pointer holding address of str
+</code></pre>
+<p>As we noted in <a href="pass-by-lvalue-reference.html">12.5 -- Pass by lvalue reference</a>, copying a <code>std::string</code> is expensive, so that’s something we want to avoid. When we pass a <code>std::string</code> by address, we’re not copying the actual <code>std::string</code> object -- we’re just copying the pointer (holding the address of the object) from the caller to the called function. Since an address is typically only 4 or 8 bytes, a pointer is only 4 or 8 bytes, so copying a pointer is always fast.</p>
+<p>Thus, just like pass by reference, pass by address is fast, and avoids making a copy of the argument object.</p>
+<h2 id="pass-by-address-allows-the-function-to-modify-the-arguments-value"><a class="header" href="#pass-by-address-allows-the-function-to-modify-the-arguments-value">Pass by address allows the function to modify the argument’s value</a></h2>
+<p>When we pass an object by address, the function receives the address of the passed object, which it can access via dereferencing. Because this is the address of the actual argument object being passed (not a copy of the object), if the function parameter is a pointer to non-const, the function can modify the argument via the pointer parameter:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+void changeValue(int* ptr) // note: ptr is a pointer to non-const in this example
+{
+    *ptr = 6; // change the value to 6
+}
+
+int main()
+{
+    int x{ 5 };
+
+    std::cout &lt;&lt; "x = " &lt;&lt; x &lt;&lt; '\n';
+
+    changeValue(&amp;x); // we're passing the address of x to the function
+
+    std::cout &lt;&lt; "x = " &lt;&lt; x &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>This prints:</p>
+<pre><code class="language-cpp">x = 5
+x = 6
+</code></pre>
+<p>As you can see, the argument is modified and this modification persists even after <code>changeValue()</code> has finished running.</p>
+<p>If a function is not supposed to modify the object being passed in, the function parameter should be made a pointer-to-const:</p>
+<pre><code class="language-cpp">void changeValue(const int* ptr) // note: ptr is now a pointer to a const
+{
+    *ptr = 6; // error: can not change const value
+}
+</code></pre>
+<p>For many of the same reasons we typically don’t <code>const</code> regular (non-pointer, non-reference) function parameters (discussed in <a href="constant-variables-named-constants.html">5.1 -- Constant variables (named constants)</a>), we also typically don’t <code>const</code> pointer function parameters. Let’s make two assertions:</p>
+<ul>
+<li>A <code>const</code> keyword used to make a pointer function parameter a const pointer provides little value (since it has no impact on the caller, and mostly serves as documentation that the pointer won’t change).</li>
+<li>A <code>const</code> keyword used to differentiate a pointer-to-const from a pointer-to-non-const that can modify the object passed in is significant (as the caller needs to know if the function could change the value of the argument).</li>
+</ul>
+<p>If we only use non-const pointer function parameters, then all uses of <code>const</code> are significant. As soon as we start using <code>const</code> for const pointer function parameters, then it becomes more difficult to determine whether a given use of <code>const</code> is significant or not. More importantly, it also makes it harder to notice pointer-to-non-const parameters. For example:</p>
+<pre><code class="language-cpp">void foo(const char* source, char* dest, int count);             // Using non-const pointers, all consts are significant.
+void foo(const char* const source, char* const dest, int count); // Using const pointers, `dest` being a pointer-to-non-const may go unnoticed amongst the sea of spurious consts.
+</code></pre>
+<p>In the former case, it’s easy to see that <code>source</code> is a pointer-to-const and <code>dest</code> is a pointer-to-non-const. In the latter case, it’s much harder to see that <code>dest</code> is a const-pointer-to-non-const, whose pointed-to object can be modified by the function!</p>
+<div id="admonition-best-practices" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices"></a>
+</div>
+<div>
+<p>Prefer pointer-to-const function parameters over pointer-to-non-const function parameters, unless the function needs to modify the object passed in.<br />
+Do not make function parameters const pointers unless there is some specific reason to do so.</p>
+</div>
+</div>
+<h2 id="null-checking"><a class="header" href="#null-checking">Null checking</a></h2>
+<p>Now consider this fairly innocent looking program:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+void print(int* ptr)
+{
+	std::cout &lt;&lt; *ptr &lt;&lt; '\n';
+}
+
+int main()
+{
+	int x{ 5 };
+	print(&amp;x);
+
+	int* myPtr {};
+	print(myPtr);
+
+	return 0;
+}
+</code></pre>
+<p>When this program is run, it will print the value <code>5</code> and then most likely crash.</p>
+<p>In the call to <code>print(myPtr)</code>, <code>myPtr</code> is a null pointer, so function parameter <code>ptr</code> will also be a null pointer. When this null pointer is dereferenced in the body of the function, undefined behavior results.</p>
+<p>When passing a parameter by address, care should be taken to ensure the pointer is not a null pointer before you dereference the value. One way to do that is to use a conditional statement:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+void print(int* ptr)
+{
+    if (ptr) // if ptr is not a null pointer
+    {
+        std::cout &lt;&lt; *ptr &lt;&lt; '\n';
+    }
+}
+
+int main()
+{
+	int x{ 5 };
+	
+	print(&amp;x);
+	print(nullptr);
+
+	return 0;
+}
+</code></pre>
+<p>In the above program, we’re testing <code>ptr</code> to ensure it is not null before we dereference it. While this is fine for such a simple function, in more complicated functions this can result in redundant logic (testing if ptr is not null multiple times) or nesting of the primary logic of the function (if contained in a block).</p>
+<p>In most cases, it is more effective to do the opposite: test whether the function parameter is null as a precondition (<a href="assert-and-static_assert.html">9.6 -- Assert and static_assert</a>) and handle the negative case immediately:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+void print(int* ptr)
+{
+    if (!ptr) // if ptr is a null pointer, early return back to the caller
+        return;
+
+    // if we reached this point, we can assume ptr is valid
+    // so no more testing or nesting required
+
+    std::cout &lt;&lt; *ptr &lt;&lt; '\n';
+}
+
+int main()
+{
+	int x{ 5 };
+	
+	print(&amp;x);
+	print(nullptr);
+
+	return 0;
+}
+</code></pre>
+<p>If a null pointer should never be passed to the function, an <code>assert</code> (which we covered in lesson <a href="assert-and-static_assert.html">9.6 -- Assert and static_assert</a>) can be used instead (or also) (as asserts are intended to document things that should never happen):</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;cassert&gt;
+
+void print(const int* ptr) // now a pointer to a const int
+{
+	assert(ptr); // fail the program in debug mode if a null pointer is passed (since this should never happen)
+
+	// (optionally) handle this as an error case in production mode so we don't crash if it does happen
+	if (!ptr)
+		return;
+
+	std::cout &lt;&lt; *ptr &lt;&lt; '\n';
+}
+
+int main()
+{
+	int x{ 5 };
+	
+	print(&amp;x);
+	print(nullptr);
+
+	return 0;
+}
+</code></pre>
+<h2 id="prefer-pass-by-const-reference"><a class="header" href="#prefer-pass-by-const-reference">Prefer pass by (const) reference</a></h2>
+<p>Note that function <code>print()</code> in the example above doesn’t handle null values very well -- it effectively just aborts the function. Given this, why allow a user to pass in a null value at all? Pass by reference has the same benefits as pass by address without the risk of inadvertently dereferencing a null pointer.</p>
+<p>Pass by const reference has a few other advantages over pass by address.</p>
+<p>First, because an object being passed by address must have an address, only lvalues can be passed by address (as rvalues don’t have addresses). Pass by const reference is more flexible, as it can accept lvalues and rvalues:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+void printByValue(int val) // The function parameter is a copy of the argument
+{
+    std::cout &lt;&lt; val &lt;&lt; '\n'; // print the value via the copy
+}
+
+void printByReference(const int&amp; ref) // The function parameter is a reference that binds to the argument
+{
+    std::cout &lt;&lt; ref &lt;&lt; '\n'; // print the value via the reference
+}
+
+void printByAddress(const int* ptr) // The function parameter is a pointer that holds the address of the argument
+{
+    std::cout &lt;&lt; *ptr &lt;&lt; '\n'; // print the value via the dereferenced pointer
+}
+
+int main()
+{
+    printByValue(5);     // valid (but makes a copy)
+    printByReference(5); // valid (because the parameter is a const reference)
+    printByAddress(&amp;5);  // error: can't take address of r-value
+
+    return 0;
+}
+</code></pre>
+<p>Second, the syntax for pass by reference is natural, as we can just pass in literals or objects. With pass by address, our code ends up littered with ampersands (&amp;) and asterisks (*).</p>
+<p>In modern C++, most things that can be done with pass by address are better accomplished through other methods. Follow this common maxim: “Pass by reference when you can, pass by address when you must”.</p>
+<div id="admonition-best-practices-1" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-1-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-1-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices-1"></a>
+</div>
+<div>
+<p>Prefer pass by reference to pass by address unless you have a specific reason to use pass by address.</p>
+</div>
+</div>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="pointers-and-const.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="pass-by-address-part-2.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="pointers-and-const.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="pass-by-address-part-2.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,991 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Move constructors and move assignment - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="move-constructors-and-move-assignment"><a class="header" href="#move-constructors-and-move-assignment">Move constructors and move assignment</a></h1>
+<p>In lesson <a href="introduction-to-smart-pointers-move-semantics.html">22.1 -- Introduction to smart pointers and move semantics</a>, we took a look at std::auto_ptr, discussed the desire for move semantics, and took a look at some of the downsides that occur when functions designed for copy semantics (copy constructors and copy assignment operators) are redefined to implement move semantics.</p>
+<p>In this lesson, we’ll take a deeper look at how C++11 resolves these problems via move constructors and move assignment.</p>
+<h2 id="recapping-copy-constructors-and-copy-assignment"><a class="header" href="#recapping-copy-constructors-and-copy-assignment">Recapping copy constructors and copy assignment</a></h2>
+<p>First, let’s take a moment to recap copy semantics.</p>
+<p>Copy constructors are used to initialize a class by making a copy of an object of the same class. Copy assignment is used to copy one class object to another existing class object. By default, C++ will provide a copy constructor and copy assignment operator if one is not explicitly provided. These compiler-provided functions do shallow copies, which may cause problems for classes that allocate dynamic memory. So classes that deal with dynamic memory should override these functions to do deep copies.</p>
+<p>Returning back to our Auto_ptr smart pointer class example from the first lesson in this chapter, let’s look at a version that implements a copy constructor and copy assignment operator that do deep copies, and a sample program that exercises them:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+template&lt;typename T&gt;
+class Auto_ptr3
+{
+	T* m_ptr {};
+public:
+	Auto_ptr3(T* ptr = nullptr)
+		: m_ptr { ptr }
+	{
+	}
+
+	~Auto_ptr3()
+	{
+		delete m_ptr;
+	}
+
+	// Copy constructor
+	// Do deep copy of a.m_ptr to m_ptr
+	Auto_ptr3(const Auto_ptr3&amp; a)
+	{
+		m_ptr = new T;
+		*m_ptr = *a.m_ptr;
+	}
+
+	// Copy assignment
+	// Do deep copy of a.m_ptr to m_ptr
+	Auto_ptr3&amp; operator=(const Auto_ptr3&amp; a)
+	{
+		// Self-assignment detection
+		if (&amp;a == this)
+			return *this;
+
+		// Release any resource we're holding
+		delete m_ptr;
+
+		// Copy the resource
+		m_ptr = new T;
+		*m_ptr = *a.m_ptr;
+
+		return *this;
+	}
+
+	T&amp; operator*() const { return *m_ptr; }
+	T* operator-&gt;() const { return m_ptr; }
+	bool isNull() const { return m_ptr == nullptr; }
+};
+
+class Resource
+{
+public:
+	Resource() { std::cout &lt;&lt; "Resource acquired\n"; }
+	~Resource() { std::cout &lt;&lt; "Resource destroyed\n"; }
+};
+
+Auto_ptr3&lt;Resource&gt; generateResource()
+{
+	Auto_ptr3&lt;Resource&gt; res{new Resource};
+	return res; // this return value will invoke the copy constructor
+}
+
+int main()
+{
+	Auto_ptr3&lt;Resource&gt; mainres;
+	mainres = generateResource(); // this assignment will invoke the copy assignment
+
+	return 0;
+}
+</code></pre>
+<p>In this program, we’re using a function named generateResource() to create a smart pointer encapsulated resource, which is then passed back to function main(). Function main() then assigns that to an existing Auto_ptr3 object.</p>
+<p>When this program is run, it prints:</p>
+<pre><code class="language-cpp">Resource acquired
+Resource acquired
+Resource destroyed
+Resource acquired
+Resource destroyed
+Resource destroyed
+</code></pre>
+<p>(Note: You may only get 4 outputs if your compiler elides the return value from function generateResource())</p>
+<p>That’s a lot of resource creation and destruction going on for such a simple program! What’s going on here?</p>
+<p>Let’s take a closer look. There are 6 key steps that happen in this program (one for each printed message):</p>
+<ol>
+<li>Inside generateResource(), local variable res is created and initialized with a dynamically allocated Resource, which causes the first “Resource acquired”.</li>
+<li>Res is returned back to main() by value. We return by value here because res is a local variable -- it can’t be returned by address or reference because res will be destroyed when generateResource() ends. So res is copy constructed into a temporary object. Since our copy constructor does a deep copy, a new Resource is allocated here, which causes the second “Resource acquired”.</li>
+<li>Res goes out of scope, destroying the originally created Resource, which causes the first “Resource destroyed”.</li>
+<li>The temporary object is assigned to mainres by copy assignment. Since our copy assignment also does a deep copy, a new Resource is allocated, causing yet another “Resource acquired”.</li>
+<li>The assignment expression ends, and the temporary object goes out of expression scope and is destroyed, causing a “Resource destroyed”.</li>
+<li>At the end of main(), mainres goes out of scope, and our final “Resource destroyed” is displayed.</li>
+</ol>
+<p>So, in short, because we call the copy constructor once to copy construct res to a temporary, and copy assignment once to copy the temporary into mainres, we end up allocating and destroying 3 separate objects in total.</p>
+<p>Inefficient, but at least it doesn’t crash!</p>
+<p>However, with move semantics, we can do better.</p>
+<h2 id="move-constructors-and-move-assignment-1"><a class="header" href="#move-constructors-and-move-assignment-1">Move constructors and move assignment</a></h2>
+<p>C++11 defines two new functions in service of move semantics: a move constructor, and a move assignment operator. Whereas the goal of the copy constructor and copy assignment is to make a copy of one object to another, the goal of the move constructor and move assignment is to move ownership of the resources from one object to another (which is typically much less expensive than making a copy).</p>
+<p>Defining a move constructor and move assignment work analogously to their copy counterparts. However, whereas the copy flavors of these functions take a const l-value reference parameter (which will bind to just about anything), the move flavors of these functions use non-const rvalue reference parameters (which only bind to rvalues).</p>
+<p>Here’s the same Auto_ptr3 class as above, with a move constructor and move assignment operator added. We’ve left in the deep-copying copy constructor and copy assignment operator for comparison purposes.</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+template&lt;typename T&gt;
+class Auto_ptr4
+{
+	T* m_ptr {};
+public:
+	Auto_ptr4(T* ptr = nullptr)
+		: m_ptr { ptr }
+	{
+	}
+
+	~Auto_ptr4()
+	{
+		delete m_ptr;
+	}
+
+	// Copy constructor
+	// Do deep copy of a.m_ptr to m_ptr
+	Auto_ptr4(const Auto_ptr4&amp; a)
+	{
+		m_ptr = new T;
+		*m_ptr = *a.m_ptr;
+	}
+
+	// Move constructor
+	// Transfer ownership of a.m_ptr to m_ptr
+	Auto_ptr4(Auto_ptr4&amp;&amp; a) noexcept
+		: m_ptr { a.m_ptr }
+	{
+		a.m_ptr = nullptr; // we'll talk more about this line below
+	}
+
+	// Copy assignment
+	// Do deep copy of a.m_ptr to m_ptr
+	Auto_ptr4&amp; operator=(const Auto_ptr4&amp; a)
+	{
+		// Self-assignment detection
+		if (&amp;a == this)
+			return *this;
+
+		// Release any resource we're holding
+		delete m_ptr;
+
+		// Copy the resource
+		m_ptr = new T;
+		*m_ptr = *a.m_ptr;
+
+		return *this;
+	}
+
+	// Move assignment
+	// Transfer ownership of a.m_ptr to m_ptr
+	Auto_ptr4&amp; operator=(Auto_ptr4&amp;&amp; a) noexcept
+	{
+		// Self-assignment detection
+		if (&amp;a == this)
+			return *this;
+
+		// Release any resource we're holding
+		delete m_ptr;
+
+		// Transfer ownership of a.m_ptr to m_ptr
+		m_ptr = a.m_ptr;
+		a.m_ptr = nullptr; // we'll talk more about this line below
+
+		return *this;
+	}
+
+	T&amp; operator*() const { return *m_ptr; }
+	T* operator-&gt;() const { return m_ptr; }
+	bool isNull() const { return m_ptr == nullptr; }
+};
+
+class Resource
+{
+public:
+	Resource() { std::cout &lt;&lt; "Resource acquired\n"; }
+	~Resource() { std::cout &lt;&lt; "Resource destroyed\n"; }
+};
+
+Auto_ptr4&lt;Resource&gt; generateResource()
+{
+	Auto_ptr4&lt;Resource&gt; res{new Resource};
+	return res; // this return value will invoke the move constructor
+}
+
+int main()
+{
+	Auto_ptr4&lt;Resource&gt; mainres;
+	mainres = generateResource(); // this assignment will invoke the move assignment
+
+	return 0;
+}
+</code></pre>
+<p>The move constructor and move assignment operator are simple. Instead of deep copying the source object (<code>a</code>) into the destination object (the implicit object), we simply move (steal) the source object’s resources. This involves shallow copying the source pointer into the implicit object, then setting the source pointer to null.</p>
+<p>When run, this program prints:</p>
+<pre><code class="language-cpp">Resource acquired
+Resource destroyed
+</code></pre>
+<p>That’s much better!</p>
+<p>The flow of the program is exactly the same as before. However, instead of calling the copy constructor and copy assignment operators, this program calls the move constructor and move assignment operators. Looking a little more deeply:</p>
+<ol>
+<li>Inside generateResource(), local variable res is created and initialized with a dynamically allocated Resource, which causes the first “Resource acquired”.</li>
+<li>Res is returned back to main() by value. Res is move constructed into a temporary object, transferring the dynamically created object stored in res to the temporary object. We’ll talk about why this happens below.</li>
+<li>Res goes out of scope. Because res no longer manages a pointer (it was moved to the temporary), nothing interesting happens here.</li>
+<li>The temporary object is move assigned to mainres. This transfers the dynamically created object stored in the temporary to mainres.</li>
+<li>The assignment expression ends, and the temporary object goes out of expression scope and is destroyed. However, because the temporary no longer manages a pointer (it was moved to mainres), nothing interesting happens here either.</li>
+<li>At the end of main(), mainres goes out of scope, and our final “Resource destroyed” is displayed.</li>
+</ol>
+<p>So instead of copying our Resource twice (once for the copy constructor and once for the copy assignment), we transfer it twice. This is more efficient, as Resource is only constructed and destroyed once instead of three times.</p>
+<blockquote>
+<p><strong>Related content</strong></p>
+<p>Related content</p>
+<p>Move constructors and move assignment should be marked as <code>noexcept</code>. This tells the compiler that these functions will not throw exceptions.</p>
+<p>We introduce <code>noexcept</code> in lesson <a href="exception-specifications-and-noexcept">27.9 -- Exception specifications and noexcept</a> and discuss why move constructors and move assignment are marked as <code>noexcept</code> in lesson <a href="stdmove_if_noexcept">27.10 -- std::move_if_noexcept</a>.</p>
+</blockquote>
+<h2 id="when-are-the-move-constructor-and-move-assignment-called"><a class="header" href="#when-are-the-move-constructor-and-move-assignment-called">When are the move constructor and move assignment called?</a></h2>
+<p>The move constructor and move assignment are called when those functions have been defined, and the argument for construction or assignment is an rvalue. Most typically, this rvalue will be a literal or temporary value.</p>
+<p>The copy constructor and copy assignment are used otherwise (when the argument is an lvalue, or when the argument is an rvalue and the move constructor or move assignment functions aren’t defined).</p>
+<h2 id="implicit-move-constructor-and-move-assignment-operator"><a class="header" href="#implicit-move-constructor-and-move-assignment-operator">Implicit move constructor and move assignment operator</a></h2>
+<p>The compiler will create an implicit move constructor and move assignment operator if all of the following are true:</p>
+<ul>
+<li>There are no user-declared copy constructors or copy assignment operators.</li>
+<li>There are no user-declared move constructors or move assignment operators.</li>
+<li>There is no user-declared destructor.</li>
+</ul>
+<p>These functions do a memberwise move, which behaves as follows:</p>
+<ul>
+<li>If member has a move constructor or move assignment (as appropriate), it will be invoked.</li>
+<li>Otherwise, the member will be copied.</li>
+</ul>
+<p>Notably, this means that pointers will be copied, not moved!</p>
+<div id="admonition-warning" class="admonition admonish-warning" role="note" aria-labelledby="admonition-warning-title">
+<div class="admonition-title">
+<div id="admonition-warning-title">
+<p>Warning</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-warning"></a>
+</div>
+<div>
+<p>Warning</p>
+<p>The implicit move constructor and move assignment will copy pointers, not move them. If you want to move a pointer member, you will need to define the move constructor and move assignment yourself.</p>
+</div>
+</div>
+<h2 id="the-key-insight-behind-move-semantics"><a class="header" href="#the-key-insight-behind-move-semantics">The key insight behind move semantics</a></h2>
+<p>You now have enough context to understand the key insight behind move semantics.</p>
+<p>If we construct an object or do an assignment where the argument is an l-value, the only thing we can reasonably do is copy the l-value. We can’t assume it’s safe to alter the l-value, because it may be used again later in the program. If we have an expression “a = b” (where b is an lvalue), we wouldn’t reasonably expect b to be changed in any way.</p>
+<p>However, if we construct an object or do an assignment where the argument is an r-value, then we know that r-value is just a temporary object of some kind. Instead of copying it (which can be expensive), we can simply transfer its resources (which is cheap) to the object we’re constructing or assigning. This is safe to do because the temporary will be destroyed at the end of the expression anyway, so we know it will never be used again!</p>
+<p>C++11, through r-value references, gives us the ability to provide different behaviors when the argument is an r-value vs an l-value, enabling us to make smarter and more efficient decisions about how our objects should behave.</p>
+<blockquote>
+<p><strong>Key insight</strong></p>
+<p>Key insight</p>
+<p>Move semantics is an optimization opportunity.</p>
+</blockquote>
+<h2 id="move-functions-should-always-leave-both-objects-in-a-valid-state"><a class="header" href="#move-functions-should-always-leave-both-objects-in-a-valid-state">Move functions should always leave both objects in a valid state</a></h2>
+<p>In the above examples, both the move constructor and move assignment functions set a.m_ptr to nullptr. This may seem extraneous -- after all, if <code>a</code> is a temporary r-value, why bother doing “cleanup” if parameter <code>a</code> is going to be destroyed anyway?</p>
+<p>The answer is simple: When <code>a</code> goes out of scope, the destructor for <code>a</code> will be called, and <code>a.m_ptr</code> will be deleted. If at that point, <code>a.m_ptr</code> is still pointing to the same object as <code>m_ptr</code>, then <code>m_ptr</code> will be left as a dangling pointer. When the object containing <code>m_ptr</code> eventually gets used (or destroyed), we’ll get undefined behavior.</p>
+<p>When implementing move semantics, it is important to ensure the moved-from object is left in a valid state, so that it will destruct properly (without creating undefined behavior).</p>
+<h2 id="automatic-l-values-returned-by-value-may-be-moved-instead-of-copied"><a class="header" href="#automatic-l-values-returned-by-value-may-be-moved-instead-of-copied">Automatic l-values returned by value may be moved instead of copied</a></h2>
+<p>In the generateResource() function of the Auto_ptr4 example above, when variable res is returned by value, it is moved instead of copied, even though res is an l-value. The C++ specification has a special rule that says automatic objects returned from a function by value can be moved even if they are l-values. This makes sense, since res was going to be destroyed at the end of the function anyway! We might as well steal its resources instead of making an expensive and unnecessary copy.</p>
+<p>Although the compiler can move l-value return values, in some cases it may be able to do even better by simply eliding the copy altogether (which avoids the need to make a copy or do a move at all). In such a case, neither the copy constructor nor move constructor would be called.</p>
+<h2 id="disabling-copying"><a class="header" href="#disabling-copying">Disabling copying</a></h2>
+<p>In the Auto_ptr4 class above, we left in the copy constructor and assignment operator for comparison purposes. But in move-enabled classes, it is sometimes desirable to delete the copy constructor and copy assignment functions to ensure copies aren’t made. In the case of our Auto_ptr class, we don’t want to copy our templated object T -- both because it’s expensive, and whatever class T is may not even support copying!</p>
+<p>Here’s a version of Auto_ptr that supports move semantics but not copy semantics:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+template&lt;typename T&gt;
+class Auto_ptr5
+{
+	T* m_ptr {};
+public:
+	Auto_ptr5(T* ptr = nullptr)
+		: m_ptr { ptr }
+	{
+	}
+
+	~Auto_ptr5()
+	{
+		delete m_ptr;
+	}
+
+	// Copy constructor -- no copying allowed!
+	Auto_ptr5(const Auto_ptr5&amp; a) = delete;
+
+	// Move constructor
+	// Transfer ownership of a.m_ptr to m_ptr
+	Auto_ptr5(Auto_ptr5&amp;&amp; a) noexcept
+		: m_ptr { a.m_ptr }
+	{
+		a.m_ptr = nullptr;
+	}
+
+	// Copy assignment -- no copying allowed!
+	Auto_ptr5&amp; operator=(const Auto_ptr5&amp; a) = delete;
+
+	// Move assignment
+	// Transfer ownership of a.m_ptr to m_ptr
+	Auto_ptr5&amp; operator=(Auto_ptr5&amp;&amp; a) noexcept
+	{
+		// Self-assignment detection
+		if (&amp;a == this)
+			return *this;
+
+		// Release any resource we're holding
+		delete m_ptr;
+
+		// Transfer ownership of a.m_ptr to m_ptr
+		m_ptr = a.m_ptr;
+		a.m_ptr = nullptr;
+
+		return *this;
+	}
+
+	T&amp; operator*() const { return *m_ptr; }
+	T* operator-&gt;() const { return m_ptr; }
+	bool isNull() const { return m_ptr == nullptr; }
+};
+</code></pre>
+<p>If you were to try to pass an Auto_ptr5 l-value to a function by value, the compiler would complain that the copy constructor required to initialize the function parameter has been deleted. This is good, because we should probably be passing Auto_ptr5 by const l-value reference anyway!</p>
+<p>Auto_ptr5 is (finally) a good smart pointer class. And, in fact the standard library contains a class very much like this one (that you should use instead), named std::unique_ptr. We’ll talk more about std::unique_ptr later in this chapter.</p>
+<h2 id="another-example"><a class="header" href="#another-example">Another example</a></h2>
+<p>Let’s take a look at another class that uses dynamic memory: a simple dynamic templated array. This class contains a deep-copying copy constructor and copy assignment operator.</p>
+<pre><code class="language-cpp">#include &lt;cstddef&gt; // for std::size_t
+
+template &lt;typename T&gt;
+class DynamicArray
+{
+private:
+	T* m_array {};
+	int m_length {};
+
+	void alloc(int length)
+	{
+		m_array = new T[static_cast&lt;std::size_t&gt;(length)];
+        	m_length = length;
+	}
+public:
+	DynamicArray(int length)
+	{
+		alloc(length);
+	}
+
+	~DynamicArray()
+	{
+		delete[] m_array;
+	}
+
+	// Copy constructor
+	DynamicArray(const DynamicArray &amp;arr)
+	{
+		alloc(arr.m_length);
+		std::copy_n(arr.m_array, m_length, m_array); // copy m_length elements from arr to m_array
+	}
+
+	// Copy assignment
+	DynamicArray&amp; operator=(const DynamicArray &amp;arr)
+	{
+		if (&amp;arr == this)
+			return *this;
+
+		delete[] m_array;
+
+		alloc(arr.m_length);
+
+		std::copy_n(arr.m_array, m_length, m_array); // copy m_length elements from arr to m_array
+
+		return *this;
+	}
+
+	int getLength() const { return m_length; }
+	T&amp; operator[](int index) { return m_array[index]; }
+	const T&amp; operator[](int index) const { return m_array[index]; }
+};
+</code></pre>
+<p>Now let’s use this class in a program. To show you how this class performs when we allocate a million integers on the heap, we’re going to leverage the Timer class we developed in lesson <a href="timing-your-code.html">18.4 -- Timing your code</a>. We’ll use the Timer class to time how fast our code runs, and show you the performance difference between copying and moving.</p>
+<pre><code class="language-cpp">#include &lt;algorithm&gt; // for std::copy_n
+#include &lt;chrono&gt; // for std::chrono functions
+#include &lt;iostream&gt;
+
+// Uses the above DynamicArray class
+
+class Timer
+{
+private:
+	// Type aliases to make accessing nested type easier
+	using Clock = std::chrono::high_resolution_clock;
+	using Second = std::chrono::duration&lt;double, std::ratio&lt;1&gt; &gt;;
+	
+	std::chrono::time_point&lt;Clock&gt; m_beg { Clock::now() };
+
+public:
+	void reset()
+	{
+		m_beg = Clock::now();
+	}
+	
+	double elapsed() const
+	{
+		return std::chrono::duration_cast&lt;Second&gt;(Clock::now() - m_beg).count();
+	}
+};
+
+// Return a copy of arr with all of the values doubled
+DynamicArray&lt;int&gt; cloneArrayAndDouble(const DynamicArray&lt;int&gt; &amp;arr)
+{
+	DynamicArray&lt;int&gt; dbl(arr.getLength());
+	for (int i = 0; i &lt; arr.getLength(); ++i)
+		dbl[i] = arr[i] * 2;
+
+	return dbl;
+}
+
+int main()
+{
+	Timer t;
+
+	DynamicArray&lt;int&gt; arr(1000000);
+
+	for (int i = 0; i &lt; arr.getLength(); i++)
+		arr[i] = i;
+
+	arr = cloneArrayAndDouble(arr);
+
+	std::cout &lt;&lt; t.elapsed();
+}
+</code></pre>
+<p>On one of the author’s machines, in release mode, this program executed in 0.00825559 seconds.</p>
+<p>Now let’s update <code>DynamicArray</code> by replacing the copy constructor and copy assignment with a move constructor and move assignment, and then run the program again:</p>
+<pre><code class="language-cpp">#include &lt;cstddef&gt; // for std::size_t
+
+template &lt;typename T&gt;
+class DynamicArray
+{
+private:
+	T* m_array {};
+	int m_length {};
+
+	void alloc(int length)
+	{
+		m_array = new T[static_cast&lt;std::size_t&gt;(length)];
+		m_length = length;
+	}
+public:
+	DynamicArray(int length)
+	{
+		alloc(length);
+	}
+
+	~DynamicArray()
+	{
+		delete[] m_array;
+	}
+
+	// Copy constructor
+	DynamicArray(const DynamicArray &amp;arr) = delete;
+
+	// Copy assignment
+	DynamicArray&amp; operator=(const DynamicArray &amp;arr) = delete;
+
+	// Move constructor
+	DynamicArray(DynamicArray &amp;&amp;arr) noexcept
+		:  m_array { arr.m_array }, m_length { arr.m_length }
+	{
+		arr.m_length = 0;
+		arr.m_array = nullptr;
+	}
+
+	// Move assignment
+	DynamicArray&amp; operator=(DynamicArray &amp;&amp;arr) noexcept
+	{
+		if (&amp;arr == this)
+			return *this;
+
+		delete[] m_array;
+
+		m_length = arr.m_length;
+		m_array = arr.m_array;
+		arr.m_length = 0;
+		arr.m_array = nullptr;
+
+		return *this;
+	}
+
+	int getLength() const { return m_length; }
+	T&amp; operator[](int index) { return m_array[index]; }
+	const T&amp; operator[](int index) const { return m_array[index]; }
+};
+
+#include &lt;iostream&gt;
+#include &lt;chrono&gt; // for std::chrono functions
+
+class Timer
+{
+private:
+	// Type aliases to make accessing nested type easier
+	using Clock = std::chrono::high_resolution_clock;
+	using Second = std::chrono::duration&lt;double, std::ratio&lt;1&gt; &gt;;
+	
+	std::chrono::time_point&lt;Clock&gt; m_beg { Clock::now() };
+
+public:
+	void reset()
+	{
+		m_beg = Clock::now();
+	}
+	
+	double elapsed() const
+	{
+		return std::chrono::duration_cast&lt;Second&gt;(Clock::now() - m_beg).count();
+	}
+};
+
+// Return a copy of arr with all of the values doubled
+DynamicArray&lt;int&gt; cloneArrayAndDouble(const DynamicArray&lt;int&gt; &amp;arr)
+{
+	DynamicArray&lt;int&gt; dbl(arr.getLength());
+	for (int i = 0; i &lt; arr.getLength(); ++i)
+		dbl[i] = arr[i] * 2;
+
+	return dbl;
+}
+
+int main()
+{
+	Timer t;
+
+	DynamicArray&lt;int&gt; arr(1000000);
+
+	for (int i = 0; i &lt; arr.getLength(); i++)
+		arr[i] = i;
+
+	arr = cloneArrayAndDouble(arr);
+
+	std::cout &lt;&lt; t.elapsed();
+}
+</code></pre>
+<p>On the same machine, this program executed in 0.0056 seconds.</p>
+<p>Comparing the runtime of the two programs, (0.00825559 - 0.0056) / 0.00825559 * 100 = 32.1% faster!</p>
+<h2 id="deleting-the-move-constructor-and-move-assignment"><a class="header" href="#deleting-the-move-constructor-and-move-assignment">Deleting the move constructor and move assignment</a></h2>
+<p>You can delete the move constructor and move assignment using the <code>= delete</code> syntax in the exact same way you can delete the copy constructor and copy assignment.</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;string_view&gt;
+
+class Name
+{
+private:
+    std::string m_name {};
+
+public:
+    Name(std::string_view name) : m_name{ name }
+    {
+    }
+
+    Name(const Name&amp; name) = delete;
+    Name&amp; operator=(const Name&amp; name) = delete;
+    Name(Name&amp;&amp; name) = delete;
+    Name&amp; operator=(Name&amp;&amp; name) = delete;
+
+    const std::string&amp; get() const { return m_name; }
+};
+
+int main()
+{
+    Name n1{ "Alex" };
+    n1 = Name{ "Joe" }; // error: move assignment deleted
+
+    std::cout &lt;&lt; n1.get() &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>If you delete the copy constructor, the compiler will not generate an implicit move constructor (making your objects neither copyable nor movable). Therefore, when deleting the copy constructor, it is useful to be explicit about what behavior you want from your move constructors. Either explicitly delete them (making it clear this is the desired behavior), or default them (making the class move-only).</p>
+<blockquote>
+<p><strong>Key insight</strong></p>
+<p>Key insight</p>
+<p>The <strong>rule of five</strong> says that if the copy constructor, copy assignment, move constructor, move assignment, or destructor are defined or deleted, then each of those functions should be defined or deleted.</p>
+</blockquote>
+<p>While deleting only the move constructor and move assignment may seem like a good idea if you want a copyable but not movable object, this has the unfortunate consequence of making the class not returnable by value in cases where mandatory copy elision does not apply. This happens because a deleted move constructor is still a declared function, and thus is eligible for overload resolution. And return by value will favor a deleted move constructor over a non-deleted copy constructor. This is illustrated by the following program:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;string_view&gt;
+
+class Name
+{
+private:
+    std::string m_name {};
+
+public:
+    Name(std::string_view name) : m_name{ name }
+    {
+    }
+
+    Name(const Name&amp; name) = default;
+    Name&amp; operator=(const Name&amp; name) = default;
+
+    Name(Name&amp;&amp; name) = delete;
+    Name&amp; operator=(Name&amp;&amp; name) = delete;
+
+    const std::string&amp; get() const { return m_name; }
+};
+
+Name getJoe()
+{
+    Name joe{ "Joe" };
+    return joe; // error: Move constructor was deleted
+}
+
+int main()
+{
+    Name n{ getJoe() };
+
+    std::cout &lt;&lt; n.get() &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<h2 id="issues-with-move-semantics-and-stdswap-advanced"><a class="header" href="#issues-with-move-semantics-and-stdswap-advanced">Issues with move semantics and <code>std::swap</code> Advanced</a></h2>
+<p>In lesson <a href="overloading-the-assignment-operator.html">21.12 -- Overloading the assignment operator</a>, we mentioned the copy and swap idiom. Copy and swap also works for move semantics, meaning we can implement our move constructor and move assignment by swapping resources with the object that will be destroyed.</p>
+<p>This has two benefits:</p>
+<ul>
+<li>The persistent object now controls the resources that were previously under ownership of the dying object (which was our primary goal).</li>
+<li>The dying object now controls the resources that were previously under ownership of the persistent object. When the dying object actually dies, it can do any kind of cleanup required on those resources.</li>
+</ul>
+<p>When you think about swapping, the first thing that comes to mind is usually <code>std::swap()</code>. However, implementing the move constructor and move assignment using <code>std::swap()</code> is problematic, as <code>std::swap()</code> calls both the move constructor and move assignment on move-capable objects. This will result in an infinite recursion issue.</p>
+<p>You can see this happen in the following example:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;string_view&gt;
+
+class Name
+{
+private:
+    std::string m_name {}; // std::string is move capable
+
+public:
+    Name(std::string_view name) : m_name{ name }
+    {
+    }
+
+    Name(const Name&amp; name) = delete;
+    Name&amp; operator=(const Name&amp; name) = delete;
+
+    Name(Name&amp;&amp; name) noexcept
+    {
+        std::cout &lt;&lt; "Move ctor\n";
+
+        std::swap(*this, name); // bad!
+    }
+
+    Name&amp; operator=(Name&amp;&amp; name) noexcept
+    {
+        std::cout &lt;&lt; "Move assign\n";
+
+        std::swap(*this, name); // bad!
+
+        return *this;
+    }
+
+    const std::string&amp; get() const { return m_name; }
+};
+
+int main()
+{
+    Name n1{ "Alex" };   
+    n1 = Name{"Joe"}; // invokes move assignment
+
+    std::cout &lt;&lt; n1.get() &lt;&lt; '\n';
+    
+    return 0;
+}
+</code></pre>
+<p>This prints:</p>
+<pre><code class="language-cpp">Move assign
+Move ctor
+Move ctor
+Move ctor
+Move ctor
+</code></pre>
+<p>And so on… until the stack overflows.</p>
+<p>You can implement the move constructor and move assignment using your own swap function, as long as your swap member function does not call the move constructor or move assignment. Here’s an example of how that can be done:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;string_view&gt;
+
+class Name
+{
+private:
+    std::string m_name {};
+
+public:
+    Name(std::string_view name) : m_name{ name }
+    {
+    }
+
+    Name(const Name&amp; name) = delete;
+    Name&amp; operator=(const Name&amp; name) = delete;
+    
+    // Create our own swap friend function to swap the members of Name
+    friend void swap(Name&amp; a, Name&amp; b) noexcept
+    {
+        // We avoid recursive calls by invoking std::swap on the std::string member,
+        // not on Name
+        std::swap(a.m_name, b.m_name);
+    }
+
+    Name(Name&amp;&amp; name) noexcept
+    {
+        std::cout &lt;&lt; "Move ctor\n";
+
+        swap(*this, name); // Now calling our swap, not std::swap
+    }
+
+    Name&amp; operator=(Name&amp;&amp; name) noexcept
+    {
+        std::cout &lt;&lt; "Move assign\n";
+
+        swap(*this, name); // Now calling our swap, not std::swap
+
+        return *this;
+    }
+
+    const std::string&amp; get() const { return m_name; }
+};
+
+int main()
+{
+    Name n1{ "Alex" };   
+    n1 = Name{"Joe"}; // invokes move assignment
+
+    std::cout &lt;&lt; n1.get() &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>This works as expected, and prints:</p>
+<pre><code class="language-cpp">Move assign
+Joe
+</code></pre>
+<p>AI CONTENT END 1</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="rvalue-references.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="stdmove.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="rvalue-references.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="stdmove.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

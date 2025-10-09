@@ -1,0 +1,461 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Type deduction for objects using the auto keyword - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="type-deduction-for-objects-using-the-auto-keyword"><a class="header" href="#type-deduction-for-objects-using-the-auto-keyword">Type deduction for objects using the auto keyword</a></h1>
+<p>There’s a subtle redundancy lurking in this simple variable definition:</p>
+<pre><code class="language-cpp">double d{ 5.0 };
+</code></pre>
+<p>In C++, we are required to provide an explicit type for all objects. Thus, we’ve specified that variable <code>d</code> is of type double.</p>
+<p>However, the literal value <code>5.0</code> used to initialize <code>d</code> also has type double (implicitly determined via the format of the literal).</p>
+<blockquote>
+<p><strong>Related content</strong></p>
+<p>Related content</p>
+<p>We discuss how literal types are determined in lesson <a href="literals">5.2 -- Literals</a>.</p>
+</blockquote>
+<p>In cases where we want a variable and its initializer to have the same type, we’re effectively providing the same type information twice.</p>
+<h2 id="type-deduction-for-initialized-variables"><a class="header" href="#type-deduction-for-initialized-variables">Type deduction for initialized variables</a></h2>
+<p><strong>Type deduction</strong> (also sometimes called <strong>type inference</strong>) is a feature that allows the compiler to deduce the type of an object from the object’s initializer. When defining a variable, type deduction can be invoked by using the <code>auto</code> keyword can be used in place of the variable’s type:</p>
+<pre><code class="language-cpp">int main()
+{
+    auto d { 5.0 }; // 5.0 is a double literal, so d will be deduced as a double
+    auto i { 1 + 2 }; // 1 + 2 evaluates to an int, so i will be deduced as an int
+    auto x { i }; // i is an int, so x will be deduced as an int
+
+    return 0;
+}
+</code></pre>
+<p>In the first case, because <code>5.0</code> is a double literal, the compiler will deduce that variable <code>d</code> should be of type <code>double</code>. In the second case, the expression <code>1 + 2</code> yields an int result, so variable <code>i</code> will be of type <code>int</code>. In the third case, <code>i</code> was previously deduced to be of type <code>int</code>, so <code>x</code> will also be deduced to be of type <code>int</code>.</p>
+<div id="admonition-warning" class="admonition admonish-warning" role="note" aria-labelledby="admonition-warning-title">
+<div class="admonition-title">
+<div id="admonition-warning-title">
+<p>Warning</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-warning"></a>
+</div>
+<div>
+<p>Warning</p>
+<p>Prior to C++17, <code>auto d{ 5.0 };</code> would deduce <code>d</code> to be of type <code>std::initializer_list&lt;double&gt;</code> rather than <code>double</code>. This was fixed in C++17, and many compilers (such as gcc and Clang) have back-ported this change to previous language standards.</p>
+<p>If you are using C++14 or older, and the above example doesn’t compile on your compiler, use copy initialization with <code>auto</code> instead (<code>auto d = 5.0</code>).</p>
+</div>
+</div>
+<p>Because function calls are valid expressions, we can even use type deduction when our initializer is a non-void function call:</p>
+<pre><code class="language-cpp">int add(int x, int y)
+{
+    return x + y;
+}
+
+int main()
+{
+    auto sum { add(5, 6) }; // add() returns an int, so sum's type will be deduced as an int
+
+    return 0;
+}
+</code></pre>
+<p>The <code>add()</code> function returns an <code>int</code> value, so the compiler will deduce that variable <code>sum</code> should have type <code>int</code>.</p>
+<p>Literal suffixes can be used in combination with type deduction to specify a particular type:</p>
+<pre><code class="language-cpp">int main()
+{
+    auto a { 1.23f }; // f suffix causes a to be deduced to float
+    auto b { 5u };    // u suffix causes b to be deduced to unsigned int
+
+    return 0;
+}
+</code></pre>
+<p>Variables using type deduction may also use other specifiers/qualifiers, such as <code>const</code> or <code>constexpr</code>:</p>
+<pre><code class="language-cpp">int main()
+{
+    int a { 5 };            // a is an int
+
+    const auto b { 5 };     // b is a const int
+    constexpr auto c { 5 }; // c is a constexpr int
+
+    return 0;
+}
+</code></pre>
+<h2 id="type-deduction-must-have-something-to-deduce-from"><a class="header" href="#type-deduction-must-have-something-to-deduce-from">Type deduction must have something to deduce from</a></h2>
+<p>Type deduction will not work for objects that either do not have initializers or have empty initializers. It also will not work when the initializer has type <code>void</code> (or any other incomplete type). Thus, the following is not valid:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+void foo()
+{
+}
+
+int main()
+{
+    auto a;           // The compiler is unable to deduce the type of a
+    auto b { };       // The compiler is unable to deduce the type of b
+    auto c { foo() }; // Invalid: c can't have type incomplete type void
+    
+    return 0;
+}
+</code></pre>
+<p>Although using type deduction for fundamental data types only saves a few (if any) keystrokes, in future lessons we will see examples where the types get complex and lengthy (and in some cases, can be hard to figure out). In those cases, using <code>auto</code> can save a lot of typing (and typos).</p>
+<blockquote>
+<p><strong>Related content</strong></p>
+<p>Related content</p>
+<p>The type deduction rules for pointers and references are a bit more complex. We discuss these in <a href="type-deduction-with-pointers-references-and-const">12.14 -- Type deduction with pointers, references, and const</a>.</p>
+</blockquote>
+<h2 id="type-deduction-drops-const-from-the-deduced-type"><a class="header" href="#type-deduction-drops-const-from-the-deduced-type">Type deduction drops <code>const</code> from the deduced type</a></h2>
+<p>In most cases, type deduction will drop the <code>const</code> from deduced types. For example:</p>
+<pre><code class="language-cpp">int main()
+{
+    const int a { 5 }; // a has type const int
+    auto b { a };      // b has type int (const dropped)
+
+    return 0;
+}
+</code></pre>
+<p>In the above example, <code>a</code> has type <code>const int</code>, but when deducing a type for variable <code>b</code> using <code>a</code> as the initializer, type deduction deduces the type as <code>int</code>, not <code>const int</code>.</p>
+<p>If you want a deduced type to be const, you must supply the <code>const</code> yourself as part of the definition:</p>
+<pre><code class="language-cpp">int main()
+{
+    const int a { 5 };  // a has type const int
+    const auto b { a }; // b has type const int (const dropped but reapplied)
+
+
+    return 0;
+}
+</code></pre>
+<p>In this example, the type deduced from <code>a</code> will be <code>int</code> (the <code>const</code> is dropped), but because we’ve re-added a <code>const</code> qualifier during the definition of variable <code>b</code>, variable <code>b</code> will have type <code>const int</code>.</p>
+<h2 id="type-deduction-for-string-literals"><a class="header" href="#type-deduction-for-string-literals">Type deduction for string literals</a></h2>
+<p>For historical reasons, string literals in C++ have a strange type. Therefore, the following probably won’t work as expected:</p>
+<pre><code class="language-cpp">auto s { "Hello, world" }; // s will be type const char*, not std::string
+</code></pre>
+<p>If you want the type deduced from a string literal to be <code>std::string</code> or <code>std::string_view</code>, you’ll need to use the <code>s</code> or <code>sv</code> literal suffixes (introduced in lessons <a href="introduction-to-stdstring.html">5.7 -- Introduction to std::string</a> and <a href="introduction-to-stdstring_view.html">5.8 -- Introduction to std::string_view</a>):</p>
+<pre><code class="language-cpp">#include &lt;string&gt;
+#include &lt;string_view&gt;
+
+int main()
+{
+    using namespace std::literals; // easiest way to access the s and sv suffixes
+
+    auto s1 { "goo"s };  // "goo"s is a std::string literal, so s1 will be deduced as a std::string
+    auto s2 { "moo"sv }; // "moo"sv is a std::string_view literal, so s2 will be deduced as a std::string_view
+
+    return 0;
+}
+</code></pre>
+<p>But in such cases, it may be better to not use type deduction.</p>
+<h2 id="type-deduction-and-constexpr"><a class="header" href="#type-deduction-and-constexpr">Type deduction and constexpr</a></h2>
+<p>Because <code>constexpr</code> is not part of the type system, it cannot be deduced as part of type deduction. However, a <code>constexpr</code> variable is implicitly const, and this const will be dropped during type deduction (and can be readded if desired):</p>
+<pre><code class="language-cpp">int main()
+{
+    constexpr double a { 3.4 };  // a has type const double (constexpr not part of type, const is implicit)
+
+    auto b { a };                // b has type double (const dropped)
+    const auto c { a };          // c has type const double (const dropped but reapplied)
+    constexpr auto d { a };      // d has type const double (const dropped but implicitly reapplied by constexpr)
+
+    return 0;
+}
+</code></pre>
+<h2 id="type-deduction-benefits-and-downsides"><a class="header" href="#type-deduction-benefits-and-downsides">Type deduction benefits and downsides</a></h2>
+<p>Type deduction is not only convenient, but also has a number of other benefits.</p>
+<p>First, if two or more variables are defined on sequential lines, the names of the variables will be lined up, helping to increase readability:</p>
+<pre><code class="language-cpp">// harder to read
+int a { 5 };
+double b { 6.7 };
+
+// easier to read
+auto c { 5 };
+auto d { 6.7 };
+</code></pre>
+<p>Second, type deduction only works on variables that have initializers, so if you are in the habit of using type deduction, it can help avoid unintentionally uninitialized variables:</p>
+<pre><code class="language-cpp">int x; // oops, we forgot to initialize x, but the compiler may not complain
+auto y; // the compiler will error out because it can't deduce a type for y
+</code></pre>
+<p>Third, you are guaranteed that there will be no unintended performance-impacting conversions:</p>
+<pre><code class="language-cpp">std::string_view getString();   // some function that returns a std::string_view
+
+std::string s1 { getString() }; // bad: expensive conversion from std::string_view to std::string (assuming you didn't want this)
+auto s2 { getString() };        // good: no conversion required
+</code></pre>
+<p>Type deduction also has a few downsides.</p>
+<p>First, type deduction obscures an object’s type information in the code. Although a good IDE should be able to show you the deduced type (e.g. when hovering a variable), it’s still a bit easier to make type-based mistakes when using type deduction.</p>
+<p>For example:</p>
+<pre><code class="language-cpp">auto y { 5 }; // oops, we wanted a double here but we accidentally provided an int literal
+</code></pre>
+<p>In the above code, if we’d explicitly specified <code>y</code> as type double, <code>y</code> would have been a double even though we accidentally provided an int literal initializer. With type deduction, <code>y</code> will be deduced to be of type int.</p>
+<p>Here’s another example:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+     auto x { 3 };
+     auto y { 2 };
+
+     std::cout &lt;&lt; x / y &lt;&lt; '\n'; // oops, we wanted floating point division here
+
+     return 0;
+}
+</code></pre>
+<p>In this example, it’s less clear that we’re getting an integer division rather than a floating-point division.</p>
+<p>Similar cases occur when a variable is <code>unsigned</code>. Since we don’t want to mix signed and unsigned values, explicitly knowing that a variable has an unsigned type is generally something that shouldn’t be obscured.</p>
+<p>Second, if the type of an initializer changes, the type of a variable using type deduction will also change, perhaps unexpectedly. Consider:</p>
+<pre><code class="language-cpp">auto sum { add(5, 6) + gravity };
+</code></pre>
+<p>If the return type of <code>add</code> changes from int to double, or <code>gravity</code> changes from int to double, <code>sum</code> will also change type from int to double.</p>
+<p>Overall, the modern consensus is that type deduction is generally safe to use for objects, and that doing so can help make your code more readable by de-emphasizing type information so the logic of your code stands out better.</p>
+<div id="admonition-best-practices" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices"></a>
+</div>
+<div>
+<p>Best practice</p>
+<p>Use type deduction for your variables when the type of the object doesn’t matter.</p>
+<p>Favor an explicit type when you require a specific type that differs from the type of the initializer, or when your object is used in a context where making the type obvious is useful.</p>
+</div>
+</div>
+<blockquote>
+<p><strong>Author’s note</strong></p>
+<p>Author’s note</p>
+<p>In future lessons, we’ll continue to use explicit types instead of type deduction when we feel showing the type information is helpful to understanding a concept or example.</p>
+</blockquote>
+<p>AI CONTENT END 1</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="typedefs-and-type-aliases.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="type-deduction-for-functions.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="typedefs-and-type-aliases.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="type-deduction-for-functions.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

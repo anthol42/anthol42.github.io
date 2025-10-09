@@ -1,0 +1,430 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Uncaught exceptions and catch-all handlers - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="uncaught-exceptions-and-catch-all-handlers"><a class="header" href="#uncaught-exceptions-and-catch-all-handlers">Uncaught exceptions and catch-all handlers</a></h1>
+<p>By now, you should have a reasonable idea of how exceptions work. In this lesson, we’ll cover a few more interesting exception cases.</p>
+<h2 id="uncaught-exceptions"><a class="header" href="#uncaught-exceptions">Uncaught exceptions</a></h2>
+<p>When a function throws an exception that it does not handle itself, it is making the assumption that a function somewhere down the call stack will handle the exception. In the following example, mySqrt() assumes someone will handle the exception that it throws -- but what happens if nobody actually does?</p>
+<p>Here’s our square root program again, minus the try block in main():</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;cmath&gt; // for sqrt() function
+
+// A modular square root function
+double mySqrt(double x)
+{
+    // If the user entered a negative number, this is an error condition
+    if (x &lt; 0.0)
+        throw "Can not take sqrt of negative number"; // throw exception of type const char*
+
+    return std::sqrt(x);
+}
+
+int main()
+{
+    std::cout &lt;&lt; "Enter a number: ";
+    double x;
+    std::cin &gt;&gt; x;
+
+    // Look ma, no exception handler!
+    std::cout &lt;&lt; "The sqrt of " &lt;&lt; x &lt;&lt; " is " &lt;&lt; mySqrt(x) &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>Now, let’s say the user enters -4, and mySqrt(-4) raises an exception. Function mySqrt() doesn’t handle the exception, so the program looks to see if some function down the call stack will handle the exception. main() does not have a handler for this exception either, so no handler can be found.</p>
+<p>When no exception handler for a function can be found, std::terminate() is called, and the application is terminated. In such cases, the call stack may or may not be unwound! If the stack is not unwound, local variables will not be destroyed, and any cleanup expected upon destruction of said variables will not happen!</p>
+<div id="admonition-warning" class="admonition admonish-warning" role="note" aria-labelledby="admonition-warning-title">
+<div class="admonition-title">
+<div id="admonition-warning-title">
+<p>Warning</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-warning"></a>
+</div>
+<div>
+<p>Warning</p>
+<p>The call stack may or may not be unwound if an exception is unhandled.</p>
+<p>If the stack is not unwound, local variables will not be destroyed, which may cause problems if those variables have non-trivial destructors.</p>
+</div>
+</div>
+<blockquote>
+<p><strong>As an aside…</strong></p>
+<p>As an aside…</p>
+<p>Although it might seem strange to not unwind the stack in such a case, there is a good reason for not doing so. An unhandled exception is generally something you want to avoid at all costs. If the stack were unwound, then all of the debug information about the state of the stack that led up to the throwing of the unhandled exception would be lost! By not unwinding, we preserve that information, making it easier to determine how an unhandled exception was thrown, and fix it.</p>
+</blockquote>
+<p>When an exception is unhandled, the operating system will generally notify you that an unhandled exception error has occurred. How it does this depends on the operating system, but possibilities include printing an error message, popping up an error dialog, or simply crashing. Some OSes are less graceful than others. Generally this is something you want to avoid!</p>
+<h2 id="catch-all-handlers"><a class="header" href="#catch-all-handlers">Catch-all handlers</a></h2>
+<p>And now we find ourselves in a conundrum:</p>
+<ul>
+<li>Functions can potentially throw exceptions of any data type (including program-defined data types), meaning there is an infinite number of possible exception types to catch.</li>
+<li>If an exception is not caught, your program will terminate immediately (and the stack may not be unwound, so your program may not even clean up after itself properly).</li>
+<li>Adding explicit catch handlers for every possible type is tedious, especially for the ones that are expected to be reached only in exceptional cases!</li>
+</ul>
+<p>Fortunately, C++ also provides us with a mechanism to catch all types of exceptions. This is known as a <strong>catch-all handler</strong>. A catch-all handler works just like a normal catch block, except that instead of using a specific type to catch, it uses the ellipses operator (…) as the type to catch. For this reason, the catch-all handler is also sometimes called an “ellipsis catch handler”</p>
+<p>If you recall from lesson <a href="ellipsis-and-why-to-avoid-them.html">20.5 -- Ellipsis (and why to avoid them)</a>, ellipses were previously used to pass arguments of any type to a function. In this context, they represent exceptions of any data type. Here’s an simple example:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+	try
+	{
+		throw 5; // throw an int exception
+	}
+	catch (double x)
+	{
+		std::cout &lt;&lt; "We caught an exception of type double: " &lt;&lt; x &lt;&lt; '\n';
+	}
+	catch (...) // catch-all handler
+	{
+		std::cout &lt;&lt; "We caught an exception of an undetermined type\n";
+	}
+}
+</code></pre>
+<p>Because there is no specific exception handler for type int, the catch-all handler catches this exception. This example produces the following result:</p>
+<pre><code class="language-cpp">We caught an exception of an undetermined type
+</code></pre>
+<p>The catch-all handler must be placed last in the catch block chain. This is to ensure that exceptions can be caught by exception handlers tailored to specific data types if those handlers exist.</p>
+<p>Often, the catch-all handler block is left empty:</p>
+<pre><code class="language-cpp">catch(...) {} // ignore any unanticipated exceptions
+</code></pre>
+<p>This will catch any unanticipated exceptions, ensuring that stack unwinding occurs up to this point and preventing the program from terminating, but does no specific error handling.</p>
+<h2 id="using-the-catch-all-handler-to-wrap-main"><a class="header" href="#using-the-catch-all-handler-to-wrap-main">Using the catch-all handler to wrap main()</a></h2>
+<p>One use for the catch-all handler is to wrap the contents of main():</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+struct GameSession
+{
+    // Game session data here
+};
+
+void runGame(GameSession&amp;)
+{
+    throw 1;
+}
+
+void saveGame(GameSession&amp;)
+{
+    // Save user's game here
+}
+
+int main()
+{
+    GameSession session{};
+
+    try
+    {
+        runGame(session);
+    }
+    catch(...)
+    {
+        std::cerr &lt;&lt; "Abnormal termination\n";
+    }
+
+    saveGame(session); // save the user's game (even if catch-all handler was hit)
+
+    return 0;
+}
+</code></pre>
+<p>In this case, if runGame() or any of the functions it calls throws an exception that is not handled, it will be caught by this catch-all handler. The stack will be unwound in an orderly manner (ensuring destruction of local variables). This will also prevent the program from terminating immediately, giving us a chance to print an error of our choosing and save the user’s state before exiting.</p>
+<blockquote>
+<p><strong>Tip</strong></p>
+<p>Tip</p>
+<p>If your program uses exceptions, consider using a catch-all handler in main, to help ensure orderly behavior if an unhandled exception occurs.</p>
+<p>If an exception is caught by the catch-all handler, you should assume the program is now in some indeterminate state, perform cleanup immediately, and then terminate.</p>
+</blockquote>
+<h2 id="debugging-unhandled-exceptions"><a class="header" href="#debugging-unhandled-exceptions">Debugging unhandled exceptions</a></h2>
+<p>Unhandled exceptions are an indication that something unexpected has happened, and we probably want to diagnose why an unhandled exception was thrown in the first place. Many debuggers will (or can be configured to) break on unhandled exceptions, allowing us to view the stack at the point where the unhandled exception was thrown. However, if we have a catch-all handler, then all exceptions are handled, and (because the stack is unwound) we lose useful diagnostic information.</p>
+<p>Therefore, in debug builds, it can be useful to disable the catch-all handler. We can do this via conditional compilation directives.</p>
+<p>Here’s one way to do that:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+struct GameSession
+{
+    // Game session data here
+};
+
+void runGame(GameSession&amp;)
+{
+    throw 1;
+}
+
+void saveGame(GameSession&amp;)
+{
+    // Save user's game here
+}
+
+class DummyException // a dummy class that can't be instantiated
+{
+    DummyException() = delete;
+}; 
+
+int main()
+{
+    GameSession session {}; 
+
+    try
+    {
+        runGame(session);
+    }
+#ifndef NDEBUG // if we're in release node
+    catch(...) // compile in the catch-all handler
+    {
+        std::cerr &lt;&lt; "Abnormal termination\n";
+    }
+#else // in debug mode, compile in a catch that will never be hit (for syntactic reasons)
+    catch(DummyException)
+    {
+    }
+#endif
+
+    saveGame(session); // save the user's game (even if catch-all handler was hit)
+
+    return 0;
+}
+</code></pre>
+<p>Syntactically, a try block requires at least one associated catch block. So if the catch-all handler is conditionally compiled out, we either need to conditionally compile out the try block, or we need to conditionally compile in another catch block. It’s cleaner to do the latter.</p>
+<p>For this purpose, we create class <code>DummyException</code> which can’t be instantiated because it has a deleted default constructor and no other constructors. When <code>NDEBUG</code> is defined, we compile-in a catch handler to catch an exception of type <code>DummyException</code>. Since we can’t create a <code>DummyException</code>, this catch handler will never catch anything. Therefore any exceptions that reach this point will not be handled.</p>
+<p>AI CONTENT END 1</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="exceptions-functions-and-stack-unwinding.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="exceptions-classes-and-inheritance.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="exceptions-functions-and-stack-unwinding.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="exceptions-classes-and-inheritance.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

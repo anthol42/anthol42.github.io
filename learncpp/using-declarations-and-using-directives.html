@@ -1,0 +1,609 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Using declarations and using directives - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="using-declarations-and-using-directives"><a class="header" href="#using-declarations-and-using-directives">Using declarations and using directives</a></h1>
+<p>You’ve probably seen this program in a lot of textbooks and tutorials:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+using namespace std;
+
+int main()
+{
+    cout &lt;&lt; "Hello world!\n";
+
+    return 0;
+}
+</code></pre>
+<p>If you see this, run. Your textbook or tutorial are probably out of date. In this lesson, we’ll explore why.</p>
+<blockquote>
+<p><strong>Tip</strong></p>
+<p>Tip</p>
+<p>Some IDEs will also auto-populate new C++ projects with a similar program (so you can compile something immediately, rather than starting from a blank file).</p>
+</blockquote>
+<h2 id="a-short-history-lesson"><a class="header" href="#a-short-history-lesson">A short history lesson</a></h2>
+<p>Back before C++ had support for namespaces, all of the names that are now in the <code>std</code> namespace were in the global namespace. This caused naming collisions between program identifiers and standard library identifiers. Programs that worked under one version of C++ might have a naming conflict with a newer version of C++.</p>
+<p>In 1995, namespaces were standardized, and all of the functionality from the standard library was moved out of the global namespace and into namespace <code>std</code>. This change broke older code that was still using names without <code>std::</code>.</p>
+<p>As anyone who has worked on a large codebase knows, any change to a codebase (no matter how trivial) risks breaking the program. Updating every name that was now moved into the <code>std</code> namespace to use the <code>std::</code> prefix was a massive risk. A solution was requested.</p>
+<p>Fast forward to today -- if you’re using the standard library a lot, typing <code>std::</code> before everything you use from the standard library can become repetitive, and in some cases, can make your code harder to read.</p>
+<p>C++ provides some solutions to both of these problems, in the form of using-statements.</p>
+<p>But first, let’s define two terms.</p>
+<h2 id="qualified-and-unqualified-names"><a class="header" href="#qualified-and-unqualified-names">Qualified and unqualified names</a></h2>
+<p>A name can be either qualified or unqualified.</p>
+<p>A <strong>qualified name</strong> is a name that includes an associated scope. Most often, names are qualified with a namespace using the scope resolution operator (::). For example:</p>
+<pre><code class="language-cpp">std::cout // identifier cout is qualified by namespace std
+::foo // identifier foo is qualified by the global namespace
+</code></pre>
+<blockquote>
+<p><strong>For advanced readers</strong></p>
+<p>For advanced readers</p>
+<p>A name can also be qualified by a class name using the scope resolution operator (::), or by a class object using the member selection operators (. or -&gt;). For example:</p>
+<pre><code>class C; // some class
+
+C::s_member; // s_member is qualified by class C
+obj.x; // x is qualified by class object obj
+ptr-&gt;y; // y is qualified by pointer to class object ptr
+</code></pre>
+</blockquote>
+<p>An <strong>unqualified name</strong> is a name that does not include a scoping qualifier. For example, <code>cout</code> and <code>x</code> are unqualified names, as they do not include an associated scope.</p>
+<h2 id="using-declarations"><a class="header" href="#using-declarations">Using-declarations</a></h2>
+<p>One way to reduce the repetition of typing <code>std::</code> over and over is to utilize a using-declaration statement. A <strong>using declaration</strong> allows us to use an unqualified name (with no scope) as an alias for a qualified name.</p>
+<p>Here’s our basic Hello world program, using a using-declaration on line 5:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+   using std::cout; // this using declaration tells the compiler that cout should resolve to std::cout
+   cout &lt;&lt; "Hello world!\n"; // so no std:: prefix is needed here!
+
+   return 0;
+} // the using declaration expires at the end of the current scope
+</code></pre>
+<p>The using-declaration <code>using std::cout;</code> tells the compiler that we’re going to be using the object <code>cout</code> from the <code>std</code> namespace. So whenever it sees <code>cout</code>, it will assume that we mean <code>std::cout</code>. If there’s a naming conflict between <code>std::cout</code> and some other use of <code>cout</code> that is visible from within <code>main()</code>, <code>std::cout</code> will be preferred. Therefore on line 6, we can type <code>cout</code> instead of <code>std::cout</code>.</p>
+<p>This doesn’t save much effort in this trivial example, but if you are using <code>cout</code> many times inside of a function, a using-declaration can make your code more readable. Note that you will need a separate using-declaration for each name (e.g. one for <code>std::cout</code>, one for <code>std::cin</code>, etc…).</p>
+<p>The using-declaration is active from the point of declaration to the end of the scope in which it is declared.</p>
+<p>Although using-declarations are less explicit than using the <code>std::</code> prefix, they are generally considered safe and acceptable to use in source (.cpp) files, with one exception that we’ll discuss below.</p>
+<h2 id="using-directives"><a class="header" href="#using-directives">Using-directives</a></h2>
+<p>Another way to simplify things is to use a using-directive. A <strong>using directive</strong> allows <em>all</em> identifiers in a given namespace to be referenced without qualification from the scope of the using-directive.</p>
+<blockquote>
+<p><strong>For advanced readers</strong></p>
+<p>For advanced readers</p>
+<p>For technical reasons, using-directives do not actually introduce new meanings for names into the current scope -- instead they introduce new meanings for names into an outer scope (more details about which outer scope is picked can be found <a href="https://quuxplusone.github.io/blog/2020/12/21/using-directive">here</a>).</p>
+</blockquote>
+<p>Here’s our Hello world program again, with a using-directive on line 5:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+   using namespace std; // all names from std namespace now accessible without qualification
+   cout &lt;&lt; "Hello world!\n"; // so no std:: prefix is needed here
+
+   return 0;
+} // the using-directive ends at the end of the current scope
+</code></pre>
+<p>The using-directive <code>using namespace std;</code> tells the compiler that all of the names in the <code>std</code> namespace should be accessible without qualification in the current scope (in this case, of function <code>main()</code>). When we then use unqualified identifier <code>cout</code>, it will resolve to <code>std::cout</code>.</p>
+<p>Using-directives are the solution that was provided for old pre-namespace codebases that used unqualified names for standard library functionality. Rather than having to manually update every unqualified name to a qualified name (which was risky), a single using-directive (<code>using namespace std;</code>) could be placed at the top of each file, and all of the names that had been moved to the <code>std</code> namespace could still be used unqualified.</p>
+<h2 id="problems-with-using-directives-aka-why-you-should-avoid-using-namespace-std"><a class="header" href="#problems-with-using-directives-aka-why-you-should-avoid-using-namespace-std">Problems with using-directives (a.k.a. why you should avoid “using namespace std;”)</a></h2>
+<p>In modern C++, using-directives generally offer little benefit (saving some typing) compared to the risk. This is due to two factors:</p>
+<ol>
+<li>Using-directives allow unqualified access to <em>all</em> of the names from a namespace (potentially including lots of names you’ll never use).</li>
+<li>Using-directives do not prefer names from the namespace identified by the using-directive over other names.</li>
+</ol>
+<p>The end result is that the possibility for naming collisions to occur increases significantly (especially if you import the <code>std</code> namespace).</p>
+<p>First, let’s take a look at an illustrative example where using-directives cause a naming collision:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+namespace A
+{
+	int x { 10 };
+}
+
+namespace B
+{
+	int x{ 20 };
+}
+
+int main()
+{
+	using namespace A;
+	using namespace B;
+
+	std::cout &lt;&lt; x &lt;&lt; '\n';
+
+	return 0;
+}
+</code></pre>
+<p>In the above example, the compiler is unable to determine whether the <code>x</code> in <code>main</code> refers to <code>A::x</code> or <code>B::x</code>. In this case, it will fail to compile with an “ambiguous symbol” error. We could resolve this by removing one of the using-directives, employing a using-declaration instead, or qualifying <code>x</code> (as <code>A::x</code> or <code>B::x</code>).</p>
+<p>Here’s another more subtle example:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt; // imports the declaration of std::cout
+
+int cout() // declares our own "cout" function
+{
+    return 5;
+}
+
+int main()
+{
+    using namespace std; // makes std::cout accessible as "cout"
+    cout &lt;&lt; "Hello, world!\n"; // uh oh!  Which cout do we want here?  The one in the std namespace or the one we defined above?
+
+    return 0;
+}
+</code></pre>
+<p>In this example, the compiler is unable to determine whether our unqualified use of <code>cout</code> means <code>std::cout</code> or the <code>cout</code> function we’ve defined, and again will fail to compile with an “ambiguous symbol” error. Although this example is trivial, if we had explicitly prefixed <code>std::cout</code> like this:</p>
+<pre><code class="language-cpp">    std::cout &lt;&lt; "Hello, world!\n"; // tell the compiler we mean std::cout
+</code></pre>
+<p>or used a using-declaration instead of a using-directive:</p>
+<pre><code class="language-cpp">    using std::cout; // tell the compiler that cout means std::cout
+    cout &lt;&lt; "Hello, world!\n"; // so this means std::cout
+</code></pre>
+<p>then our program wouldn’t have any issues in the first place. And while you’re probably not likely to write a function named “cout”, there are hundreds of other names in the <code>std</code> namespace just waiting to collide with your names.</p>
+<p>Even if a using-directive does not cause naming collisions today, it makes your code more vulnerable to future collisions. For example, if your code includes a using-directive for some library that is then updated, all of the new names introduced in the updated library are now candidates for naming collisions with your existing code.</p>
+<p>For example, the following program compiles and runs fine:</p>
+<p>FooLib.h (part of some third-party library):</p>
+<pre><code class="language-cpp">#ifndef FOOLIB
+#define FOOLIB
+
+namespace Foo
+{
+    int a { 20 };
+}
+
+#endif
+</code></pre>
+<p>main.cpp:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;FooLib.h&gt; // a third-party library we installed outside our project directory, thus angled brackets used
+
+void print()
+{
+    std::cout &lt;&lt; "Hello\n";
+}
+
+int main()
+{
+    using namespace Foo; // Because we're lazy and want to access Foo:: qualified names without typing the Foo:: prefix
+
+    std::cout &lt;&lt; a &lt;&lt; '\n'; // uses Foo::a
+    print(); // calls ::print()
+
+    return 0;
+}
+</code></pre>
+<p>Now let’s say you update FooLib to a new version, and FooLib.h changes to this:</p>
+<p>FooLib.h (updated):</p>
+<pre><code class="language-cpp">#ifndef FOOLIB
+#define FOOLIB
+
+namespace Foo
+{
+    int a { 20 };
+    void print() { std::cout &lt;&lt; "Timmah!"; } // This function added
+}
+#endif
+</code></pre>
+<p>Your main.cpp hasn’t changed, but it will no longer compile! This is because our using-directive causes <code>Foo::print()</code> to be accessible as just <code>print()</code>, and it is now ambiguous whether the call to <code>print()</code> means <code>::print()</code> or <code>Foo::print()</code>.</p>
+<p>There is a more insidious version of this problem that can occur as well. The updated library may introduce a function that not only has the same name, but is actually a better match for some function call. In such a case, the compiler may decide to prefer the new function instead, and the behavior of your program will change unexpectedly and silently.</p>
+<p>Consider the following program:</p>
+<p>Foolib.h (part of some third-party library):</p>
+<pre><code class="language-cpp">#ifndef FOOLIB_H
+#define FOOLIB_H
+
+namespace Foo
+{
+    int a { 20 };
+}
+#endif
+</code></pre>
+<p>main.cpp:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;Foolib.h&gt; // a third-party library we installed outside our project directory, thus angled brackets used
+
+int get(long)
+{
+    return 1;
+}
+
+int main()
+{
+    using namespace Foo; // Because we're lazy and want to access Foo:: qualified names without typing the Foo:: prefix
+    std::cout &lt;&lt; a &lt;&lt; '\n'; // uses Foo::a
+
+    std::cout &lt;&lt; get(0) &lt;&lt; '\n'; // calls ::get(long)
+
+    return 0;
+}
+</code></pre>
+<p>This program runs and prints <code>1</code>.</p>
+<p>Now, let’s say we update the Foolib library, which includes an updated Foolib.h that looks like this:</p>
+<p>Foolib.h (updated):</p>
+<pre><code class="language-cpp">#ifndef FOOLIB_H
+#define FOOLIB_H
+
+namespace Foo
+{
+    int a { 20 };
+
+    int get(int) { return 2; } // new function added
+}
+#endif
+</code></pre>
+<p>Once again, our <code>main.cpp</code> file hasn’t changed at all, but this program now compiles, runs, and prints <code>2</code>!</p>
+<p>When the compiler encounters a function call, it has to determine what function definition it should match the function call with. In selecting a function from a set of potentially matching functions, it will prefer a function that requires no argument conversions over a function that requires argument conversions. Because the literal <code>0</code> is an integer, C++ will prefer to match <code>print(0)</code> with the newly introduced <code>print(int)</code> (no conversions) over <code>print(long)</code> (which requires a conversion from <code>int</code> to <code>long</code>). That causes an unexpected change to our program behavior.</p>
+<p>In this case, the change in behavior is fairly obvious. But in a more complex program, where the returned value isn’t just printed, this issue could be very difficult to discover.</p>
+<p>This would not have happened if we’d used a using-declaration or explicit scope qualifier.</p>
+<p>Finally, the lack of explicit scope prefixes make it harder for a reader to tell what functions are part of a library and what’s part of your program. For example, if we use a using-directive:</p>
+<pre><code class="language-cpp">using namespace NS;
+
+int main()
+{
+    foo(); // is this foo a user-defined function, or part of the NS library?
+}
+</code></pre>
+<p>It’s unclear whether the call to <code>foo()</code> is actually a call to <code>NS::foo()</code> or to a <code>foo()</code> that is a user-defined function. Modern IDEs should be able to disambiguate this for you when you hover over a name, but having to hover over each name just to see where it comes from is tedious.</p>
+<p>Without the using-directive, it’s much clearer:</p>
+<pre><code class="language-cpp">int main()
+{
+    NS::foo(); // clearly part of the NS library
+    foo(); // likely a user-defined function
+}
+</code></pre>
+<p>In this version, the call to <code>NS::foo()</code> is clearly a library call. The call to plain <code>foo()</code> is probably a call to a user-defined function (some libraries, including certain standard library headers, do put names into the global namespace, so it’s not a guarantee).</p>
+<h2 id="the-scope-of-using-statements"><a class="header" href="#the-scope-of-using-statements">The scope of using-statements</a></h2>
+<p>If a using-declaration or using-directive is used within a block, the names are applicable to just that block (it follows normal block scoping rules). This is a good thing, as it reduces the chances for naming collisions to occur to just within that block.</p>
+<p>If a using-declaration or using-directive is used in a namespace (including the global namespace), the names are applicable to the entire rest of the file (they have file scope).</p>
+<h2 id="do-not-use-using-statements-in-header-files-or-before-an-include-directive"><a class="header" href="#do-not-use-using-statements-in-header-files-or-before-an-include-directive">Do not use using-statements in header files, or before an #include directive</a></h2>
+<p>A good rule of thumb is that using-statements should not be placed anywhere where they might have an impact on code in a different file. Nor should they be placed anywhere where another file’s code might be able to impact them.</p>
+<p>More specifically, this means using-statements should not be used in header files, nor before an #include directive.</p>
+<p>For example, if you placed a using-statement in the global namespace of a header file, then every other file that #included that header would also get that using-statement. That’s clearly bad. This also applies to namespaces inside header files, for the same reason.</p>
+<p>But what about using-statements within functions defined inside header files? Surely that can’t be bad since the scope of the using-statement is contained to the function, right? Even that’s a no. And it’s a no for the same reason that we shouldn’t use using-statements before an #include directive.</p>
+<p>It turns out that the behavior of using-statements is dependent on what identifiers have already been introduced. This makes them order-dependent, as their function may change if the identifiers that have been introduced before them change.</p>
+<p>We will illustrate this with an example:</p>
+<p>FooInt.h:</p>
+<pre><code class="language-cpp">namespace Foo
+{
+    void print(int)
+    {
+        std::cout &lt;&lt; "print(int)\n" &lt;&lt; std::endl;
+    }
+}
+</code></pre>
+<p>FooDouble.h:</p>
+<pre><code class="language-cpp">namespace Foo
+{
+    void print(double)
+    {
+        std::cout &lt;&lt; "print(double)\n" &lt;&lt; std::endl;
+    }
+}
+</code></pre>
+<p>main.cpp (okay):</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+#include "FooDouble.h"
+#include "FooInt.h"
+
+using Foo::print; // print means Foo::print
+
+int main()
+{
+    print(5);  // Calls Foo::print(int)
+}
+</code></pre>
+<p>When run, this program calls <code>Foo::print(int)</code>, which prints <code>print(int)</code>.</p>
+<p>Now let’s change main.cpp slightly.</p>
+<p>main.cpp (bad):</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+#include "FooDouble.h"
+
+using Foo::print; // we moved the using-statement here, before the #include directive
+#include "FooInt.h"
+
+int main()
+{
+    print(5);  // Calls Foo::print(double)
+}
+</code></pre>
+<p>All we’ve done is move <code>using Foo::print;</code> before <code>#include "FooInt.h"</code>. And our program now prints <code>print(double)</code>! Regardless of why this happens, you’ll likely agree that this is the kind of behavior we want to avoid!</p>
+<p>So then to loop back around, the reason we shouldn’t use using-statements in functions that are defined in header files is the same reason -- we can’t control which other headers might be #included before our header, and it’s possible those headers might do something that alters the way our using-statement behaves!</p>
+<p>The only place it is truly safe to use using-statements is in our source (.cpp) files, after all the #includes.</p>
+<blockquote>
+<p><strong>For advanced readers</strong></p>
+<p>For advanced readers</p>
+<p>This example uses a concept we haven’t covered yet called “function overloading” (we cover this in lesson <a href="introduction-to-function-overloading">11.1 -- Introduction to function overloading</a>). All you need to know for this example is that two functions in the same scope can have the same name so long as the parameters of each are distinct. Since <code>int</code> and <code>double</code> are distinct types, there is no issue having both <code>Foo::print(int)</code> and <code>Foo::print(double)</code> living side-by-side.</p>
+<p>In the working version, when the compiler encounters <code>using Foo::print</code>, it has already seen both <code>Foo::print(int)</code> and <code>Foo::print(double)</code>, so it makes both available to be called as just <code>print()</code>. Since <code>Foo::print(int)</code> is a better match than <code>Foo::print(double)</code>, it calls <code>Foo::print(int)</code>.</p>
+<p>In the bad version, when the compiler encounters <code>using Foo::print</code>, it has only seen a declaration for <code>Foo::print(double)</code>, so it only makes <code>Foo::print(double)</code> available to be called unqualified. So when we call <code>print(5)</code> only <code>Foo::print(double)</code> is even eligible to be matched. Thus <code>Foo::print(double)</code> is the one that gets called!</p>
+</blockquote>
+<h2 id="cancelling-or-replacing-a-using-statement"><a class="header" href="#cancelling-or-replacing-a-using-statement">Cancelling or replacing a using-statement</a></h2>
+<p>Once a using-statement has been declared, there’s no way to cancel or replace it with a different using-statement within the scope in which it was declared.</p>
+<pre><code class="language-cpp">int main()
+{
+    using namespace Foo;
+
+    // there's no way to cancel the "using namespace Foo" here!
+    // there's also no way to replace "using namespace Foo" with a different using statement
+
+    return 0;
+} // using namespace Foo ends here
+</code></pre>
+<p>The best you can do is intentionally limit the scope of the using-statement from the outset using the block scoping rules.</p>
+<pre><code class="language-cpp">int main()
+{
+    {
+        using namespace Foo;
+        // calls to Foo:: stuff here
+    } // using namespace Foo expires
+ 
+    {
+        using namespace Goo;
+        // calls to Goo:: stuff here
+    } // using namespace Goo expires
+
+    return 0;
+}
+</code></pre>
+<p>Of course, all of this headache can be avoided by explicitly using the scope resolution operator (::) in the first place.</p>
+<h2 id="best-practices-for-using-statements"><a class="header" href="#best-practices-for-using-statements">Best practices for using-statements</a></h2>
+<div id="admonition-best-practices" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices"></a>
+</div>
+<div>
+<p>Best practice</p>
+<p>Prefer explicit namespace qualifiers over using-statements.</p>
+<p>Avoid using-directives altogether (except <code>using namespace std::literals</code> to access the <code>s</code> and <code>sv</code> literal suffixes). Using-declarations are okay in .cpp files, after the #include directives. Do not use using-statements in header files (especially in the global namespace of header files).</p>
+</div>
+</div>
+<blockquote>
+<p><strong>Related content</strong></p>
+<p>Related content</p>
+<p>The <code>using</code> keyword is also used to define type aliases, which are unrelated to using-statements. We cover type aliases in lesson <a href="typedefs-and-type-aliases">10.7 -- Typedefs and type aliases</a>.</p>
+</blockquote>
+<p>AI CONTENT END 1</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="scope-duration-and-linkage-summary.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="unnamed-and-inline-namespaces.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="scope-duration-and-linkage-summary.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="unnamed-and-inline-namespaces.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

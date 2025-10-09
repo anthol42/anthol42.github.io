@@ -1,0 +1,357 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Finding issues before they become problems - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="finding-issues-before-they-become-problems"><a class="header" href="#finding-issues-before-they-become-problems">Finding issues before they become problems</a></h1>
+<p>When you make a semantic error, that error may or may not be immediately noticeable when you run your program. An issue may lurk undetected in your code for a long time before newly introduced code or changed circumstances cause it to manifest as a program malfunction. The longer an error sits in the code base before it is found, the more likely it is to be hard to find, and something that may have been easy to fix originally turns into a debugging adventure that eats up time and energy.</p>
+<p>So what can we do about that?</p>
+<h2 id="dont-make-errors"><a class="header" href="#dont-make-errors">Don’t make errors</a></h2>
+<p>Well, the best thing is to not make errors in the first place. Here’s a list of things that can help avoid making errors:</p>
+<ul>
+<li>Follow best practices.</li>
+<li>Don’t program when tired or frustrated. Take a break and come back later.</li>
+<li>Understand where the common pitfalls are in a language (all those things we warn you not to do).</li>
+<li>Don’t let your functions get too long.</li>
+<li>Prefer using the standard library to writing your own code, when possible.</li>
+<li>Comment your code liberally.</li>
+<li>Start with simple solutions, then layer in complexity incrementally.</li>
+<li>Avoid clever/non-obvious solutions.</li>
+<li>Optimize for readability and maintainability, not performance.</li>
+</ul>
+<blockquote>
+<p>Everyone knows that debugging is twice as hard as writing a program in the first place. So if you’re as clever as you can be when you write it, how will you ever debug it?</p>
+<p>—Brian Kernighan, “The Elements of Programming Style”, 2nd edition</p>
+</blockquote>
+<h2 id="refactoring-your-code"><a class="header" href="#refactoring-your-code">Refactoring your code</a></h2>
+<p>As you add new capabilities to your programs (“behavioral changes”), you will find that some of your functions grow in length. As functions get longer, they get both more complex and harder to understand.</p>
+<p>One way to address this is to break a single long function into multiple shorter functions. This process of making structural changes to your code without changing its behavior is called <strong>refactoring</strong>. The goal of refactoring is to make your program less complex by increasing its organization and modularity.</p>
+<p>So how long is too long for a function? A function that takes up one vertical screen worth of code is generally regarded as too long -- if you have to scroll to read the whole function, the function’s comprehensibility drops significantly. Ideally, a function should be less than ten lines. Functions that are less than five lines are even better.</p>
+<p>Remember that the goal here is to maximize comprehension and maintainability, not to minimize function length -- abandoning best practices or using obscure coding techniques to save a line or two doesn’t do your code any favors.</p>
+<blockquote>
+<p><strong>Key insight</strong></p>
+<p>Key insight</p>
+<p>When making changes to your code, make behavioral changes OR structural changes, and then retest for correctness. Making behavioral and structural changes at the same time tends to lead to more errors as well as errors that are harder to find.</p>
+</blockquote>
+<h2 id="an-introduction-to-defensive-programming"><a class="header" href="#an-introduction-to-defensive-programming">An introduction to defensive programming</a></h2>
+<p>Errors can be not only of your own making (e.g. incorrect logic), but also occur when your users use the application in a way that you did not anticipate. For example, if you ask the user to enter an integer, and they enter a letter instead, how does your program behave in such a case? Unless you anticipated this, and added some error handling for this case, probably not very well.</p>
+<p><strong>Defensive programming</strong> is a practice whereby the programmer tries to anticipate all of the ways the software could be misused, either by end-users, or by other developers (including the programmer themselves) using the code. These misuses can often be detected and then mitigated (e.g. by asking a user who entered bad input to try again).</p>
+<p>We’ll explore topics related to error handling in future lessons.</p>
+<h2 id="finding-errors-fast"><a class="header" href="#finding-errors-fast">Finding errors fast</a></h2>
+<p>Since not making errors is difficult in large programs, the next best thing is to catch errors you do make quickly.</p>
+<p>The best way to do this is to program a little bit at a time, and then test your code and make sure it works.</p>
+<p>However, there are a few other techniques we can also use.</p>
+<h2 id="an-introduction-to-testing-functions"><a class="header" href="#an-introduction-to-testing-functions">An introduction to testing functions</a></h2>
+<p>One common way to help uncover issues with your program is to write testing functions to “exercise” the code you’ve written. Here’s a primitive attempt, more for illustrative purposes than anything:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int add(int x, int y)
+{
+	return x + y;
+}
+
+void testadd()
+{
+	std::cout &lt;&lt; "This function should print: 2 0 0 -2\n";
+	std::cout &lt;&lt; add(1, 1) &lt;&lt; ' ';
+	std::cout &lt;&lt; add(-1, 1) &lt;&lt; ' ';
+	std::cout &lt;&lt; add(1, -1) &lt;&lt; ' ';
+	std::cout &lt;&lt; add(-1, -1) &lt;&lt; ' ';
+}
+
+int main()
+{
+	testadd();
+
+	return 0;
+}
+</code></pre>
+<p>The testadd() function tests the add() function by calling it with different values. If all the values match our expectations, then we can be reasonably confident the function works. Even better, we can keep this function around, and run it any time we change function <em>add</em> to ensure we haven’t accidentally broken it.</p>
+<p>This is a primitive form of <strong>unit testing</strong>, which is a software testing method by which small units of source code are tested to determine whether they are correct.</p>
+<p>As with logging frameworks, there are many 3rd party unit testing frameworks that can be used. It’s also possible to write your own, though we’ll need more language features at our disposal to do the topic justice. We’ll come back to some of this in a future lesson.</p>
+<h2 id="an-introduction-to-constraints"><a class="header" href="#an-introduction-to-constraints">An introduction to constraints</a></h2>
+<p>Constraints-based techniques involve the addition of some extra code (that can be compiled out in a non-debug build, if desired) to check that some set of assumptions or expectations are not violated.</p>
+<p>For example, if we were writing a function to calculate the factorial of a number, which expects a non-negative argument, the function could check to make sure the caller passed in a non-negative number before proceeding. If the caller passes in a negative number, then the function could immediately error out rather than producing some indeterminate result, helping ensure the problem is caught immediately.</p>
+<p>One common method of doing this is via <em>assert</em> and <em>static_assert</em>, which we cover in lesson <a href="assert-and-static_assert.html">9.6 -- Assert and static_assert</a>.</p>
+<h2 id="shotgunning-for-general-issues"><a class="header" href="#shotgunning-for-general-issues">Shotgunning for general issues</a></h2>
+<p>Programmers tend to make certain kinds of common mistakes, and some of those mistakes can be discovered by programs trained to look for them. These programs, generally known as <strong>static analysis tools</strong> (sometimes informally called <em>linters</em>) are programs that analyze your source code to identify specific semantic issues (in this context, <em>static</em> means that these tools analyze the source code without executing it). The issues found by static analysis tools may or may not be the cause of any particular problem you are having, but may help point out fragile areas of code or issues that can be problematic in certain circumstances.</p>
+<p>You already have one static analysis tool at your disposal -- your compiler! In addition to ensuring your program is syntactically correct, most modern C++ compilers will do some light static analysis to identify some common problems. For example, many compilers will warn you if you try to use a variable that has not been initialized. If you haven’t already, turning up your compiler warning and error levels (see lesson <a href="configuring-your-compiler-warning-and-error-levels.html">0.11 -- Configuring your compiler: Warning and error levels</a>) can help surface these.</p>
+<p><a href="https://en.wikipedia.org/wiki/List_of_tools_for_static_code_analysis#C,_C++">Many static analysis tools exist</a>, some of which can identify over 300 types of programming errors. On our small academic programs, use of a static analysis tool is optional, but using one may help you find areas where your code is non-compliant with best practices. On large programs, use of a static analysis tool is highly recommended, as it can surface tens or hundreds of potential issues.</p>
+<div id="admonition-best-practices" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices"></a>
+</div>
+<div>
+<p>Best practice</p>
+<p>Use a static analysis tool on your programs to help find areas where your code is non-compliant with best practices.</p>
+</div>
+</div>
+<blockquote>
+<p><strong>For Visual Studio users</strong></p>
+<p>For Visual Studio users</p>
+<p>Visual Studio 2019 onward comes with a built-in static analysis tool. You can access it via <em>Build &gt; Run Code Analysis on Solution (Alt+F11)</em>.</p>
+</blockquote>
+<blockquote>
+<p><strong>Tip</strong></p>
+<p>Tip</p>
+<p>Some commonly recommended static analysis tools include:</p>
+<p>Free:</p>
+<ul>
+<li><a href="https://clang.llvm.org/extra/clang-tidy">clang-tidy</a></li>
+<li><a href="https://github.com/cpplint/cpplint">cpplint</a></li>
+<li><a href="https://cppcheck.sourceforge.io">cppcheck</a> (already integrated into Code::Blocks)</li>
+<li><a href="https://www.sonarsource.com/open-source-editions">SonarLint</a></li>
+</ul>
+<p>Most of these have extensions that allow them to integrate into your IDE. For example, <a href="https://marketplace.visualstudio.com/items?itemName=caphyon.ClangPowerTools">Clang Power Tools extension</a>.</p>
+<p>Paid (may be free for Open Source projects):</p>
+<ul>
+<li><a href="https://www.synopsys.com/software-integrity/security-testing/static-analysis-sast.html">Coverity</a></li>
+<li><a href="https://www.sonarsource.com/products/sonarqube">SonarQube</a></li>
+</ul>
+</blockquote>
+<p>AI CONTENT END 1</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="using-an-integrated-debugger-the-call-stack.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="chapter-3-summary-and-quiz.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="using-an-integrated-debugger-the-call-stack.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="chapter-3-summary-and-quiz.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

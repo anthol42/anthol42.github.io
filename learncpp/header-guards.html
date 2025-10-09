@@ -1,0 +1,527 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Header guards - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="header-guards"><a class="header" href="#header-guards">Header guards</a></h1>
+<h2 id="the-duplicate-definition-problem"><a class="header" href="#the-duplicate-definition-problem">The duplicate definition problem</a></h2>
+<p>In lesson <a href="forward-declarations.html">2.7 -- Forward declarations and definitions</a>, we noted that a variable or function identifier can only have one definition (the one definition rule). Thus, a program that defines a variable identifier more than once will cause a compile error:</p>
+<pre><code class="language-cpp">int main()
+{
+    int x; // this is a definition for variable x
+    int x; // compile error: duplicate definition
+
+    return 0;
+}
+</code></pre>
+<p>Similarly, programs that define a function more than once will also cause a compile error:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int foo() // this is a definition for function foo
+{
+    return 5;
+}
+
+int foo() // compile error: duplicate definition
+{
+    return 5;
+}
+
+int main()
+{
+    std::cout &lt;&lt; foo();
+    return 0;
+}
+</code></pre>
+<p>While these programs are easy to fix (remove the duplicate definition), with header files, it’s quite easy to end up in a situation where a definition in a header file gets included more than once. This can happen when a header file #includes another header file (which is common).</p>
+<blockquote>
+<p><strong>Author’s note</strong></p>
+<p>In upcoming examples, we’ll define some functions inside header files. You generally shouldn’t do this.</p>
+<p>We are doing so here because it is the most effective way to demonstrate some concepts using functionality we’ve already covered.</p>
+</blockquote>
+<p>Consider the following academic example:</p>
+<p>square.h:</p>
+<pre><code class="language-cpp">int getSquareSides()
+{
+    return 4;
+}
+</code></pre>
+<p>wave.h:</p>
+<pre><code class="language-cpp">#include "square.h"
+</code></pre>
+<p>main.cpp:</p>
+<pre><code class="language-cpp">#include "square.h"
+#include "wave.h"
+
+int main()
+{
+    return 0;
+}
+</code></pre>
+<p>This seemingly innocent looking program won’t compile! Here’s what’s happening. First, <em>main.cpp</em> #includes <em>square.h</em>, which copies the definition for function <em>getSquareSides</em> into <em>main.cpp</em>. Then <em>main.cpp</em> #includes <em>wave.h</em>, which #includes <em>square.h</em> itself. This copies contents of <em>square.h</em> (including the definition for function <em>getSquareSides</em>) into <em>wave.h</em>, which then gets copied into <em>main.cpp</em>.</p>
+<p>Thus, after resolving all of the #includes, <em>main.cpp</em> ends up looking like this:</p>
+<pre><code class="language-cpp">int getSquareSides()  // from square.h
+{
+    return 4;
+}
+
+int getSquareSides() // from wave.h (via square.h)
+{
+    return 4;
+}
+
+int main()
+{
+    return 0;
+}
+</code></pre>
+<p>Duplicate definitions and a compile error. Each file, individually, is fine. However, because <em>main.cpp</em> ends up #including the content of <em>square.h</em> twice, we’ve run into problems. If <em>wave.h</em> needs <em>getSquareSides()</em>, and <em>main.cpp</em> needs both <em>wave.h</em> and <em>square.h</em>, how would you resolve this issue?</p>
+<h2 id="header-guards-1"><a class="header" href="#header-guards-1">Header guards</a></h2>
+<p>The good news is that we can avoid the above problem via a mechanism called a <strong>header guard</strong> (also called an <strong>include guard</strong>). Header guards are conditional compilation directives that take the following form:</p>
+<pre><code class="language-cpp">#ifndef SOME_UNIQUE_NAME_HERE
+#define SOME_UNIQUE_NAME_HERE
+
+// your declarations (and certain types of definitions) here
+
+#endif
+</code></pre>
+<p>When this header is #included, the preprocessor will check whether <em>SOME_UNIQUE_NAME_HERE</em> has been previously defined in this translation unit. If this is the first time we’re including the header, <em>SOME_UNIQUE_NAME_HERE</em> will not have been defined. Consequently, it #defines <em>SOME_UNIQUE_NAME_HERE</em> and includes the contents of the file. If the header is included again into the same file, <em>SOME_UNIQUE_NAME_HERE</em> will already have been defined from the first time the contents of the header were included, and the contents of the header will be ignored (thanks to the #ifndef).</p>
+<p>All of your header files should have header guards on them. <em>SOME_UNIQUE_NAME_HERE</em> can be any name you want, but by convention is set to the full filename of the header file, typed in all caps, using underscores for spaces or punctuation. For example, <em>square.h</em> would have the header guard:</p>
+<p>square.h:</p>
+<pre><code class="language-cpp">#ifndef SQUARE_H
+#define SQUARE_H
+
+int getSquareSides()
+{
+    return 4;
+}
+
+#endif
+</code></pre>
+<p>Even the standard library headers use header guards. If you were to take a look at the iostream header file from Visual Studio, you would see:</p>
+<pre><code class="language-cpp">#ifndef _IOSTREAM_
+#define _IOSTREAM_
+
+// content here
+
+#endif
+</code></pre>
+<blockquote>
+<p><strong>For advanced readers</strong></p>
+<p>In large programs, it’s possible to have two separate header files (included from different directories) that end up having the same filename (e.g. directoryA\config.h and directoryB\config.h). If only the filename is used for the include guard (e.g. CONFIG_H), these two files may end up using the same guard name. If that happens, any file that includes (directly or indirectly) both config.h files will not receive the contents of the include file to be included second. This will probably cause a compilation error.</p>
+<p>Because of this possibility for guard name conflicts, many developers recommend using a more complex/unique name in your header guards. Some good suggestions are a naming convention of PROJECT_PATH_FILE_H, FILE_LARGE-RANDOM-NUMBER_H, or FILE_CREATION-DATE_H.</p>
+</blockquote>
+<h2 id="updating-our-previous-example-with-header-guards"><a class="header" href="#updating-our-previous-example-with-header-guards">Updating our previous example with header guards</a></h2>
+<p>Let’s return to the <em>square.h</em> example, using the <em>square.h</em> with header guards. For good form, we’ll also add header guards to <em>wave.h</em>.</p>
+<p>square.h</p>
+<pre><code class="language-cpp">#ifndef SQUARE_H
+#define SQUARE_H
+
+int getSquareSides()
+{
+    return 4;
+}
+
+#endif
+</code></pre>
+<p>wave.h:</p>
+<pre><code class="language-cpp">#ifndef WAVE_H
+#define WAVE_H
+
+#include "square.h"
+
+#endif
+</code></pre>
+<p>main.cpp:</p>
+<pre><code class="language-cpp">#include "square.h"
+#include "wave.h"
+
+int main()
+{
+    return 0;
+}
+</code></pre>
+<p>After the preprocessor resolves all of the #include directives, this program looks like this:</p>
+<p>main.cpp:</p>
+<pre><code class="language-cpp">// Square.h included from main.cpp
+#ifndef SQUARE_H // square.h included from main.cpp
+#define SQUARE_H // SQUARE_H gets defined here
+
+// and all this content gets included
+int getSquareSides()
+{
+    return 4;
+}
+
+#endif // SQUARE_H
+
+#ifndef WAVE_H // wave.h included from main.cpp
+#define WAVE_H
+#ifndef SQUARE_H // square.h included from wave.h, SQUARE_H is already defined from above
+#define SQUARE_H // so none of this content gets included
+
+int getSquareSides()
+{
+    return 4;
+}
+
+#endif // SQUARE_H
+#endif // WAVE_H
+
+int main()
+{
+    return 0;
+}
+</code></pre>
+<p>Let’s look at how this evaluates.</p>
+<p>First, the preprocessor evaluates <code>#ifndef SQUARE_H</code>. <code>SQUARE_H</code> has not been defined yet, so the code from the <code>#ifndef</code> to the subsequent <code>#endif</code> is included for compilation. This code defines <code>SQUARE_H</code>, and has the definition for the <code>getSquareSides</code> function.</p>
+<p>Later, the next <code>#ifndef SQUARE_H</code> is evaluated. This time, <code>SQUARE_H</code> is defined (because it got defined above), so the code from the <code>#ifndef</code> to the subsequent <code>#endif</code> is excluded from compilation.</p>
+<p>Header guards prevent duplicate inclusions because the first time a guard is encountered, the guard macro isn’t defined, so the guarded content is included. Past that point, the guard macro is defined, so any subsequent copies of the guarded content are excluded.</p>
+<h2 id="header-guards-do-not-prevent-a-header-from-being-included-once-into-different-code-files"><a class="header" href="#header-guards-do-not-prevent-a-header-from-being-included-once-into-different-code-files">Header guards do not prevent a header from being included once into different code files</a></h2>
+<p>Note that the goal of header guards is to prevent a code file from receiving more than one copy of a guarded header. By design, header guards do <em>not</em> prevent a given header file from being included (once) into separate code files. This can also cause unexpected problems. Consider:</p>
+<p>square.h:</p>
+<pre><code class="language-cpp">#ifndef SQUARE_H
+#define SQUARE_H
+
+int getSquareSides()
+{
+    return 4;
+}
+
+int getSquarePerimeter(int sideLength); // forward declaration for getSquarePerimeter
+
+#endif
+</code></pre>
+<p>square.cpp:</p>
+<pre><code class="language-cpp">#include "square.h"  // square.h is included once here
+
+int getSquarePerimeter(int sideLength)
+{
+    return sideLength * getSquareSides();
+}
+</code></pre>
+<p>main.cpp:</p>
+<pre><code class="language-cpp">#include "square.h" // square.h is also included once here
+#include &lt;iostream&gt;
+
+int main()
+{
+    std::cout &lt;&lt; "a square has " &lt;&lt; getSquareSides() &lt;&lt; " sides\n";
+    std::cout &lt;&lt; "a square of length 5 has perimeter length " &lt;&lt; getSquarePerimeter(5) &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>Note that <em>square.h</em> is included from both <em>main.cpp</em> and <em>square.cpp</em>. This means the contents of <em>square.h</em> will be included once into <em>square.cpp</em> and once into <em>main.cpp</em>.</p>
+<p>Let’s examine why this happens in more detail. When <em>square.h</em> is included from <em>square.cpp</em>, <em>SQUARE_H</em> is defined until the end of <em>square.cpp</em>. This define prevents <em>square.h</em> from being included into <em>square.cpp</em> a second time (which is the point of header guards). However, once <em>square.cpp</em> is finished, <em>SQUARE_H</em> is no longer considered defined. This means that when the preprocessor runs on <em>main.cpp</em>, <em>SQUARE_H</em> is not initially defined in <em>main.cpp</em>.</p>
+<p>The end result is that both <em>square.cpp</em> and <em>main.cpp</em> get a copy of the definition of <em>getSquareSides</em>. This program will compile, but the linker will complain about your program having multiple definitions for identifier <em>getSquareSides</em>!</p>
+<p>The best way to work around this issue is simply to put the function definition in one of the .cpp files so that the header just contains a forward declaration:</p>
+<p>square.h:</p>
+<pre><code class="language-cpp">#ifndef SQUARE_H
+#define SQUARE_H
+
+int getSquareSides(); // forward declaration for getSquareSides
+int getSquarePerimeter(int sideLength); // forward declaration for getSquarePerimeter
+
+#endif
+</code></pre>
+<p>square.cpp:</p>
+<pre><code class="language-cpp">#include "square.h"
+
+int getSquareSides() // actual definition for getSquareSides
+{
+    return 4;
+}
+
+int getSquarePerimeter(int sideLength)
+{
+    return sideLength * getSquareSides();
+}
+</code></pre>
+<p>main.cpp:</p>
+<pre><code class="language-cpp">#include "square.h" // square.h is also included once here
+#include &lt;iostream&gt;
+
+int main()
+{
+    std::cout &lt;&lt; "a square has " &lt;&lt; getSquareSides() &lt;&lt; " sides\n";
+    std::cout &lt;&lt; "a square of length 5 has perimeter length " &lt;&lt; getSquarePerimeter(5) &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>Now when the program is compiled, function <em>getSquareSides</em> will have just one definition (via <em>square.cpp</em>), so the linker is happy. File <em>main.cpp</em> is able to call this function (even though it lives in <em>square.cpp</em>) because it includes <em>square.h</em>, which has a forward declaration for the function (the linker will connect the call to <em>getSquareSides</em> from <em>main.cpp</em> to the definition of <em>getSquareSides</em> in <em>square.cpp</em>).</p>
+<h2 id="cant-we-just-avoid-definitions-in-header-files"><a class="header" href="#cant-we-just-avoid-definitions-in-header-files">Can’t we just avoid definitions in header files?</a></h2>
+<p>We’ve generally told you not to include function definitions in your headers. So you may be wondering why you should include header guards if they protect you from something you shouldn’t do.</p>
+<p>There are quite a few cases we’ll show you in the future where it’s necessary to put non-function definitions in a header file. For example, C++ will let you create your own types. These custom types are typically defined in header files, so the type definitions can be propagated out to the code files that need to use them. Without a header guard, a code file could end up with multiple (identical) copies of a given type definition, which the compiler will flag as an error.</p>
+<p>So even though it’s not strictly necessary to have header guards at this point in the tutorial series, we’re establishing good habits now, so you don’t have to unlearn bad habits later.</p>
+<h2 id="pragma-once"><a class="header" href="#pragma-once">#pragma once</a></h2>
+<p>Modern compilers support a simpler, alternate form of header guards using the <code>#pragma</code> preprocessor directive:</p>
+<pre><code class="language-cpp">#pragma once
+
+// your code here
+</code></pre>
+<p><code>#pragma once</code> serves the same purpose as header guards: to avoid a header file from being included multiple times. With traditional header guards, the developer is responsible for guarding the header (by using preprocessor directives <code>#ifndef</code>, <code>#define</code>, and <code>#endif</code>). With <code>#pragma once</code>, we’re requesting that the compiler guard the header. How exactly it does this is an implementation-specific detail.</p>
+<blockquote>
+<p><strong>For advanced readers</strong></p>
+<p>There is one known case where <code>#pragma once</code> will typically fail. If a header file is copied so that it exists in multiple places on the file system, if somehow both copies of the header get included, header guards will successfully de-dupe the identical headers, but <code>#pragma once</code> won’t (because the compiler won’t realize they are actually identical content).</p>
+</blockquote>
+<p>For most projects, <code>#pragma once</code> works fine, and many developers now prefer it because it is easier and less error-prone. Many IDEs will also auto-include <code>#pragma once</code> at the top of a new header file generated through the IDE.</p>
+<div id="admonition-warning" class="admonition admonish-warning" role="note" aria-labelledby="admonition-warning-title">
+<div class="admonition-title">
+<div id="admonition-warning-title">
+<p>Warning</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-warning"></a>
+</div>
+<div>
+<p>The <code>#pragma</code> directive was designed for compiler implementers to use for whatever purposes they desire. As such, which pragmas are supported and what meaning those pragmas have is completely implementation-specific. With the exception of <code>#pragma once</code>, do not expect a pragma that works on one compiler to be supported by another.</p>
+</div>
+</div>
+<p>Because <code>#pragma once</code> is not defined by the C++ standard, it is possible that some compilers may not implement it. For this reason, some development houses (such as Google) recommend using traditional header guards. In this tutorial series, we will favor header guards, as they are the most conventional way to guard headers. However, support for <code>#pragma once</code> is fairly ubiquitous at this point, and if you wish to use <code>#pragma once</code> instead, that is generally accepted in modern C++.</p>
+<h2 id="summary"><a class="header" href="#summary">Summary</a></h2>
+<p>Header guards are designed to ensure that the contents of a given header file are not copied more than once into any single file, in order to prevent duplicate definitions.</p>
+<p>Duplicate <em>declarations</em> are fine -- but even if your header file is composed of all declarations (no definitions) it’s still a best practice to include header guards.</p>
+<p>Note that header guards do <em>not</em> prevent the contents of a header file from being copied (once) into separate project files. This is a good thing, because we often need to reference the contents of a given header from different project files.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="header-files.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="how-to-design-your-first-programs.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="header-files.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="how-to-design-your-first-programs.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,388 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Installing an Integrated Development Environment (IDE) - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="installing-an-integrated-development-environment-ide"><a class="header" href="#installing-an-integrated-development-environment-ide">Installing an Integrated Development Environment (IDE)</a></h1>
+<p>An <strong>Integrated Development Environment (IDE)</strong> is a piece of software designed to make it easy to develop, build, and debug your programs.</p>
+<p>A typical modern IDE will include:</p>
+<ul>
+<li>Some way to easily load and save your code files.</li>
+<li>A code editor that has programming-friendly features, such as line numbering, syntax highlighting, integrated help, name completion, and automatic source code formatting.</li>
+<li>A basic build system that will allow you to compile and link your program into an executable, and then run it.</li>
+<li>An integrated debugger to make it easier to find and fix software defects.</li>
+<li>Some way to install plugins so you can modify the IDE or add capabilities such as version control.</li>
+</ul>
+<p>Some C++ IDEs will install and configure a C++ compiler and linker for you. Others will allow you to plug in a compiler and linker of your choice (installed separately).</p>
+<p>And while you could do all of these things separately, it’s much easier to just install an IDE and be able to do all of these things from a single interface.</p>
+<p>So let’s install one!</p>
+<h2 id="choosing-an-ide"><a class="header" href="#choosing-an-ide">Choosing an IDE</a></h2>
+<p>The obvious next question is, “which one?”. Many IDEs are free (in price), and you can install multiple IDEs if you wish to try more than one. We’ll recommend a few of our favorites below.</p>
+<p>If you have some other IDE in mind, that’s fine too. The concepts we show you in these tutorials should generally work for any decent modern IDE. However, various IDEs use different names, layouts, key mappings, etc… so you may have to do a bit of searching in your IDE to find the equivalent functionality.</p>
+<blockquote>
+<p><strong>Tip</strong></p>
+<p>To get the most value out of this site, we recommend installing an IDE that comes with a compiler that supports at least C++17.</p>
+<p>If you’re restricted to using a compiler that only supports C++14 (due to educational or business constraints), many of the lessons and examples will still work. However, if you encounter a lesson that uses capabilities from C++17 (or newer) and you’re using an older language compiler, you’ll have to skip it or translate it to your version, which may or may not be easy.</p>
+<p>You should not be using any compiler that does not support at least C++11 (which is typically considered the modern minimum spec for C++).</p>
+<p>We recommend installing the newest version of a compiler. If you can’t use the newest version, these are the absolute minimum compiler versions with C++17 support:</p>
+<ul>
+<li>GCC/G++ 7</li>
+<li>Clang++ 8</li>
+<li>Visual Studio 2017 15.7</li>
+</ul>
+</blockquote>
+<h2 id="visual-studio-for-windows"><a class="header" href="#visual-studio-for-windows">Visual Studio (for Windows)</a></h2>
+<p>If you are developing on a Windows 10 or 11 machine, then we strongly recommend downloading <a href="https://www.visualstudio.com/downloads.html">Visual Studio 2022 Community</a>.</p>
+<p>Once you run the installer, you’ll eventually come to a screen that asks you what workload you’d like to install. Choose <em>Desktop development with C++</em>. If you do not do this, then C++ capabilities will not be available.</p>
+<p>The default options selected on the right side of the screen should be fine, but please ensure that the <em>Windows 11 SDK</em> (or <em>Windows 10 SDK</em> if that is the only one available) is selected. Windows 11 SDK apps can run on Windows 10.</p>
+<p><img src="https://www.learncpp.com/images/CppTutorial/Chapter0/VS2019-Installer-min.png" alt="Visual Studio Workload" /></p>
+<h2 id="codeblocks-for-linux-or-windows"><a class="header" href="#codeblocks-for-linux-or-windows">Code::Blocks (for Linux or Windows)</a></h2>
+<p>If you are developing on Linux (or you are developing on Windows but want to write programs that you can easily port to Linux), we recommend <a href="https://www.codeblocks.org/downloads/binaries.html">Code::Blocks</a>. Code::Blocks is a free, open source, cross-platform IDE that will run on both Linux and Windows.</p>
+<blockquote>
+<p><strong>For Windows users</strong></p>
+<p>Make sure to get the version of Code::Blocks that has MinGW bundled (it should be the one whose filename ends in <em>mingw-setup.exe</em>). This will install MinGW, which includes a Windows port of the GCC C++ compiler:</p>
+<p><img src="https://www.learncpp.com/blog/wp-content/uploads/images/CppTutorial/ide/CB-MinGWDownload-min.png" alt="Code::Blocks MinGW Windows download" /></p>
+<hr />
+<p>Code::Blocks 20.03 ships with an outdated version of MinGW that only supports C++17 (currently one version back from the latest version of C++). If you want to use the latest version of C++ (C++20), you will need to update MinGW. To do so, follow this procedure:</p>
+<ol>
+<li>Install Code::Blocks as per the above.</li>
+<li>Close Code::Blocks if it is open.</li>
+<li>Open Windows File Explorer (Keyboard shortcut <em>Win-E</em>).</li>
+<li>Navigate to your Code::Blocks install directory (probably C:\Program Files (x86)\CodeBlocks).</li>
+<li>Rename the “MinGW” directory to “MinGW.bak” (in case something goes wrong).</li>
+<li>Open a browser and navigate to <a href="https://winlibs.com/">https://winlibs.com/</a>.</li>
+<li>Download an updated version of MinGW-w64. You probably want the one under <em>Release Versions -&gt; UCRT Runtime -&gt; LATEST -&gt; Win64 -&gt; without LLVM/Clang/LLD/LLDB -&gt; Zip archive</em>.</li>
+<li>Extract the “mingw64” folder to your Code::blocks install directory.</li>
+<li>Rename “mingw64” to “MinGW”.</li>
+</ol>
+<p>Once you have confirmed the updated compiler works, you can delete the old folder (“MinGW.bak”).</p>
+</blockquote>
+<blockquote>
+<p><strong>For Linux users</strong></p>
+<p>Some Linux installations may be missing dependencies needed to run or compile programs with Code::Blocks.</p>
+<p>Debian-based Linux users (such as those on Mint or Ubuntu) may need to install the <em>build-essential</em> package. To do so from the terminal command line, type: <code>sudo apt-get install build-essential</code>.</p>
+<p>Arch Linux users may need to install the <em>base-devel</em> package.</p>
+<p>Users on other Linux variants will need to determine what their equivalent package manager and packages are.</p>
+</blockquote>
+<p>When you launch Code::Blocks for the first time, you may get a <em>Compilers auto-detection</em> dialog. If you do, make sure <em>GNU GCC Compiler</em> is set as the default compiler and then select the <em>OK</em> button.</p>
+<p><img src="https://www.learncpp.com/images/CppTutorial/Chapter0/CompilersAutoDetection-min.png" alt="Compilers Auto Detection dialog" /></p>
+<blockquote>
+<p><strong>Q: What do I do if I get a "Can’t find compiler executable in your configured search paths for GNU GCC Compiler" error?</strong></p>
+<p>Try the following:</p>
+<ol>
+<li>If you’re on Windows, make sure you’ve downloaded the version of Code::Blocks WITH MinGW. It’s the one with “mingw” in the name.</li>
+<li>Try going to settings, compiler, and choose “reset to defaults”.</li>
+<li>Try going to settings, compiler, toolchain executables tab, and make sure “Compiler’s installation directory” is set to the MinGW directory (e.g. C:\Program Files (x86)\CodeBlocks\MinGW).</li>
+<li>Try doing a full uninstall, then reinstall.</li>
+<li><a href="http://wiki.codeblocks.org/index.php/Installing_a_supported_compiler">Try a different compiler.</a></li>
+</ol>
+</blockquote>
+<h2 id="visual-studio-code-for-experienced-linux-macos-or-windows-users"><a class="header" href="#visual-studio-code-for-experienced-linux-macos-or-windows-users">Visual Studio Code (for experienced Linux, macOS, or Windows users)</a></h2>
+<p>Visual Studio Code (also called “VS Code”, not to be confused with the similarly named “Visual Studio Community”) is a code editor that is a popular choice with experienced developers because it is fast, flexible, open source, works for multiple programming languages, and is available for many different platforms.</p>
+<p>The downside is that VS Code is much harder to configure correctly than other choices on this list (and on Windows, harder to install as well). Before proceeding, we recommend reading through the installation and configuration documents linked below to ensure you understand and are comfortable with the steps involved.</p>
+<div id="admonition-warning" class="admonition admonish-warning" role="note" aria-labelledby="admonition-warning-title">
+<div class="admonition-title">
+<div id="admonition-warning-title">
+<p>Warning</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-warning"></a>
+</div>
+<div>
+<p>This tutorial series does not have complete instructions for VS Code.</p>
+<p>Visual Studio Code is <em>not</em> a good option for C++ beginners, and readers have reported many different challenges getting Visual Studio Code installed and configured correctly for C++.</p>
+<p>Please do not choose this option unless you are already familiar with Visual Studio Code from prior use, or have experience debugging configuration issues.</p>
+<p>We cannot provide installation or configuration support for Visual Studio Code on this site.</p>
+</div>
+</div>
+<p>A tip o’ the hat to user glibg10b for providing an initial draft of VS Code instructions across multiple articles.</p>
+<blockquote>
+<p><strong>For Linux users</strong></p>
+<p>VS Code should be downloaded using your distribution’s package manager. The <a href="https://code.visualstudio.com/docs/setup/linux">VS Code instructions for linux</a> cover how to do this for various Linux distributions.</p>
+<p>Once VS Code is installed, follow the <a href="https://code.visualstudio.com/docs/cpp/config-linux">instructions on how to configure C++ for linux</a>.</p>
+</blockquote>
+<blockquote>
+<p><strong>For Mac users</strong></p>
+<p>The <a href="https://code.visualstudio.com/docs/setup/mac">VS Code instructions for Mac</a> detail how to install and setup VS Code for macOS.</p>
+<p>Once VS Code is installed, follow the <a href="https://code.visualstudio.com/docs/cpp/config-clang-mac">instructions on how to configure C++ for Mac</a>.</p>
+</blockquote>
+<blockquote>
+<p><strong>For Windows users</strong></p>
+<p>The <a href="https://code.visualstudio.com/docs/setup/windows">VS Code instructions for Windows</a> detail how to install and setup VS Code for Windows.</p>
+<p>Once VS Code is installed, follow the <a href="https://code.visualstudio.com/docs/cpp/config-mingw">instructions on how to configure C++ for Windows</a>.</p>
+</blockquote>
+<h2 id="other-macos-ides"><a class="header" href="#other-macos-ides">Other macOS IDEs</a></h2>
+<p>Other popular Mac choices include <a href="https://developer.apple.com/xcode.html">Xcode</a> (if it is available to you) and the <a href="https://www.eclipse.org.html">Eclipse</a> code editor. Eclipse is not set up to use C++ by default, and you will need to install the optional C++ components.</p>
+<h2 id="other-compilers-or-platforms"><a class="header" href="#other-compilers-or-platforms">Other compilers or platforms</a></h2>
+<blockquote>
+<p><strong>Q: Can I use a web-based compiler?</strong></p>
+<p>Yes, for some things. While your IDE is downloading (or if you’re not sure you want to commit to installing one yet), you can continue this tutorial using a web-based compiler. We recommend one of the following:</p>
+<ul>
+<li><a href="https://www.tutorialspoint.com/compile_cpp_online.php">TutorialsPoint</a></li>
+<li><a href="https://wandbox.org">Wandbox</a> (can choose different versions of GCC or Clang)</li>
+<li><a href="https://godbolt.org">Godbolt</a> (can see assembly)</li>
+</ul>
+<p>Web-based compilers are fine for dabbling and simple exercises. However, they are generally quite limited in functionality -- many won’t allow you to create multiple files or effectively debug your programs, and most don’t support interactive input. You’ll want to migrate to a full IDE when you can.</p>
+</blockquote>
+<blockquote>
+<p><strong>Q: Can I use a command-line compiler (e.g. g++ on Linux)?</strong></p>
+<p>Yes, but we don’t recommend it for beginners. You’ll need to find your own editor and look up how to use it elsewhere. Learning to use a command line debugger is not as easy as an integrated debugger, and will make debugging your programs more difficult.</p>
+</blockquote>
+<blockquote>
+<p><strong>Q: Can I use other code editors or IDEs, such as Eclipse, Sublime, or Notepad++?</strong></p>
+<p>Yes, but we don’t recommend it for beginners. There are many great code editors and IDEs that can be configured to support a wide variety of languages, and allow you to mix and match plugins to customize your experience however you like. However, many of these editors and IDEs require additional configuration to compile C++ programs, and there’s a lot that can go wrong during that process. For beginners, we recommend something that works out of the box, so you can spend more time learning to code and less time trying to figure out why your code editor isn’t working properly with your compiler or debugger.</p>
+</blockquote>
+<h2 id="ides-to-avoid"><a class="header" href="#ides-to-avoid">IDEs to avoid</a></h2>
+<p>You should avoid the following IDEs altogether because they do not support at least C++11, do not support C++ at all, or are no longer actively supported or maintained:</p>
+<ul>
+<li>Borland Turbo C++ -- does not support C++11</li>
+<li>Visual Studio for Mac -- does not support C++. (Note: this is a different product than VS Code).</li>
+<li>Dev C++ -- not actively supported</li>
+</ul>
+<p>There is no good reason to use an outdated or unsupported compiler when lightweight, free alternatives that support modern C++ exist.</p>
+<h2 id="when-things-go-wrong-aka-when-ide-stands-for-i-dont-even"><a class="header" href="#when-things-go-wrong-aka-when-ide-stands-for-i-dont-even">When things go wrong (a.k.a. when IDE stands for “I don’t even…”)</a></h2>
+<p>IDE installations seem to cause their fair share of problems. Installation might fail outright (or installation might work but the IDE will have problems when you try to use it due to a configuration issue). If you encounter such issues, try uninstalling the IDE (assuming it installed in the first place), reboot your machine, disable your antivirus or anti-malware temporarily, and try the installation again.</p>
+<p>If you’re still encountering issues at this point, you have two options. The easier option is to try a different IDE. The other option is to fix the problem. Unfortunately, the causes of installation and configuration errors are varied and specific to the IDE software itself, and we’re unable to effectively advise on how to resolve such issues. In this case, we recommend copying the error message or problem you are having into your favorite search engine (such as Google or Duck Duck Go) and trying to find a forum post elsewhere from some poor soul who has inevitably encountered the same issue. Often there will be suggestions on things you can try to remedy the issue.</p>
+<h2 id="moving-on"><a class="header" href="#moving-on">Moving on</a></h2>
+<p>Once your IDE is installed (which can be one of the hardest steps if things don’t go as expected), or if you’re temporarily proceeding with a web-based compiler, you are ready to write your first program!</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="introduction-to-the-compiler-linker-and-libraries.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="compiling-your-first-program.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="introduction-to-the-compiler-linker-and-libraries.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="compiling-your-first-program.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

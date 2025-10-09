@@ -1,0 +1,380 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Code coverage - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="code-coverage"><a class="header" href="#code-coverage">Code coverage</a></h1>
+<p>In the previous lesson <a href="introduction-to-testing-your-code.html">9.1 -- Introduction to testing your code</a>, we discussed how to write and preserve simple tests. In this lesson, we’ll talk about what kind of tests are useful to write to ensure your code is correct.</p>
+<h2 id="code-coverage-1"><a class="header" href="#code-coverage-1">Code coverage</a></h2>
+<p>The term <strong>code coverage</strong> is used to describe how much of the source code of a program is executed while testing. There are many different metrics used for code coverage. We’ll cover a few of the more useful and popular ones in the following sections.</p>
+<h2 id="statement-coverage"><a class="header" href="#statement-coverage">Statement coverage</a></h2>
+<p>The term <strong>statement coverage</strong> refers to the percentage of statements in your code that have been exercised by your testing routines.</p>
+<p>Consider the following function:</p>
+<pre><code class="language-cpp">int foo(int x, int y)
+{
+    int z{ y };
+    if (x &gt; y)
+    {
+        z = x;
+    }
+    return z;
+}
+</code></pre>
+<p>Calling this function as <code>foo(1, 0)</code> will give you complete statement coverage for this function, as every statement in the function will execute.</p>
+<p>For our <code>isLowerVowel()</code> function:</p>
+<pre><code class="language-cpp">bool isLowerVowel(char c)
+{
+    switch (c) // statement 1
+    {
+    case 'a':
+    case 'e':
+    case 'i':
+    case 'o':
+    case 'u':
+        return true; // statement 2
+    default:
+        return false; // statement 3
+    }
+}
+</code></pre>
+<p>This function will require two calls to test all of the statements, as there is no way to reach statement 2 and 3 in the same function call.</p>
+<p>While aiming for 100% statement coverage is good, it’s often not enough to ensure correctness.</p>
+<h2 id="branch-coverage"><a class="header" href="#branch-coverage">Branch coverage</a></h2>
+<p><strong>Branch coverage</strong> refers to the percentage of branches that have been executed, each possible branch counted separately. An <code>if statement</code> has two branches -- a branch that executes when the condition is <code>true</code>, and a branch that executes when the condition is <code>false</code> (even if there is no corresponding <code>else statement</code> to execute). A switch statement can have many branches.</p>
+<pre><code class="language-cpp">int foo(int x, int y)
+{
+    int z{ y };
+    if (x &gt; y)
+    {
+        z = x;
+    }
+    return z;
+}
+</code></pre>
+<p>The previous call to foo(1, 0) gave us 100% statement coverage and exercised the use case where <code>x &gt; y</code>, but that only gives us 50% branch coverage. We need one more call, to <code>foo(0, 1)</code>, to test the use case where the <code>if statement</code> does not execute.</p>
+<pre><code class="language-cpp">bool isLowerVowel(char c)
+{
+    switch (c)
+    {
+    case 'a':
+    case 'e':
+    case 'i':
+    case 'o':
+    case 'u':
+        return true;
+    default:
+        return false;
+    }
+}
+</code></pre>
+<p>In the isLowerVowel() function, two calls will be needed to give you 100% branch coverage: one (such as <code>isLowerVowel('a')</code>) to test the first cases, and another (such as <code>isLowerVowel('q')</code>) to test the default case. Multiple cases that feed into the same body don’t need to be tested separately -- if one works, they all should.</p>
+<p>Now consider the following function:</p>
+<pre><code class="language-cpp">void compare(int x, int y)
+{
+	if (x &gt; y)
+		std::cout &lt;&lt; x &lt;&lt; " is greater than " &lt;&lt; y &lt;&lt; '\n'; // case 1
+	else if (x &lt; y)
+		std::cout &lt;&lt; x &lt;&lt; " is less than " &lt;&lt; y &lt;&lt; '\n'; // case 2
+	else
+		std::cout &lt;&lt; x &lt;&lt; " is equal to " &lt;&lt; y &lt;&lt; '\n'; // case 3
+}
+</code></pre>
+<p>3 calls are needed to get 100% branch coverage here: <code>compare(1, 0)</code> tests the positive use case for the first <code>if statement</code>. <code>compare(0, 1)</code> tests the negative use case for the first <code>if statement</code> and the positive use case for the second <code>if statement</code>. <code>compare(0, 0)</code> tests the negative use case for the first and second <code>if statement</code> and executes the <code>else statement</code>. Thus, we can say this function is reliably tested with 3 calls (which is slightly better than 18 quintillion).</p>
+<div id="admonition-best-practices" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices"></a>
+</div>
+<div>
+<p>Best practice</p>
+<p>Aim for 100% branch coverage of your code.</p>
+</div>
+</div>
+<h2 id="loop-coverage"><a class="header" href="#loop-coverage">Loop coverage</a></h2>
+<p><strong>Loop coverage</strong> (informally called <strong>the 0, 1, 2 test</strong>) says that if you have a loop in your code, you should ensure it works properly when it iterates 0 times, 1 time, and 2 times. If it works correctly for the 2-iteration case, it should work correctly for all iterations greater than 2. These three tests therefore cover all possibilities (since a loop can’t execute a negative number of times).</p>
+<p>Consider:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+void spam(int timesToPrint)
+{
+    for (int count{ 0 }; count &lt; timesToPrint; ++count)
+         std::cout &lt;&lt; "Spam! ";
+}
+</code></pre>
+<p>To test the loop within this function properly, you should call it three times: <code>spam(0)</code> to test the zero-iteration case, <code>spam(1)</code> to test the one-iteration case, and <code>spam(2)</code> to test the two-iteration case. If <code>spam(2)</code> works, then <code>spam(n)</code> should work, where <code>n &gt; 2</code>.</p>
+<div id="admonition-best-practices-1" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-1-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-1-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices-1"></a>
+</div>
+<div>
+<p>Best practice</p>
+<p>Use the <code>0, 1, 2 test</code> to ensure your loops work correctly with different number of iterations.</p>
+</div>
+</div>
+<h2 id="testing-different-categories-of-input"><a class="header" href="#testing-different-categories-of-input">Testing different categories of input</a></h2>
+<p>When writing functions that accept parameters, or when accepting user input, consider what happens with different categories of input. In this context, we’re using the term “category” to mean a set of inputs that have similar characteristics.</p>
+<p>For example, if I wrote a function to produce the square root of an integer, what values would it make sense to test it with? You’d probably start with some normal value, like <code>4</code>. But it would also be a good idea to test with <code>0</code>, and a negative number.</p>
+<p>Here are some basic guidelines for category testing:</p>
+<p>For integers, make sure you’ve considered how your function handles negative values, zero, and positive values. You should also check for overflow if that’s relevant.</p>
+<p>For floating point numbers, make sure you’ve considered how your function handles values that have precision issues (values that are slightly larger or smaller than expected). Good <code>double</code> type values to test with are <code>0.1</code> and <code>-0.1</code> (to test numbers that are slightly larger than expected) and <code>0.7</code> and <code>-0.7</code> (to test numbers that are slightly smaller than expected).</p>
+<p>For strings, make sure you’ve considered how your function handles an empty string, an alphanumeric string, strings that have whitespace (leading, trailing, and inner), and strings that are all whitespace.</p>
+<p>If your function takes a pointer, don’t forget to test <code>nullptr</code> as well (don’t worry if this doesn’t make sense, we haven’t covered it yet).</p>
+<div id="admonition-best-practices-2" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-2-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-2-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices-2"></a>
+</div>
+<div>
+<p>Best practice</p>
+<p>Test different categories of input values to make sure your unit handles them properly.</p>
+</div>
+</div>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="introduction-to-testing-your-code.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="common-semantic-errors-in-c.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="introduction-to-testing-your-code.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="common-semantic-errors-in-c.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

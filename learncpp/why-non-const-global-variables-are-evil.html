@@ -1,0 +1,516 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Why (non-const) global variables are evil - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="why-non-const-global-variables-are-evil"><a class="header" href="#why-non-const-global-variables-are-evil">Why (non-const) global variables are evil</a></h1>
+<p>If you were to ask a veteran programmer for <em>one</em> piece of advice on good programming practices, after some thought, the most likely answer would be, “Avoid global variables!”. And with good reason: global variables are one of the most historically abused concepts in the language. Although they may seem harmless in small academic programs, they are often problematic in larger ones.</p>
+<p>New programmers are often tempted to use lots of global variables, because they are easy to work with, especially when many calls to different functions are involved (passing data through function parameters is a pain). However, this is generally a bad idea. Many developers believe non-const global variables should be avoided completely!</p>
+<p>But before we go into why, we should make a clarification. When developers tell you that global variables are evil, they’re usually not talking about <em>all</em> global variables. They’re mostly talking about non-const global variables.</p>
+<h2 id="why-non-const-global-variables-are-evil-1"><a class="header" href="#why-non-const-global-variables-are-evil-1">Why (non-const) global variables are evil</a></h2>
+<p>By far the biggest reason non-const global variables are dangerous is because their values can be changed by <em>any</em> function that is called, and there is no easy way for the programmer to know that this will happen. Consider the following program:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int g_mode; // declare global variable (will be zero-initialized by default)
+
+void doSomething()
+{
+    g_mode = 2; // set the global g_mode variable to 2
+}
+
+int main()
+{
+    g_mode = 1; // note: this sets the global g_mode variable to 1.  It does not declare a local g_mode variable!
+
+    doSomething();
+
+    // Programmer still expects g_mode to be 1
+    // But doSomething changed it to 2!
+
+    if (g_mode == 1)
+    {
+        std::cout &lt;&lt; "No threat detected.\n";
+    }
+    else
+    {
+        std::cout &lt;&lt; "Launching nuclear missiles...\n";
+    }
+
+    return 0;
+}
+</code></pre>
+<p>Note that the programmer set variable <code>g_mode</code> to <em>1</em>, and then called <code>doSomething()</code>. Unless the programmer had explicit knowledge that <code>doSomething()</code> was going to change the value of <code>g_mode</code>, he or she was probably not expecting <code>doSomething()</code> to change the value! Consequently, the rest of <code>main()</code> doesn’t work like the programmer expects (and the world is obliterated).</p>
+<p>In short, global variables make the program’s state unpredictable. Every function call becomes potentially dangerous, and the programmer has no easy way of knowing which ones are dangerous and which ones aren’t! Local variables are much safer because other functions can not affect them directly.</p>
+<p>There are plenty of other good reasons not to use non-const globals.</p>
+<p>With global variables, it’s not uncommon to find a piece of code that looks like this:</p>
+<pre><code class="language-cpp">void someFunction()
+{
+    // useful code
+
+    if (g_mode == 4)
+    {
+        // do something good
+    }
+}
+</code></pre>
+<p>After debugging, you determine that your program isn’t working correctly because <code>g_mode</code> has value <code>3</code>, not <em>4</em>. How do you fix it? Now you need to find all of the places <code>g_mode</code> could possibly be set to <code>3</code>, and trace through how it got set in the first place. It’s possible this may be in a totally unrelated piece of code!</p>
+<p>One of the key reasons to declare local variables as close to where they are used as possible is because doing so minimizes the amount of code you need to look through to understand what the variable does. Global variables are at the opposite end of the spectrum -- because they can be accessed anywhere, you might have to look through the entire program to understand their usage. In small programs, this might not be an issue. In large ones, it will be.</p>
+<p>For example, you might find <code>g_mode</code> is referenced 442 times in your program. Unless <code>g_mode</code> is well documented, you’ll potentially have to look through every use of <code>g_mode</code> to understand how it’s being used in different cases, what its valid values are, and what its overall function is.</p>
+<p>Global variables also make your program less modular and less flexible. A function that utilizes nothing but its parameters and has no side effects is perfectly modular. Modularity helps both in understanding what a program does, as well as with reusability. Global variables reduce modularity significantly.</p>
+<p>In particular, avoid using global variables for important “decision-point” variables (e.g. variables you’d use in a conditional statement, like variable <code>g_mode</code> in the example above). Your program isn’t likely to break if a global variable holding an informational value changes (e.g. like the user’s name). It is much more likely to break if you change a global variable that impacts <em>how</em> your program actually functions.</p>
+<div id="admonition-best-practices" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices"></a>
+</div>
+<div>
+<p>Best practice</p>
+<p>Use local variables instead of global variables whenever possible.</p>
+</div>
+</div>
+<h2 id="the-initialization-order-problem-of-global-variables"><a class="header" href="#the-initialization-order-problem-of-global-variables">The initialization order problem of global variables</a></h2>
+<p>Initialization of static variables (which includes global variables) happens as part of program startup, before execution of the <code>main</code> function. This proceeds in two phases.</p>
+<p>The first phase is called <strong>static initialization</strong>. Static initialization proceeds in two phases:</p>
+<ul>
+<li>Global variables with constexpr initializers (including literals) are initialized to those values. This is called <strong>constant initialization</strong>.</li>
+<li>Global variables without initializers are zero-initialized. Zero-initialization is considered to be a form of static-initialization since <code>0</code> is a constexpr value.</li>
+</ul>
+<p>The second phase is called <strong>dynamic initialization</strong>. This phase is more complex and nuanced, but the gist of it is that global variables with non-constexpr initializers are initialized.</p>
+<p>Here’s an example of a non-constexpr initializer:</p>
+<pre><code class="language-cpp">int init()
+{
+    return 5;
+}
+
+int g_something{ init() }; // non-constexpr initialization
+</code></pre>
+<p>Within a single file, for each phase, global variables are generally initialized in order of definition (there are a few exceptions to this rule for the dynamic initialization phase). Given this, you need to be careful not to have variables dependent on the initialization value of other variables that won’t be initialized until later. For example:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int initX();  // forward declaration
+int initY();  // forward declaration
+
+int g_x{ initX() }; // g_x is initialized first
+int g_y{ initY() };
+
+int initX()
+{
+    return g_y; // g_y isn't initialized when this is called
+}
+
+int initY()
+{
+    return 5;
+}
+
+int main()
+{
+    std::cout &lt;&lt; g_x &lt;&lt; ' ' &lt;&lt; g_y &lt;&lt; '\n';
+}
+</code></pre>
+<p>This prints:</p>
+<pre><code class="language-cpp">0 5
+</code></pre>
+<p>Much more of a problem, the order in which static objects are initialized across different translation units is ambiguous.</p>
+<p>Given two files, <em>a.cpp</em> and <em>b.cpp</em>, either could have its global variables initialized first. If some variable with static duration in <em>a.cpp</em> is initialized with a static duration variable defined in <em>b.cpp</em>, there’s a 50% chance that the variable in <em>b.cpp</em> won’t be initialized yet.</p>
+<blockquote>
+<p><strong>Nomenclature</strong></p>
+<p>Nomenclature</p>
+<p>The ambiguity in the order that objects with static storage duration in different translation units are initialized is often called the <a href="https://en.cppreference.com/w/cpp/language/siof">static initialization order fiasco</a>.</p>
+</blockquote>
+<div id="admonition-warning" class="admonition admonish-warning" role="note" aria-labelledby="admonition-warning-title">
+<div class="admonition-title">
+<div id="admonition-warning-title">
+<p>Warning</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-warning"></a>
+</div>
+<div>
+<p>Warning</p>
+<p>Avoid initializing objects with static duration using other objects with static duration from a different translation unit.</p>
+<p>Dynamic initialization of global variables is also susceptible to initialization order issues and should be avoided whenever possible.</p>
+</div>
+</div>
+<h2 id="so-what-are-very-good-reasons-to-use-non-const-global-variables"><a class="header" href="#so-what-are-very-good-reasons-to-use-non-const-global-variables">So what are very good reasons to use non-const global variables?</a></h2>
+<p>There aren’t many. In most cases, using local variables and passing them as arguments to other functions is preferable. But in some cases, judicious use of non-const global variables <em>can</em> actually reduce program complexity, and in these rare cases, their use may be better than the alternatives.</p>
+<p>A good example is a log file, where you can dump error or debug information. It probably makes sense to define this as a global, because you’re likely to only have one such log in a program and it will likely be used everywhere in your program. Another good example would be a random number generator (we show an example of this in lesson <a href="global-random-numbers-random-h.html">8.15 -- Global random numbers (Random.h)</a>).</p>
+<p>For what it’s worth, the std::cout and std::cin objects are implemented as global variables (inside the <em>std</em> namespace).</p>
+<p>As a rule of thumb, any use of a global variable should meet at least the following two criteria: There should only ever be one of the thing the variable represents in your program, and its use should be ubiquitous throughout your program.</p>
+<p>Many new programmers make the mistake of thinking that something can be implemented as a global because only one is needed <em>right now</em>. For example, you might think that because you’re implementing a single player game, you only need one player. But what happens later when you want to add a multiplayer mode (versus or hotseat)?</p>
+<h2 id="protecting-yourself-from-global-destruction"><a class="header" href="#protecting-yourself-from-global-destruction">Protecting yourself from global destruction</a></h2>
+<p>If you do find a good use for a non-const global variable, a few useful bits of advice will minimize the amount of trouble you can get into. This advice isn’t only for non-const global variables, but can help with all global variables.</p>
+<p>First, prefix all non-namespaced global variables with “g” or “g_”, or better yet, put them in a namespace (discussed in lesson <a href="user-defined-namespaces-and-the-scope-resolution-operator.html">7.2 -- User-defined namespaces and the scope resolution operator</a>), to reduce the chance of naming collisions.</p>
+<p>For example, instead of:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+constexpr double gravity { 9.8 }; // risk of collision with some other global variable named gravity
+
+int main()
+{
+    std::cout &lt;&lt; gravity &lt;&lt; '\n'; // unclear if this is a local or global variable from the name
+
+    return 0;
+}
+</code></pre>
+<p>Do this:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+namespace constants
+{
+    constexpr double gravity { 9.8 }; // will not collide with other global variables named gravity
+}
+
+int main()
+{
+    std::cout &lt;&lt; constants::gravity &lt;&lt; '\n'; // clear this is a global variable (since namespaces are global)
+
+    return 0;
+}
+</code></pre>
+<p>Second, instead of allowing direct access to the global variable, it’s a better practice to “encapsulate” the variable. Make sure the variable can only be accessed from within the file it’s declared in, e.g. by making the variable static or const, then provide external global “access functions” to work with the variable. These functions can ensure proper usage is maintained (e.g. do input validation, range checking, etc…). Also, if you ever decide to change the underlying implementation (e.g. move from one database to another), you only have to update the access functions instead of every piece of code that uses the global variable directly.</p>
+<p>For example, instead of this:</p>
+<p>constants.cpp:</p>
+<pre><code class="language-cpp">namespace constants
+{
+    extern const double gravity { 9.8 }; // has external linkage, can be accessed by other files
+}
+</code></pre>
+<p>main.cpp:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+namespace constants
+{
+    extern const double gravity; // forward declaration
+}
+
+int main()
+{
+    std::cout &lt;&lt; constants::gravity &lt;&lt; '\n'; // direct access to global variable
+
+    return 0;
+}
+</code></pre>
+<p>Do this:</p>
+<p>contants.cpp:</p>
+<pre><code class="language-cpp">namespace constants
+{
+    constexpr double gravity { 9.8 }; // has internal linkage, is accessible only within this file
+}
+
+double getGravity() // has external linkage, can be accessed by other files
+{
+    // We could add logic here if needed later
+    // or change the implementation transparently to the callers
+    return constants::gravity;
+}
+</code></pre>
+<p>main.cpp:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+double getGravity(); // forward declaration
+
+int main()
+{
+    std::cout &lt;&lt; getGravity() &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<blockquote>
+<p><strong>A reminder</strong></p>
+<p>A reminder</p>
+<p>Global <code>const</code> variables have internal linkage by default, <code>gravity</code> doesn’t need to be <code>static</code>.</p>
+</blockquote>
+<p>Third, when writing an otherwise standalone function that uses the global variable, don’t use the variable directly in your function body. Pass it in as an argument instead. That way, if your function ever needs to use a different value for some circumstance, you can simply vary the argument. This helps maintain modularity.</p>
+<p>Instead of:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+namespace constants
+{
+    constexpr double gravity { 9.8 };
+}
+
+// This function is only useful for calculating your instant velocity based on the global gravity
+double instantVelocity(int time)
+{
+    return constants::gravity * time;
+}
+
+int main()
+{
+    std::cout &lt;&lt; instantVelocity(5) &lt;&lt; '\n';
+
+    return 0;
+
+}
+</code></pre>
+<p>Do this:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+namespace constants
+{
+    constexpr double gravity { 9.8 };
+}
+
+// This function can calculate the instant velocity for any gravity value (more useful)
+double instantVelocity(int time, double gravity)
+{
+    return gravity * time;
+}
+
+int main()
+{
+    std::cout &lt;&lt; instantVelocity(5, constants::gravity) &lt;&lt; '\n'; // pass our constant to the function as a parameter
+
+    return 0;
+}
+</code></pre>
+<h2 id="a-c-joke"><a class="header" href="#a-c-joke">A C++ joke</a></h2>
+<p>What’s the best naming prefix for a global variable?</p>
+<p>Answer: //</p>
+<p>This joke is worth all the comments.</p>
+<p>AI CONTENT END 1</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="external-linkage-and-variable-forward-declarations.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="inline-functions-and-variables.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="external-linkage-and-variable-forward-declarations.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="inline-functions-and-variables.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

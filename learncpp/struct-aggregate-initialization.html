@@ -1,0 +1,605 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Struct aggregate initialization - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="struct-aggregate-initialization"><a class="header" href="#struct-aggregate-initialization">Struct aggregate initialization</a></h1>
+<p>In the previous lesson (<a href="introduction-to-structs-members-and-member-selection.html">13.7 -- Introduction to structs, members, and member selection</a>), we talked about how to define structs, instantiate struct objects, and access their members. In this lesson, we’ll discuss how structs are initialized.</p>
+<h2 id="data-members-are-not-initialized-by-default"><a class="header" href="#data-members-are-not-initialized-by-default">Data members are not initialized by default</a></h2>
+<p>Much like normal variables, data members are not initialized by default. Consider the following struct:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+struct Employee
+{
+    int id; // note: no initializer here
+    int age;
+    double wage;
+};
+
+int main()
+{
+    Employee joe; // note: no initializer here either
+    std::cout &lt;&lt; joe.id &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>Because we have not provided any initializers, when <code>joe</code> is instantiated, <code>joe.id</code>, <code>joe.age</code>, and <code>joe.wage</code> will all be uninitialized. We will then get undefined behavior when we try to print the value of <code>joe.id</code>.</p>
+<p>However, before we show you how to initialize a struct, let’s take a short detour.</p>
+<h2 id="what-is-an-aggregate"><a class="header" href="#what-is-an-aggregate">What is an aggregate?</a></h2>
+<p>In general programming, an <strong>aggregate data type</strong> (also called an <strong>aggregate</strong>) is any type that can contain multiple data members. Some types of aggregates allow members to have different types (e.g. structs), while others require that all members must be of a single type (e.g. arrays).</p>
+<p>In C++, the definition of an aggregate is narrower and quite a bit more complicated.</p>
+<blockquote>
+<p><strong>Author’s note</strong></p>
+<p>Author’s note</p>
+<p>In this tutorial series, when we use the term “aggregate” (or “non-aggregate”) we will mean the C++ definition of aggregate.</p>
+</blockquote>
+<blockquote>
+<p><strong>For advanced readers</strong></p>
+<p>For advanced readers</p>
+<p>To simplify a bit, an aggregate in C++ is either a C-style array (<a href="introduction-to-c-style-arrays">17.7 -- Introduction to C-style arrays</a>), or a class type (struct, class, or union) that has:</p>
+<ul>
+<li>No user-declared constructors (<a href="introduction-to-constructors">14.9 -- Introduction to constructors</a>)</li>
+<li>No private or protected non-static data members (<a href="public-and-private-members-and-access-specifiers">14.5 -- Public and private members and access specifiers</a>)</li>
+<li>No virtual functions (<a href="virtual-functions">25.2 -- Virtual functions and polymorphism</a>)</li>
+</ul>
+<p>The popular type <code>std::array</code> (<a href="introduction-to-stdarray">17.1 -- Introduction to std::array</a>) is also an aggregate.</p>
+<p>You can find the precise definition of a C++ aggregate <a href="https://en.cppreference.com/w/cpp/language/aggregate_initialization">here</a>.</p>
+</blockquote>
+<p>The key thing to understand at this point is that structs with only data members are aggregates.</p>
+<h2 id="aggregate-initialization-of-a-struct"><a class="header" href="#aggregate-initialization-of-a-struct">Aggregate initialization of a struct</a></h2>
+<p>Because a normal variable can only hold a single value, we only need to provide a single initializer:</p>
+<pre><code class="language-cpp">int x { 5 };
+</code></pre>
+<p>However, a struct can have multiple members:</p>
+<pre><code class="language-cpp">struct Employee
+{
+    int id {};
+    int age {};
+    double wage {};
+};
+</code></pre>
+<p>When we define an object with a struct type, we need some way to initialize multiple members at initialization time:</p>
+<pre><code class="language-cpp">Employee joe; // how do we initialize joe.id, joe.age, and joe.wage?
+</code></pre>
+<p>Aggregates use a form of initialization called <strong>aggregate initialization</strong>, which allows us to directly initialize the members of aggregates. To do this, we provide an <strong>initializer list</strong> as an initializer, which is just a braced list of comma-separated values.</p>
+<p>There are 2 primary forms of aggregate initialization:</p>
+<pre><code class="language-cpp">struct Employee
+{
+    int id {};
+    int age {};
+    double wage {};
+};
+
+int main()
+{
+    Employee frank = { 1, 32, 60000.0 }; // copy-list initialization using braced list
+    Employee joe { 2, 28, 45000.0 };     // list initialization using braced list (preferred)
+
+    return 0;
+}
+</code></pre>
+<p>Each of these initialization forms does a <strong>memberwise initialization</strong>, which means each member in the struct is initialized in the order of declaration. Thus, <code>Employee joe { 2, 28, 45000.0 };</code> first initializes <code>joe.id</code> with value <code>2</code>, then <code>joe.age</code> with value <code>28</code>, and <code>joe.wage</code> with value <code>45000.0</code> last.</p>
+<div id="admonition-best-practices" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices"></a>
+</div>
+<div>
+<p>Best practice</p>
+<p>Prefer the (non-copy) braced list form when initializing aggregates.</p>
+</div>
+</div>
+<p>In C++20, we can also initialize (some) aggregates using a parenthesized list of values:</p>
+<pre><code class="language-cpp">    Employee robert ( 3, 45, 62500.0 );  // direct initialization using parenthesized list (C++20)
+</code></pre>
+<p>We recommend avoiding this last form as much as possible, as it doesn’t currently work with aggregates that utilize brace elision (notably <code>std::array</code>).</p>
+<h2 id="missing-initializers-in-an-initializer-list"><a class="header" href="#missing-initializers-in-an-initializer-list">Missing initializers in an initializer list</a></h2>
+<p>If an aggregate is initialized but the number of initialization values is fewer than the number of members, then each member without an explicit initializer is initialized as follows:</p>
+<ul>
+<li>If the member has a default member initializer, that is used.</li>
+<li>Otherwise, the member is copy-initialized from an empty initializer list. In most cases, this will perform value-initialization on those members (on class types, this will invoke the default constructor even if a list constructor exist).</li>
+</ul>
+<pre><code class="language-cpp">struct Employee
+{
+    int id {};
+    int age {};
+    double wage { 76000.0 };
+    double whatever;
+};
+
+int main()
+{
+    Employee joe { 2, 28 }; // joe.whatever will be value-initialized to 0.0
+
+    return 0;
+}
+</code></pre>
+<p>In the above example, <code>joe.id</code> will be initialized with value <code>2</code> and <code>joe.age</code> will be initialized with value <code>28</code>. Because <code>joe.wage</code> wasn’t given an explicit initializer but has a default member initializer, <code>joe.wage</code> will be initialized to <code>76000.0</code>. And finally, because <code>joe.whatever</code> wasn’t given an explicit initializer, <code>joe.whatever</code> is value-initialized to <code>0.0</code>.</p>
+<blockquote>
+<p><strong>Tip</strong></p>
+<p>Tip</p>
+<p>This means we can generally use an empty initialization list to value-initialize all members of the struct:</p>
+<pre><code>Employee joe {}; // value-initialize all members
+</code></pre>
+</blockquote>
+<h2 id="overloading-operator-to-print-a-struct"><a class="header" href="#overloading-operator-to-print-a-struct">Overloading <code>operator&lt;&lt;</code> to print a struct</a></h2>
+<p>In lesson <a href="introduction-to-overloading-the-i-o-operators.html">13.5 -- Introduction to overloading the I/O operators</a>, we showed how to overload <code>operator&lt;&lt;</code> to print an enumeration. It’s also useful to overload <code>operator&lt;&lt;</code> for structs.</p>
+<p>Here’s the same example as in the previous section, now with an overloaded <code>operator&lt;&lt;</code>:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+struct Employee
+{
+    int id {};
+    int age {};
+    double wage {};
+};
+
+std::ostream&amp; operator&lt;&lt;(std::ostream&amp; out, const Employee&amp; e)
+{
+    out &lt;&lt; e.id &lt;&lt; ' ' &lt;&lt; e.age &lt;&lt; ' ' &lt;&lt; e.wage;
+    return out;
+}
+
+int main()
+{
+    Employee joe { 2, 28 }; // joe.wage will be value-initialized to 0.0
+    std::cout &lt;&lt; joe &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>This prints:</p>
+<pre><code class="language-cpp">2 28 0
+</code></pre>
+<p>We can see that <code>joe.wage</code> was indeed value-initialized to <code>0.0</code> (which prints as <code>0</code>).</p>
+<p>Unlike an enumeration, a struct can hold multiple values. How you format the output (e.g. to separate the values) is entirely up to you.</p>
+<p>The three values output by our overloaded <code>operator&lt;&lt;</code> above aren’t intuitive, as there is no indication of what these values mean. Let’s do the same example, but update our output function to be a bit more descriptive:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+struct Employee
+{
+    int id {};
+    int age {};
+    double wage {};
+};
+
+std::ostream&amp; operator&lt;&lt;(std::ostream&amp; out, const Employee&amp; e)
+{
+    out &lt;&lt; "id: " &lt;&lt; e.id &lt;&lt; " age: " &lt;&lt; e.age &lt;&lt; " wage: " &lt;&lt; e.wage;
+    return out;
+}
+
+int main()
+{
+    Employee joe { 2, 28 }; // joe.wage will be value-initialized to 0.0
+    std::cout &lt;&lt; joe &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>This now prints:</p>
+<pre><code class="language-cpp">id: 2 age: 28 wage: 0
+</code></pre>
+<p>That’s a little easier to understand.</p>
+<h2 id="const-structs"><a class="header" href="#const-structs">Const structs</a></h2>
+<p>Variables of a struct type can be const (or constexpr), and just like all const variables, they must be initialized.</p>
+<pre><code class="language-cpp">struct Rectangle
+{
+    double length {};
+    double width {};
+};
+
+int main()
+{
+    const Rectangle unit { 1.0, 1.0 };
+    const Rectangle zero { }; // value-initialize all members
+
+    return 0;
+}
+</code></pre>
+<h2 id="designated-initializers-c20"><a class="header" href="#designated-initializers-c20">Designated initializers C++20</a></h2>
+<p>When initializing a struct from a list of values, the initializers are applied to the members in order of declaration.</p>
+<pre><code class="language-cpp">struct Foo
+{
+    int a {};
+    int c {};
+};
+
+int main()
+{
+    Foo f { 1, 3 }; // f.a = 1, f.c = 3
+
+    return 0;
+}
+</code></pre>
+<p>Now consider what would happen if you were to update this struct definition to add a new member that is not the last member:</p>
+<pre><code class="language-cpp">struct Foo
+{
+    int a {};
+    int b {}; // just added
+    int c {};
+};
+
+int main()
+{
+    Foo f { 1, 3 }; // now, f.a = 1, f.b = 3, f.c = 0
+
+    return 0;
+}
+</code></pre>
+<p>Now all your initialization values have shifted, and worse, the compiler may not detect this as an error (after all, the syntax is still valid).</p>
+<p>To help avoid this, C++20 adds a new way to initialize struct members called <strong>designated initializers</strong>. Designated initializers allow you to explicitly define which initialization values map to which members. The members can be initialized using list or copy initialization, and must be initialized in the same order in which they are declared in the struct, otherwise a warning or error will result. Members not designated an initializer will be value initialized.</p>
+<pre><code class="language-cpp">struct Foo
+{
+    int a{ };
+    int b{ };
+    int c{ };
+};
+
+int main()
+{
+    Foo f1{ .a{ 1 }, .c{ 3 } }; // ok: f1.a = 1, f1.b = 0 (value initialized), f1.c = 3
+    Foo f2{ .a = 1, .c = 3 };   // ok: f2.a = 1, f2.b = 0 (value initialized), f2.c = 3
+    Foo f3{ .b{ 2 }, .a{ 1 } }; // error: initialization order does not match order of declaration in struct
+
+    return 0;
+}
+</code></pre>
+<blockquote>
+<p><strong>For Clang users</strong></p>
+<p>For Clang users</p>
+<p>When doing designated initializers of single values using braces, Clang improperly issues warning “braces around scalar initializer”. Hopefully this will be fixed soon.</p>
+</blockquote>
+<p>Designated initializers are nice because they provide some level of self-documentation and help ensure you don’t inadvertently mix up the order of your initialization values. However, designated initializers also clutter up the initializer list significantly, so we won’t recommend their use as a best practice at this time.</p>
+<p>Also, because there’s no enforcement that designated initializers are being used consistently everywhere an aggregate is initialized, it’s a good idea to avoid adding new members to the middle of an existing aggregate definition, to avoid the risk of initializer shifting.</p>
+<div id="admonition-best-practices-1" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-1-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-1-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices-1"></a>
+</div>
+<div>
+<p>Best practice</p>
+<p>When adding a new member to an aggregate, it’s safest to add it to the bottom of the definition list so the initializers for other members don’t shift.</p>
+</div>
+</div>
+<h2 id="assignment-with-an-initializer-list"><a class="header" href="#assignment-with-an-initializer-list">Assignment with an initializer list</a></h2>
+<p>As shown in the prior lesson, we can assign values to members of structs individually:</p>
+<pre><code class="language-cpp">struct Employee
+{
+    int id {};
+    int age {};
+    double wage {};
+};
+
+int main()
+{
+    Employee joe { 1, 32, 60000.0 };
+
+    joe.age  = 33;      // Joe had a birthday
+    joe.wage = 66000.0; // and got a raise
+
+    return 0;
+}
+</code></pre>
+<p>This is fine for single members, but not great when we want to update many members. Similar to initializing a struct with an initializer list, you can also assign values to structs using an initializer list (which does memberwise assignment):</p>
+<pre><code class="language-cpp">struct Employee
+{
+    int id {};
+    int age {};
+    double wage {};
+};
+
+int main()
+{
+    Employee joe { 1, 32, 60000.0 };
+    joe = { joe.id, 33, 66000.0 }; // Joe had a birthday and got a raise
+
+    return 0;
+}
+</code></pre>
+<p>Note that because we didn’t want to change <code>joe.id</code>, we needed to provide the current value for <code>joe.id</code> in our list as a placeholder, so that memberwise assignment could assign <code>joe.id</code> to <code>joe.id</code>. This is a bit ugly.</p>
+<h2 id="assignment-with-designated-initializers-c20"><a class="header" href="#assignment-with-designated-initializers-c20">Assignment with designated initializers C++20</a></h2>
+<p>Designated initializers can also be used in a list assignment:</p>
+<pre><code class="language-cpp">struct Employee
+{
+    int id {};
+    int age {};
+    double wage {};
+};
+
+int main()
+{
+    Employee joe { 1, 32, 60000.0 };
+    joe = { .id = joe.id, .age = 33, .wage = 66000.0 }; // Joe had a birthday and got a raise
+
+    return 0;
+}
+</code></pre>
+<p>Any members that aren’t designated in such an assignment will be assigned the value that would be used for value initialization. If we hadn’t have specified a designated initializer for <code>joe.id</code>, <code>joe.id</code> would have been assigned the value 0.</p>
+<h2 id="initializing-a-struct-with-another-struct-of-the-same-type"><a class="header" href="#initializing-a-struct-with-another-struct-of-the-same-type">Initializing a struct with another struct of the same type</a></h2>
+<p>A struct may also be initialized using another struct of the same type:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+struct Foo
+{
+    int a{};
+    int b{};
+    int c{};
+};
+
+std::ostream&amp; operator&lt;&lt;(std::ostream&amp; out, const Foo&amp; f)
+{
+    out &lt;&lt; f.a &lt;&lt; ' ' &lt;&lt; f.b &lt;&lt; ' ' &lt;&lt; f.c;
+    return out;
+}
+
+int main()
+{
+    Foo foo { 1, 2, 3 };
+
+    Foo x = foo; // copy-initialization
+    Foo y(foo);  // direct-initialization
+    Foo z {foo}; // direct-list-initialization
+
+    std::cout &lt;&lt; x &lt;&lt; '\n';
+    std::cout &lt;&lt; y &lt;&lt; '\n';
+    std::cout &lt;&lt; z &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>The above prints:</p>
+<pre><code class="language-cpp">1 2 3
+1 2 3
+1 2 3
+</code></pre>
+<p>Note that this uses the standard forms of initialization that we’re familiar with (copy, direct, or direct-list-initialization) rather than aggregate initialization.</p>
+<p>This is most commonly seen when initializing a struct with the return value of a function that returns a struct of the same type. We cover this in more detail in lesson <a href="passing-and-returning-structs.html">13.10 -- Passing and returning structs</a>.</p>
+<p>AI CONTENT END 1</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="introduction-to-structs-members-and-member-selection.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="default-member-initialization.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="introduction-to-structs-members-and-member-selection.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="default-member-initialization.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

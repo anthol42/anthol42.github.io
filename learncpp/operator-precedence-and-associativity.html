@@ -1,0 +1,438 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Operator precedence and associativity - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="operator-precedence-and-associativity"><a class="header" href="#operator-precedence-and-associativity">Operator precedence and associativity</a></h1>
+<h2 id="chapter-introduction"><a class="header" href="#chapter-introduction">Chapter introduction</a></h2>
+<p>This chapter builds on top of the concepts from lesson <a href="introduction-to-literals-and-operators.html">1.9 -- Introduction to literals and operators</a>. A quick review follows:</p>
+<p>An <strong>operation</strong> is a mathematical process involving zero or more input values (called <strong>operands</strong>) that produces a new value (called an output value). The specific operation to be performed is denoted by a construct (typically a symbol or pair of symbols) called an <strong>operator</strong>.</p>
+<p>For example, as children we all learn that <code>2 + 3</code> equals <code>5</code>. In this case, the literals <code>2</code> and <code>3</code> are the operands, and the symbol <code>+</code> is the operator that tells us to apply mathematical addition on the operands to produce the new value <code>5</code>. Because there is only one operator being used here, this is straightforward.</p>
+<p>In this chapter, we’ll discuss topics related to operators, and explore many of the common operators that C++ supports.</p>
+<h2 id="evaluation-of-compound-expressions"><a class="header" href="#evaluation-of-compound-expressions">Evaluation of compound expressions</a></h2>
+<p>Now, let’s consider a compound expression, such as <code>4 + 2 * 3</code>. Should this be grouped as <code>(4 + 2) * 3</code> which evaluates to <code>18</code>, or <code>4 + (2 * 3)</code> which evaluates to <code>10</code>? Using normal mathematical precedence rules (which state that multiplication is resolved before addition), we know that the above expression should be grouped as <code>4 + (2 * 3)</code> to produce the value <code>10</code>. But how does the compiler know?</p>
+<p>In order to evaluate an expression, the compiler must do two things:</p>
+<ul>
+<li>At compile time, the compiler must parse the expression and determine how operands are grouped with operators. This is done via the precedence and associativity rules, which we’ll discuss momentarily.</li>
+<li>At compile time or runtime, the operands are evaluated and operations executed to produce a result.</li>
+</ul>
+<h2 id="operator-precedence"><a class="header" href="#operator-precedence">Operator precedence</a></h2>
+<p>To assist with parsing a compound expression, all operators are assigned a level of precedence. Operators with a higher <strong>precedence</strong> level are grouped with operands first.</p>
+<p>You can see in the table below that multiplication and division (precedence level 5) have a higher precedence level than addition and subtraction (precedence level 6). Thus, multiplication and division will be grouped with operands before addition and subtraction. In other words, <code>4 + 2 * 3</code> will be grouped as <code>4 + (2 * 3)</code>.</p>
+<h2 id="operator-associativity"><a class="header" href="#operator-associativity">Operator associativity</a></h2>
+<p>Consider a compound expression like <code>7 - 4 - 1</code>. Should this be grouped as <code>(7 - 4) - 1</code> which evaluates to <code>2</code>, or <code>7 - (4 - 1)</code>, which evaluates to <code>4</code>? Since both subtraction operators have the same precedence level, the compiler can not use precedence alone to determine how this should be grouped.</p>
+<p>If two operators with the same precedence level are adjacent to each other in an expression, the operator’s <strong>associativity</strong> tells the compiler whether to evaluate the operators (not the operands!) from left to right or from right to left. Subtraction has precedence level 6, and the operators in precedence level 6 have an associativity of left to right. So this expression is grouped from left to right: <code>(7 - 4) - 1</code>.</p>
+<h2 id="table-of-operator-precedence-and-associativity"><a class="header" href="#table-of-operator-precedence-and-associativity">Table of operator precedence and associativity</a></h2>
+<p>The below table is primarily meant to be a reference chart that you can refer back to in the future to resolve any precedence or associativity questions you have.</p>
+<p>Notes:</p>
+<ul>
+<li>Precedence level 1 is the highest precedence level, and level 17 is the lowest. Operators with a higher precedence level have their operands grouped first.</li>
+<li>L-&gt;R means left to right associativity.</li>
+<li>R-&gt;L means right to left associativity.</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>Prec/Ass</th><th>Operator</th><th>Description</th><th>Pattern</th></tr></thead><tbody>
+<tr><td>1 L-&gt;R</td><td>:: ::</td><td>Global scope (unary) Namespace scope (binary)</td><td>::name class_name::member_name</td></tr>
+<tr><td>2 L-&gt;R</td><td>() () type() type{} [] . -&gt; ++ –– typeid const_cast dynamic_cast reinterpret_cast static_cast sizeof… noexcept alignof</td><td>Parentheses Function call Functional cast List init temporary object (C++11) Array subscript Member access from object Member access from object ptr Post-increment Post-decrement Run-time type information Cast away const Run-time type-checked cast Cast one type to another Compile-time type-checked cast Get parameter pack size Compile-time exception check Get type alignment</td><td>(expression) function_name(arguments) type(expression) type{expression} pointer[expression] object.member_name object_pointer-&gt;member_name lvalue++ lvalue–– typeid(type) or typeid(expression) const_cast<type>(expression) dynamic_cast<type>(expression) reinterpret_cast<type>(expression) static_cast<type>(expression) sizeof…(expression) noexcept(expression) alignof(type)</td></tr>
+<tr><td>3 R-&gt;L</td><td>+ - ++ –– ! not ~ (type) sizeof co_await &amp; * new new[] delete delete[]</td><td>Unary plus Unary minus Pre-increment Pre-decrement Logical NOT Logical NOT Bitwise NOT C-style cast Size in bytes Await asynchronous call Address of Dereference Dynamic memory allocation Dynamic array allocation Dynamic memory deletion Dynamic array deletion</td><td>+expression -expression ++lvalue ––lvalue !expression not expression ~expression (new_type)expression sizeof(type) or sizeof(expression) co_await expression (C++20) &amp;lvalue *expression new type new type[expression] delete pointer delete[] pointer</td></tr>
+<tr><td>4 L-&gt;R</td><td>-&gt;* .*</td><td>Member pointer selector Member object selector</td><td>object_pointer-&gt;*pointer_to_member object.*pointer_to_member</td></tr>
+<tr><td>5 L-&gt;R</td><td>* / %</td><td>Multiplication Division Remainder</td><td>expression * expression expression / expression expression % expression</td></tr>
+<tr><td>6 L-&gt;R</td><td>+ -</td><td>Addition Subtraction</td><td>expression + expression expression - expression</td></tr>
+<tr><td>7 L-&gt;R</td><td>&lt;&lt; &gt;&gt;</td><td>Bitwise shift left / Insertion Bitwise shift right / Extraction</td><td>expression &lt;&lt; expression expression &gt;&gt; expression</td></tr>
+<tr><td>8 L-&gt;R</td><td>&lt;=&gt;</td><td>Three-way comparison (C++20)</td><td>expression &lt;=&gt; expression</td></tr>
+<tr><td>9 L-&gt;R</td><td>&lt; &lt;= &gt; &gt;=</td><td>Comparison less than Comparison less than or equals Comparison greater than Comparison greater than or equals</td><td>expression &lt; expression expression &lt;= expression expression &gt; expression expression &gt;= expression</td></tr>
+<tr><td>10 L-&gt;R</td><td>== !=</td><td>Equality Inequality</td><td>expression == expression expression != expression</td></tr>
+<tr><td>11 L-&gt;R</td><td>&amp;</td><td>Bitwise AND</td><td>expression &amp; expression</td></tr>
+<tr><td>12 L-&gt;R</td><td>^</td><td>Bitwise XOR</td><td>expression ^ expression</td></tr>
+<tr><td>13 L-&gt;R</td><td></td><td></td><td>Bitwise OR</td></tr>
+<tr><td>14 L-&gt;R</td><td>&amp;&amp; and</td><td>Logical AND Logical AND</td><td>expression &amp;&amp; expression expression and expression</td></tr>
+<tr><td>15 L-&gt;R</td><td></td><td></td><td>or</td></tr>
+<tr><td>16 R-&gt;L</td><td>throw co_yield ?: = *= /= %= += -= &lt;&lt;= &gt;&gt;= &amp;=</td><td>= ^=</td><td>Throw expression Yield expression (C++20) Conditional Assignment Multiplication assignment Division assignment Remainder assignment Addition assignment Subtraction assignment Bitwise shift left assignment Bitwise shift right assignment Bitwise AND assignment Bitwise OR assignment Bitwise XOR assignment</td></tr>
+<tr><td>17 L-&gt;R</td><td>,</td><td>Comma operator</td><td>expression, expression</td></tr>
+</tbody></table>
+</div>
+<p>You should already recognize a few of these operators, such as <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>()</code>, and <code>sizeof</code>. However, unless you have experience with another programming language, the majority of the operators in this table will probably be incomprehensible to you right now. That’s expected at this point. We’ll cover many of them in this chapter, and the rest will be introduced as there is a need for them.</p>
+<blockquote>
+<p><strong>Q: Where is the exponent operator?</strong></p>
+<p>C++ doesn’t include an operator to do exponentiation (<code>operator^</code> has a different function in C++). We discuss exponentiation more in lesson <a href="remainder-and-exponentiation">6.3 -- Remainder and Exponentiation</a>.</p>
+</blockquote>
+<p>Note that <code>operator&lt;&lt;</code> handles both bitwise left shift and insertion, and <code>operator&gt;&gt;</code> handles both bitwise right shift and extraction. The compiler can determine which operation to perform based on the types of the operands.</p>
+<h2 id="parenthesization"><a class="header" href="#parenthesization">Parenthesization</a></h2>
+<p>Due to the precedence rules, <code>4 + 2 * 3</code> will be grouped as <code>4 + (2 * 3)</code>. But what if we actually meant <code>(4 + 2) * 3</code>? Just like in normal mathematics, in C++ we can explicitly use parentheses to set the grouping of operands as we desire. This works because parentheses have one of the highest precedence levels, so parentheses generally evaluate before whatever is inside them.</p>
+<h2 id="use-parenthesis-to-make-compound-expressions-easier-to-understand"><a class="header" href="#use-parenthesis-to-make-compound-expressions-easier-to-understand">Use parenthesis to make compound expressions easier to understand</a></h2>
+<p>Now consider an expression like <code>x &amp;&amp; y || z</code>. Does this evaluate as <code>(x &amp;&amp; y) || z</code> or <code>x &amp;&amp; (y || z)</code>? You could look up in the table and see that <code>&amp;&amp;</code> takes precedence over <code>||</code>. But there are so many operators and precedence levels that it’s hard to remember them all. And you don’t want to have to look up operators all the time to understand how a compound expression evaluates.</p>
+<p>In order to reduce mistakes and make your code easier to understand without referencing a precedence table, it’s a good idea to parenthesize any non-trivial compound expression, so it’s clear what your intent is.</p>
+<div id="admonition-best-practices" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices"></a>
+</div>
+<div>
+<p>Use parentheses to make it clear how a non-trivial compound expression should evaluate (even if they are technically unnecessary).</p>
+</div>
+</div>
+<p>A good rule of thumb is: Parenthesize everything, except addition, subtraction, multiplication, and division.</p>
+<p>There is one additional exception to the above best practice: Expressions that have a single assignment operator (and no comma operator) do not need to have the right operand of the assignment wrapped in parenthesis.</p>
+<p>For example:</p>
+<pre><code class="language-cpp">x = (y + z + w);   // instead of this
+x = y + z + w;     // it's okay to do this
+
+x = ((y || z) &amp;&amp; w); // instead of this
+x = (y || z) &amp;&amp; w;   // it's okay to do this
+
+x = (y *= z); // expressions with multiple assignments still benefit from parenthesis
+</code></pre>
+<p>The assignment operators have the second lowest precedence (only the comma operator is lower, and it’s rarely used). Therefore, so long as there is only one assignment (and no commas), we know the right operand will fully evaluate before the assignment.</p>
+<div id="admonition-best-practices-1" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-1-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-1-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices-1"></a>
+</div>
+<div>
+<p>Expressions with a single assignment operator do not need to have the right operand of the assignment wrapped in parenthesis.</p>
+</div>
+</div>
+<h2 id="value-computation-of-operations"><a class="header" href="#value-computation-of-operations">Value computation of operations</a></h2>
+<p>The C++ standard uses the term <strong>value computation</strong> to mean the execution of operators in an expression to produce a value. The precedence and association rules determine the order in which value computation happens.</p>
+<p>For example, given the expression <code>4 + 2 * 3</code>, due to the precedence rules this groups as <code>4 + (2 * 3)</code>. The value computation for <code>(2 * 3)</code> must happen first, so that the value computation for <code>4 + 6</code> can be completed.</p>
+<h2 id="evaluation-of-operands"><a class="header" href="#evaluation-of-operands">Evaluation of operands</a></h2>
+<p>The C++ standard (mostly) uses the term <strong>evaluation</strong> to refer to the evaluation of operands (not the evaluation of operators or expressions!). For example, given expression <code>a + b</code>, <code>a</code> will be evaluated to produce some value, and <code>b</code> will be evaluated to produce some value. These values can be then used as operands to <code>operator+</code> for value computation.</p>
+<blockquote>
+<p><strong>Nomenclature</strong></p>
+<p>Informally, we typically use the term “evaluates” to mean the evaluation of an entire expression (value computation), not just the operands of an expression.</p>
+</blockquote>
+<h2 id="the-order-of-evaluation-of-operands-including-function-arguments-is-mostly-unspecified"><a class="header" href="#the-order-of-evaluation-of-operands-including-function-arguments-is-mostly-unspecified">The order of evaluation of operands (including function arguments) is mostly unspecified</a></h2>
+<p>In most cases, the order of evaluation for operands and function arguments is unspecified, meaning they may be evaluated in any order.</p>
+<p>Consider the following expression:</p>
+<pre><code class="language-cpp">a * b + c * d
+</code></pre>
+<p>We know from the precedence and associativity rules above that this expression will be grouped as if we had typed:</p>
+<pre><code class="language-cpp">(a * b) + (c * d)
+</code></pre>
+<p>If <code>a</code> is <code>1</code>, <code>b</code> is <code>2</code>, <code>c</code> is <code>3</code>, and <code>d</code> is <code>4</code>, this expression will always compute the value <code>14</code>.</p>
+<p>However, the precedence and associativity rules only tell us how operators and operands are grouped and the order in which value computation will occur. They do not tell us the order in which the operands or subexpressions are evaluated. The compiler is free to evaluate operands <code>a</code>, <code>b</code>, <code>c</code>, or <code>d</code> in any order. The compiler is also free to calculate <code>a * b</code> or <code>c * d</code> first.</p>
+<p>For most expressions, this is irrelevant. In our sample expression above, it doesn’t matter in which order variables <code>a</code>, <code>b</code>, <code>c</code>, or <code>d</code> are evaluated for their values: the value calculated will always be <code>14</code>. There is no ambiguity here.</p>
+<p>But it is possible to write expressions where the order of evaluation does matter. Consider this program, which contains a mistake often made by new C++ programmers:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int getValue()
+{
+    std::cout &lt;&lt; "Enter an integer: ";
+
+    int x{};
+    std::cin &gt;&gt; x;
+    return x;
+}
+
+void printCalculation(int x, int y, int z)
+{
+    std::cout &lt;&lt; x + (y * z);
+}
+
+int main()
+{
+    printCalculation(getValue(), getValue(), getValue()); // this line is ambiguous
+
+    return 0;
+}
+</code></pre>
+<p>If you run this program and enter the inputs <code>1</code>, <code>2</code>, and <code>3</code>, you might assume that this program would calculate <code>1 + (2 * 3)</code> and print <code>7</code>. But that is making the assumption that the arguments to <code>printCalculation()</code> will evaluate in left-to-right order (so parameter <code>x</code> gets value <code>1</code>, <code>y</code> gets value <code>2</code>, and <code>z</code> gets value <code>3</code>). If instead, the arguments evaluate in right-to-left order (so parameter <code>z</code> gets value <code>1</code>, <code>y</code> gets value <code>2</code>, and <code>x</code> gets value <code>3</code>), then the program will print <code>5</code> instead.</p>
+<blockquote>
+<p><strong>Tip</strong></p>
+<p>The Clang compiler evaluates arguments in left-to-right order. The GCC compiler evaluates arguments in right-to-left order.</p>
+<p>If you’d like to see this behavior for yourself, you can do so on <a href="https://wandbox.org/#">Wandbox</a>. Paste in the above program, enter <code>1 2 3</code> in the <em>Stdin</em> tab, select GCC or Clang, and then compile the program. The output will appear at the bottom of the page (you may have to scroll down to see it). You will note that the output for GCC and Clang differs!</p>
+</blockquote>
+<p>The above program can be made unambiguous by making each function call to <code>getValue()</code> a separate statement:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int getValue()
+{
+    std::cout &lt;&lt; "Enter an integer: ";
+
+    int x{};
+    std::cin &gt;&gt; x;
+    return x;
+}
+
+void printCalculation(int x, int y, int z)
+{
+    std::cout &lt;&lt; x + (y * z);
+}
+
+int main()
+{
+    int a{ getValue() }; // will execute first
+    int b{ getValue() }; // will execute second
+    int c{ getValue() }; // will execute third
+
+    printCalculation(a, b, c); // this line is now unambiguous
+
+    return 0;
+}
+</code></pre>
+<p>In this version, <code>a</code> will always have value <code>1</code>, <code>b</code> will have value <code>2</code>, and <code>c</code> will have value <code>3</code>. When the arguments to <code>printCalculation()</code> are evaluated, it doesn’t matter which order the argument evaluation happens in -- parameter <code>x</code> will always get value <code>1</code>, <code>y</code> will get value <code>2</code>, and <code>z</code> will get value <code>3</code>. This version will deterministically print <code>7</code>.</p>
+<blockquote>
+<p><strong>Key insight</strong></p>
+<p>Operands, function arguments, and subexpressions may be evaluated in any order.</p>
+<p>It is a common mistake to believe that operator precedence and associativity affects order of evaluation. Precedence and associativity is used only to determine how operands are grouped with operators, and the order of value computation.</p>
+</blockquote>
+<div id="admonition-warning" class="admonition admonish-warning" role="note" aria-labelledby="admonition-warning-title">
+<div class="admonition-title">
+<div id="admonition-warning-title">
+<p>Warning</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-warning"></a>
+</div>
+<div>
+<p>Ensure that the expressions (or function calls) you write are not dependent on operand (or argument) evaluation order.</p>
+</div>
+</div>
+<blockquote>
+<p><strong>Related content</strong></p>
+<p>Operators with side effects can also cause unexpected evaluation results. We cover this in lesson <a href="increment-decrement-operators-and-side-effects">6.4 -- Increment/decrement operators, and side effects</a>.</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="chapter-Operators.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="arithmetic-operators.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="chapter-Operators.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="arithmetic-operators.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

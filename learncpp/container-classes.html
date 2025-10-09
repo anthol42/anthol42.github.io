@@ -1,0 +1,768 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Container classes - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="container-classes"><a class="header" href="#container-classes">Container classes</a></h1>
+<p>In real life, we use containers all the time. Your breakfast cereal comes in a box, the pages in your book come inside a cover and binding, and you might store any number of items in containers in your garage. Without containers, it would be extremely inconvenient to work with many of these objects. Imagine trying to read a book that didn’t have any sort of binding, or eat cereal that didn’t come in a box without using a bowl. It would be a mess. The value the container provides is largely in its ability to help organize and store items that are put inside it.</p>
+<p>Similarly, a <strong>container class</strong> is a class designed to hold and organize multiple instances of another type (either another class, or a fundamental type). There are many different kinds of container classes, each of which has various advantages, disadvantages, and restrictions in their use. By far the most commonly used container in programming is the array, which you have already seen many examples of. Although C++ has built-in array functionality, programmers will often use an array container class (std::array or std::vector) instead because of the additional benefits they provide. Unlike built-in arrays, array container classes generally provide dynamic resizing (when elements are added or removed), remember their size when they are passed to functions, and do bounds-checking. This not only makes array container classes more convenient than normal arrays, but safer too.</p>
+<p>Container classes typically implement a fairly standardized minimal set of functionality. Most well-defined containers will include functions that:</p>
+<ul>
+<li>Create an empty container (via a constructor)</li>
+<li>Insert a new object into the container</li>
+<li>Remove an object from the container</li>
+<li>Report the number of objects currently in the container</li>
+<li>Empty the container of all objects</li>
+<li>Provide access to the stored objects</li>
+<li>Sort the elements (optional)</li>
+</ul>
+<p>Sometimes certain container classes will omit some of this functionality. For example, arrays container classes often omit the insert and remove functions because they are slow and the class designer does not want to encourage their use.</p>
+<p>Container classes implement a member-of relationship. For example, elements of an array are members-of (belong to) the array. Note that we’re using “member-of” in the conventional sense, not the C++ class member sense.</p>
+<p><strong>Types of containers</strong></p>
+<p>Container classes generally come in two different varieties. <strong>Value containers</strong> are <a href="102-composition.html">compositions</a> that store copies of the objects that they are holding (and thus are responsible for creating and destroying those copies). <strong>Reference containers</strong> are <a href="103-aggregation.html">aggregations</a> that store pointers or references to other objects (and thus are not responsible for creation or destruction of those objects).</p>
+<p>Unlike in real life, where containers can hold whatever types of objects you put in them, in C++, containers typically only hold one type of data. For example, if you have an array of integers, it will only hold integers. Unlike some other languages, many C++ containers do not allow you to arbitrarily mix types. If you need containers to hold integers and doubles, you will generally have to write two separate containers to do this (or use templates, which is an advanced C++ feature). Despite the restrictions on their use, containers are immensely useful, and they make programming easier, safer, and faster.</p>
+<p><strong>An array container class</strong></p>
+<p>In this example, we are going to write an integer array class from scratch that implements most of the common functionality that containers should have. This array class is going to be a value container, which will hold copies of the elements it’s organizing. As the name suggests, the container will hold an array of integers, similar to <code>std::vector&lt;int&gt;</code>.</p>
+<p>First, let’s create the IntArray.h file:</p>
+<pre><code class="language-cpp">#ifndef INTARRAY_H
+#define INTARRAY_H
+
+class IntArray
+{
+};
+
+#endif
+</code></pre>
+<p>Our IntArray is going to need to keep track of two values: the data itself, and the size of the array. Because we want our array to be able to change in size, we’ll have to do some dynamic allocation, which means we’ll have to use a pointer to store the data.</p>
+<pre><code class="language-cpp">#ifndef INTARRAY_H
+#define INTARRAY_H
+
+class IntArray
+{
+private:
+    int m_length{};
+    int* m_data{};
+};
+
+#endif
+</code></pre>
+<p>Now we need to add some constructors that will allow us to create IntArrays. We are going to add two constructors: one that constructs an empty array, and one that will allow us to construct an array of a predetermined size.</p>
+<pre><code class="language-cpp">#ifndef INTARRAY_H
+#define INTARRAY_H
+
+#include &lt;cassert&gt; // for assert()
+#include &lt;cstddef&gt; // for std::size_t
+
+class IntArray
+{
+private:
+    int m_length{};
+    int* m_data{};
+
+public:
+    IntArray() = default;
+
+    IntArray(int length):
+        m_length{ length }
+    {
+        assert(length &gt;= 0);
+
+        if (length &gt; 0)
+            m_data = new int[static_cast&lt;std::size_t&gt;(length)]{};
+    }
+};
+
+#endif
+</code></pre>
+<p>We’ll also need some functions to help us clean up IntArrays. First, we’ll write a destructor, which simply deallocates any dynamically allocated data. Second, we’ll write a function called erase(), which will erase the array and set the length to 0.</p>
+<pre><code class="language-cpp">    ~IntArray()
+    {
+        delete[] m_data;
+        // we don't need to set m_data to null or m_length to 0 here, since the object will be destroyed immediately after this function anyway
+    }
+
+    void erase()
+    {
+        delete[] m_data;
+
+        // We need to make sure we set m_data to nullptr here, otherwise it will
+        // be left pointing at deallocated memory!
+        m_data = nullptr;
+        m_length = 0;
+    }
+</code></pre>
+<p>Now let’s overload the [] operator so we can access the elements of the array. We should ensure the index parameter has a valid value, which we can do by using the assert() function. We’ll also add an access function to return the length of the array. Here’s everything so far:</p>
+<pre><code class="language-cpp">#ifndef INTARRAY_H
+#define INTARRAY_H
+
+#include &lt;cassert&gt; // for assert()
+#include &lt;cstddef&gt; // for std::size_t
+
+class IntArray
+{
+private:
+    int m_length{};
+    int* m_data{};
+
+public:
+    IntArray() = default;
+
+    IntArray(int length):
+        m_length{ length }
+    {
+        assert(length &gt;= 0);
+
+        if (length &gt; 0)
+            m_data = new int[static_cast&lt;std::size_t&gt;(length)]{};
+    }
+
+    ~IntArray()
+    {
+        delete[] m_data;
+        // we don't need to set m_data to null or m_length to 0 here, since the object will be destroyed immediately after this function anyway
+    }
+
+    void erase()
+    {
+        delete[] m_data;
+        // We need to make sure we set m_data to nullptr here, otherwise it will
+        // be left pointing at deallocated memory!
+        m_data = nullptr;
+        m_length = 0;
+    }
+
+    int&amp; operator[](int index)
+    {
+        assert(index &gt;= 0 &amp;&amp; index &lt; m_length);
+        return m_data[index];
+    }
+
+    int getLength() const { return m_length; }
+};
+
+#endif
+</code></pre>
+<p>At this point, we already have an IntArray class that we can use. We can allocate IntArrays of a given size, and we can use the [] operator to retrieve or change the value of the elements.</p>
+<p>However, there are still a few thing we can’t do with our IntArray. We still can’t change its size, still can’t insert or delete elements, and we still can’t sort it. Copying the array will also cause problems, since that will shallow copy the data pointer.</p>
+<p>First, let’s write some code that will allow us to resize an array. We are going to write two different functions to do this. The first function, reallocate(), will destroy any existing elements in the array when it is resized, but it will be fast. The second function, resize(), will keep any existing elements in the array when it is resized, but it will be slow.</p>
+<pre><code class="language-cpp">#include &lt;algorithm&gt; // for std::copy_n
+
+    // reallocate resizes the array.  Any existing elements will be destroyed.  This function operates quickly.
+    void reallocate(int newLength)
+    {
+        // First we delete any existing elements
+        erase();
+
+        // If our array is going to be empty now, return here
+        if (newLength &lt;= 0)
+            return;
+
+        // Then we have to allocate new elements
+        m_data = new int[static_cast&lt;std::size_t&gt;(newLength)];
+        m_length = newLength;
+    }
+
+    // resize resizes the array.  Any existing elements will be kept.  This function operates slowly.
+    void resize(int newLength)
+    {
+        // if the array is already the right length, we're done
+        if (newLength == m_length)
+            return;
+
+        // If we are resizing to an empty array, do that and return
+        if (newLength &lt;= 0)
+        {
+            erase();
+            return;
+        }
+
+        // Now we can assume newLength is at least 1 element.  This algorithm
+        // works as follows: First we are going to allocate a new array.  Then we
+        // are going to copy elements from the existing array to the new array.
+        // Once that is done, we can destroy the old array, and make m_data
+        // point to the new array.
+
+        // First we have to allocate a new array
+        int* data{ new int[static_cast&lt;std::size_t&gt;(newLength)] };
+
+        // Then we have to figure out how many elements to copy from the existing
+        // array to the new array.  We want to copy as many elements as there are
+        // in the smaller of the two arrays.
+        if (m_length &gt; 0)
+        {
+            int elementsToCopy{ (newLength &gt; m_length) ? m_length : newLength };
+            std::copy_n(m_data, elementsToCopy, data); // copy the elements
+        }
+ 
+        // Now we can delete the old array because we don't need it any more
+        delete[] m_data;
+
+        // And use the new array instead!  Note that this simply makes m_data point
+        // to the same address as the new array we dynamically allocated.  Because
+        // data was dynamically allocated, it won't be destroyed when it goes out of scope.
+        m_data = data;
+        m_length = newLength;
+    }
+</code></pre>
+<p>Whew! That was a little tricky!</p>
+<p>Let’s also add a copy constructor and assignment operator so we can copy the array.</p>
+<pre><code class="language-cpp">    IntArray(const IntArray&amp; a): IntArray(a.getLength()) // use normal constructor to set size of array appropriately
+    {
+        std::copy_n(a.m_data, m_length, m_data); // copy the elements
+    }
+
+    IntArray&amp; operator=(const IntArray&amp; a)
+    {
+        // Self-assignment check
+        if (&amp;a == this)
+            return *this;
+
+        // Set the size of the new array appropriately
+        reallocate(a.getLength());
+        std::copy_n(a.m_data, m_length, m_data); // copy the elements
+
+        return *this;
+    }
+</code></pre>
+<p>Many array container classes would stop here. However, just in case you want to see how insert and delete functionality would be implemented we’ll go ahead and write those too. Both of these algorithms are very similar to resize().</p>
+<pre><code class="language-cpp">   void insertBefore(int value, int index)
+    {
+        // Sanity check our index value
+        assert(index &gt;= 0 &amp;&amp; index &lt;= m_length);
+
+        // First create a new array one element larger than the old array
+        int* data{ new int[static_cast&lt;std::size_t&gt;(m_length+1)] };
+
+        // Copy all of the elements up to the index
+        std::copy_n(m_data, index, data); 
+
+        // Insert our new element into the new array
+        data[index] = value;
+
+        // Copy all of the values after the inserted element
+        std::copy_n(m_data + index, m_length - index, data + index + 1);
+
+        // Finally, delete the old array, and use the new array instead
+        delete[] m_data;
+        m_data = data;
+        ++m_length;
+    }
+
+    void remove(int index)
+    {
+        // Sanity check our index value
+        assert(index &gt;= 0 &amp;&amp; index &lt; m_length);
+
+        // If this is the last remaining element in the array, set the array to empty and bail out
+        if (m_length == 1)
+        {
+            erase();
+            return;
+        }
+
+        // First create a new array one element smaller than the old array
+        int* data{ new int[static_cast&lt;std::size_t&gt;(m_length-1)] };
+
+        // Copy all of the elements up to the index
+        std::copy_n(m_data, index, data); 
+
+        // Copy all of the values after the removed element
+        std::copy_n(m_data + index + 1, m_length - index - 1, data + index); 
+
+        // Finally, delete the old array, and use the new array instead
+        delete[] m_data;
+        m_data = data;
+        --m_length;
+    }
+</code></pre>
+<p>Here is our IntArray container class in its entirety.</p>
+<p>IntArray.h:</p>
+<pre><code class="language-cpp">#ifndef INTARRAY_H
+#define INTARRAY_H
+
+#include &lt;algorithm&gt; // for std::copy_n
+#include &lt;cassert&gt; // for assert()
+#include &lt;cstddef&gt; // for std::size_t
+
+class IntArray
+{
+private:
+    int m_length{};
+    int* m_data{};
+
+public:
+    IntArray() = default;
+
+    IntArray(int length):
+        m_length{ length }
+    {
+        assert(length &gt;= 0);
+
+        if (length &gt; 0)
+            m_data = new int[static_cast&lt;std::size_t&gt;(length)]{};
+    }
+
+    ~IntArray()
+    {
+        delete[] m_data;
+        // we don't need to set m_data to null or m_length to 0 here, since the object will be destroyed immediately after this function anyway
+    }
+
+    IntArray(const IntArray&amp; a): IntArray(a.getLength()) // use normal constructor to set size of array appropriately
+    {
+        std::copy_n(a.m_data, m_length, m_data); // copy the elements
+    }
+
+    IntArray&amp; operator=(const IntArray&amp; a)
+    {
+        // Self-assignment check
+        if (&amp;a == this)
+            return *this;
+
+        // Set the size of the new array appropriately
+        reallocate(a.getLength());
+        std::copy_n(a.m_data, m_length, m_data); // copy the elements
+
+        return *this;
+    }
+
+    void erase()
+    {
+        delete[] m_data;
+        // We need to make sure we set m_data to nullptr here, otherwise it will
+        // be left pointing at deallocated memory!
+        m_data = nullptr;
+        m_length = 0;
+    }
+
+    int&amp; operator[](int index)
+    {
+        assert(index &gt;= 0 &amp;&amp; index &lt; m_length);
+        return m_data[index];
+    }
+
+
+    // reallocate resizes the array.  Any existing elements will be destroyed.  This function operates quickly.
+    void reallocate(int newLength)
+    {
+        // First we delete any existing elements
+        erase();
+
+        // If our array is going to be empty now, return here
+        if (newLength &lt;= 0)
+            return;
+
+        // Then we have to allocate new elements
+        m_data = new int[static_cast&lt;std::size_t&gt;(newLength)];
+        m_length = newLength;
+    }
+
+    // resize resizes the array.  Any existing elements will be kept.  This function operates slowly.
+    void resize(int newLength)
+    {
+        // if the array is already the right length, we're done
+        if (newLength == m_length)
+            return;
+
+        // If we are resizing to an empty array, do that and return
+        if (newLength &lt;= 0)
+        {
+            erase();
+            return;
+        }
+
+        // Now we can assume newLength is at least 1 element.  This algorithm
+        // works as follows: First we are going to allocate a new array.  Then we
+        // are going to copy elements from the existing array to the new array.
+        // Once that is done, we can destroy the old array, and make m_data
+        // point to the new array.
+
+        // First we have to allocate a new array
+        int* data{ new int[static_cast&lt;std::size_t&gt;(newLength)] };
+
+        // Then we have to figure out how many elements to copy from the existing
+        // array to the new array.  We want to copy as many elements as there are
+        // in the smaller of the two arrays.
+        if (m_length &gt; 0)
+        {
+            int elementsToCopy{ (newLength &gt; m_length) ? m_length : newLength };
+            std::copy_n(m_data, elementsToCopy, data); // copy the elements
+        }
+ 
+        // Now we can delete the old array because we don't need it any more
+        delete[] m_data;
+
+        // And use the new array instead!  Note that this simply makes m_data point
+        // to the same address as the new array we dynamically allocated.  Because
+        // data was dynamically allocated, it won't be destroyed when it goes out of scope.
+        m_data = data;
+        m_length = newLength;
+    }
+
+    void insertBefore(int value, int index)
+    {
+        // Sanity check our index value
+        assert(index &gt;= 0 &amp;&amp; index &lt;= m_length);
+
+        // First create a new array one element larger than the old array
+        int* data{ new int[static_cast&lt;std::size_t&gt;(m_length+1)] };
+
+        // Copy all of the elements up to the index
+        std::copy_n(m_data, index, data); 
+
+        // Insert our new element into the new array
+        data[index] = value;
+
+        // Copy all of the values after the inserted element
+        std::copy_n(m_data + index, m_length - index, data + index + 1);
+
+        // Finally, delete the old array, and use the new array instead
+        delete[] m_data;
+        m_data = data;
+        ++m_length;
+    }
+
+    void remove(int index)
+    {
+        // Sanity check our index value
+        assert(index &gt;= 0 &amp;&amp; index &lt; m_length);
+
+        // If this is the last remaining element in the array, set the array to empty and bail out
+        if (m_length == 1)
+        {
+            erase();
+            return;
+        }
+
+        // First create a new array one element smaller than the old array
+        int* data{ new int[static_cast&lt;std::size_t&gt;(m_length-1)] };
+
+        // Copy all of the elements up to the index
+        std::copy_n(m_data, index, data); 
+
+        // Copy all of the values after the removed element
+        std::copy_n(m_data + index + 1, m_length - index - 1, data + index); 
+
+        // Finally, delete the old array, and use the new array instead
+        delete[] m_data;
+        m_data = data;
+        --m_length;
+    }
+
+    // A couple of additional functions just for convenience
+    void insertAtBeginning(int value) { insertBefore(value, 0); }
+    void insertAtEnd(int value) { insertBefore(value, m_length); }
+
+    int getLength() const { return m_length; }
+};
+
+#endif
+</code></pre>
+<p>Now, let’s test it just to prove it works:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include "IntArray.h"
+
+int main()
+{
+    // Declare an array with 10 elements
+    IntArray array(10);
+
+    // Fill the array with numbers 1 through 10
+    for (int i{ 0 }; i&lt;10; ++i)
+        array[i] = i+1;
+
+    // Resize the array to 8 elements
+    array.resize(8);
+
+    // Insert the number 20 before element with index 5
+    array.insertBefore(20, 5);
+
+    // Remove the element with index 3
+    array.remove(3);
+
+    // Add 30 and 40 to the end and beginning
+    array.insertAtEnd(30);
+    array.insertAtBeginning(40);
+
+    // A few more tests to ensure copy constructing / assigning arrays
+    // doesn't break things
+    {
+        IntArray b{ array };
+        b = array;
+        b = b;
+        array = array;
+    }
+
+    // Print out all the numbers
+    for (int i{ 0 }; i&lt;array.getLength(); ++i)
+        std::cout &lt;&lt; array[i] &lt;&lt; ' ';
+
+    std::cout &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>This produces the result:</p>
+<pre><code class="language-cpp">40 1 2 3 5 20 6 7 8 30
+</code></pre>
+<p>Although writing container classes can be pretty complex, the good news is that you only have to write them once. Once the container class is working, you can use and reuse it as often as you like without any additional programming effort required.</p>
+<p>A few additional improvements that could/should be made:</p>
+<ul>
+<li>We could have made this a template class, so that it would work with any copyable type rather than just int.</li>
+<li>We should add const overloads of various member functions to properly support const IntArrays.</li>
+<li>We should add support for move semantics (via adding a move constructor and move assignment).</li>
+<li>When performing resize or insertion operations, we can move elements instead of copying them.</li>
+</ul>
+<blockquote>
+<p><strong>For advanced readers</strong></p>
+<p>For advanced readers</p>
+<p>Some advanced improvements related to exception handling:</p>
+<ul>
+<li>When performing resize or insertion operations, move elements only if their move constructor is noexcept, otherwise copy them (<a href="stdmove_if_noexcept">27.10 -- std::move_if_noexcept</a>).</li>
+<li>Provide a strong exception safety guarantee for resize or insertion operations (<a href="exception-specifications-and-noexcept">27.9 -- Exception specifications and noexcept</a>).</li>
+</ul>
+</blockquote>
+<p>One more thing: If a class in the standard library meets your needs, use that instead of creating your own. For example, instead of using IntArray, you’re better off using <code>std::vector&lt;int&gt;</code>. It’s battle tested, efficient, and plays nicely with the other classes in the standard library. But sometimes you need a specialized container class that doesn’t exist in the standard library, so it’s good to know how to create your own when you need to.</p>
+<p>AI CONTENT END 1</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="dependencies.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="stdinitializer_list.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="dependencies.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="stdinitializer_list.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

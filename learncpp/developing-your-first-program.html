@@ -1,0 +1,421 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Developing your first program - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="developing-your-first-program"><a class="header" href="#developing-your-first-program">Developing your first program</a></h1>
+<p>The preceding lessons have introduced a lot of terminology and concepts that we’ll use in just about every program we create. In this lesson, we’ll walk through the process of integrating this knowledge into our first simple program.</p>
+<h2 id="multiply-by-2"><a class="header" href="#multiply-by-2">Multiply by 2</a></h2>
+<p>First, let’s create a program that asks the user to enter an integer, waits for them to input an integer, then tells them what 2 times that number is. The program should produce the following output (assume I entered 4 as input):</p>
+<pre><code class="language-cpp">Enter an integer: 4
+Double that number is: 8
+</code></pre>
+<p>How do we tackle this? In steps.</p>
+<div id="admonition-best-practices" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices"></a>
+</div>
+<div>
+<p>Best practice</p>
+<p>New programmers often try to write an entire program all at once, and then get overwhelmed when it produces a lot of errors. A better strategy is to add one piece at a time, make sure it compiles, and test it. Then when you’re sure it’s working, move on to the next piece.</p>
+</div>
+</div>
+<p>We’ll leverage that strategy here. As we go through each step, type (don’t copy/paste) each program into your code editor, compile, and run it.</p>
+<p>First, create a new console project.</p>
+<p>Now let’s start with some basic scaffolding. We know we’re going to need a main() function (since all C++ programs must have one), so if your IDE didn’t create a blank one when you created a new project, let’s create one:</p>
+<pre><code class="language-cpp">int main()
+{
+	return 0;
+}
+</code></pre>
+<p>We know we’re going to need to output text to the console, and get text from the user’s keyboard, so we need to include iostream for access to std::cout and std::cin.</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+	return 0;
+}
+</code></pre>
+<p>Now let’s tell the user that we need them to enter an integer:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+	std::cout &lt;&lt; "Enter an integer: ";
+
+	return 0;
+}
+</code></pre>
+<p>At this point, your program should produce this result:</p>
+<pre><code class="language-cpp">Enter an integer:
+</code></pre>
+<p>and then terminate.</p>
+<p>Next, we’re going to get the user’s input. We’ll use std::cin and <code>operator&gt;&gt;</code> to get the user’s input. But we also need to define a variable to store that input for use later.</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main() // note: this program has an error somewhere
+{
+	std::cout &lt;&lt; "Enter an integer: ";
+
+	int num{ }; // define variable num as an integer variable
+	std::cin &lt;&lt; num; // get integer value from user's keyboard
+
+	return 0;
+}
+</code></pre>
+<p>Time to compile our changes… and…</p>
+<p>Uh oh! Here’s what the author got on Visual Studio 2017:</p>
+<pre><code class="language-cpp">1&gt;------ Build started: Project: Double, Configuration: Release Win32 ------
+1&gt;Double.cpp
+1&gt;c:\vcprojects\double\double.cpp(8): error C2678: binary '&lt;&lt;': no operator found which takes a left-hand operand of type 'std::istream' (or there is no acceptable conversion)
+1&gt;c:\vcprojects\double\double.cpp: note: could be 'built-in C++ operator&lt;&lt;(bool, int)'
+1&gt;c:\vcprojects\double\double.cpp: note: while trying to match the argument list '(std::istream, int)'
+1&gt;Done building project "Double.vcxproj" -- FAILED.
+========== Build: 0 succeeded, 1 failed, 0 up-to-date, 0 skipped ==========
+</code></pre>
+<p>We ran into a compile error!</p>
+<p>First, since the program compiled before we made this latest update, and doesn’t compile now, the error <em>must</em> be in the code we just added (lines 7 and 8). That significantly reduces the amount of code we have to scan to find the error. Line 7 is pretty straightforward (just a variable definition), so the error probably isn’t there. That leaves line 8 as the likely culprit.</p>
+<p>Second, this error message isn’t very easy to read. But let’s pick apart some key elements: The compiler is telling us it ran into the error on line 8. That means the actual error is probably on line 8, or possibly the preceding line, which reinforces our previous assessment. Next, the compiler is telling you that it couldn’t find a ‘&lt;&lt;‘ operator that has a left-hand operand of type std::istream (which is the type of std::cin). Put another way, operator&lt;&lt; doesn’t know what to do with std::cin, so the error must be either with our use of std::cin or our use of operator&lt;&lt;.</p>
+<p>See the error now? If you don’t, take a moment and see if you can find it.</p>
+<p>Here’s the program that contains the corrected code:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+	std::cout &lt;&lt; "Enter an integer: ";
+
+	int num{ };
+	std::cin &gt;&gt; num; // std::cin uses operator &gt;&gt;, not operator &lt;&lt;!
+
+	return 0;
+}
+</code></pre>
+<p>Now the program will compile, and we can test it. The program will wait for you to enter a number, so let’s enter 4. The output should look like this:</p>
+<pre><code class="language-cpp">Enter an integer: 4
+</code></pre>
+<p>Almost there! Last step is to double the number.</p>
+<p>Once we finish this last step, our program will compile and run successfully, producing the desired output.</p>
+<p>There are (at least) 3 ways we can go about this. Let’s go from worst to best.</p>
+<h2 id="the-not-good-solution"><a class="header" href="#the-not-good-solution">The not-good solution</a></h2>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+// worst version
+int main()
+{
+	std::cout &lt;&lt; "Enter an integer: ";
+
+	int num{ };
+	std::cin &gt;&gt; num;
+
+	num = num * 2; // double num's value, then assign that value back to num
+
+	std::cout &lt;&lt; "Double that number is: " &lt;&lt; num &lt;&lt; '\n';
+
+	return 0;
+}
+</code></pre>
+<p>In this solution, we use an expression to multiply <em>num</em> by 2, and then assign that value back to <em>num</em>. From that point forward, <em>num</em> will contain our doubled number.</p>
+<p>Why this is a bad solution:</p>
+<ul>
+<li>Before the assignment statement, num contains the user’s input. After the assignment, it contains a different value. That’s confusing.</li>
+<li>We overwrote the user’s input by assigning a new value to the input variable, so if we wanted to extend our program to do something else with that input value later (e.g. triple the user’s input), it’s already been lost.</li>
+</ul>
+<h2 id="the-mostly-good-solution"><a class="header" href="#the-mostly-good-solution">The mostly-good solution</a></h2>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+// less-bad version
+int main()
+{
+	std::cout &lt;&lt; "Enter an integer: ";
+
+	int num{ };
+	std::cin &gt;&gt; num;
+
+	int doublenum{ num * 2 }; // define a new variable and initialize it with num * 2
+	std::cout &lt;&lt; "Double that number is: " &lt;&lt; doublenum &lt;&lt; '\n'; // then print the value of that variable here
+
+	return 0;
+}
+</code></pre>
+<p>This solution is pretty straightforward to read and understand, and resolves both of the problems encountered in the worst solution.</p>
+<p>The primary downside here is that we’re defining a new variable (which adds complexity) to store a value we only use once. We can do better.</p>
+<h2 id="the-preferred-solution"><a class="header" href="#the-preferred-solution">The preferred solution</a></h2>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+// preferred version
+int main()
+{
+	std::cout &lt;&lt; "Enter an integer: ";
+
+	int num{ };
+	std::cin &gt;&gt; num;
+
+	std::cout &lt;&lt; "Double that number is: " &lt;&lt;  num * 2 &lt;&lt; '\n'; // use an expression to multiply num * 2 at the point where we are going to print it
+
+	return 0;
+}
+</code></pre>
+<p>This is the preferred solution of the bunch. When std::cout executes, the expression <em>num * 2</em> will get evaluated, and the result will be double <em>num</em>‘s value. That value will get printed. The value in <em>num</em> itself will not be altered, so we can use it again later if we wish.</p>
+<p>This version is our reference solution.</p>
+<blockquote>
+<p><strong>Author’s note</strong></p>
+<p>Author’s note</p>
+<p>The first and primary goal of programming is to make your program work. A program that doesn’t work isn’t useful regardless of how well it’s written.</p>
+<p>However, there’s a saying I’m fond of: “You have to write a program once to know how you should have written it the first time.” This speaks to the fact that the best solution often isn’t obvious, and that our first solutions to problems are usually not as good as they could be.</p>
+<p>When we’re focused on figuring out how to make our programs work, it doesn’t make a lot of sense to invest a lot of time into code we don’t even know if we’ll keep. So we take shortcuts. We skip things like error handling and comments. We sprinkle debugging code throughout our solution to help us diagnose issues and find errors. We learn as we go -- things we thought might work don’t work after all, and we have to backtrack and try another approach.</p>
+<p>The end result is that our initial solutions often aren’t well structured, robust (error-proof), readable, or concise. So once your program is working, your job really isn’t done (unless the program is a one-off/throwaway). The next step is to cleanup your code. This involves things like: removing (or commenting out) temporary/debugging code, adding comments, handling error cases, formatting your code, and ensuring best practices are followed. And even then, your program may not be as simple as it could be -- perhaps there is redundant logic that can be consolidated, or multiple statements that can be combined, or variables that aren’t needed, or a thousand other little things that could be simplified. Too often new programmers focus on optimizing for performance when they should be optimizing for maintainability.</p>
+<p>Very few of the solutions presented in these tutorials came out great the first time. Rather, they’re the result of continual refinement until nothing else could be found to improve. And in many cases, readers still find plenty of other things to suggest as improvements!</p>
+<p>All of this is really to say: don’t be frustrated if/when your solutions don’t come out wonderfully optimized right out of your brain. That’s normal. Perfection in programming is an iterative process (one requiring repeated passes).</p>
+</blockquote>
+<blockquote>
+<p><strong>Author’s note</strong></p>
+<p>Author’s note</p>
+<p>One more thing: You may be thinking, “C++ has so many rules and concepts. How do I remember all of this stuff?”.</p>
+<p>Short answer: You don’t. C++ is one part using what you know, and two parts looking up how to do the rest.</p>
+<p>As you read through this site for the first time, focus less on memorizing specifics, and more on understanding what’s possible. Then, when you have a need to implement something in a program you’re writing, you can come back here (or to a reference site) and refresh yourself on how to do so.</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="introduction-to-expressions.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="chapter-1-summary-and-quiz.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="introduction-to-expressions.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="chapter-1-summary-and-quiz.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

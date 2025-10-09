@@ -1,0 +1,502 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Numeric conversions - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="numeric-conversions"><a class="header" href="#numeric-conversions">Numeric conversions</a></h1>
+<p>In the previous lesson (<a href="floating-point-and-integral-promotion.html">10.2 -- Floating-point and integral promotion</a>), we covered numeric promotions, which are conversions of specific narrower numeric types to wider numeric types (typically <code>int</code> or <code>double</code>) that can be processed efficiently.</p>
+<p>C++ supports another category of numeric type conversions, called <strong>numeric conversions</strong>. These numeric conversions cover additional type conversions between fundamental types.</p>
+<blockquote>
+<p><strong>Key insight</strong></p>
+<p>Key insight</p>
+<p>Any type conversion covered by the numeric promotion rules (<a href="floating-point-and-integral-promotion">10.2 -- Floating-point and integral promotion</a>) is called a numeric promotion, not a numeric conversion.</p>
+</blockquote>
+<p>There are five basic types of numeric conversions.</p>
+<ol>
+<li>Converting an integral type to any other integral type (excluding integral promotions):</li>
+</ol>
+<pre><code class="language-cpp">short s = 3; // convert int to short
+long l = 3; // convert int to long
+char ch = s; // convert short to char
+unsigned int u = 3; // convert int to unsigned int
+</code></pre>
+<ol start="2">
+<li>Converting a floating point type to any other floating point type (excluding floating point promotions):</li>
+</ol>
+<pre><code class="language-cpp">float f = 3.0; // convert double to float
+long double ld = 3.0; // convert double to long double
+</code></pre>
+<ol start="3">
+<li>Converting a floating point type to any integral type:</li>
+</ol>
+<pre><code class="language-cpp">int i = 3.5; // convert double to int
+</code></pre>
+<ol start="4">
+<li>Converting an integral type to any floating point type:</li>
+</ol>
+<pre><code class="language-cpp">double d = 3; // convert int to double
+</code></pre>
+<ol start="5">
+<li>Converting an integral type or a floating point type to a bool:</li>
+</ol>
+<pre><code class="language-cpp">bool b1 = 3; // convert int to bool
+bool b2 = 3.0; // convert double to bool
+</code></pre>
+<blockquote>
+<p><strong>As an aside…</strong></p>
+<p>As an aside…</p>
+<p>Because brace initialization strictly disallows some types of numeric conversions (more on this next lesson), we use copy initialization in this lesson (which does not have any such limitations) in order to keep the examples simple.</p>
+</blockquote>
+<h2 id="safe-and-unsafe-conversions"><a class="header" href="#safe-and-unsafe-conversions">Safe and unsafe conversions</a></h2>
+<p>Unlike numeric promotions (which are always value-preserving and thus “safe”), many numeric conversions are unsafe. An <strong>unsafe conversion</strong> is one where at least one value of the source type cannot be converted into an equal value of the destination type.</p>
+<p>Numeric conversions fall into three general safety categories:</p>
+<ol>
+<li><em>Value-preserving conversions</em> are safe numeric conversions where the destination type can exactly represent all possible values in the source type.</li>
+</ol>
+<p>For example, <code>int</code> to <code>long</code> and <code>short</code> to <code>double</code> are safe conversions, as the source value can always be converted to an equal value of the destination type.</p>
+<pre><code class="language-cpp">int main()
+{
+    int n { 5 };
+    long l = n; // okay, produces long value 5
+
+    short s { 5 };
+    double d = s; // okay, produces double value 5.0
+
+    return 0;
+}
+</code></pre>
+<p>Compilers will typically not issue warnings for implicit value-preserving conversions.</p>
+<p>A value converted using a value-preserving conversion can always be converted back to the source type, resulting in a value that is equivalent to the original value:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+    int n = static_cast&lt;int&gt;(static_cast&lt;long&gt;(3)); // convert int 3 to long and back
+    std::cout &lt;&lt; n &lt;&lt; '\n';                         // prints 3
+
+    char c = static_cast&lt;char&gt;(static_cast&lt;double&gt;('c')); // convert 'c' to double and back
+    std::cout &lt;&lt; c &lt;&lt; '\n';                               // prints 'c'
+
+    return 0;
+}
+</code></pre>
+<ol start="2">
+<li><em>Reinterpretive conversions</em> are unsafe numeric conversions where the converted value may be different than the source value, but no data is lost. Signed/unsigned conversions fall into this category.</li>
+</ol>
+<p>For example, when converting a <code>signed int</code> to an <code>unsigned int</code>:</p>
+<pre><code class="language-cpp">int main()
+{
+    int n1 { 5 };
+    unsigned int u1 { n1 }; // okay: will be converted to unsigned int 5 (value preserved)
+
+    int n2 { -5 };
+    unsigned int u2 { n2 }; // bad: will result in large integer outside range of signed int
+
+    return 0;
+}
+</code></pre>
+<p>In the case of <code>u1</code>, the signed int value <code>5</code> is converted to unsigned int value <code>5</code>. Thus, the value is preserved in this case.</p>
+<p>In the case of <code>u2</code>, the signed int value <code>-5</code> is converted to an unsigned int. Since an unsigned int can’t represent negative numbers, the result will be modulo wrapped to a large integral value that is outside the range of a signed int. The value is not preserved in this case.</p>
+<p>Such value changes are typically undesirable, and will often cause the program to exhibit unexpected or implementation-defined behavior.</p>
+<blockquote>
+<p><strong>Related content</strong></p>
+<p>Related content</p>
+<p>We discuss how out-of-range values are converted between signed and unsigned types in lesson <a href="introduction-to-type-conversion-and-static_cast">4.12 -- Introduction to type conversion and static_cast</a>.</p>
+</blockquote>
+<div id="admonition-warning" class="admonition admonish-warning" role="note" aria-labelledby="admonition-warning-title">
+<div class="admonition-title">
+<div id="admonition-warning-title">
+<p>Warning</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-warning"></a>
+</div>
+<div>
+<p>Warning</p>
+<p>Even though reinterpretive conversions are unsafe, most compilers leave implicit signed/unsigned conversion warnings disabled by default.</p>
+<p>This is because in some areas of modern C++ (such as when working with standard library arrays), signed/unsigned conversions can be hard to avoid. And practically speaking, the majority of such conversions do not actually result in a value change. Therefore, enabling such warnings can lead to many spurious warnings for signed/unsigned conversions that are actually okay (drowning out legitimate warnings).</p>
+<p>If you choose to leave such warnings disabled, be extra careful of inadvertent conversions between these types (particularly when passing an argument to a function taking a parameter of the opposite sign).</p>
+</div>
+</div>
+<p>Values converted using a reinterpretive conversion can be converted back to the source type, resulting in a value equivalent to the original value (even if the initial conversion produced a value out of range of the source type). As such, reinterpretive conversions do not lose data during the conversion process.</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+    int u = static_cast&lt;int&gt;(static_cast&lt;unsigned int&gt;(-5)); // convert '-5' to unsigned and back
+    std::cout &lt;&lt; u &lt;&lt; '\n'; // prints -5
+    
+    return 0;
+}
+</code></pre>
+<blockquote>
+<p><strong>For advanced readers</strong></p>
+<p>For advanced readers</p>
+<p>Prior to C++20, converting an unsigned value that is out-of-range of the signed value is technically implementation-defined behavior (due to the allowance that signed integers could use a different binary representation than unsigned integers). In practice, this was a non-issue on modern system.</p>
+<p>C++20 now requires that signed integers use 2s complement. As a result, the conversion rules were changed so that the above is now well-defined as a reinterpretive conversion (an out-of-range conversion will produce modulo wrapping).</p>
+<p>Note that while such conversions are well defined, signed arithmetic overflow (which occurs when an arithmetic operation produces a value outside the range that can be stored) is still undefined behavior.</p>
+</blockquote>
+<ol start="3">
+<li><em>Lossy conversions</em> are unsafe numeric conversions where data may be lost during the conversion.</li>
+</ol>
+<p>For example, <code>double</code> to <code>int</code> is a conversion that may result in data loss:</p>
+<pre><code class="language-cpp">int i = 3.0; // okay: will be converted to int value 3 (value preserved)
+int j = 3.5; // data lost: will be converted to int value 3 (fractional value 0.5 lost)
+</code></pre>
+<p>Conversion from <code>double</code> to <code>float</code> can also result in data loss:</p>
+<pre><code class="language-cpp">float f = 1.2;        // okay: will be converted to float value 1.2 (value preserved)
+float g = 1.23456789; // data lost: will be converted to float 1.23457 (precision lost)
+</code></pre>
+<p>Converting a value that has lost data back to the source type will result in a value that is different than the original value:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+    double d { static_cast&lt;double&gt;(static_cast&lt;int&gt;(3.5)) }; // convert double 3.5 to int and back
+    std::cout &lt;&lt; d &lt;&lt; '\n'; // prints 3
+
+    double d2 { static_cast&lt;double&gt;(static_cast&lt;float&gt;(1.23456789)) }; // convert double 1.23456789 to float and back
+    std::cout &lt;&lt; d2 &lt;&lt; '\n'; // prints 1.23457
+
+    return 0;
+}
+</code></pre>
+<p>For example, if <code>double</code> value <code>3.5</code> is converted to <code>int</code> value <code>3</code>, the fractional component <code>0.5</code> is lost. When <code>3</code> is converted back to a <code>double,</code> the result is <code>3.0</code>, not <code>3.5</code>.</p>
+<p>Compilers will generally issue a warning (or in some cases, an error) when an implicit lossy conversion would be performed at runtime.</p>
+<div id="admonition-warning-1" class="admonition admonish-warning" role="note" aria-labelledby="admonition-warning-1-title">
+<div class="admonition-title">
+<div id="admonition-warning-1-title">
+<p>Warning</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-warning-1"></a>
+</div>
+<div>
+<p>Warning</p>
+<p>Some conversions may fall into different categories depending on the platform.</p>
+<p>For example, <code>int</code> to <code>double</code> is typically a safe conversion, because <code>int</code> is usually 4 bytes and <code>double</code> is usually 8 bytes, and on such systems, all possible <code>int</code> values can be represented as a <code>double</code>. However, there are architectures where both <code>int</code> and <code>double</code> are 8 bytes. On such architectures, <code>int</code> to <code>double</code> is a lossy conversion!</p>
+<p>We can demonstrate this by casting a long long value (which must be at least 64 bits) to double and back:</p>
+<pre><code>#include &lt;iostream&gt;
+
+int main()
+{
+    std::cout &lt;&lt; static_cast&lt;long long&gt;(static_cast&lt;double&gt;(10000000000000001LL));
+
+    return 0;
+}
+</code></pre>
+<p>This prints:</p>
+<pre><code>10000000000000000
+</code></pre>
+<p>Note that our last digit has been lost!</p>
+</div>
+</div>
+<p>Unsafe conversions should be avoided as much as possible. However, this is not always possible. When unsafe conversions are used, it is most often when:</p>
+<ul>
+<li>We can constrain the values to be converted to just those that can be converted to equal values. For example, an <code>int</code> can be safely converted to an <code>unsigned int</code> when we can guarantee that the <code>int</code> is non-negative.</li>
+<li>We don’t mind that some data is lost because it is not relevant. For example, converting an <code>int</code> to a <code>bool</code> results in the loss of data, but we’re typically okay with this because we’re just checking if the <code>int</code> has value <code>0</code> or not.</li>
+</ul>
+<h2 id="more-on-numeric-conversions"><a class="header" href="#more-on-numeric-conversions">More on numeric conversions</a></h2>
+<p>The specific rules for numeric conversions are complicated and numerous, so here are the most important things to remember.</p>
+<ul>
+<li>In <em>all</em> cases, converting a value into a type whose range doesn’t support that value will lead to results that are probably unexpected. For example:</li>
+</ul>
+<pre><code class="language-cpp">int main()
+{
+    int i{ 30000 };
+    char c = i; // chars have range -128 to 127
+
+    std::cout &lt;&lt; static_cast&lt;int&gt;(c) &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>In this example, we’ve assigned a large integer to a variable with type <code>char</code> (that has range -128 to 127). This causes the char to overflow, and produces an unexpected result:</p>
+<pre><code class="language-cpp">48
+</code></pre>
+<ul>
+<li>Remember that overflow is well-defined for unsigned values and produces undefined behavior for signed values.</li>
+<li>Converting from a larger integral or floating point type to a smaller type from the same family will generally work so long as the value fits in the range of the smaller type. For example:</li>
+</ul>
+<pre><code class="language-cpp">    int i{ 2 };
+    short s = i; // convert from int to short
+    std::cout &lt;&lt; s &lt;&lt; '\n';
+
+    double d{ 0.1234 };
+    float f = d;
+    std::cout &lt;&lt; f &lt;&lt; '\n';
+</code></pre>
+<p>This produces the expected result:</p>
+<pre><code class="language-cpp">2
+0.1234
+</code></pre>
+<ul>
+<li>In the case of floating point values, some rounding may occur due to a loss of precision in the smaller type. For example:</li>
+</ul>
+<pre><code class="language-cpp">    float f = 0.123456789; // double value 0.123456789 has 9 significant digits, but float can only support about 7
+    std::cout &lt;&lt; std::setprecision(9) &lt;&lt; f &lt;&lt; '\n'; // std::setprecision defined in iomanip header
+</code></pre>
+<p>In this case, we see a loss of precision because the <code>float</code> can’t hold as much precision as a <code>double</code>:</p>
+<pre><code class="language-cpp">0.123456791
+</code></pre>
+<ul>
+<li>Converting from an integer to a floating point number generally works as long as the value fits within the range of the floating point type. For example:</li>
+</ul>
+<pre><code class="language-cpp">    int i{ 10 };
+    float f = i;
+    std::cout &lt;&lt; f &lt;&lt; '\n';
+</code></pre>
+<p>This produces the expected result:</p>
+<pre><code class="language-cpp">10
+</code></pre>
+<ul>
+<li>Converting from a floating point to an integer works as long as the value fits within the range of the integer, but any fractional values are lost. For example:</li>
+</ul>
+<pre><code class="language-cpp">    int i = 3.5;
+    std::cout &lt;&lt; i &lt;&lt; '\n';
+</code></pre>
+<p>In this example, the fractional value (.5) is lost, leaving the following result:</p>
+<pre><code class="language-cpp">3
+</code></pre>
+<p>While the numeric conversion rules might seem scary, in reality the compiler will generally warn you if you try to do something dangerous (excluding some signed/unsigned conversions).</p>
+<p>AI CONTENT END 1</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="floating-point-and-integral-promotion.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="narrowing-conversions-list-initialization-and-constexpr-initializers.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="floating-point-and-integral-promotion.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="narrowing-conversions-list-initialization-and-constexpr-initializers.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

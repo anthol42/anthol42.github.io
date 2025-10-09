@@ -1,0 +1,565 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Class template specialization - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="class-template-specialization"><a class="header" href="#class-template-specialization">Class template specialization</a></h1>
+<p>In the previous lesson <a href="function-template-specialization.html">26.3 -- Function template specialization</a>, we saw how it was possible to specialize functions in order to provide different functionality for specific data types. As it turns out, it is not only possible to specialize functions, it is also possible to specialize classes!</p>
+<p>Consider the case where you want a class that stores 8 objects. Here’s a simplified class template to do so:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+template &lt;typename T&gt;
+class Storage8
+{
+private:
+    T m_array[8];
+
+public:
+    void set(int index, const T&amp; value)
+    {
+        m_array[index] = value;
+    }
+
+    const T&amp; get(int index) const
+    {
+        return m_array[index];
+    }
+};
+
+int main()
+{
+    // Define a Storage8 for integers
+    Storage8&lt;int&gt; intStorage;
+
+    for (int count{ 0 }; count &lt; 8; ++count)
+        intStorage.set(count, count);
+
+    for (int count{ 0 }; count &lt; 8; ++count)
+        std::cout &lt;&lt; intStorage.get(count) &lt;&lt; '\n';
+
+    // Define a Storage8 for bool
+    Storage8&lt;bool&gt; boolStorage;
+    for (int count{ 0 }; count &lt; 8; ++count)
+        boolStorage.set(count, count &amp; 3);
+
+	std::cout &lt;&lt; std::boolalpha;
+
+    for (int count{ 0 }; count &lt; 8; ++count)
+    {
+        std::cout &lt;&lt; boolStorage.get(count) &lt;&lt; '\n';
+    }
+
+    return 0;
+}
+</code></pre>
+<p>This example prints:</p>
+<pre><code class="language-cpp">0
+1
+2
+3
+4
+5
+6
+7
+false
+true
+true
+true
+false
+true
+true
+true
+</code></pre>
+<p>While this class is completely functional, it turns out that the implementation of <code>Storage8&lt;bool&gt;</code> is more inefficient than it needs to be. Because all variables must have an address, and the CPU can’t address anything smaller than a byte, all variables must be at least a byte in size. Consequently, a variable of type <code>bool</code> ends up using an entire byte even though technically it only needs a single bit to store its true or false value! Thus, a <code>bool</code> is 1 bit of useful information and 7 bits of wasted space. Our <code>Storage8&lt;bool&gt;</code> class, which contains 8 <code>bool</code>, is 1 byte worth of useful information and 7 bytes of wasted space.</p>
+<p>As it turns out, using some basic bit logic, it’s possible to compress all 8 bools into a single byte, eliminating the wasted space altogether. However, in order to do this, we’ll need to revamp the class when used with type <code>bool</code>, replacing the array of 8 <code>bool</code> with a variable that is a single byte in size. While we could create an entirely new class to do so, this has one major downside: we have to give it a different name. Then the programmer has to remember that <code>Storage8&lt;T&gt;</code> is meant for non-bool types, whereas <code>Storage8Bool</code> (or whatever we name the new class) is meant for <code>bool</code>. That’s needless complexity we’d rather avoid. Fortunately, C++ provides us a better method: class template specialization.</p>
+<h2 id="class-template-specialization-1"><a class="header" href="#class-template-specialization-1">Class template specialization</a></h2>
+<p>Class template specialization allows us to specialize a template class for a particular data type (or data types, if there are multiple template parameters). In this case, we’re going to use class template specialization to write a customized version of <code>Storage8&lt;bool&gt;</code> that will take precedence over the generic <code>Storage8&lt;T&gt;</code> class.</p>
+<p>Class template specializations are treated as completely independent classes, even though they are instantiated in the same way as the templated class. This means that we can change anything and everything about our specialization class, including the way it’s implemented and even the functions it makes public, just as if it were an independent class.</p>
+<p>Just like all templates, the compiler must be able to see the full definition of a specialization to use it. Also, defining a class template specialization requires the non-specialized class to be defined first.</p>
+<p>Here’s an example of a specialized <code>Storage8&lt;bool&gt;</code> class:</p>
+<pre><code class="language-cpp">#include &lt;cstdint&gt;
+
+// First define our non-specialized class template
+template &lt;typename T&gt;
+class Storage8
+{
+private:
+    T m_array[8];
+
+public:
+    void set(int index, const T&amp; value)
+    {
+        m_array[index] = value;
+    }
+
+    const T&amp; get(int index) const
+    {
+        return m_array[index];
+    }
+};
+
+// Now define our specialized class template
+template &lt;&gt; // the following is a template class with no templated parameters
+class Storage8&lt;bool&gt; // we're specializing Storage8 for bool
+{
+// What follows is just standard class implementation details
+
+private:
+    std::uint8_t m_data{};
+
+public:
+    // Don't worry about the details of the implementation of these functions
+    void set(int index, bool value)
+    {
+        // Figure out which bit we're setting/unsetting
+        // This will put a 1 in the bit we're interested in turning on/off
+        auto mask{ 1 &lt;&lt; index };
+
+        if (value)  // If we're setting a bit
+            m_data |= mask;   // use bitwise-or to turn that bit on
+        else  // if we're turning a bit off
+            m_data &amp;= ~mask;  // bitwise-and the inverse mask to turn that bit off
+	}
+	
+    bool get(int index)
+    {
+        // Figure out which bit we're getting
+        auto mask{ 1 &lt;&lt; index };
+        // bitwise-and to get the value of the bit we're interested in
+        // Then implicit cast to boolean
+        return (m_data &amp; mask);
+    }
+};
+
+// Same example as before
+int main()
+{
+    // Define a Storage8 for integers (instantiates Storage8&lt;T&gt;, where T = int)
+    Storage8&lt;int&gt; intStorage;
+
+    for (int count{ 0 }; count &lt; 8; ++count)
+    {
+        intStorage.set(count, count);
+	}
+
+    for (int count{ 0 }; count &lt; 8; ++count)
+    {
+        std::cout &lt;&lt; intStorage.get(count) &lt;&lt; '\n';
+    }
+
+    // Define a Storage8 for bool  (instantiates Storage8&lt;bool&gt; specialization)
+    Storage8&lt;bool&gt; boolStorage;
+    
+    for (int count{ 0 }; count &lt; 8; ++count)
+    {
+        boolStorage.set(count, count &amp; 3);
+    }
+
+	std::cout &lt;&lt; std::boolalpha;
+
+    for (int count{ 0 }; count &lt; 8; ++count)
+    {
+        std::cout &lt;&lt; boolStorage.get(count) &lt;&lt; '\n';
+    }
+
+    return 0;
+}
+</code></pre>
+<p>First, note that our specialized class template starts off with <code>template&lt;&gt;</code>. The template keyword tells the compiler that what follows is a template, and the empty angle braces means that there aren’t any template parameters. In this case, there aren’t any template parameters because we’re replacing the only template parameter (<code>T</code>) with a specific type (<code>bool</code>).</p>
+<p>Next, we add <code>&lt;bool&gt;</code> to the class name to denote that we’re specializing a <code>bool</code> version of <code>class Storage8</code>.</p>
+<p>All of the other changes are just class implementation details. You do not need to understand how the bit-logic works in order to use the class (though you can review <a href="bitwise-operators.html">O.2 -- Bitwise operators</a> if you want to figure it out, but need a refresher on how bitwise operators work).</p>
+<p>Note that this specialization class utilizes a <code>std::uint8_t</code> (1 byte unsigned int) instead of an array of 8 <code>bool</code> (8 bytes).</p>
+<p>Now, when we instantiate an object type <code>Storage&lt;T&gt;</code>, where <code>T</code> is not a <code>bool</code>, we’ll get a version stenciled from the generic templated <code>Storage8&lt;T&gt;</code> class. When we instantiate an object of type <code>Storage8&lt;bool&gt;</code>, we’ll get the specialized version we just created. Note that we have kept the publicly exposed interface of both classes the same -- while C++ gives us free reign to add, remove, or change functions of <code>Storage8&lt;bool&gt;</code> as we see fit, keeping a consistent interface means the programmer can use either class in exactly the same manner.</p>
+<p>As you might expect, this prints the same result as the previous example that used the non-specialized version of <code>Storage8&lt;bool&gt;</code>:</p>
+<pre><code class="language-cpp">0
+1
+2
+3
+4
+5
+6
+7
+false
+true
+true
+true
+false
+true
+true
+true
+</code></pre>
+<h2 id="specializing-member-functions"><a class="header" href="#specializing-member-functions">Specializing member functions</a></h2>
+<p>In the previous lesson, we introduced this example:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+template &lt;typename T&gt;
+class Storage
+{
+private:
+    T m_value {};
+public:
+    Storage(T value)
+      : m_value { value }
+    {
+    }
+
+    void print()
+    {
+        std::cout &lt;&lt; m_value &lt;&lt; '\n';
+    }
+};
+
+int main()
+{
+    // Define some storage units
+    Storage i { 5 };
+    Storage d { 6.7 };
+
+    // Print out some values
+    i.print();
+    d.print();
+}
+</code></pre>
+<p>Our desire is to specialize the <code>print()</code> function so that it prints doubles in scientific notation. Using class template specialization, we could define a specialized class for <code>Storage&lt;double&gt;</code>:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+template &lt;typename T&gt;
+class Storage
+{
+private:
+    T m_value {};
+public:
+    Storage(T value)
+      : m_value { value }
+    {
+    }
+
+    void print()
+    {
+        std::cout &lt;&lt; m_value &lt;&lt; '\n';
+    }
+};
+
+// Explicit class template specialization for Storage&lt;double&gt;
+// Note how redundant this is
+template &lt;&gt;
+class Storage&lt;double&gt;
+{
+private:
+    double m_value {};
+public:
+    Storage(double value)
+      : m_value { value }
+    {
+    }
+
+    void print();
+};
+
+// We're going to define this outside the class for reasons that will become obvious shortly
+// This is a normal (non-specialized) member function definition (for member function print of specialized class Storage&lt;double&gt;)
+void Storage&lt;double&gt;::print()
+{
+    std::cout &lt;&lt; std::scientific &lt;&lt; m_value &lt;&lt; '\n';
+}
+
+int main()
+{
+    // Define some storage units
+    Storage i { 5 };
+    Storage d { 6.7 }; // uses explicit specialization Storage&lt;double&gt;
+
+    // Print out some values
+    i.print(); // calls Storage&lt;int&gt;::print (instantiated from Storage&lt;T&gt;)
+    d.print(); // calls Storage&lt;double&gt;::print (called from explicit specialization of Storage&lt;double&gt;)
+}
+</code></pre>
+<p>However, note how much redundancy there is here. We’ve duplicated an entire class definition just so that we can change one member function!</p>
+<p>Fortunately, we can do better. C++ does not require us to explicitly specialize <code>Storage&lt;double&gt;</code> to explicitly specialize <code>Storage&lt;double&gt;::print()</code>. Instead, we can let the compiler implicitly specialize <code>Storage&lt;double&gt;</code> from <code>Storage&lt;T&gt;</code>, and provide an explicit specialization of just <code>Storage&lt;double&gt;::print()</code>! Here’s what that looks like:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+template &lt;typename T&gt;
+class Storage
+{
+private:
+    T m_value {};
+public:
+    Storage(T value)
+      : m_value { value }
+    {
+    }
+
+    void print()
+    {
+        std::cout &lt;&lt; m_value &lt;&lt; '\n';
+    }
+};
+
+// This is a specialized member function definition
+// Explicit function specializations are not implicitly inline, so make this inline if put in header file
+template&lt;&gt;
+void Storage&lt;double&gt;::print()
+{
+    std::cout &lt;&lt; std::scientific &lt;&lt; m_value &lt;&lt; '\n';
+}
+
+int main()
+{
+    // Define some storage units
+    Storage i { 5 };
+    Storage d { 6.7 }; // will cause Storage&lt;double&gt; to be implicitly instantiated
+
+    // Print out some values
+    i.print(); // calls Storage&lt;int&gt;::print (instantiated from Storage&lt;T&gt;)
+    d.print(); // calls Storage&lt;double&gt;::print (called from explicit specialization of Storage&lt;double&gt;::print())
+}
+</code></pre>
+<p>That’s it!</p>
+<p>As noted in the prior lesson (<a href="function-template-specialization.html">26.3 -- Function template specialization</a>), explicit function specializations are not implicitly inline, so we should mark our specialization of <code>Storage&lt;double&gt;::print()</code> as inline if it is defined it in a header file.</p>
+<h2 id="where-to-define-class-template-specializations"><a class="header" href="#where-to-define-class-template-specializations">Where to define class template specializations</a></h2>
+<p>In order to use a specialization, the compiler must be able to see the full definition of both the non-specialized class and the specialized class. If the compiler can only see the definition of the non-specialized class, it will use that instead of the specialization.</p>
+<p>For this reason, specialized classes and functions are often defined in a header file just below the definition of the non-specialized class, so that including a single header includes both the non-specialized class and any specializations. This ensures the specialization can always be seen whenever the non-specialized class can also be seen.</p>
+<p>If a specialization is only required in a single translation unit, it can be defined in the source file for that translation unit. Because other translation units will not be able to see the definition of the specialization, they will continue to use the non-specialized version.</p>
+<p>Be wary of putting a specialization in its own separate header file, with the intent of including the specialization’s header in any translation unit where the specialization is desired. It’s a bad idea to design code that transparently changes behavior based on the presence or absence of a header file. For example, if you intend to use the specialization but forget to include the header of the specialization, you may end up using the non-specialized version instead. If you intend to use the non-specialization, you may end up using the specialization anyway if some other header includes the specialization as a transitive include.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="function-template-specialization.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="partial-template-specialization.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="function-template-specialization.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="partial-template-specialization.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,709 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Unscoped enumerations - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="unscoped-enumerations"><a class="header" href="#unscoped-enumerations">Unscoped enumerations</a></h1>
+<p>C++ contains many useful fundamental and compound data types (which we introduced in lessons <a href="introduction-to-fundamental-data-types.html">4.1 -- Introduction to fundamental data types</a> and <a href="introduction-to-compound-data-types.html">12.1 -- Introduction to compound data types</a>). But these types aren’t always sufficient for the kinds of things we want to do.</p>
+<p>For example, let’s say you’re writing a program that needs to keep track of whether an apple is red, yellow, or green, or what color a shirt is (from a preset list of colors). If only fundamental types were available, how might you do this?</p>
+<p>You might store the color as an integer value, using some kind of implicit mapping (0 = red , 1 = green, 2 = blue):</p>
+<pre><code class="language-cpp">int main()
+{
+    int appleColor{ 0 }; // my apple is red
+    int shirtColor{ 1 }; // my shirt is green
+
+    return 0;
+}
+</code></pre>
+<p>But this isn’t at all intuitive, and we’ve already discussed why magic numbers are bad (<a href="literals.html">5.2 -- Literals</a>). We can get rid of the magic numbers by using symbolic constants:</p>
+<pre><code class="language-cpp">constexpr int red{ 0 };
+constexpr int green{ 1 };
+constexpr int blue{ 2 };
+
+int main()
+{
+    int appleColor{ red };
+    int shirtColor{ green };
+
+    return 0;
+}
+</code></pre>
+<p>While this is a bit better for reading, the programmer is still left to deduce that <code>appleColor</code> and <code>shirtColor</code> (which are of type <code>int</code>) are meant to hold one of the values defined in the set of color symbolic constants (which are likely defined elsewhere, probably in a separate file).</p>
+<p>We can make this program a little more clear by using a type alias:</p>
+<pre><code class="language-cpp">using Color = int; // define a type alias named Color
+
+// The following color values should be used for a Color
+constexpr Color red{ 0 };
+constexpr Color green{ 1 };
+constexpr Color blue{ 2 };
+
+int main()
+{
+    Color appleColor{ red };
+    Color shirtColor{ green };
+
+    return 0;
+}
+</code></pre>
+<p>We’re getting closer. Someone reading this code still has to understand that these color symbolic constants are meant to be used with variables of type <code>Color</code>, but at least the type has a unique name now so someone searching for <code>Color</code> would be able to find the set of associated symbolic constants.</p>
+<p>However, because <code>Color</code> is just an alias for an <code>int</code>, we still have the problem that nothing enforces proper usage of these color symbolic constants. We can still do something like this:</p>
+<pre><code class="language-cpp">Color eyeColor{ 8 }; // syntactically valid, semantically meaningless
+</code></pre>
+<p>Also, if we debug any of these variables in our debugger, we’ll only see the integer value of the color (e.g. <code>0</code>), not the symbolic meaning (<code>red</code>), which can make it harder to tell if our program is correct.</p>
+<p>Fortunately, we can do better.</p>
+<p>As inspiration, consider the <code>bool</code> type. What makes <code>bool</code> particularly interesting is that it only has two defined values: <code>true</code> and <code>false</code>. We can use <code>true</code> or <code>false</code> directly (as literals), or we can instantiate a <code>bool</code> object and have it hold either one of those values. Additionally, the compiler is able to differentiate <code>bool</code> from other types. This means we can overload functions, and customize how those functions behave when passed a <code>bool</code> value.</p>
+<p>If we had the ability to define our own custom types, where <em>we</em> could define the set of named values associated with that type, then we would have the perfect tool to elegantly solve the challenge above…</p>
+<h2 id="enumerations"><a class="header" href="#enumerations">Enumerations</a></h2>
+<p>An <strong>enumeration</strong> (also called an <strong>enumerated type</strong> or an <strong>enum</strong>) is a compound data type whose values are restricted to a set of named symbolic constants (called <strong>enumerators</strong>).</p>
+<p>C++ supports two kinds of enumerations: unscoped enumerations (which we’ll cover now) and scoped enumerations (which we’ll cover later in this chapter).</p>
+<p>Because enumerations are program-defined types <a href="introduction-to-program-defined-user-defined-types.html">13.1 -- Introduction to program-defined (user-defined) types</a>, each enumeration needs to be fully defined before we can use it (a forward declaration is not sufficient).</p>
+<h2 id="unscoped-enumerations-1"><a class="header" href="#unscoped-enumerations-1">Unscoped enumerations</a></h2>
+<p>Unscoped enumerations are defined via the <code>enum</code> keyword.</p>
+<p>Enumerated types are best taught by example, so let’s define an unscoped enumeration that can hold some color values. We’ll explain how it all works below.</p>
+<pre><code class="language-cpp">// Define a new unscoped enumeration named Color
+enum Color
+{
+    // Here are the enumerators
+    // These symbolic constants define all the possible values this type can hold
+    // Each enumerator is separated by a comma, not a semicolon
+    red,
+    green,
+    blue, // trailing comma optional but recommended
+}; // the enum definition must end with a semicolon
+
+int main()
+{
+    // Define a few variables of enumerated type Color
+    Color apple { red };   // my apple is red
+    Color shirt { green }; // my shirt is green
+    Color cup { blue };    // my cup is blue
+
+    Color socks { white }; // error: white is not an enumerator of Color
+    Color hat { 2 };       // error: 2 is not an enumerator of Color
+
+    return 0;
+}
+</code></pre>
+<p>We start our example by using the <code>enum</code> keyword to tell the compiler that we are defining an unscoped enumeration, which we’ve named <code>Color</code>.</p>
+<p>Inside a pair of curly braces, we define the enumerators for the <code>Color</code> type: <code>red</code>, <code>green</code>, and <code>blue</code>. These enumerators define the specific values that type <code>Color</code> is restricted to. Each enumerator must be separated by a comma (not a semicolon) -- a trailing comma after the last enumerator is optional but recommended for consistency.</p>
+<p>It is most common to define one enumerator per line, but in simple cases (where there are a small number of enumerators and no comments are needed), they may all be defined on a single line.</p>
+<p>The type definition for <code>Color</code> ends with a semicolon. We’ve now fully defined what enumerated type <code>Color</code> is!</p>
+<p>Inside <code>main()</code>, we instantiate three variables of type <code>Color</code>: <code>apple</code> is initialized with the color <code>red</code>, <code>shirt</code> is initialized with the color <code>green</code>, and <code>cup</code> is initialized with the color <code>blue</code>. Memory is allocated for each of these objects. Note that the initializer for an enumerated type must be one of the defined enumerators for that type. The variables <code>socks</code> and <code>hat</code> cause compile errors because the initializers <code>white</code> and <code>2</code> are not enumerators of <code>Color</code>.</p>
+<p>Enumerators are implicitly constexpr.</p>
+<blockquote>
+<p><strong>A reminder</strong></p>
+<p>A reminder</p>
+<p>To quickly recap on nomenclature:</p>
+<ul>
+<li>An <em>enumeration</em> or <em>enumerated type</em> is the program-defined type itself (e.g. <code>Color</code>).</li>
+<li>An <em>enumerator</em> is a specific named value belonging to the enumeration (e.g. <code>red</code>).</li>
+</ul>
+</blockquote>
+<h2 id="naming-enumerations-and-enumerators"><a class="header" href="#naming-enumerations-and-enumerators">Naming enumerations and enumerators</a></h2>
+<p>By convention, the names of enumerated types start with a capital letter (as do all program-defined types).</p>
+<div id="admonition-warning" class="admonition admonish-warning" role="note" aria-labelledby="admonition-warning-title">
+<div class="admonition-title">
+<div id="admonition-warning-title">
+<p>Warning</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-warning"></a>
+</div>
+<div>
+<p>Warning</p>
+<p>Enumerations don’t have to be named, but unnamed enumerations should be avoided in modern C++.</p>
+</div>
+</div>
+<p>Enumerators must be given names. Unfortunately, there is no common naming convention for enumerator names. Common choices include starting with lower case (e.g. red), starting with caps (Red), all caps (RED), all caps with a prefix (COLOR_RED), or prefixed with a “k” and intercapped (kColorRed).</p>
+<p>Modern C++ guidelines typically recommend avoiding the all caps naming conventions, as all caps is typically used for preprocessor macros and may conflict. We recommend also avoiding the conventions starting with a capital letter, as names beginning with a capital letter are typically reserved for program-defined types.</p>
+<div id="admonition-best-practices" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices"></a>
+</div>
+<div>
+<p>Best practice</p>
+<p>Name your enumerated types starting with a capital letter. Name your enumerators starting with a lower case letter.</p>
+</div>
+</div>
+<h2 id="enumerated-types-are-distinct-types"><a class="header" href="#enumerated-types-are-distinct-types">Enumerated types are distinct types</a></h2>
+<p>Each enumerated type you create is considered to be a <strong>distinct type</strong>, meaning the compiler can distinguish it from other types (unlike typedefs or type aliases, which are considered non-distinct from the types they are aliasing).</p>
+<p>Because enumerated types are distinct, enumerators defined as part of one enumerated type can’t be used with objects of another enumerated type:</p>
+<pre><code class="language-cpp">enum Pet
+{
+    cat,
+    dog,
+    pig,
+    whale,
+};
+
+enum Color
+{
+    black,
+    red,
+    blue,
+};
+
+int main()
+{
+    Pet myPet { black }; // compile error: black is not an enumerator of Pet
+    Color shirt { pig }; // compile error: pig is not an enumerator of Color
+
+    return 0;
+}
+</code></pre>
+<p>You probably didn’t want a pig shirt anyway.</p>
+<h2 id="putting-enumerations-to-use"><a class="header" href="#putting-enumerations-to-use">Putting enumerations to use</a></h2>
+<p>Because enumerators are descriptive, they are useful for enhancing code documentation and readability. Enumerated types are best used when you have a smallish set of related constants, and objects only need to hold one of those values at a time.</p>
+<p>Commonly defined enumerations include days of the week, the cardinal directions, and the suits in a deck of cards:</p>
+<pre><code class="language-cpp">enum DaysOfWeek
+{
+    sunday,
+    monday,
+    tuesday,
+    wednesday,
+    thursday,
+    friday,
+    saturday,
+};
+
+enum CardinalDirections
+{
+    north,
+    east,
+    south,
+    west,
+};
+
+enum CardSuits
+{
+    clubs,
+    diamonds,
+    hearts,
+    spades,
+};
+</code></pre>
+<p>Sometimes functions will return a status code to the caller to indicate whether the function executed successfully or encountered an error. Traditionally, small negative numbers were used to represent different possible error codes. For example:</p>
+<pre><code class="language-cpp">int readFileContents()
+{
+    if (!openFile())
+        return -1;
+    if (!readFile())
+        return -2;
+    if (!parseFile())
+        return -3;
+
+    return 0; // success
+}
+</code></pre>
+<p>However, using magic numbers like this isn’t very descriptive. A better method would be to use an enumerated type:</p>
+<pre><code class="language-cpp">enum FileReadResult
+{
+    readResultSuccess,
+    readResultErrorFileOpen,
+    readResultErrorFileRead,
+    readResultErrorFileParse,
+};
+
+FileReadResult readFileContents()
+{
+    if (!openFile())
+        return readResultErrorFileOpen;
+    if (!readFile())
+        return readResultErrorFileRead;
+    if (!parseFile())
+        return readResultErrorFileParse;
+
+    return readResultSuccess;
+}
+</code></pre>
+<p>Then the caller can test the function’s return value against the appropriate enumerator, which is easier to understand than testing the return result for a specific integer value.</p>
+<pre><code class="language-cpp">if (readFileContents() == readResultSuccess)
+{
+    // do something
+}
+else
+{
+    // print error message
+}
+</code></pre>
+<p>Enumerated types can also be put to good use in games, to identify different types of items, or monsters, or terrain. Basically, anything that is a small set of related objects.</p>
+<p>For example:</p>
+<pre><code class="language-cpp">enum ItemType
+{
+	sword,
+	torch,
+	potion,
+};
+
+int main()
+{
+	ItemType holding{ torch };
+
+	return 0;
+}
+</code></pre>
+<p>Enumerated types can also make for useful function parameters when the user needs to make a choice between two or more options:</p>
+<pre><code class="language-cpp">enum SortOrder
+{
+    alphabetical,
+    alphabeticalReverse,
+    numerical,
+};
+
+void sortData(SortOrder order)
+{
+    switch (order)
+    {
+        case alphabetical:
+            // sort data in forwards alphabetical order
+            break;
+        case alphabeticalReverse:
+            // sort data in backwards alphabetical order
+            break;
+        case numerical:
+            // sort data numerically
+            break;
+    }
+}
+</code></pre>
+<p>Many languages use enumerations to define Booleans -- after all, a Boolean is essentially just an enumeration with 2 enumerators: <code>false</code> and <code>true</code>! However, in C++, <code>true</code> and <code>false</code> are defined as keywords instead of enumerators.</p>
+<p>Because enumerations are small and inexpensive to copy, it is fine to pass (and return) them by value.</p>
+<p>In lesson <a href="bit-flags-and-bit-manipulation-via-stdbitset.html">O.1 -- Bit flags and bit manipulation via std::bitset</a>, we discussed bit flags. Enums can also be used to define a collection of related bit flag positions for use with <code>std::bitset</code>:</p>
+<pre><code class="language-cpp">#include &lt;bitset&gt;
+#include &lt;iostream&gt;
+
+namespace Flags
+{
+    enum State
+    {
+        isHungry,
+        isSad,
+        isMad,
+        isHappy,
+        isLaughing,
+        isAsleep,
+        isDead,
+        isCrying,
+    };
+}
+
+int main()
+{
+    std::bitset&lt;8&gt; me{};
+    me.set(Flags::isHappy);
+    me.set(Flags::isLaughing);
+
+    std::cout &lt;&lt; std::boolalpha; // print bool as true/false
+
+    // Query a few states (we use the any() function to see if any bits remain set)
+    std::cout &lt;&lt; "I am happy? " &lt;&lt; me.test(Flags::isHappy) &lt;&lt; '\n';
+    std::cout &lt;&lt; "I am laughing? " &lt;&lt; me.test(Flags::isLaughing) &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>If you’re wondering how we can use an enumerator where an integral value is expected, unscoped enumerators will implicitly convert to integral values. We will explore this further in the next lesson (<a href="unscoped-enumerator-integral-conversions.html">13.3 -- Unscoped enumerator integral conversions</a>).</p>
+<h2 id="the-scope-of-unscoped-enumerations"><a class="header" href="#the-scope-of-unscoped-enumerations">The scope of unscoped enumerations</a></h2>
+<p>Unscoped enumerations are named such because they put their enumerator names into the same scope as the enumeration definition itself (as opposed to creating a new scope region like a namespace does).</p>
+<p>For example, given this program:</p>
+<pre><code class="language-cpp">enum Color // this enum is defined in the global namespace
+{
+    red, // so red is put into the global namespace
+    green,
+    blue, 
+};
+
+int main()
+{
+    Color apple { red }; // my apple is red
+
+    return 0;
+}
+</code></pre>
+<p>The <code>Color</code> enumeration is defined in the global scope. Therefore, all the enumeration names (<code>red</code>, <code>green</code>, and <code>blue</code>) also go into the global scope. This pollutes the global scope and significantly raises the chance of naming collisions.</p>
+<p>One consequence of this is that an enumerator name can’t be used in multiple enumerations within the same scope:</p>
+<pre><code class="language-cpp">enum Color
+{
+    red,
+    green,
+    blue, // blue is put into the global namespace
+};
+
+enum Feeling
+{
+    happy,
+    tired,
+    blue, // error: naming collision with the above blue
+};
+
+int main()
+{
+    Color apple { red }; // my apple is red
+    Feeling me { happy }; // I'm happy right now (even though my program doesn't compile)
+
+    return 0;
+}
+</code></pre>
+<p>In the above example, both unscoped enumerations (<code>Color</code> and <code>Feeling</code>) put enumerators with the same name <code>blue</code> into the global scope. This leads to a naming collision and subsequent compile error.</p>
+<p>Unscoped enumerations also provide a named scope region for their enumerators (much like a namespace acts as a named scope region for the names declared within). This means we can access the enumerators of an unscoped enumeration as follows:</p>
+<pre><code class="language-cpp">enum Color
+{
+    red,
+    green,
+    blue, // blue is put into the global namespace
+};
+
+int main()
+{
+    Color apple { red }; // okay, accessing enumerator from global namespace
+    Color raspberry { Color::red }; // also okay, accessing enumerator from scope of Color
+
+    return 0;
+}
+</code></pre>
+<p>Most often, unscoped enumerators are accessed without using the scope resolution operator.</p>
+<h2 id="avoiding-enumerator-naming-collisions"><a class="header" href="#avoiding-enumerator-naming-collisions">Avoiding enumerator naming collisions</a></h2>
+<p>There are quite a few common ways to prevent unscoped enumerator naming collisions.</p>
+<p>One option is to prefix each enumerator with the name of the enumeration itself:</p>
+<pre><code class="language-cpp">enum Color
+{
+    color_red,
+    color_blue,
+    color_green,
+};
+
+enum Feeling
+{
+    feeling_happy,
+    feeling_tired,
+    feeling_blue, // no longer has a naming collision with color_blue
+};
+
+int main()
+{
+    Color paint { color_blue };
+    Feeling me { feeling_blue };
+
+    return 0;
+}
+</code></pre>
+<p>This still pollutes the namespace but reduces the chance for naming collisions by making the names longer and more unique.</p>
+<p>A better option is to put the enumerated type inside something that provides a separate scope region, such as a namespace:</p>
+<pre><code class="language-cpp">namespace Color
+{
+    // The names Color, red, blue, and green are defined inside namespace Color
+    enum Color
+    {
+        red,
+        green,
+        blue,
+    };
+}
+
+namespace Feeling
+{
+    enum Feeling
+    {
+        happy,
+        tired,
+        blue, // Feeling::blue doesn't collide with Color::blue
+    };
+}
+
+int main()
+{
+    Color::Color paint{ Color::blue };
+    Feeling::Feeling me{ Feeling::blue };
+
+    return 0;
+}
+</code></pre>
+<p>This means we now have to prefix our enumeration and enumerator names with the name of the scoped region.</p>
+<blockquote>
+<p><strong>For advanced readers</strong></p>
+<p>For advanced readers</p>
+<p>Classes also provide a scope region, and it’s common to put enumerated types related to a class inside the scope region of the class. We discuss this in lesson <a href="nested-types-member-types">15.3 -- Nested types (member types)</a>.</p>
+</blockquote>
+<p>A related option is to use a scoped enumeration (which defines its own scope region). We’ll discuss scoped enumerations shortly (<a href="scoped-enumerations-enum-classes.html">13.6 -- Scoped enumerations (enum classes)</a>).</p>
+<div id="admonition-best-practices-1" class="admonition admonish-success" role="note" aria-labelledby="admonition-best-practices-1-title">
+<div class="admonition-title">
+<div id="admonition-best-practices-1-title">
+<p>Best practices</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-best-practices-1"></a>
+</div>
+<div>
+<p>Best practice</p>
+<p>Prefer putting your enumerations inside a named scope region (such as a namespace or class) so the enumerators don’t pollute the global namespace.</p>
+</div>
+</div>
+<p>Alternatively, if an enumeration is only used within the body of a single function, the enumeration should be defined inside the function. This limits the scope of the enumeration and its enumerators to just that function. The enumerators of such an enumeration will shadow identically named enumerators defined in the global scope.</p>
+<h2 id="comparing-against-enumerators"><a class="header" href="#comparing-against-enumerators">Comparing against enumerators</a></h2>
+<p>We can use the equality operators (<code>operator==</code> and <code>operator!=</code>) to test whether an enumeration has the value of a particular enumerator or not.</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+enum Color
+{
+    red,
+    green,
+    blue,
+};
+
+int main()
+{
+    Color shirt{ blue };
+
+    if (shirt == blue) // if the shirt is blue
+        std::cout &lt;&lt; "Your shirt is blue!";
+    else
+        std::cout &lt;&lt; "Your shirt is not blue!";
+
+    return 0;
+}
+</code></pre>
+<p>In the above example, we use an if-statement to test whether <code>shirt</code> is equal to the enumerator <code>blue</code>. This gives us a way to conditionalize our program’s behavior based on what enumerator our enumeration is holding.</p>
+<p>We’ll make more use of this in the next lesson.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="introduction-to-program-defined-user-defined-types.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="unscoped-enumerator-integral-conversions.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="introduction-to-program-defined-user-defined-types.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="unscoped-enumerator-integral-conversions.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

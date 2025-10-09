@@ -1,0 +1,382 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Arithmetic conversions - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="arithmetic-conversions"><a class="header" href="#arithmetic-conversions">Arithmetic conversions</a></h1>
+<p>In lesson <a href="operator-precedence-and-associativity.html">6.1 -- Operator precedence and associativity</a>, we discussed how expressions are evaluated according to the precedence and associativity of their operators.</p>
+<p>Consider the following expression:</p>
+<pre><code class="language-cpp">int x { 2 + 3 };
+</code></pre>
+<p>Binary <code>operator+</code> is given two operands, both of type <code>int</code>. Because both operands are of the same type, that type will be used to perform the calculation, and the value returned will also be of this same type. Thus, <code>2 + 3</code> will evaluate to <code>int</code> value <code>5</code>.</p>
+<p>But what happens when the operands of a binary operator are of different types?</p>
+<pre><code class="language-cpp">??? y { 2 + 3.5 };
+</code></pre>
+<p>In this case, <code>operator+</code> is being given one operand of type <code>int</code> and another of type <code>double</code>. Should the result of the operator be returned as an <code>int</code>, a <code>double</code>, or possibly something else altogether?</p>
+<p>In C++, certain operators require that their operands be of the same type. If one of these operators is invoked with operands of different types, one or both of the operands will be implicitly converted to matching types using a set of rules called the <strong>usual arithmetic conversions</strong>. The matching type produced as a result of the usual arithmetic conversion rules is called the <strong>common type</strong> of the operands.</p>
+<h2 id="the-operators-that-require-operands-of-the-same-type"><a class="header" href="#the-operators-that-require-operands-of-the-same-type">The operators that require operands of the same type</a></h2>
+<p>The following operators require their operands to be of the same type:</p>
+<ul>
+<li>The binary arithmetic operators: +, -, *, /, %</li>
+<li>The binary relational operators: &lt;, &gt;, &lt;=, &gt;=, ==, !=</li>
+<li>The binary bitwise arithmetic operators: &amp;, ^, |</li>
+<li>The conditional operator ?: (excluding the condition, which is expected to be of type <code>bool</code>)</li>
+</ul>
+<blockquote>
+<p><strong>For advanced readers</strong></p>
+<p>For advanced readers</p>
+<p>Overloaded operators are not subject to the usual arithmetic conversion rules.</p>
+</blockquote>
+<h2 id="the-usual-arithmetic-conversion-rules"><a class="header" href="#the-usual-arithmetic-conversion-rules">The usual arithmetic conversion rules</a></h2>
+<p>The usual arithmetic conversion rules are somewhat complex, so we’ll simplify a bit. The compiler has a ranked list of types that looks something like this:</p>
+<ul>
+<li>long double (highest rank)</li>
+<li>double</li>
+<li>float</li>
+<li>long long</li>
+<li>long</li>
+<li>int (lowest rank)</li>
+</ul>
+<p>The following rules are applied to find a matching type:</p>
+<p>Step 1:</p>
+<ul>
+<li>If one operand is an integral type and the other a floating point type, the integral operand is converted to the type of the floating point operand (no integral promotion takes place).</li>
+<li>Otherwise, any integral operands are numerically promoted (see <a href="floating-point-and-integral-promotion.html">10.2 -- Floating-point and integral promotion</a>).</li>
+</ul>
+<p>Step 2:</p>
+<ul>
+<li>After promotion, if one operand is signed and the other unsigned, special rules apply (see below)</li>
+<li>Otherwise, the operand with lower rank is converted to the type of the operand with higher rank.</li>
+</ul>
+<blockquote>
+<p><strong>For advanced readers</strong></p>
+<p>For advanced readers</p>
+<p>The special matching rules for integral operands with different signs:</p>
+<ul>
+<li>If the rank of the unsigned operand is greater than or equal to the rank of the signed operand, the signed operand is converted to the type of the unsigned operand.</li>
+<li>If the type of the signed operand can represent all the values of the type of the unsigned operand, the type of the unsigned operand is converted to the type of the signed operand.</li>
+<li>Otherwise both operands are converted to the corresponding unsigned type of the signed operand.</li>
+</ul>
+</blockquote>
+<blockquote>
+<p><strong>Related content</strong></p>
+<p>Related content</p>
+<p>You can find the full rules for the usual arithmetic conversions <a href="https://en.cppreference.com/w/cpp/language/usual_arithmetic_conversions">here</a>.</p>
+</blockquote>
+<h2 id="some-examples"><a class="header" href="#some-examples">Some examples</a></h2>
+<p>In the following examples, we’ll use the <code>typeid</code> operator (included in the <typeinfo> header), to show the resulting type of an expression.</p>
+<p>First, let’s add an <code>int</code> and a <code>double</code>:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;typeinfo&gt; // for typeid()
+
+int main()
+{
+    int i{ 2 };
+    std::cout &lt;&lt; typeid(i).name() &lt;&lt; '\n'; // show us the name of the type for i
+
+    double d{ 3.5 };
+    std::cout &lt;&lt; typeid(d).name() &lt;&lt; '\n'; // show us the name of the type for d
+
+    std::cout &lt;&lt; typeid(i + d).name() &lt;&lt; ' ' &lt;&lt; i + d &lt;&lt; '\n'; // show us the type of i + d
+
+    return 0;
+}
+</code></pre>
+<p>In this case, the <code>double</code> operand has the highest priority, so the lower priority operand (of type <code>int</code>) is type converted to <code>double</code> value <code>2.0</code>. Then <code>double</code> values <code>2.0</code> and <code>3.5</code> are added to produce <code>double</code> result <code>5.5</code>.</p>
+<p>On the author’s machine, this prints:</p>
+<pre><code class="language-cpp">int
+double
+double 5.5
+</code></pre>
+<p>Note that your compiler may display something slightly different, as the names output by <code>typeid.name()</code> are implementation-specific.</p>
+<p>Now let’s add two values of type <code>short</code>:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;typeinfo&gt; // for typeid()
+
+int main()
+{
+    short a{ 4 };
+    short b{ 5 };
+    std::cout &lt;&lt; typeid(a + b).name() &lt;&lt; ' ' &lt;&lt; a + b &lt;&lt; '\n'; // show us the type of a + b
+
+    return 0;
+}
+</code></pre>
+<p>Because neither operand appears on the priority list, both operands undergo integral promotion to type <code>int</code>. The result of adding two <code>ints</code> is an <code>int</code>, as you would expect:</p>
+<pre><code class="language-cpp">int 9
+</code></pre>
+<h2 id="signed-and-unsigned-issues"><a class="header" href="#signed-and-unsigned-issues">Signed and unsigned issues</a></h2>
+<p>This prioritization hierarchy and conversion rules can cause some problematic issues when mixing signed and unsigned values. For example, take a look at the following code:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;typeinfo&gt; // for typeid()
+
+int main()
+{
+    std::cout &lt;&lt; typeid(5u-10).name() &lt;&lt; ' ' &lt;&lt; 5u - 10 &lt;&lt; '\n'; // 5u means treat 5 as an unsigned integer
+
+    return 0;
+}
+</code></pre>
+<p>You might expect the expression <code>5u - 10</code> to evaluate to <code>-5</code> since <code>5 - 10</code> = <code>-5</code>. But here’s what actually results:</p>
+<pre><code class="language-cpp">unsigned int 4294967291
+</code></pre>
+<p>Due to the conversion rules, the <code>int</code> operand is converted to an <code>unsigned int</code>. And since the value <code>-5</code> is out of range of an <code>unsigned int</code>, we get a result we don’t expect.</p>
+<p>Here’s another example showing a counterintuitive result:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+    std::cout &lt;&lt; std::boolalpha &lt;&lt; (-3 &lt; 5u) &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>While it’s clear to us that <code>5</code> is greater than <code>-3</code>, when this expression evaluates, <code>-3</code> is converted to a large <code>unsigned int</code> that is larger than <code>5</code>. Thus, the above prints <code>false</code> rather than the expected result of <code>true</code>.</p>
+<p>This is one of the primary reasons to avoid unsigned integers -- when you mix them with signed integers in arithmetic expressions, you’re at risk for unexpected results. And the compiler probably won’t even issue a warning.</p>
+<h2 id="stdcommon_type-and-stdcommon_type_t"><a class="header" href="#stdcommon_type-and-stdcommon_type_t"><code>std::common_type</code> and <code>std::common_type_t</code></a></h2>
+<p>In future lessons, we’ll encounter cases where it is useful to know what the common type of two type is. <code>std::common_type</code> and the useful type alias <code>std::common_type_t</code> (both defined in the &lt;type_traits&gt; header) can be used for just this purpose.</p>
+<p>For example, <code>std::common_type_t&lt;int, double&gt;</code> returns the common type of <code>int</code> and <code>double</code>, and <code>std::common_type_t&lt;unsigned int, long&gt;</code> returns the common type of <code>unsigned int</code> and <code>long</code>.</p>
+<p>We’ll show an example where this is useful in lesson <a href="function-templates-with-multiple-template-types.html">11.8 -- Function templates with multiple template types</a>.</p>
+<p>AI CONTENT END 1</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="narrowing-conversions-list-initialization-and-constexpr-initializers.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="explicit-type-conversion-casting-and-static-cast.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="narrowing-conversions-list-initialization-and-constexpr-initializers.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="explicit-type-conversion-casting-and-static-cast.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

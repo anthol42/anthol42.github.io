@@ -1,0 +1,502 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Printing inherited classes using operator&lt;&lt; - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="printing-inherited-classes-using-operator"><a class="header" href="#printing-inherited-classes-using-operator">Printing inherited classes using operator&lt;&lt;</a></h1>
+<p>Consider the following program that makes use of a virtual function:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+class Base
+{
+public:
+	virtual void print() const { std::cout &lt;&lt; "Base";  }
+};
+
+class Derived : public Base
+{
+public:
+	void print() const override { std::cout &lt;&lt; "Derived"; }
+};
+
+int main()
+{
+	Derived d{};
+	Base&amp; b{ d };
+	b.print(); // will call Derived::print()
+
+	return 0;
+}
+</code></pre>
+<p>By now, you should be comfortable with the fact that b.print() will call Derived::print() (because b is referencing a Derived class object, Base::print() is a virtual function, and Derived::print() is an override).</p>
+<p>While calling member functions like this to do output is okay, this style of function doesn’t mix well with std::cout:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+	Derived d{};
+	Base&amp; b{ d };
+
+	std::cout &lt;&lt; "b is a ";
+	b.print(); // messy, we have to break our print statement to call this function
+	std::cout &lt;&lt; '\n';
+
+	return 0;
+}
+</code></pre>
+<p>In this lesson, we’ll look at how to override operator&lt;&lt; for classes using inheritance, so that we can use operator&lt;&lt; as expected, like this:</p>
+<pre><code class="language-cpp">std::cout &lt;&lt; "b is a " &lt;&lt; b &lt;&lt; '\n'; // much better
+</code></pre>
+<h2 id="the-challenges-with-operator"><a class="header" href="#the-challenges-with-operator">The challenges with operator&lt;&lt;</a></h2>
+<p>Let’s start by overloading operator&lt;&lt; in the typical way:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+class Base
+{
+public:
+	virtual void print() const { std::cout &lt;&lt; "Base"; }
+
+	friend std::ostream&amp; operator&lt;&lt;(std::ostream&amp; out, const Base&amp; b)
+	{
+		out &lt;&lt; "Base";
+		return out;
+	}
+};
+
+class Derived : public Base
+{
+public:
+	void print() const override { std::cout &lt;&lt; "Derived"; }
+
+	friend std::ostream&amp; operator&lt;&lt;(std::ostream&amp; out, const Derived&amp; d)
+	{
+		out &lt;&lt; "Derived";
+		return out;
+	}
+};
+
+int main()
+{
+	Base b{};
+	std::cout &lt;&lt; b &lt;&lt; '\n';
+
+	Derived d{};
+	std::cout &lt;&lt; d &lt;&lt; '\n';
+
+	return 0;
+}
+</code></pre>
+<p>Because there is no need for virtual function resolution here, this program works as we’d expect, and prints:</p>
+<pre><code class="language-cpp">Base
+Derived
+</code></pre>
+<p>Now, consider the following main() function instead:</p>
+<pre><code class="language-cpp">int main()
+{
+    Derived d{};
+    Base&amp; bref{ d };
+    std::cout &lt;&lt; bref &lt;&lt; '\n';
+    
+    return 0;
+}
+</code></pre>
+<p>This program prints:</p>
+<pre><code class="language-cpp">Base
+</code></pre>
+<p>That’s probably not what we were expecting. This happens because our version of operator&lt;&lt; that handles Base objects isn’t virtual, so std::cout &lt;&lt; bref calls the version of operator&lt;&lt; that handles Base objects rather than Derived objects.</p>
+<p>Therein lies the challenge.</p>
+<h2 id="can-we-make-operator-virtual"><a class="header" href="#can-we-make-operator-virtual">Can we make operator&lt;&lt; virtual?</a></h2>
+<p>If this issue is that operator&lt;&lt; isn’t virtual, can’t we simply make it virtual?</p>
+<p>The short answer is no. There are a number of reasons for this.</p>
+<p>First, only member functions can be virtualized -- this makes sense, since only classes can inherit from other classes, and there’s no way to override a function that lives outside of a class (you can overload non-member functions, but not override them). Because we typically implement operator&lt;&lt; as a friend, and friends aren’t considered member functions, a friend version of operator&lt;&lt; is ineligible to be virtualized. (For a review of why we implement operator&lt;&lt; this way, please revisit lesson <a href="overloading-operators-using-member-functions.html">21.5 -- Overloading operators using member functions</a>).</p>
+<p>Second, even if we could virtualize operator&lt;&lt; there’s the problem that the function parameters for Base::operator&lt;&lt; and Derived::operator&lt;&lt; differ (the Base version would take a Base parameter and the Derived version would take a Derived parameter). Consequently, the Derived version wouldn’t be considered an override of the Base version, and thus be ineligible for virtual function resolution.</p>
+<p>So what’s a programmer to do?</p>
+<h2 id="a-solution"><a class="header" href="#a-solution">A solution</a></h2>
+<p>The answer, as it turns out, is surprisingly simple.</p>
+<p>First, we set up <code>operator&lt;&lt;</code> as a friend in our base class as usual. But rather than have <code>operator&lt;&lt;</code> determine what to print, we will instead have it call a normal member function that <em>can</em> be virtualized! This virtual function will do the work of determining what to print for each class.</p>
+<p>In this first solution, our virtual member function (which we call <code>identify()</code>) returns a <code>std::string</code>, which is printed by <code>Base::operator&lt;&lt;</code>:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+class Base
+{
+public:
+	// Here's our overloaded operator&lt;&lt;
+	friend std::ostream&amp; operator&lt;&lt;(std::ostream&amp; out, const Base&amp; b)
+	{
+		// Call virtual function identify() to get the string to be printed
+		out &lt;&lt; b.identify();
+		return out;
+	}
+
+	// We'll rely on member function identify() to return the string to be printed
+	// Because identify() is a normal member function, it can be virtualized
+	virtual std::string identify() const
+	{
+		return "Base";
+	}
+};
+
+class Derived : public Base
+{
+public:
+	// Here's our override identify() function to handle the Derived case
+	std::string identify() const override
+	{
+		return "Derived";
+	}
+};
+
+int main()
+{
+	Base b{};
+	std::cout &lt;&lt; b &lt;&lt; '\n';
+
+	Derived d{};
+	std::cout &lt;&lt; d &lt;&lt; '\n'; // note that this works even with no operator&lt;&lt; that explicitly handles Derived objects
+
+	Base&amp; bref{ d };
+	std::cout &lt;&lt; bref &lt;&lt; '\n';
+
+	return 0;
+}
+</code></pre>
+<p>This prints the expected result:</p>
+<pre><code class="language-cpp">Base
+Derived
+Derived
+</code></pre>
+<p>Let’s examine how this works in more detail.</p>
+<p>In the case of <code>Base b</code>, <code>operator&lt;&lt;</code> is called with parameter <code>b</code> referencing the Base object. Virtual function call <code>b.identify()</code> thus resolves to <code>Base::identify()</code>, which returns “Base” to be printed. Nothing too special here.</p>
+<p>In the case of <code>Derived d</code>, the compiler first looks to see if there’s an <code>operator&lt;&lt;</code> that takes a Derived object. There isn’t one, because we didn’t define one. Next the compiler looks to see if there’s an <code>operator&lt;&lt;</code> that takes a Base object. There is, so the compiler does an implicit upcast of our Derived object to a Base&amp; and calls the function (we could have done this upcast ourselves, but the compiler is helpful in this regard). Because parameter <code>b</code> is referencing a Derived object, virtual function call <code>b.identify()</code> resolves to <code>Derived::identify()</code>, which returns “Derived” to be printed.</p>
+<p>Note that we don’t need to define an <code>operator&lt;&lt;</code> for each derived class! The version that handles Base objects works just fine for both Base objects and any class derived from Base!</p>
+<p>The third case proceeds as a mix of the first two. First, the compiler matches variable bref with <code>operator&lt;&lt;</code> that takes a Base reference. Because parameter <code>b</code> is referencing a Derived object, <code>b.identify()</code> resolves to <code>Derived::identify()</code>, which returns “Derived”.</p>
+<p>Problem solved.</p>
+<h2 id="a-more-flexible-solution"><a class="header" href="#a-more-flexible-solution">A more flexible solution</a></h2>
+<p>The above solution works great, but has two potential shortcomings:</p>
+<ol>
+<li>It makes the assumption that the desired output can be represented as a single std::string.</li>
+<li>Our <code>identify()</code> member function does not have access to the stream object.</li>
+</ol>
+<p>The latter is problematic in cases where we need a stream object, such as when we want to print the value of a member variable that has an overloaded operator&lt;&lt;.</p>
+<p>Fortunately, it’s straightforward to modify the above example to resolve both of these issues. In the previous version, virtual function <code>identify()</code> returned a string to be printed by <code>Base::operator&lt;&lt;</code>. In this version, we’ll instead define virtual member function <code>print()</code> and delegate responsibility for printing <em>directly</em> to that function.</p>
+<p>Here’s an example that illustrates the idea:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+class Base
+{
+public:
+	// Here's our overloaded operator&lt;&lt;
+	friend std::ostream&amp; operator&lt;&lt;(std::ostream&amp; out, const Base&amp; b)
+	{
+		// Delegate printing responsibility for printing to virtual member function print()
+		return b.print(out);
+	}
+
+	// We'll rely on member function print() to do the actual printing
+	// Because print() is a normal member function, it can be virtualized
+	virtual std::ostream&amp; print(std::ostream&amp; out) const
+	{
+		out &lt;&lt; "Base";
+		return out;
+	}
+};
+
+// Some class or struct with an overloaded operator&lt;&lt;
+struct Employee
+{
+	std::string name{};
+	int id{};
+
+	friend std::ostream&amp; operator&lt;&lt;(std::ostream&amp; out, const Employee&amp; e)
+	{
+		out &lt;&lt; "Employee(" &lt;&lt; e.name &lt;&lt; ", " &lt;&lt; e.id &lt;&lt; ")";
+		return out;
+	}
+};
+
+class Derived : public Base
+{
+private:
+	Employee m_e{}; // Derived now has an Employee member
+
+public:
+	Derived(const Employee&amp; e)
+		: m_e{ e }
+	{
+	}
+
+	// Here's our override print() function to handle the Derived case
+	std::ostream&amp; print(std::ostream&amp; out) const override
+	{
+		out &lt;&lt; "Derived: ";
+
+		// Print the Employee member using the stream object
+		out &lt;&lt; m_e;
+
+		return out;
+	}
+};
+
+int main()
+{
+	Base b{};
+	std::cout &lt;&lt; b &lt;&lt; '\n';
+
+	Derived d{ Employee{"Jim", 4}};
+	std::cout &lt;&lt; d &lt;&lt; '\n'; // note that this works even with no operator&lt;&lt; that explicitly handles Derived objects
+
+	Base&amp; bref{ d };
+	std::cout &lt;&lt; bref &lt;&lt; '\n';
+
+	return 0;
+}
+</code></pre>
+<p>This outputs:</p>
+<pre><code class="language-cpp">Base
+Derived: Employee(Jim, 4)
+Derived: Employee(Jim, 4)
+</code></pre>
+<p>In this version, <code>Base::operator&lt;&lt;</code> doesn’t do any printing itself. Instead, it just calls virtual member function <code>print()</code> and passes it the stream object. The <code>print()</code> function then uses this stream object to do its own printing. <code>Base::print()</code> uses the stream object to print “Base”. More interestingly, <code>Derived::print()</code> uses the stream object to print both “Derived: ” and to call <code>Employee::operator&lt;&lt;</code> to print the value of member <code>m_e</code>. The latter would have been more challenging to do in the prior example!</p>
+<p>AI CONTENT END 1</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="dynamic-casting.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="chapter-25-summary-and-quiz.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="dynamic-casting.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="chapter-25-summary-and-quiz.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

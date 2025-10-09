@@ -1,0 +1,601 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Overloading the subscript operator - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="overloading-the-subscript-operator"><a class="header" href="#overloading-the-subscript-operator">Overloading the subscript operator</a></h1>
+<p>When working with arrays, we typically use the subscript operator ([]) to index specific elements of an array:</p>
+<pre><code class="language-cpp">myArray[0] = 7; // put the value 7 in the first element of the array
+</code></pre>
+<p>However, consider the following <code>IntList</code> class, which has a member variable that is an array:</p>
+<pre><code class="language-cpp">class IntList
+{
+private:
+    int m_list[10]{};
+};
+
+int main()
+{
+    IntList list{};
+    // how do we access elements from m_list?
+    return 0;
+}
+</code></pre>
+<p>Because the m_list member variable is private, we can not access it directly from variable list. This means we have no way to directly get or set values in the m_list array. So how do we get or put elements into our list?</p>
+<p>Without operator overloading, the typical method would be to create access functions:</p>
+<pre><code class="language-cpp">class IntList
+{
+private:
+    int m_list[10]{};
+
+public:
+    void setItem(int index, int value) { m_list[index] = value; }
+    int getItem(int index) const { return m_list[index]; }
+};
+</code></pre>
+<p>While this works, it’s not particularly user friendly. Consider the following example:</p>
+<pre><code class="language-cpp">int main()
+{
+    IntList list{};
+    list.setItem(2, 3);
+
+    return 0;
+}
+</code></pre>
+<p>Are we setting element 2 to the value 3, or element 3 to the value 2? Without seeing the definition of <code>setItem()</code>, it’s simply not clear.</p>
+<p>You could also just return the entire list and use operator[] to access the element:</p>
+<pre><code class="language-cpp">class IntList
+{
+private:
+    int m_list[10]{};
+
+public:
+    int* getList() { return m_list; }
+};
+</code></pre>
+<p>While this also works, it’s syntactically odd:</p>
+<pre><code class="language-cpp">int main()
+{
+    IntList list{};
+    list.getList()[2] = 3;
+
+    return 0;
+}
+</code></pre>
+<h2 id="overloading-operator"><a class="header" href="#overloading-operator">Overloading operator[]</a></h2>
+<p>However, a better solution in this case is to overload the subscript operator ([]) to allow access to the elements of m_list. The subscript operator is one of the operators that must be overloaded as a member function. An overloaded operator[] function will always take one parameter: the subscript that the user places between the hard braces. In our IntList case, we expect the user to pass in an integer index, and we’ll return an integer value back as a result.</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+class IntList
+{
+private:
+    int m_list[10]{};
+
+public:
+    int&amp; operator[] (int index)
+    {
+        return m_list[index];
+    }
+};
+
+/*
+// Can also be implemented outside the class definition
+int&amp; IntList::operator[] (int index)
+{
+    return m_list[index];
+}
+*/
+
+int main()
+{
+    IntList list{};
+    list[2] = 3; // set a value
+    std::cout &lt;&lt; list[2] &lt;&lt; '\n'; // get a value
+
+    return 0;
+}
+</code></pre>
+<p>Now, whenever we use the subscript operator ([]) on an object of our class, the compiler will return the corresponding element from the m_list member variable! This allows us to both get and set values of m_list directly.</p>
+<p>This is both easy syntactically and from a comprehension standpoint. When <code>list[2]</code> evaluates, the compiler first checks to see if there’s an overloaded operator[] function. If so, it passes the value inside the hard braces (in this case, 2) as an argument to the function.</p>
+<p>Note that although you can provide a default value for the function parameter, actually using operator[] without a subscript inside is not considered a valid syntax, so there’s no point.</p>
+<blockquote>
+<p><strong>Tip</strong></p>
+<p>Tip</p>
+<p>C++23 adds support for overloading operator[] with multiple subscripts.</p>
+</blockquote>
+<h2 id="why-operator-returns-a-reference"><a class="header" href="#why-operator-returns-a-reference">Why operator[] returns a reference</a></h2>
+<p>Let’s take a closer look at how <code>list[2] = 3</code> evaluates. Because the subscript operator has a higher precedence than the assignment operator, <code>list[2]</code> evaluates first. <code>list[2]</code> calls operator[], which we’ve defined to return a reference to <code>list.m_list[2]</code>. Because operator[] is returning a reference, it returns the actual <code>list.m_list[2]</code> array element. Our partially evaluated expression becomes <code>list.m_list[2] = 3</code>, which is a straightforward integer assignment.</p>
+<p>In lesson <a href="value-categories-lvalues-and-rvalues.html">12.2 -- Value categories (lvalues and rvalues)</a>, you learned that any value on the left hand side of an assignment statement must be an l-value (which is a variable that has an actual memory address). Because the result of operator[] can be used on the left hand side of an assignment (e.g. <code>list[2] = 3</code>), the return value of operator[] must be an l-value. As it turns out, references are always l-values, because you can only take a reference of variables that have memory addresses. So by returning a reference, the compiler is satisfied that we are returning an l-value.</p>
+<p>Consider what would happen if operator[] returned an integer by value instead of by reference. <code>list[2]</code> would call operator[], which would return the <em>value of</em> list.m_list[2]. For example, if m_list[2] had the value of 6, operator[] would return the value 6. <code>list[2] = 3</code> would partially evaluate to <code>6 = 3</code>, which makes no sense! If you try to do this, the C++ compiler will complain:</p>
+<pre><code class="language-cpp">C:VCProjectsTest.cpp(386) : error C2106: '=' : left operand must be l-value
+</code></pre>
+<h2 id="overloaded-operator-for-const-objects"><a class="header" href="#overloaded-operator-for-const-objects">Overloaded operator[] for const objects</a></h2>
+<p>In the above IntList example, operator[] is non-const, and we can use it as an l-value to change the state of non-const objects. However, what if our IntList object was const? In this case, we wouldn’t be able to call the non-const version of operator[] because that would allow us to potentially change the state of a const object.</p>
+<p>The good news is that we can define a non-const and a const version of operator[] separately. The non-const version will be used with non-const objects, and the const version with const-objects.</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+class IntList
+{
+private:
+    int m_list[10]{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }; // give this class some initial state for this example
+
+public:
+    // For non-const objects: can be used for assignment
+    int&amp; operator[] (int index)
+    {
+        return m_list[index];
+    }
+
+    // For const objects: can only be used for access
+    // This function could also return by value if the type is cheap to copy
+    const int&amp; operator[] (int index) const
+    {
+        return m_list[index];
+    }
+};
+
+int main()
+{
+    IntList list{};
+    list[2] = 3; // okay: calls non-const version of operator[]
+    std::cout &lt;&lt; list[2] &lt;&lt; '\n';
+
+    const IntList clist{};
+    // clist[2] = 3; // compile error: clist[2] returns const reference, which we can't assign to
+    std::cout &lt;&lt; clist[2] &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<h2 id="removing-duplicate-code-between-const-and-non-const-overloads"><a class="header" href="#removing-duplicate-code-between-const-and-non-const-overloads">Removing duplicate code between const and non-const overloads</a></h2>
+<p>In the above example, note that the implementations of <code>int&amp; IntList::operator[](int)</code> and <code>const int&amp; IntList::operator[](int) const</code> are identical. The only difference is the return type of the function.</p>
+<p>In cases where the implementation is trivial (e.g. a single line), it’s fine (and preferred) to have both functions use an identical implementation. The small amount of redundancy this introduces isn’t worth removing.</p>
+<p>But what if the implementation of these operators was complex, requiring many statements? For example, maybe it’s important that we validate that the index is actually valid, which requires adding many redundant lines of code to each function.</p>
+<p>In such a case, the redundancy introduced by having many duplicate statements is more problematic, and it would be desirable to have a single implementation that we could use for both overloads. But how? Normally we’d simply implement one function in terms of the other (e.g. have one function call the other). But that’s a bit tricky in this case. The const version of the function can’t call the non-const version of the function, because that would require discarding the const of a const object. And while the non-const version of the function can call the const version of the function, the const version of the function returns a const reference, when we need to return a non-const reference. Fortunately, there is a way to work around this.</p>
+<p>The preferred solution is as follows:</p>
+<ul>
+<li>Implement the logic for the const version of the function.</li>
+<li>Have the non-const function call the const function and use <code>const_cast</code> to remove the const.</li>
+</ul>
+<p>The resulting solution looks something like this:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;utility&gt; // for std::as_const
+
+class IntList
+{
+private:
+    int m_list[10]{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }; // give this class some initial state for this example
+
+public:
+    int&amp; operator[] (int index)
+    {
+        // use std::as_const to get a const version of `this` (as a reference) 
+        // so we can call the const version of operator[]
+        // then const_cast to discard the const on the returned reference
+        return const_cast&lt;int&amp;&gt;(std::as_const(*this)[index]);
+    }
+
+    const int&amp; operator[] (int index) const
+    {
+        return m_list[index];
+    }
+};
+
+int main()
+{
+    IntList list{};
+    list[2] = 3; // okay: calls non-const version of operator[]
+    std::cout &lt;&lt; list[2] &lt;&lt; '\n';
+
+    const IntList clist{};
+    // clist[2] = 3; // compile error: clist[2] returns const reference, which we can't assign to
+    std::cout &lt;&lt; clist[2] &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>Normally using <code>const_cast</code> to remove const is something we want to avoid, but in this case it’s acceptable. If the non-const overload was called, then we know we’re working with a non-const object. It’s okay to remove the const on a const reference to a non-const object.</p>
+<blockquote>
+<p><strong>For advanced readers</strong></p>
+<p>For advanced readers</p>
+<p>In C++23, we can do even better by making use of several features we don’t yet cover in this tutorial series:</p>
+<pre><code>#include &lt;iostream&gt;
+
+class IntList
+{
+private:
+    int m_list[10]{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }; // give this class some initial state for this example
+
+public:
+    // Use an explicit object parameter (self) and auto&amp;&amp; to differentiate const vs non-const
+    auto&amp;&amp; operator[](this auto&amp;&amp; self, int index)
+    {
+        // Complex code goes here
+        return self.m_list[index];
+    }
+};
+
+int main()
+{
+    IntList list{};
+    list[2] = 3; // okay: calls non-const version of operator[]
+    std::cout &lt;&lt; list[2] &lt;&lt; '\n';
+
+    const IntList clist{};
+    // clist[2] = 3; // compile error: clist[2] returns const reference, which we can't assign to
+    std::cout &lt;&lt; clist[2] &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+</blockquote>
+<h2 id="detecting-index-validity"><a class="header" href="#detecting-index-validity">Detecting index validity</a></h2>
+<p>One other advantage of overloading the subscript operator is that we can make it safer than accessing arrays directly. Normally, when accessing arrays, the subscript operator does not check whether the index is valid. For example, the compiler will not complain about the following code:</p>
+<pre><code class="language-cpp">int list[5]{};
+list[7] = 3; // index 7 is out of bounds!
+</code></pre>
+<p>However, if we know the size of our array, we can make our overloaded subscript operator check to ensure the index is within bounds:</p>
+<pre><code class="language-cpp">#include &lt;cassert&gt; // for assert()
+#include &lt;iterator&gt; // for std::size()
+
+class IntList
+{
+private:
+    int m_list[10]{};
+
+public:
+    int&amp; operator[] (int index)
+    {
+        assert(index &gt;= 0 &amp;&amp; static_cast&lt;std::size_t&gt;(index) &lt; std::size(m_list));
+
+        return m_list[index];
+    }
+};
+</code></pre>
+<p>In the above example, we have used the assert() function (included in the cassert header) to make sure our index is valid. If the expression inside the assert evaluates to false (which means the user passed in an invalid index), the program will terminate with an error message, which is much better than the alternative (corrupting memory). This is probably the most common method of doing error checking of this sort.</p>
+<p>If you don’t want to use an assert (which will be compiled out of a non-debug build) you can instead use an if-statement and your favorite error handling method (e.g. throw an exception, call <code>std::exit</code>, etc…):</p>
+<pre><code class="language-cpp">#include &lt;iterator&gt; // for std::size()
+
+class IntList
+{
+private:
+    int m_list[10]{};
+
+public:
+    int&amp; operator[] (int index)
+    {
+        if (!(index &gt;= 0 &amp;&amp; static_cast&lt;std::size_t&gt;(index) &lt; std::size(m_list))
+        {
+            // handle invalid index here
+        }
+
+        return m_list[index];
+    }
+};
+</code></pre>
+<h2 id="pointers-to-objects-and-overloaded-operator-dont-mix"><a class="header" href="#pointers-to-objects-and-overloaded-operator-dont-mix">Pointers to objects and overloaded operator[] don’t mix</a></h2>
+<p>If you try to call operator[] on a pointer to an object, C++ will assume you’re trying to index an array of objects of that type.</p>
+<p>Consider the following example:</p>
+<pre><code class="language-cpp">#include &lt;cassert&gt; // for assert()
+#include &lt;iterator&gt; // for std::size()
+
+class IntList
+{
+private:
+    int m_list[10]{};
+
+public:
+    int&amp; operator[] (int index)
+    {
+        return m_list[index];
+    }
+};
+
+int main()
+{
+    IntList* list{ new IntList{} };
+    list [2] = 3; // error: this will assume we're accessing index 2 of an array of IntLists
+    delete list;
+
+    return 0;
+}
+</code></pre>
+<p>Because we can’t assign an integer to an IntList, this won’t compile. However, if assigning an integer was valid, this would compile and run, with undefined results.</p>
+<div id="admonition-rule" class="admonition admonish-tip" role="note" aria-labelledby="admonition-rule-title">
+<div class="admonition-title">
+<div id="admonition-rule-title">
+<p>Rule</p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-rule"></a>
+</div>
+<div>
+<p>Rule</p>
+<p>Make sure you’re not trying to call an overloaded operator[] on a pointer to an object.</p>
+</div>
+</div>
+<p>The proper syntax would be to dereference the pointer first (making sure to use parenthesis since operator[] has higher precedence than operator*), then call operator[]:</p>
+<pre><code class="language-cpp">int main()
+{
+    IntList* list{ new IntList{} };
+    (*list)[2] = 3; // get our IntList object, then call overloaded operator[]
+    delete list;
+
+    return 0;
+}
+</code></pre>
+<p>This is ugly and error prone. Better yet, don’t set pointers to your objects if you don’t have to.</p>
+<h2 id="the-function-parameter-does-not-need-to-be-an-integral-type"><a class="header" href="#the-function-parameter-does-not-need-to-be-an-integral-type">The function parameter does not need to be an integral type</a></h2>
+<p>As mentioned above, C++ passes what the user types between the hard braces as an argument to the overloaded function. In most cases, this will be an integral value. However, this is not required -- and in fact, you can define that your overloaded operator[] take a value of any type you desire. You could define your overloaded operator[] to take a double, a std::string, or whatever else you like.</p>
+<p>As a ridiculous example, just so you can see that it works:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string_view&gt; // C++17
+
+class Stupid
+{
+private:
+
+public:
+	void operator[] (std::string_view index);
+};
+
+// It doesn't make sense to overload operator[] to print something
+// but it is the easiest way to show that the function parameter can be a non-integer
+void Stupid::operator[] (std::string_view index)
+{
+	std::cout &lt;&lt; index;
+}
+
+int main()
+{
+	Stupid stupid{};
+	stupid["Hello, world!"];
+
+	return 0;
+}
+</code></pre>
+<p>As you would expect, this prints:</p>
+<pre><code class="language-cpp">Hello, world!
+</code></pre>
+<p>Overloading operator[] to take a std::string parameter can be useful when writing certain kinds of classes, such as those that use words as indices.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="overloading-the-increment-and-decrement-operators.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="overloading-the-parenthesis-operator.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="overloading-the-increment-and-decrement-operators.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="overloading-the-parenthesis-operator.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

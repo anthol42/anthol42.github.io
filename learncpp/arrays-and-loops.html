@@ -1,0 +1,384 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Arrays and loops - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="arrays-and-loops"><a class="header" href="#arrays-and-loops">Arrays and loops</a></h1>
+<p>In the introductory lesson for this chapter (<a href="introduction-to-containers-and-arrays.html">16.1 -- Introduction to containers and arrays</a>), we introduced the scalability challenges that occur when we have many related individual variables. In this lesson, we’ll reintroduce the problem, and then discuss how arrays can help us elegantly solve problems such as these.</p>
+<h2 id="the-variable-scalability-challenge-revisited"><a class="header" href="#the-variable-scalability-challenge-revisited">The variable scalability challenge, revisited</a></h2>
+<p>Consider the case where we want to find the average test score for a class of students. To keep these examples concise, we’ll assume the class has only 5 students.</p>
+<p>Here’s how we might solve this using individual variables:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+
+int main()
+{
+    // allocate 5 integer variables (each with a different name)
+    int testScore1{ 84 };
+    int testScore2{ 92 };
+    int testScore3{ 76 };
+    int testScore4{ 81 };
+    int testScore5{ 56 };
+
+    int average { (testScore1 + testScore2 + testScore3 + testScore4 + testScore5) / 5 };
+
+    std::cout &lt;&lt; "The class average is: " &lt;&lt; average &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>That’s a lot of variables and a lot of typing. Imagine how much work we’d have to do for 30 students, or 600. Furthermore, if a new test score is added, a new variable has to be declared, initialized, and added to the average calculation. And did you remember to update the divisor? If you forgot, you now have a semantic error. Any time you have to modify existing code, you run the risk of introducing errors.</p>
+<p>By now, you know that we should be using an array when we have a bunch of related variables. So let’s replace our individual variables with a <code>std::vector</code>:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+int main()
+{
+    std::vector testScore { 84, 92, 76, 81, 56 };
+    std::size_t length { testScore.size() };
+    
+    int average { (testScore[0] + testScore[1] + testScore[2] + testScore[3] + testScore[4])
+        / static_cast&lt;int&gt;(length) };
+
+    std::cout &lt;&lt; "The class average is: " &lt;&lt; average &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>This is better -- we’ve cut down on the number of variables defined significantly, and the divisor for the average calculation is now determined directly from the length of the array.</p>
+<p>But the average calculation is still a problem, as we’re having to manually list each element individually. And because we have to list each element explicitly, our average calculation only works for arrays with exactly as many elements as we list. If we also want to be able to average arrays of other lengths, we’ll need to write a new average calculation for each different array length.</p>
+<p>What we really need is some way to access each array element without having to explicitly list each one.</p>
+<h2 id="arrays-and-loops-1"><a class="header" href="#arrays-and-loops-1">Arrays and loops</a></h2>
+<p>In previous lessons, we noted that array subscripts do not need to be constant expressions -- they can be runtime expressions. This means we can use the value of a variable as an index.</p>
+<p>Also note that the array indices used in the average calculation of the previous example are an ascending sequence: 0, 1, 2, 3, 4. Therefore, if we had some way to set a variable to values 0, 1, 2, 3, and 4 in sequence, then we could just use that variable as our array index instead of literals. And we already know how to do that -- with a for-loop.</p>
+<blockquote>
+<p><strong>Related content</strong></p>
+<p>Related content</p>
+<p>We covered for loops in lesson <a href="for-statements">8.10 -- For statements</a>.</p>
+</blockquote>
+<p>Let’s rewrite the above example using a for-loop, where the loop variable is used as the array index:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+int main()
+{
+    std::vector testScore { 84, 92, 76, 81, 56 };
+    std::size_t length { testScore.size() };
+
+    int average { 0 };
+    for (std::size_t index{ 0 }; index &lt; length; ++index) // index from 0 to length-1
+        average += testScore[index];                      // add the value of element with index `index`
+    average /= static_cast&lt;int&gt;(length);                  // calculate the average
+
+    std::cout &lt;&lt; "The class average is: " &lt;&lt; average &lt;&lt; '\n';
+
+    return 0;
+}
+</code></pre>
+<p>This should be pretty straightforward. <code>index</code> starts at <code>0</code>, <code>testScore[0]</code> is added to <code>average</code>, and <code>index</code> is incremeted to <code>1</code>. <code>testScore[1]</code> is added to <code>average</code>, and <code>index</code> is incremented to <code>2</code>. Eventually, when <code>index</code> is incremented to <code>5</code>, <code>index &lt; length</code> is false, and the loop terminates.</p>
+<p>At this point, the loop has added the values of <code>testScore[0]</code>, <code>testScore[1]</code>, <code>testScore[2]</code>, <code>testScore[3]</code>, and <code>testScore[4]</code> to <code>average</code>.</p>
+<p>Finally, we calculate our average by dividing the accumulated values by the array length.</p>
+<p>This solution is ideal in terms of maintainability. The number of times the loop iterates is determined from the length of the array, and the loop variable is used to do all of the array indexing. We no longer have to manually list each array element.</p>
+<p>If we want to add or remove a test score, we can just modify the number of array initializers, and the rest of the code will still work without further changes!</p>
+<p>Accessing each element of a container in some order is called <strong>traversal</strong>, or <strong>traversing</strong> the container. Traversal is often called <strong>iteration</strong>, or <strong>iterating over</strong> or <strong>iterating through</strong> the container.</p>
+<blockquote>
+<p><strong>Author’s note</strong></p>
+<p>Author’s note</p>
+<p>Since the container classes use type <code>size_t</code> for length and indices, in this lesson, we’ll do the same. We’ll discuss using signed lengths and indices in upcoming lesson <a href="arrays-loops-and-sign-challenge-solutions">16.7 -- Arrays, loops, and sign challenge solutions</a>.</p>
+</blockquote>
+<h2 id="templates-arrays-and-loops-unlock-scalability"><a class="header" href="#templates-arrays-and-loops-unlock-scalability">Templates, arrays, and loops unlock scalability</a></h2>
+<p>Arrays provide a way to store multiple objects without having to name each element.</p>
+<p>Loops provide a way to traverse an array without having to explicitly list each element.</p>
+<p>Templates provide a way to parameterize the element type.</p>
+<p>Together, templates, arrays, and loops allow us to write code that can operate on a container of elements, regardless of the element type or number of elements in the container!</p>
+<p>To illustrate this further, let’s rewrite the above example, refactoring the average calculation into a function template:</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+// Function template to calculate the average of the values in a std::vector
+template &lt;typename T&gt;
+T calculateAverage(const std::vector&lt;T&gt;&amp; arr)
+{
+    std::size_t length { arr.size() };
+    
+    T average { 0 };                                      // if our array has elements of type T, our average should have type T too
+    for (std::size_t index{ 0 }; index &lt; length; ++index) // iterate through all the elements
+        average += arr[index];                            // sum up all the elements
+    average /= static_cast&lt;int&gt;(length);                  // divide by count of items (integral in nature)
+    
+    return average;
+}
+
+int main()
+{
+    std::vector class1 { 84, 92, 76, 81, 56 };
+    std::cout &lt;&lt; "The class 1 average is: " &lt;&lt; calculateAverage(class1) &lt;&lt; '\n'; // calc average of 5 ints
+
+    std::vector class2 { 93.2, 88.6, 64.2, 81.0 };
+    std::cout &lt;&lt; "The class 2 average is: " &lt;&lt; calculateAverage(class2) &lt;&lt; '\n'; // calc average of 4 doubles
+    
+    return 0;
+}
+</code></pre>
+<p>This prints:</p>
+<pre><code class="language-cpp">The class 1 average is: 77
+The class 2 average is: 81.75
+</code></pre>
+<p>In the above example, we’ve created function template <code>calculateAverage()</code>, which takes a <code>std::vector</code> of any element type and any length, and returns the average. In <code>main()</code>, we demonstrate that this function works equally well when called with an array of 5 <code>int</code> elements or an array of 4 <code>double</code> elements!</p>
+<p><code>calculateAverage()</code> will work for any type <code>T</code> that supports the operators used inside the function (<code>operator+=(T)</code>, <code>operator/=(int)</code>). If you try to use a <code>T</code> that does not support these operators, the compiler will error when trying to compile the instantiated function template.</p>
+<p>You might be wondering why we cast <code>length</code> to an <code>int</code> rather than a <code>T</code>. When we calculate the average, we divide the sum by the count of items. The count of items is an integral value. Therefore, semantically, it makes more sense to divide by an <code>int</code>.</p>
+<h2 id="what-we-can-do-with-arrays-and-loops"><a class="header" href="#what-we-can-do-with-arrays-and-loops">What we can do with arrays and loops</a></h2>
+<p>Now that we know how to traverse a container of elements using a loop, let’s look at the most common things that we can use container traversal for. We typically traverse a container in order to do one of four things:</p>
+<ol>
+<li>Calculate a new value based on the value of existing elements (e.g. average value, sum of values).</li>
+<li>Search for an existing element (e.g. has exact match, count number of matches, find highest value).</li>
+<li>Operate on each element (e.g. output each element, multiply all elements by 2).</li>
+<li>Reorder the elements (e.g. sort the elements in ascending order).</li>
+</ol>
+<p>The first three of these are fairly straightforward. We can use a single loop to traverse the array, inspecting or modifying each element as appropriate.</p>
+<p>Reordering the elements of a container is quite a bit more tricky, as doing so typically involves using a loop inside another loop. While we can do this manually, it’s usually better to use an existing algorithm from the standard library to do this. We’ll cover this in more detail in a future chapter when we discuss algorithms.</p>
+<h2 id="arrays-and-off-by-one-errors"><a class="header" href="#arrays-and-off-by-one-errors">Arrays and off-by-one errors</a></h2>
+<p>When traversing a container using an index, you must take care to ensure the loop executes the proper number of times. Off-by-one errors (where the loop body executes one too many or one too few times) are easy to make.</p>
+<p>Typically, when traversing a container using an index, we will start the index at <code>0</code> and loop until <code>index &lt; length</code>.</p>
+<p>New programmers sometimes accidentally use <code>index &lt;= length</code> as the loop condition. This will cause the loop to execute when <code>index == length</code>, which will result in an out of bounds subscript and undefined behavior.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="returning-stdvector-and-an-introduction-to-move-semantics.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="arrays-loops-and-sign-challenge-solutions.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="returning-stdvector-and-an-introduction-to-move-semantics.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="arrays-loops-and-sign-challenge-solutions.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

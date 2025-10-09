@@ -1,0 +1,394 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Pointers and const - learncpp</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">learncpp</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="pointers-and-const"><a class="header" href="#pointers-and-const">Pointers and const</a></h1>
+<p>Consider the following code snippet:</p>
+<pre><code class="language-cpp">int main()
+{
+    int x { 5 };
+    int* ptr { &amp;x }; // ptr is a normal (non-const) pointer
+
+    int y { 6 };
+    ptr = &amp;y; // we can point at another value
+
+    *ptr = 7; // we can change the value at the address being held
+
+    return 0;
+}
+</code></pre>
+<p>With normal (non-const) pointers, we can change both what the pointer is pointing at (by assigning the pointer a new address to hold) or change the value at the address being held (by assigning a new value to the dereferenced pointer).</p>
+<p>However, what happens if the value we want to point at is const?</p>
+<pre><code class="language-cpp">int main()
+{
+    const int x { 5 }; // x is now const
+    int* ptr { &amp;x };   // compile error: cannot convert from const int* to int*
+
+    return 0;
+}
+</code></pre>
+<p>The above snippet won’t compile -- we can’t set a normal pointer to point at a const variable. This makes sense: a const variable is one whose value cannot be changed. Allowing the programmer to set a non-const pointer to a const value would allow the programmer to dereference the pointer and change the value. That would violate the const-ness of the variable.</p>
+<h2 id="pointer-to-const-value"><a class="header" href="#pointer-to-const-value">Pointer to const value</a></h2>
+<p>A <strong>pointer to a const value</strong> (sometimes called a <code>pointer to const</code> for short) is a (non-const) pointer that points to a constant value.</p>
+<p>To declare a pointer to a const value, use the <code>const</code> keyword before the pointer’s data type:</p>
+<pre><code class="language-cpp">int main()
+{
+    const int x{ 5 };
+    const int* ptr { &amp;x }; // okay: ptr is pointing to a "const int"
+
+    *ptr = 6; // not allowed: we can't change a const value
+
+    return 0;
+}
+</code></pre>
+<p>In the above example, <code>ptr</code> points to a <code>const int</code>. Because the data type being pointed to is const, the value being pointed to can’t be changed.</p>
+<p>However, because a pointer to const is not const itself (it just points to a const value), we can change what the pointer is pointing at by assigning the pointer a new address:</p>
+<pre><code class="language-cpp">int main()
+{
+    const int x{ 5 };
+    const int* ptr { &amp;x }; // ptr points to const int x
+
+    const int y{ 6 };
+    ptr = &amp;y; // okay: ptr now points at const int y
+
+    return 0;
+}
+</code></pre>
+<p>Just like a reference to const, a pointer to const can point to non-const variables too. A pointer to const treats the value being pointed to as constant, regardless of whether the object at that address was initially defined as const or not:</p>
+<pre><code class="language-cpp">int main()
+{
+    int x{ 5 }; // non-const
+    const int* ptr { &amp;x }; // ptr points to a "const int"
+
+    *ptr = 6;  // not allowed: ptr points to a "const int" so we can't change the value through ptr
+    x = 6; // allowed: the value is still non-const when accessed through non-const identifier x
+
+    return 0;
+}
+</code></pre>
+<h2 id="const-pointers"><a class="header" href="#const-pointers">Const pointers</a></h2>
+<p>We can also make a pointer itself constant. A <strong>const pointer</strong> is a pointer whose address can not be changed after initialization.</p>
+<p>To declare a const pointer, use the <code>const</code> keyword after the asterisk in the pointer declaration:</p>
+<pre><code class="language-cpp">int main()
+{
+    int x{ 5 };
+    int* const ptr { &amp;x }; // const after the asterisk means this is a const pointer
+
+    return 0;
+}
+</code></pre>
+<p>In the above case, <code>ptr</code> is a const pointer to a (non-const) int value.</p>
+<p>Just like a normal const variable, a const pointer must be initialized upon definition, and this value can’t be changed via assignment:</p>
+<pre><code class="language-cpp">int main()
+{
+    int x{ 5 };
+    int y{ 6 };
+
+    int* const ptr { &amp;x }; // okay: the const pointer is initialized to the address of x
+    ptr = &amp;y; // error: once initialized, a const pointer can not be changed.
+
+    return 0;
+}
+</code></pre>
+<p>However, because the <em>value</em> being pointed to is non-const, it is possible to change the value being pointed to via dereferencing the const pointer:</p>
+<pre><code class="language-cpp">int main()
+{
+    int x{ 5 };
+    int* const ptr { &amp;x }; // ptr will always point to x
+
+    *ptr = 6; // okay: the value being pointed to is non-const
+
+    return 0;
+}
+</code></pre>
+<h2 id="const-pointer-to-a-const-value"><a class="header" href="#const-pointer-to-a-const-value">Const pointer to a const value</a></h2>
+<p>Finally, it is possible to declare a <strong>const pointer to a const value</strong> by using the <code>const</code> keyword both before the type and after the asterisk:</p>
+<pre><code class="language-cpp">int main()
+{
+    int value { 5 };
+    const int* const ptr { &amp;value }; // a const pointer to a const value
+
+    return 0;
+}
+</code></pre>
+<p>A const pointer to a const value can not have its address changed, nor can the value it is pointing to be changed through the pointer. It can only be dereferenced to get the value it is pointing at.</p>
+<h2 id="pointer-and-const-recap"><a class="header" href="#pointer-and-const-recap">Pointer and const recap</a></h2>
+<p>To summarize, you only need to remember 4 rules, and they are pretty logical:</p>
+<ul>
+<li>
+<p>A non-const pointer (e.g. <code>int* ptr</code>) can be assigned another address to change what it is pointing at.</p>
+</li>
+<li>
+<p>A const pointer (e.g. <code>int* const ptr</code>) always points to the same address, and this address can not be changed.</p>
+</li>
+<li>
+<p>A pointer to a non-const value (e.g. <code>int* ptr</code>) can change the value it is pointing to. These can not point to a const value.</p>
+</li>
+<li>
+<p>A pointer to a const value (e.g. <code>const int* ptr</code>) treats the value as const when accessed through the pointer, and thus can not change the value it is pointing to. These can be pointed to const or non-const l-values (but not r-values, which don’t have an address).</p>
+</li>
+</ul>
+<p>Keeping the declaration syntax straight can be a bit challenging:</p>
+<ul>
+<li>A <code>const</code> before the asterisk (e.g. <code>const int* ptr</code>) is associated with the type being pointed to. Therefore, this is a pointer to a const value, and the value cannot be modified through the pointer.</li>
+<li>A <code>const</code> after the asterisk (e.g. <code>int* const ptr</code>) is associated with the pointer itself. Therefore, this pointer cannot be assigned a new address.</li>
+</ul>
+<pre><code class="language-cpp">int main()
+{
+    int v{ 5 };
+   
+    int* ptr0 { &amp;v };             // points to an "int" but is not const itself.  We can modify the value or the address.
+    const int* ptr1 { &amp;v };       // points to a "const int" but is not const itself.  We can only modify the address.
+    int* const ptr2 { &amp;v };       // points to an "int" and is const itself.   We can only modify the value.
+    const int* const ptr3 { &amp;v }; // points to a "const int" and is const itself.  We can't modify the value nor the address.
+
+    // if the const is on the left side of the *, the const belongs to the value
+    // if the const is on the right side of the *, the const belongs to the pointer
+
+    return 0;
+}
+</code></pre>
+<p>AI CONTENT END 1</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="null-pointers.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="pass-by-address.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="null-pointers.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="pass-by-address.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>
