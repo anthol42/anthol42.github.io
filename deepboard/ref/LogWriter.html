@@ -1,0 +1,719 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>LogWriter - The Deepboard Book</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">The Deepboard Book</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="class-logwriter"><a class="header" href="#class-logwriter">Class: <code>LogWriter</code></a></h1>
+<p><strong>Description:</strong> This class makes an object that is bound to a run row in the result table. This means that everything that is
+logged through this object is added into the result table and this object can be used to interact with a specific
+run. This object is single use. This means that once the final results are written, the object becomes read-only.</p>
+<p>You should not instantiate this class directly, but use the ResultTable class to create it instead.</p>
+<h2 id="method-add_fragment"><a class="header" href="#method-add_fragment">Method: <code>add_fragment()</code></a></h2>
+<pre><code class="language-python">add_fragment(self, content: str, step: Optional[int] = None, tag: Optional[str] = None, epoch: Optional[int] = None, flush: bool = False)
+</code></pre>
+<p><strong>Description:</strong> Add a html fragment to the resultTable</p>
+<p>scalar steps.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>content</code>: Must be a string containing valid HTML content.</li>
+<li><code>step</code>: The global step at which the image was generated. If None, the maximum step is taken from all global</li>
+<li><code>tag</code>: A tag describing the fragment.</li>
+<li><code>epoch</code>: The epoch at which the image was generated. If None, no epoch is saved.</li>
+<li><code>flush</code>: If True, flush all data in memory to the database.</li>
+</ul>
+<h2 id="method-add_hparams"><a class="header" href="#method-add_hparams">Method: <code>add_hparams()</code></a></h2>
+<pre><code class="language-python">add_hparams(self, param_dict: Optional[dict[str, Any]] = None, **kwargs)
+</code></pre>
+<p><strong>Description:</strong> Add hyperparameters to the result table</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>param_dict</code>: The hyperparameters to add as a dict.</li>
+<li><code>kwargs</code>: The hyperparameters to save</li>
+</ul>
+<h2 id="method-add_image"><a class="header" href="#method-add_image">Method: <code>add_image()</code></a></h2>
+<pre><code class="language-python">add_image(self, image: Union[bytes, PIL.Image.Image], step: Optional[int] = None, tag: Optional[str] = None, epoch: Optional[int] = None, flush: bool = False)
+</code></pre>
+<p><strong>Description:</strong> Add an image to the resultTable</p>
+<p>steps.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>image</code>: Must be png bytes or a PIL Image object.</li>
+<li><code>step</code>: The global step at which the image was generated. If None, the maximum step is taken from all global</li>
+<li><code>tag</code>: A tag describing the image.</li>
+<li><code>epoch</code>: The epoch at which the image was generated. If None, no epoch is saved.</li>
+<li><code>flush</code>: If True, flush all data in memory to the database.</li>
+</ul>
+<h2 id="method-add_scalar"><a class="header" href="#method-add_scalar">Method: <code>add_scalar()</code></a></h2>
+<pre><code class="language-python">add_scalar(self, tag: str, scalar_value: Union[float, int], step: Optional[int] = None, epoch: Optional[int] = None, walltime: Optional[float] = None, flush: bool = False)
+</code></pre>
+<p><strong>Description:</strong> Add a scalar to the resultTable</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>tag</code>: The tag, formatted as: 'split/name' or simply 'split'</li>
+<li><code>scalar_value</code>: The value</li>
+<li><code>step</code>: The global step. If none, the one calculated is used</li>
+<li><code>epoch</code>: The epoch. If None, none is saved</li>
+<li><code>walltime</code>: Override the wall time with this</li>
+<li><code>flush</code>: Force flush all the scalars in memory</li>
+</ul>
+<h2 id="method-add_text"><a class="header" href="#method-add_text">Method: <code>add_text()</code></a></h2>
+<pre><code class="language-python">add_text(self, text: str, step: Optional[int] = None, tag: Optional[str] = None, epoch: Optional[int] = None, flush: bool = False)
+</code></pre>
+<p><strong>Description:</strong> Add a text sample to the resultTable</p>
+<p>scalar steps.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>text</code>: Must be a string</li>
+<li><code>step</code>: The global step at which the image was generated. If None, the maximum step is taken from all global</li>
+<li><code>tag</code>: A tag describing the text.</li>
+<li><code>epoch</code>: The epoch at which the image was generated. If None, no epoch is saved.</li>
+<li><code>flush</code>: If True, flush all data in memory to the database.</li>
+</ul>
+<h2 id="method-detect_and_log_figures"><a class="header" href="#method-detect_and_log_figures">Method: <code>detect_and_log_figures()</code></a></h2>
+<pre><code class="language-python">detect_and_log_figures(self, step: Optional[int] = None, tag: Optional[str] = None, epoch: Optional[int] = None, flush: bool = False, close_figs: bool = False)
+</code></pre>
+<p><strong>Description:</strong> Detect matplotlib figures that are currently open and log them to the result table. (Save them as png).</p>
+<p>steps.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>step</code>: The global step at which the image was generated. If None, the maximum step is taken from all global</li>
+<li><code>tag</code>: A tag describing the figures.</li>
+<li><code>epoch</code>: The epoch at which the images were generated. If None, no epoch is saved.</li>
+<li><code>flush</code>: If True, flush all data in memory to the database.</li>
+<li><code>close_figs</code>: If True, close all figures after detection.</li>
+</ul>
+<h2 id="method-get_figures"><a class="header" href="#method-get_figures">Method: <code>get_figures()</code></a></h2>
+<pre><code class="language-python">get_figures(self, id: Optional[int] = None, step: Optional[int] = None, tag: Optional[str] = None, epoch: Optional[int] = None, repetition: Optional[int] = None)
+</code></pre>
+<p><strong>Description:</strong> Return all figures logged in the run with the given step, tag and/or epoch.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>id</code>: The id of the figure to read. If None, all figures are returned.</li>
+<li><code>step</code>: The step at which the figure was generated. If None, all figures are returned.</li>
+<li><code>tag</code>: The tag describing the figures. If None, all tags are returned.</li>
+<li><code>epoch</code>: The epoch at which the figures were generated. If None, all epochs are returned.</li>
+<li><code>repetition</code>: The repetition of the figures. If None, all figures are returned.</li>
+</ul>
+<h2 id="method-get_fragment"><a class="header" href="#method-get_fragment">Method: <code>get_fragment()</code></a></h2>
+<pre><code class="language-python">get_fragment(self, id: Optional[int] = None, step: Optional[int] = None, tag: Optional[str] = None, epoch: Optional[int] = None, repetition: Optional[int] = None)
+</code></pre>
+<p><strong>Description:</strong> Return all html fragments logged in the run with the given id, step, tag and/or epoch.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>id</code>: The id of the html fragment to read</li>
+<li><code>step</code>: The step at which the html fragment was generated. If None, all html fragment are returned.</li>
+<li><code>tag</code>: The tag describing the fragment. If None, all tags are returned.</li>
+<li><code>epoch</code>: The epoch at which the html fragments were generated. If None, all epochs are returned.</li>
+<li><code>repetition</code>: The repetition of the run. If None, all html fragment are returned.</li>
+</ul>
+<p><strong>Return:</strong></p>
+<ul>
+<li>A list of html fragment</li>
+</ul>
+<h2 id="method-get_hparams"><a class="header" href="#method-get_hparams">Method: <code>get_hparams()</code></a></h2>
+<pre><code class="language-python">get_hparams(self) -&gt; Dict[str, Any]
+</code></pre>
+<p><strong>Description:</strong> Get the hyperparameters of the current run</p>
+<p><strong>Return:</strong></p>
+<ul>
+<li>A dict of hyperparameters</li>
+</ul>
+<h2 id="method-get_images"><a class="header" href="#method-get_images">Method: <code>get_images()</code></a></h2>
+<pre><code class="language-python">get_images(self, id: Optional[int] = None, step: Optional[int] = None, tag: Optional[str] = None, epoch: Optional[int] = None, repetition: Optional[int] = None) -&gt; List[dict]
+</code></pre>
+<p><strong>Description:</strong> Return all images logged in the run with the given step, tag and/or epoch.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>id</code>: The id of the image to read</li>
+<li><code>step</code>: The step at which the image was generated. If None, all images are returned.</li>
+<li><code>tag</code>: The tag in which the images were generated. If None, all tags are returned.</li>
+<li><code>epoch</code>: The epoch at which the images were generated. If None, all epochs are returned.</li>
+<li><code>repetition</code>: The repetition of the images. If None, all images are returned.</li>
+</ul>
+<p><strong>Return:</strong></p>
+<ul>
+<li>A list of image bytes</li>
+</ul>
+<h2 id="method-get_repetitions"><a class="header" href="#method-get_repetitions">Method: <code>get_repetitions()</code></a></h2>
+<pre><code class="language-python">get_repetitions(self) -&gt; List[int]
+</code></pre>
+<p><strong>Description:</strong> Get the all the repetitions ids of the current run</p>
+<p><strong>Return:</strong></p>
+<ul>
+<li>A list of repetitions ids</li>
+</ul>
+<h2 id="method-get_scalar"><a class="header" href="#method-get_scalar">Method: <code>get_scalar()</code></a></h2>
+<pre><code class="language-python">get_scalar(self, tag) -&gt; List[deepboard.resultTable.scalar.Scalar]
+</code></pre>
+<p><strong>Description:</strong> Read a scalar from the resultTable with the given tag</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>tag</code>: The tag to read formatted as: 'split/name' or simply 'split'.</li>
+</ul>
+<p><strong>Return:</strong></p>
+<ul>
+<li>A list of Scalars items</li>
+</ul>
+<h2 id="method-get_text"><a class="header" href="#method-get_text">Method: <code>get_text()</code></a></h2>
+<pre><code class="language-python">get_text(self, id: Optional[int] = None, step: Optional[int] = None, tag: Optional[str] = None, epoch: Optional[int] = None, repetition: Optional[int] = None)
+</code></pre>
+<p><strong>Description:</strong> Return all text samples logged in the run with the given id, step, tag and/or epoch.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>id</code>: The id of the text sample to read</li>
+<li><code>step</code>: The step at which the text was generated. If None, all text samples are returned.</li>
+<li><code>tag</code>: The tag describing the text. If None, all tags are returned.</li>
+<li><code>epoch</code>: The epoch at which the texts were generated. If None, all epochs are returned.</li>
+<li><code>repetition</code>: The repetition of the run. If None, all text samples are returned.</li>
+</ul>
+<p><strong>Return:</strong></p>
+<ul>
+<li>A list of text samples</li>
+</ul>
+<h2 id="method-new_repetition"><a class="header" href="#method-new_repetition">Method: <code>new_repetition()</code></a></h2>
+<pre><code class="language-python">new_repetition(self)
+</code></pre>
+<p><strong>Description:</strong> Create a new repetition of the current run. This is useful if you want to log multiple repetitions of the same
+run. This is a mutating method, meaning that you can call it at the end of the training loop before the next
+full training loop is run again.</p>
+<h2 id="method-set_color"><a class="header" href="#method-set_color">Method: <code>set_color()</code></a></h2>
+<pre><code class="language-python">set_color(self, color: Optional[str] = None)
+</code></pre>
+<p><strong>Description:</strong> Set the color of the run</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>color</code>: The color to set (hex format without #, e.g. 'ff0000' for red)</li>
+</ul>
+<h2 id="method-set_note"><a class="header" href="#method-set_note">Method: <code>set_note()</code></a></h2>
+<pre><code class="language-python">set_note(self, note: str)
+</code></pre>
+<p><strong>Description:</strong> Update the note of the run</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>note</code>: The note to set (will overwrite the previous one)</li>
+</ul>
+<h2 id="method-set_status"><a class="header" href="#method-set_status">Method: <code>set_status()</code></a></h2>
+<pre><code class="language-python">set_status(self, status: Literal['running', 'finished', 'failed'])
+</code></pre>
+<p><strong>Description:</strong> Manually set the status of the run</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>status</code>: The status to set</li>
+</ul>
+<h2 id="method-set_tag"><a class="header" href="#method-set_tag">Method: <code>set_tag()</code></a></h2>
+<pre><code class="language-python">set_tag(self, tag: str)
+</code></pre>
+<p><strong>Description:</strong> Update the tag of the run</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>tag</code>: The tag to set (will overwrite the previous one)</li>
+</ul>
+<h2 id="method-write_result"><a class="header" href="#method-write_result">Method: <code>write_result()</code></a></h2>
+<pre><code class="language-python">write_result(self, **kwargs)
+</code></pre>
+<p><strong>Description:</strong> Log the results of the run to the table, then disable the logger. This means that the logger will be read-only
+after this operation. If you run multiple iterations, consider writing the results only once all the runs are
+finished. You can aggregate the different metrics before passing them.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>kwargs</code>: The metrics to save</li>
+</ul>
+<script type="text/markdown" class="md-content" style="display:none;"># Class: `LogWriter`
+
+**Description:** This class makes an object that is bound to a run row in the result table. This means that everything that is
+logged through this object is added into the result table and this object can be used to interact with a specific
+run. This object is single use. This means that once the final results are written, the object becomes read-only.
+
+You should not instantiate this class directly, but use the ResultTable class to create it instead.
+
+## Method: `add_fragment()`
+
+```python
+add_fragment(self, content: str, step: Optional[int] = None, tag: Optional[str] = None, epoch: Optional[int] = None, flush: bool = False)
+```
+
+**Description:** Add a html fragment to the resultTable
+
+
+scalar steps.
+
+**Parameters:**
+- `content`: Must be a string containing valid HTML content.
+- `step`: The global step at which the image was generated. If None, the maximum step is taken from all global
+- `tag`: A tag describing the fragment.
+- `epoch`: The epoch at which the image was generated. If None, no epoch is saved.
+- `flush`: If True, flush all data in memory to the database.
+
+## Method: `add_hparams()`
+
+```python
+add_hparams(self, param_dict: Optional[dict[str, Any]] = None, **kwargs)
+```
+
+**Description:** Add hyperparameters to the result table
+
+**Parameters:**
+- `param_dict`: The hyperparameters to add as a dict.
+- `kwargs`: The hyperparameters to save
+
+## Method: `add_image()`
+
+```python
+add_image(self, image: Union[bytes, PIL.Image.Image], step: Optional[int] = None, tag: Optional[str] = None, epoch: Optional[int] = None, flush: bool = False)
+```
+
+**Description:** Add an image to the resultTable
+
+
+steps.
+
+**Parameters:**
+- `image`: Must be png bytes or a PIL Image object.
+- `step`: The global step at which the image was generated. If None, the maximum step is taken from all global
+- `tag`: A tag describing the image.
+- `epoch`: The epoch at which the image was generated. If None, no epoch is saved.
+- `flush`: If True, flush all data in memory to the database.
+
+## Method: `add_scalar()`
+
+```python
+add_scalar(self, tag: str, scalar_value: Union[float, int], step: Optional[int] = None, epoch: Optional[int] = None, walltime: Optional[float] = None, flush: bool = False)
+```
+
+**Description:** Add a scalar to the resultTable
+
+**Parameters:**
+- `tag`: The tag, formatted as: 'split/name' or simply 'split'
+- `scalar_value`: The value
+- `step`: The global step. If none, the one calculated is used
+- `epoch`: The epoch. If None, none is saved
+- `walltime`: Override the wall time with this
+- `flush`: Force flush all the scalars in memory
+
+## Method: `add_text()`
+
+```python
+add_text(self, text: str, step: Optional[int] = None, tag: Optional[str] = None, epoch: Optional[int] = None, flush: bool = False)
+```
+
+**Description:** Add a text sample to the resultTable
+
+
+scalar steps.
+
+**Parameters:**
+- `text`: Must be a string
+- `step`: The global step at which the image was generated. If None, the maximum step is taken from all global
+- `tag`: A tag describing the text.
+- `epoch`: The epoch at which the image was generated. If None, no epoch is saved.
+- `flush`: If True, flush all data in memory to the database.
+
+## Method: `detect_and_log_figures()`
+
+```python
+detect_and_log_figures(self, step: Optional[int] = None, tag: Optional[str] = None, epoch: Optional[int] = None, flush: bool = False, close_figs: bool = False)
+```
+
+**Description:** Detect matplotlib figures that are currently open and log them to the result table. (Save them as png).
+
+steps.
+
+**Parameters:**
+- `step`: The global step at which the image was generated. If None, the maximum step is taken from all global
+- `tag`: A tag describing the figures.
+- `epoch`: The epoch at which the images were generated. If None, no epoch is saved.
+- `flush`: If True, flush all data in memory to the database.
+- `close_figs`: If True, close all figures after detection.
+
+## Method: `get_figures()`
+
+```python
+get_figures(self, id: Optional[int] = None, step: Optional[int] = None, tag: Optional[str] = None, epoch: Optional[int] = None, repetition: Optional[int] = None)
+```
+
+**Description:** Return all figures logged in the run with the given step, tag and/or epoch.
+
+**Parameters:**
+- `id`: The id of the figure to read. If None, all figures are returned.
+- `step`: The step at which the figure was generated. If None, all figures are returned.
+- `tag`: The tag describing the figures. If None, all tags are returned.
+- `epoch`: The epoch at which the figures were generated. If None, all epochs are returned.
+- `repetition`: The repetition of the figures. If None, all figures are returned.
+
+## Method: `get_fragment()`
+
+```python
+get_fragment(self, id: Optional[int] = None, step: Optional[int] = None, tag: Optional[str] = None, epoch: Optional[int] = None, repetition: Optional[int] = None)
+```
+
+**Description:** Return all html fragments logged in the run with the given id, step, tag and/or epoch.
+
+**Parameters:**
+- `id`: The id of the html fragment to read
+- `step`: The step at which the html fragment was generated. If None, all html fragment are returned.
+- `tag`: The tag describing the fragment. If None, all tags are returned.
+- `epoch`: The epoch at which the html fragments were generated. If None, all epochs are returned.
+- `repetition`: The repetition of the run. If None, all html fragment are returned.
+
+**Return:**
+- A list of html fragment
+## Method: `get_hparams()`
+
+```python
+get_hparams(self) -> Dict[str, Any]
+```
+
+**Description:** Get the hyperparameters of the current run
+
+**Return:**
+- A dict of hyperparameters
+## Method: `get_images()`
+
+```python
+get_images(self, id: Optional[int] = None, step: Optional[int] = None, tag: Optional[str] = None, epoch: Optional[int] = None, repetition: Optional[int] = None) -> List[dict]
+```
+
+**Description:** Return all images logged in the run with the given step, tag and/or epoch.
+
+**Parameters:**
+- `id`: The id of the image to read
+- `step`: The step at which the image was generated. If None, all images are returned.
+- `tag`: The tag in which the images were generated. If None, all tags are returned.
+- `epoch`: The epoch at which the images were generated. If None, all epochs are returned.
+- `repetition`: The repetition of the images. If None, all images are returned.
+
+**Return:**
+- A list of image bytes
+## Method: `get_repetitions()`
+
+```python
+get_repetitions(self) -> List[int]
+```
+
+**Description:** Get the all the repetitions ids of the current run
+
+**Return:**
+- A list of repetitions ids
+## Method: `get_scalar()`
+
+```python
+get_scalar(self, tag) -> List[deepboard.resultTable.scalar.Scalar]
+```
+
+**Description:** Read a scalar from the resultTable with the given tag
+
+**Parameters:**
+- `tag`: The tag to read formatted as: 'split/name' or simply 'split'.
+
+**Return:**
+- A list of Scalars items
+## Method: `get_text()`
+
+```python
+get_text(self, id: Optional[int] = None, step: Optional[int] = None, tag: Optional[str] = None, epoch: Optional[int] = None, repetition: Optional[int] = None)
+```
+
+**Description:** Return all text samples logged in the run with the given id, step, tag and/or epoch.
+
+**Parameters:**
+- `id`: The id of the text sample to read
+- `step`: The step at which the text was generated. If None, all text samples are returned.
+- `tag`: The tag describing the text. If None, all tags are returned.
+- `epoch`: The epoch at which the texts were generated. If None, all epochs are returned.
+- `repetition`: The repetition of the run. If None, all text samples are returned.
+
+**Return:**
+- A list of text samples
+## Method: `new_repetition()`
+
+```python
+new_repetition(self)
+```
+
+**Description:** Create a new repetition of the current run. This is useful if you want to log multiple repetitions of the same
+run. This is a mutating method, meaning that you can call it at the end of the training loop before the next
+full training loop is run again.
+
+## Method: `set_color()`
+
+```python
+set_color(self, color: Optional[str] = None)
+```
+
+**Description:** Set the color of the run
+
+**Parameters:**
+- `color`: The color to set (hex format without #, e.g. 'ff0000' for red)
+
+## Method: `set_note()`
+
+```python
+set_note(self, note: str)
+```
+
+**Description:** Update the note of the run
+
+**Parameters:**
+- `note`: The note to set (will overwrite the previous one)
+
+## Method: `set_status()`
+
+```python
+set_status(self, status: Literal['running', 'finished', 'failed'])
+```
+
+**Description:** Manually set the status of the run
+
+**Parameters:**
+- `status`: The status to set
+
+## Method: `set_tag()`
+
+```python
+set_tag(self, tag: str)
+```
+
+**Description:** Update the tag of the run
+
+**Parameters:**
+- `tag`: The tag to set (will overwrite the previous one)
+
+## Method: `write_result()`
+
+```python
+write_result(self, **kwargs)
+```
+
+**Description:** Log the results of the run to the table, then disable the logger. This means that the logger will be read-only
+after this operation. If you run multiple iterations, consider writing the results only once all the runs are
+finished. You can aggregate the different metrics before passing them.
+
+**Parameters:**
+- `kwargs`: The metrics to save
+
+</script>
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../ref/ResultTable.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../ref/NoCommitAction.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../ref/ResultTable.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../ref/NoCommitAction.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../theme/download-markdown.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

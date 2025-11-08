@@ -1,0 +1,1853 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>The Deepboard Book</title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">The Deepboard Book</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
+<p>Has it ever happened to you when you run experiments, change some things, run it again, then, few hours or days later,
+you have worst performances than before, but you don't remember what you changed? Your search for hours before finding
+it, or even worse, never find it again?</p>
+<p>This is why I created <strong>Deepboard</strong>, a modern experiment tracking tool to help you organise your
+deep learning / machine learning research. We currently find ourselves overwhelmed by a lot of experiment tracking
+tools such as Weights &amp; Biases, ClearML, MLFlow, Tensorboard, <em>etc.</em>, so why a new one? I believe these tools can be
+split into two main categories: full ML lifecycle management and lightweight experiment tracking. Popular proprietary
+tools such as Weights &amp; Biases and ClearML and the open source MLFlow are designed to manage the full ML lifecycle. On
+the other side, tensorboard is a lightweight experiment tracking tool as it focuses on logging and visualizing
+experiment results, and comparing them. Tensorboard have been introduced quite some time ago, and while it is still a
+great tool, I believe it lacks some useful features. Deepboard aims to replace tensorboard as a lightweight experiment
+tracking tool, while providing a modern and user-friendly interface, and some useful features missing in the classic
+Tensorboard.</p>
+<p>With deepboard, all your logs are stored locally in a single database file, similar to tensorboard that stores the logs
+in binary files. This mean you do not have to be connected to internet, or send your data to a cloud service,
+everything is local. Deepboard uses a sqlite3 database, which makes its format transparent easy to work with. In
+addition, it comes with a public api to read the logs programmatically, which is not the case with tensorboard. It also
+comes with a beautiful and modern web interface to visualize and compare your experiments.</p>
+<p>However, where deepboard really separates itself from others is with its unique designed philosophy around
+reproducibility. Deepboard is designed not only to track and visualize your experiments, but also to allow you to reproduce
+the results of any previously run experiment.</p>
+<script type="text/markdown" class="md-content" style="display:none;"># Introduction
+
+Has it ever happened to you when you run experiments, change some things, run it again, then, few hours or days later, 
+you have worst performances than before, but you don't remember what you changed? Your search for hours before finding 
+it, or even worse, never find it again?
+
+This is why I created **Deepboard**, a modern experiment tracking tool to help you organise your 
+deep learning / machine learning research. We currently find ourselves overwhelmed by a lot of experiment tracking 
+tools such as Weights & Biases, ClearML, MLFlow, Tensorboard, *etc.*, so why a new one? I believe these tools can be 
+split into two main categories: full ML lifecycle management and lightweight experiment tracking. Popular proprietary 
+tools such as Weights & Biases and ClearML and the open source MLFlow are designed to manage the full ML lifecycle. On 
+the other side, tensorboard is a lightweight experiment tracking tool as it focuses on logging and visualizing 
+experiment results, and comparing them. Tensorboard have been introduced quite some time ago, and while it is still a 
+great tool, I believe it lacks some useful features. Deepboard aims to replace tensorboard as a lightweight experiment
+tracking tool, while providing a modern and user-friendly interface, and some useful features missing in the classic 
+Tensorboard. 
+
+With deepboard, all your logs are stored locally in a single database file, similar to tensorboard that stores the logs 
+in binary files. This mean you do not have to be connected to internet, or send your data to a cloud service, 
+everything is local. Deepboard uses a sqlite3 database, which makes its format transparent easy to work with. In 
+addition, it comes with a public api to read the logs programmatically, which is not the case with tensorboard. It also 
+comes with a beautiful and modern web interface to visualize and compare your experiments.
+
+However, where deepboard really separates itself from others is with its unique designed philosophy around 
+reproducibility. Deepboard is designed not only to track and visualize your experiments, but also to allow you to reproduce 
+the results of any previously run experiment.
+</script><div style="break-before: page; page-break-before: always;"></div><h1 id="reproducibility"><a class="header" href="#reproducibility">Reproducibility</a></h1>
+<p>In this tutorial, we’ll learn how to use the deepboard tool. Before diving in, we’ll first discuss the best practices
+for using it effectively. Since the main purpose of deepboard is to ensure the reproducibility of previously run and
+reported experiments, adopting a few coding habits will help you make full use of its features.</p>
+<h2 id="deterministic-philosophy"><a class="header" href="#deterministic-philosophy">Deterministic philosophy</a></h2>
+<p>The main idea is that an experiment with the same configuration should always run the same code. For example, let's say
+we first run a baseline experiment and get some results. Then, we can add a new feature that improves our performances
+... or degrades them. In the last  case, we might want to revert back to the previous version of the code. If we
+naively implemented the new feature to always run, we would not be able to reproduce the previous results. Of course,
+we could comment out the new feature, but this does not scale well when we have many features to try. Instead, we
+should implement the new feature in an optional fashion, and activate it when a certain parameter is set. For example,
+we could test the new feature when passing a flag to our program with a command line argument. When the flag is not
+present, we run our baseline code.</p>
+<p>Let's look at a simple code example:</p>
+<p><em>main.py</em> — Baseline implementation :</p>
+<pre><code class="language-python">def experiment():
+    # We start by loading the data.
+    data = load_data()
+    # Then, we create the model.
+    model = Model()
+    # Finally, we train and evaluate the model.
+    return train_and_evaluate(model, data)
+</code></pre>
+<p>Run it with:</p>
+<pre><code class="language-bash">python main.py
+</code></pre>
+<p>Next, we implement a new feature that will be activated when passing a flag:
+<em>main.py</em> — New feature implementation :</p>
+<pre><code class="language-python"># Note that we would usually parse the cli, then pass the flag to the experiment function.
+def experiment(new_feature: bool = False):
+    # Let's imagine our new feature is model-specific.
+    # We start by loading the data.
+    data = load_data()
+    # Then, we create the model.
+    if new_feature:
+        model = ModelWithNewFeature()
+    else:
+        model = Model()
+    # Finally, we train and evaluate the model.
+    return train_and_evaluate(model, data)
+</code></pre>
+<p>Run it with:</p>
+<pre><code class="language-bash">python main.py --new_feature
+# We can also run the original experiment without the new feature.
+python main.py
+</code></pre>
+<p>By following this coding habit, you can easily reproduce previously run experiments by simply passing the same
+configuration. Note that most deep learning algorithms are nondeterministic by nature, which can lead to variations in
+the final performance. However, by using this methodology, you can ensure that it is, in fact, the same code that is
+being run, and that any differences with the previous run is due to the inherent randomness, not due to code changes.
+If you prefer even more reproducibility, nothing stops you from setting seeds and make the algorithms more
+deterministic.</p>
+<h2 id="configuration-management"><a class="header" href="#configuration-management">Configuration management</a></h2>
+<p>Since the configuration of each experiment is a crucial aspect in the deepboard way, we determined two main types of
+configurations: configuration file and command line arguments. We recommend to put most parameters in the configuration
+file, and use command line arguments only for parameters that are likely to change often.</p>
+<blockquote>
+<p>For new features, we recommend adding a new parameter in the configuration file, and add a default value for it when
+it is not present.</p>
+</blockquote>
+<h2 id="mistakes-can-happen"><a class="header" href="#mistakes-can-happen">Mistakes can happen</a></h2>
+<p>Despite our best efforts, mistakes can still happen, and we might change the code without making it optional through a
+parameter. This will render prior experiments unreproducible since not the same code will be run with the same
+configuration. To mitigate this risk, deepboard automatically saves the git commit hash and the diff at each experiment
+run. This makes it easier to revert back to a previous version of the code if needed.</p>
+<blockquote>
+<p>While it is possible to revert back to a previous commit, we recommend not to rely on this feature, and consider it as a
+safety net.</p>
+</blockquote>
+<script type="text/markdown" class="md-content" style="display:none;"># Reproducibility
+
+In this tutorial, we’ll learn how to use the deepboard tool. Before diving in, we’ll first discuss the best practices 
+for using it effectively. Since the main purpose of deepboard is to ensure the reproducibility of previously run and 
+reported experiments, adopting a few coding habits will help you make full use of its features.
+
+## Deterministic philosophy
+The main idea is that an experiment with the same configuration should always run the same code. For example, let's say 
+we first run a baseline experiment and get some results. Then, we can add a new feature that improves our performances 
+... or degrades them. In the last  case, we might want to revert back to the previous version of the code. If we 
+naively implemented the new feature to always run, we would not be able to reproduce the previous results. Of course, 
+we could comment out the new feature, but this does not scale well when we have many features to try. Instead, we 
+should implement the new feature in an optional fashion, and activate it when a certain parameter is set. For example, 
+we could test the new feature when passing a flag to our program with a command line argument. When the flag is not 
+present, we run our baseline code.
+
+Let's look at a simple code example:
+
+*main.py* — Baseline implementation :
+```python
+def experiment():
+    # We start by loading the data.
+    data = load_data()
+    # Then, we create the model.
+    model = Model()
+    # Finally, we train and evaluate the model.
+    return train_and_evaluate(model, data)
+```
+Run it with:
+```bash
+python main.py
+```
+
+Next, we implement a new feature that will be activated when passing a flag:
+*main.py* — New feature implementation :
+```python
+# Note that we would usually parse the cli, then pass the flag to the experiment function.
+def experiment(new_feature: bool = False):
+    # Let's imagine our new feature is model-specific.
+    # We start by loading the data.
+    data = load_data()
+    # Then, we create the model.
+    if new_feature:
+        model = ModelWithNewFeature()
+    else:
+        model = Model()
+    # Finally, we train and evaluate the model.
+    return train_and_evaluate(model, data)
+```
+Run it with:
+```bash
+python main.py --new_feature
+# We can also run the original experiment without the new feature.
+python main.py
+```
+
+By following this coding habit, you can easily reproduce previously run experiments by simply passing the same 
+configuration. Note that most deep learning algorithms are nondeterministic by nature, which can lead to variations in 
+the final performance. However, by using this methodology, you can ensure that it is, in fact, the same code that is 
+being run, and that any differences with the previous run is due to the inherent randomness, not due to code changes. 
+If you prefer even more reproducibility, nothing stops you from setting seeds and make the algorithms more 
+deterministic.
+
+## Configuration management
+Since the configuration of each experiment is a crucial aspect in the deepboard way, we determined two main types of 
+configurations: configuration file and command line arguments. We recommend to put most parameters in the configuration 
+file, and use command line arguments only for parameters that are likely to change often. 
+
+> For new features, we recommend adding a new parameter in the configuration file, and add a default value for it when 
+> it is not present.
+
+## Mistakes can happen
+Despite our best efforts, mistakes can still happen, and we might change the code without making it optional through a 
+parameter. This will render prior experiments unreproducible since not the same code will be run with the same 
+configuration. To mitigate this risk, deepboard automatically saves the git commit hash and the diff at each experiment 
+run. This makes it easier to revert back to a previous version of the code if needed. 
+
+> While it is possible to revert back to a previous commit, we recommend not to rely on this feature, and consider it as a 
+> safety net.</script><div style="break-before: page; page-break-before: always;"></div><h1 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h1>
+<p>First, install the package with the GUI with pip:</p>
+<pre><code class="language-shell">pip install deepboard[full]
+</code></pre>
+<p>The deepboard package is divided into two main components: the experiment tracking one called ResultTable, and the GUI
+application. You will interact with the ResultTable api in your code to log your experiments, and then use the GUI to
+visualize and analyze them.</p>
+<h2 id="creating-a-new-experiment"><a class="header" href="#creating-a-new-experiment">Creating a new experiment</a></h2>
+<pre><code class="language-python">from deepboard.resultTable import ResultTable
+
+# Step 1: Create / load the result table
+rTable = ResultTable()
+
+# Step 2: Create a new run
+run = rTable.new_run("My Experiment")
+
+# Step 3: Write the final results
+run.write_result(accuracy=0.98, loss= 0.0257)
+</code></pre>
+<p>Here, we first create a new ResultTable instance. If no database exist at the specified path, a new result table, a
+database,  will be created. Then, we create a new entry in the table with the new run command. We can run our
+experiment, then write the final results to the result table. By default, it creates a file named <code>result_table.db</code>.
+You can visualize the results in the GUI by running and opening in your web browser.</p>
+<pre><code class="language-shell">deepboard result_table.db
+</code></pre>
+<h2 id="experiment-uniqueness-and-debug-mode"><a class="header" href="#experiment-uniqueness-and-debug-mode">Experiment uniqueness and debug mode</a></h2>
+<p>Note that if you try to run the previous script again, it will raise an error saying that the experiment has already
+been run with runID 1. This is because each experiment must be unique in the result table. To avoid getting this
+constraint, you can run in debug mode, which will give the same runID (-1) to every run, and each run will overwrite
+the previous one. You can simply call the <code>new_debug_run</code> method instead of <code>new_run</code>, and the rest of the api
+remains the same, so we can use the same code as before.</p>
+<pre><code class="language-python">run = rTable.new_debug_run("My Experiment")
+</code></pre>
+<h2 id="the-run-id"><a class="header" href="#the-run-id">The Run ID</a></h2>
+<p>As every run must be unique, each run is given a unique id called the RunID. You can retrieve this id by accessing the
+<code>run_id</code> attribute of the <code>LogWriter</code> object (the run variable in the previous examples). Since this id is unique, you
+can use it for whatever you want, for example, you could save checkpoints to a directory, where each checkpoint file
+or directory is named with the corresponding RunID.</p>
+<hr />
+<blockquote>
+<p><strong>Note:</strong><br />
+When an experiment fails (an exception is raised), the ResultTable will detect it, and the run won't be considered
+when checking uniqueness. This means that you can re-run failed experiments without changing anything, and the run will
+be accepted as a new unique experiment.</p>
+</blockquote>
+<p>It is useful to log final results of experiments to compare them later, but we often want to log intermediate results
+during training. This topic is explored in the next chapter.</p>
+<script type="text/markdown" class="md-content" style="display:none;"># Getting Started
+
+First, install the package with the GUI with pip:
+```shell
+pip install deepboard[full]
+```
+
+The deepboard package is divided into two main components: the experiment tracking one called ResultTable, and the GUI 
+application. You will interact with the ResultTable api in your code to log your experiments, and then use the GUI to 
+visualize and analyze them.
+
+## Creating a new experiment
+```python
+from deepboard.resultTable import ResultTable
+
+# Step 1: Create / load the result table
+rTable = ResultTable()
+
+# Step 2: Create a new run
+run = rTable.new_run("My Experiment")
+
+# Step 3: Write the final results
+run.write_result(accuracy=0.98, loss= 0.0257)
+```
+
+Here, we first create a new ResultTable instance. If no database exist at the specified path, a new result table, a 
+database,  will be created. Then, we create a new entry in the table with the new run command. We can run our 
+experiment, then write the final results to the result table. By default, it creates a file named `result_table.db`. 
+You can visualize the results in the GUI by running and opening in your web browser.
+```shell
+deepboard result_table.db
+```
+
+## Experiment uniqueness and debug mode
+Note that if you try to run the previous script again, it will raise an error saying that the experiment has already 
+been run with runID 1. This is because each experiment must be unique in the result table. To avoid getting this 
+constraint, you can run in debug mode, which will give the same runID (-1) to every run, and each run will overwrite 
+the previous one. You can simply call the `new_debug_run` method instead of `new_run`, and the rest of the api 
+remains the same, so we can use the same code as before.
+
+```python
+run = rTable.new_debug_run("My Experiment")
+```
+
+## The Run ID
+As every run must be unique, each run is given a unique id called the RunID. You can retrieve this id by accessing the 
+`run_id` attribute of the `LogWriter` object (the run variable in the previous examples). Since this id is unique, you 
+can use it for whatever you want, for example, you could save checkpoints to a directory, where each checkpoint file 
+or directory is named with the corresponding RunID.
+
+---
+> **Note:**\
+> When an experiment fails (an exception is raised), the ResultTable will detect it, and the run won't be considered 
+> when checking uniqueness. This means that you can re-run failed experiments without changing anything, and the run will 
+> be accepted as a new unique experiment.
+
+It is useful to log final results of experiments to compare them later, but we often want to log intermediate results
+during training. This topic is explored in the next chapter.
+
+</script><div style="break-before: page; page-break-before: always;"></div><h1 id="logging"><a class="header" href="#logging">Logging</a></h1>
+<p>With the result table, we can also log information during runs. For example, we can log the loss and accuracy at each
+step or epoch. We can also log images, raw text, and even html artefacts for more flexibility. It even automatically
+detects matplotlib figures and logs them. All of these results can be visualized in the GUI, and are all stored in a
+single file: the result table database.</p>
+<h2 id="log-scalars"><a class="header" href="#log-scalars">Log scalars</a></h2>
+<p>You can log scalar values such as loss, accuracy, or any other metric use the <code>add_scalar</code> method of the <code>LogWriter</code>
+object. Here is an example of logging loss and accuracy at each epoch:</p>
+<pre><code class="language-python">from deepboard.resultTable import ResultTable
+
+rTable = ResultTable("results.db")
+
+# Create a new LogWriter object named run.
+run = rTable.new_debug_run("My Experiment")
+
+loss = 1.
+accuracy = 0.
+for epoch in range(10):
+    for step in range(100):
+        global_step = epoch * 100 + step
+        loss *= 0.9
+        accuracy = 1 - loss
+        run.add_scalar("Step/loss", loss, step=global_step, epoch=epoch)
+    
+    run.add_scalar("Train/loss", loss, step=global_step, epoch=epoch)
+    run.add_scalar("Train/accuracy", accuracy, step=global_step, epoch=epoch)
+
+run.write_result(accuracy=accuracy)
+</code></pre>
+<p>Let's explore the code above. We simulate three epochs and 100 steps per epoch. At each step, we log the loss and
+accuracy using the <code>add_scalar</code> method. The first argument is the <code>tag</code>, which is a string composed of two
+parts separated by a slash. The first part is the category (e.g., "Train"), and the second part is the name of the
+metric. You will see in the GUI that metrics of the same category are grouped together when comparing runs, and
+metrics with the same name, but in different categories are found in the same figure in the single view. The second
+argument is the value to log, and the last two arguments are optional: <code>step</code> is the global step number, and <code>epoch</code>
+is the current epoch number. If you do not provide the global step, it will be automatically incremented at each call to
+<code>add_scalar</code> with a specific tag.</p>
+<h2 id="log-artefacts-images-html-fragments-text-etc"><a class="header" href="#log-artefacts-images-html-fragments-text-etc">Log artefacts (images, html fragments, text, etc)</a></h2>
+<p>You can also log various type of artefacts, which share a similar api. Here, we will make an example where we log an
+image, and a html hello world fragment to show the concept.</p>
+<pre><code class="language-python">from PIL import Image
+import numpy as np
+
+...
+# Add this in the previous loop
+
+# We create a random image
+img = (np.random.randn(256, 256, 3) * 128).astype(np.uint8)
+img = Image.fromarray(img)
+run.add_image(img, tag="Random Image", step=global_step, epoch=epoch, flush=True)
+
+fragment = "&lt;h1&gt;Hello World&lt;/h1&gt;&lt;p&gt;This is a html fragment logged from Deepboard.&lt;/p&gt;"
+run.add_fragment(fragment, tag="Dummy text", step=global_step, epoch=epoch, flush=True)
+</code></pre>
+<p>Here, we introduce two new parameters: <code>tag</code> and <code>flush</code>. The <code>tag</code> parameter is optional for these methods, and is used
+to categorize artefacts. Adding tags to artefacts allows you to define more precise filters in the GUI. The <code>flush</code>
+parameter will be explained later in the "Automatic cache flushing" section.</p>
+<h2 id="matplotlib-figures"><a class="header" href="#matplotlib-figures">Matplotlib figures</a></h2>
+<p>When you plot figures using matplotlib, the <code>LogWriter</code> object will automatically detect them and log them for you
+in the result table. Here is an example:</p>
+<pre><code class="language-python">import matplotlib.pyplot as plt
+
+...
+# Add this in the previous loop
+
+plt.plot([1, 2, 3], [1, 4, 9])
+plt.title("Sample Plot")
+
+run.write_results(accuracy=0.98)
+</code></pre>
+<p>Figures are detected when a method is called on the <code>LogWriter</code> object, such as <code>add_scalar</code>, <code>add_image</code>, etc. If
+you plot a figure and never call any method after, the figure will not be logged. Fortunately, you can force the
+figures to be detected by calling the <code>detect_and_log_figures</code> method. This method support similar parameters as the
+other artefact logging methods, such as <code>tag</code>, <code>step</code>, <code>epoch</code>, and <code>flush</code>.</p>
+<p>Example:</p>
+<pre><code class="language-python">plt.plot([1, 2, 3], [1, 4, 9])
+plt.title("Sample Plot")
+run.detect_and_log_figures()
+</code></pre>
+<blockquote>
+<p><strong>Tip</strong>:<br />
+If you want to add a tag to your figures, you can call the <code>detect_and_log_figures</code> method with the <code>tag</code> parameter
+right after plotting. This will prevent automatic detection and will assign your tag to the figure.</p>
+</blockquote>
+<h2 id="automatic-memory-flushing"><a class="header" href="#automatic-memory-flushing">Automatic memory flushing</a></h2>
+<p>By default, the <code>LogWriter</code> object keeps in memory recently logged data, and only writes them to the database once
+in a while. This is done to improve performances. The parameters that controls the number of logged data kept in memory
+is determined when creating the new run with the <code>flush_each</code> parameter. If you log less than this parameter value,
+you may not see the logged data in the GUI. To tackle this, you can set the <code>flush</code> parameter to <code>True</code> when logging
+data, which will force flushing everything in memory to the database. As you will write to disk, note that this
+operation is slow, so use it sparingly.</p>
+<p>In addition, calling <code>write_result</code> method automatically flushes everything in memory to the database. This method
+should always be called at the end of your experiment.</p>
+<blockquote>
+<p><strong>Note</strong>:<br />
+Each run has a state: "running", "finished" or "failed". When creating a new run, its state is set to "running". When
+you call the <code>write_result</code> method, the state is set to "finished". If an exception occurs during your experiment,
+the state is set to "failed". In order to get the right state, and flushes all the logs, make sure to call the
+<code>write_result</code> method at the end of your experiment.</p>
+</blockquote>
+<blockquote>
+<p><strong>IMPORTANT</strong>:<br />
+Always call the <code>write_result</code> method at the end of your experiment to ensure that all logged data is saved to
+the database.</p>
+</blockquote>
+<script type="text/markdown" class="md-content" style="display:none;"># Logging
+
+With the result table, we can also log information during runs. For example, we can log the loss and accuracy at each 
+step or epoch. We can also log images, raw text, and even html artefacts for more flexibility. It even automatically 
+detects matplotlib figures and logs them. All of these results can be visualized in the GUI, and are all stored in a 
+single file: the result table database.
+
+## Log scalars
+You can log scalar values such as loss, accuracy, or any other metric use the `add_scalar` method of the `LogWriter` 
+object. Here is an example of logging loss and accuracy at each epoch:
+
+```python
+from deepboard.resultTable import ResultTable
+
+rTable = ResultTable("results.db")
+
+# Create a new LogWriter object named run.
+run = rTable.new_debug_run("My Experiment")
+
+loss = 1.
+accuracy = 0.
+for epoch in range(10):
+    for step in range(100):
+        global_step = epoch * 100 + step
+        loss *= 0.9
+        accuracy = 1 - loss
+        run.add_scalar("Step/loss", loss, step=global_step, epoch=epoch)
+    
+    run.add_scalar("Train/loss", loss, step=global_step, epoch=epoch)
+    run.add_scalar("Train/accuracy", accuracy, step=global_step, epoch=epoch)
+
+run.write_result(accuracy=accuracy)
+```
+
+Let's explore the code above. We simulate three epochs and 100 steps per epoch. At each step, we log the loss and
+accuracy using the `add_scalar` method. The first argument is the `tag`, which is a string composed of two 
+parts separated by a slash. The first part is the category (e.g., "Train"), and the second part is the name of the 
+metric. You will see in the GUI that metrics of the same category are grouped together when comparing runs, and 
+metrics with the same name, but in different categories are found in the same figure in the single view. The second 
+argument is the value to log, and the last two arguments are optional: `step` is the global step number, and `epoch` 
+is the current epoch number. If you do not provide the global step, it will be automatically incremented at each call to
+`add_scalar` with a specific tag.
+
+## Log artefacts (images, html fragments, text, etc)
+You can also log various type of artefacts, which share a similar api. Here, we will make an example where we log an 
+image, and a html hello world fragment to show the concept.
+
+```python
+from PIL import Image
+import numpy as np
+
+...
+# Add this in the previous loop
+
+# We create a random image
+img = (np.random.randn(256, 256, 3) * 128).astype(np.uint8)
+img = Image.fromarray(img)
+run.add_image(img, tag="Random Image", step=global_step, epoch=epoch, flush=True)
+
+fragment = "<h1 id="hello-world"><a class="header" href="#hello-world">Hello World</a></h1><p>This is a html fragment logged from Deepboard.</p>"
+run.add_fragment(fragment, tag="Dummy text", step=global_step, epoch=epoch, flush=True)
+```
+Here, we introduce two new parameters: `tag` and `flush`. The `tag` parameter is optional for these methods, and is used
+to categorize artefacts. Adding tags to artefacts allows you to define more precise filters in the GUI. The `flush` 
+parameter will be explained later in the "Automatic cache flushing" section.
+
+
+## Matplotlib figures
+When you plot figures using matplotlib, the `LogWriter` object will automatically detect them and log them for you 
+in the result table. Here is an example:
+
+```python
+import matplotlib.pyplot as plt
+
+...
+# Add this in the previous loop
+
+plt.plot([1, 2, 3], [1, 4, 9])
+plt.title("Sample Plot")
+
+run.write_results(accuracy=0.98)
+```
+
+Figures are detected when a method is called on the `LogWriter` object, such as `add_scalar`, `add_image`, etc. If 
+you plot a figure and never call any method after, the figure will not be logged. Fortunately, you can force the 
+figures to be detected by calling the `detect_and_log_figures` method. This method support similar parameters as the 
+other artefact logging methods, such as `tag`, `step`, `epoch`, and `flush`. 
+
+Example:
+```python
+plt.plot([1, 2, 3], [1, 4, 9])
+plt.title("Sample Plot")
+run.detect_and_log_figures()
+```
+> **Tip**:\
+> If you want to add a tag to your figures, you can call the `detect_and_log_figures` method with the `tag` parameter 
+> right after plotting. This will prevent automatic detection and will assign your tag to the figure.
+
+## Automatic memory flushing
+By default, the `LogWriter` object keeps in memory recently logged data, and only writes them to the database once 
+in a while. This is done to improve performances. The parameters that controls the number of logged data kept in memory
+is determined when creating the new run with the `flush_each` parameter. If you log less than this parameter value, 
+you may not see the logged data in the GUI. To tackle this, you can set the `flush` parameter to `True` when logging 
+data, which will force flushing everything in memory to the database. As you will write to disk, note that this 
+operation is slow, so use it sparingly.
+
+In addition, calling `write_result` method automatically flushes everything in memory to the database. This method 
+should always be called at the end of your experiment.
+
+> **Note**:\
+> Each run has a state: "running", "finished" or "failed". When creating a new run, its state is set to "running". When 
+> you call the `write_result` method, the state is set to "finished". If an exception occurs during your experiment, 
+> the state is set to "failed". In order to get the right state, and flushes all the logs, make sure to call the 
+> `write_result` method at the end of your experiment.
+
+> **IMPORTANT**:\
+> Always call the `write_result` method at the end of your experiment to ensure that all logged data is saved to 
+> the database.</script><div style="break-before: page; page-break-before: always;"></div><h1 id="parametrization-and-configuration"><a class="header" href="#parametrization-and-configuration">Parametrization and Configuration</a></h1>
+<p>We said earlier that each non-debug experiment must be unique. By default, the uniqueness is defined by the
+combination of multiple elements:</p>
+<ul>
+<li>The configuration file</li>
+<li>The command line arguments</li>
+<li>The tag</li>
+<li>Comment</li>
+</ul>
+<h2 id="configuration-file-and-command-line-arguments"><a class="header" href="#configuration-file-and-command-line-arguments">Configuration file and command line arguments</a></h2>
+<p>You can provide a configuration file path, and command line arguments passed by the user, when creating a new run.
+Any changes in these two elements are detected, and considered when checking for uniqueness. This means that you can
+run multiple time the same script, but change the configuration file or command line arguments, and the
+<code>ResultTable</code> will accept them as different runs.</p>
+<p>Example:</p>
+<pre><code class="language-python">from deepboard.resultTable import ResultTable
+
+rTable = ResultTable("experiments.db")
+run = rTable.new_run(
+    config_path="config.yaml",
+    cli=dict(learning_rate=0.001, batch_size=32)
+)
+</code></pre>
+<h2 id="run-tag"><a class="header" href="#run-tag">Run Tag</a></h2>
+<p>You can provide a tag when creating a new run. The tag can be any string. I recommend using tags to separate between
+different sub-experiments. Tags are also considered when checking for uniqueness. For example, you can run the same
+experiment with the same configuration file and command line arguments, but with different tags, and the
+<code>ResultTable</code> will accept them as different runs.</p>
+<h2 id="comment"><a class="header" href="#comment">Comment</a></h2>
+<p>Finally, you can also provide a comment when creating a new run. The comment can be used to textually describe what
+you changed in this run, in case the <code>ResultTable</code> refuse to create a new run because it believes it not unique.</p>
+<p>For example:</p>
+<pre><code class="language-python">run1 = rTable.new_run(
+    config_path="config.yaml",
+    cli=dict(learning_rate=0.001, batch_size=32)
+)
+run2 = rTable.new_run(
+    config_path="config.yaml",
+    cli=dict(learning_rate=0.001, batch_size=32),
+    comment="This will run because of the comment"
+)
+</code></pre>
+<p>In the previous example, even if both run are the same, the second run will be accepted because of the comment.
+However, usually you should add a comment for a run that <em>is</em> different, and use it to describe what you changed in
+this run.</p>
+<h2 id="hyperparameters"><a class="header" href="#hyperparameters">Hyperparameters</a></h2>
+<p>You can log hyperparameters that you change between runs to the result table using the <code>add_hparams</code> method on the
+<code>LogWriter</code> object. You can provide any arguments as key-value pairs, and they will be stored in the database.</p>
+<p>For example:</p>
+<pre><code class="language-python">run = rTable.new_run(
+    config_path="config.yaml",
+    cli=dict(learning_rate=0.001, batch_size=32)
+)
+run.add_hparams(learning_rate=0.001, batch_size=32, optimizer="adam")
+</code></pre>
+<p>With the previous example, you will see in the GUI that new columns were added to the table with those
+hyperparameters. In addition, a new tab will be created containing all those hyperparameters for easier visualization.</p>
+<script type="text/markdown" class="md-content" style="display:none;"># Parametrization and Configuration
+
+We said earlier that each non-debug experiment must be unique. By default, the uniqueness is defined by the 
+combination of multiple elements:
+- The configuration file
+- The command line arguments
+- The tag
+- Comment
+
+## Configuration file and command line arguments
+
+You can provide a configuration file path, and command line arguments passed by the user, when creating a new run. 
+Any changes in these two elements are detected, and considered when checking for uniqueness. This means that you can 
+run multiple time the same script, but change the configuration file or command line arguments, and the 
+`ResultTable` will accept them as different runs.
+
+Example:
+```python
+from deepboard.resultTable import ResultTable
+
+rTable = ResultTable("experiments.db")
+run = rTable.new_run(
+    config_path="config.yaml",
+    cli=dict(learning_rate=0.001, batch_size=32)
+)
+```
+
+## Run Tag
+You can provide a tag when creating a new run. The tag can be any string. I recommend using tags to separate between 
+different sub-experiments. Tags are also considered when checking for uniqueness. For example, you can run the same 
+experiment with the same configuration file and command line arguments, but with different tags, and the 
+`ResultTable` will accept them as different runs. 
+
+## Comment
+Finally, you can also provide a comment when creating a new run. The comment can be used to textually describe what 
+you changed in this run, in case the `ResultTable` refuse to create a new run because it believes it not unique. 
+
+For example:
+```python
+run1 = rTable.new_run(
+    config_path="config.yaml",
+    cli=dict(learning_rate=0.001, batch_size=32)
+)
+run2 = rTable.new_run(
+    config_path="config.yaml",
+    cli=dict(learning_rate=0.001, batch_size=32),
+    comment="This will run because of the comment"
+)
+```
+
+In the previous example, even if both run are the same, the second run will be accepted because of the comment. 
+However, usually you should add a comment for a run that *is* different, and use it to describe what you changed in 
+this run.
+
+## Hyperparameters
+You can log hyperparameters that you change between runs to the result table using the `add_hparams` method on the 
+`LogWriter` object. You can provide any arguments as key-value pairs, and they will be stored in the database. 
+
+For example:
+```python
+run = rTable.new_run(
+    config_path="config.yaml",
+    cli=dict(learning_rate=0.001, batch_size=32)
+)
+run.add_hparams(learning_rate=0.001, batch_size=32, optimizer="adam")
+```
+
+With the previous example, you will see in the GUI that new columns were added to the table with those 
+hyperparameters. In addition, a new tab will be created containing all those hyperparameters for easier visualization.
+</script><div style="break-before: page; page-break-before: always;"></div><h1 id="advanced-features"><a class="header" href="#advanced-features">Advanced Features</a></h1>
+<p>TODO</p>
+<h2 id="multiple-run-repetitions"><a class="header" href="#multiple-run-repetitions">Multiple run repetitions</a></h2>
+<p>TODO</p>
+<h2 id="commit-flags"><a class="header" href="#commit-flags">Commit flags</a></h2>
+<p>You can prevent the <code>ResultTable</code> from accepting a new run if there is uncommitted changes in the git repository. You
+can do this by setting the <code>nocommit_action</code> when loading the <code>ResultTable</code>. The possible values are:</p>
+<ul>
+<li><code>NoCommitAction.NOP</code>: Ignore, do nothing</li>
+<li><code>NoCommitAction.WARN</code>: Print a warning message if there are uncommitted changes (default behavior)</li>
+<li><code>NoCommitAction.RAISE</code>: Raise an error and prevent the new run from being added</li>
+</ul>
+<h2 id="custom-unique-columns"><a class="header" href="#custom-unique-columns">Custom unique columns</a></h2>
+<p>TODO</p>
+<script type="text/markdown" class="md-content" style="display:none;"># Advanced Features
+TODO
+
+## Multiple run repetitions
+TODO
+
+## Commit flags
+You can prevent the `ResultTable` from accepting a new run if there is uncommitted changes in the git repository. You 
+can do this by setting the `nocommit_action` when loading the `ResultTable`. The possible values are:
+- `NoCommitAction.NOP`: Ignore, do nothing
+- `NoCommitAction.WARN`: Print a warning message if there are uncommitted changes (default behavior)
+- `NoCommitAction.RAISE`: Raise an error and prevent the new run from being added
+
+## Custom unique columns
+TODO
+</script><div style="break-before: page; page-break-before: always;"></div><h1 id="class-resulttable"><a class="header" href="#class-resulttable">Class: <code>ResultTable</code></a></h1>
+<p><strong>Description:</strong> This class represents all the results. There are a lot of method to interact with the resultTable (the database).</p>
+<p>All actions performed by the GUI (DeepBoard) are available by public methods to get a programmatic access.</p>
+<p>How to use:</p>
+<ul>
+<li>
+<p>First, specify a path the result table. If the db was not created, it will be created automatically.</p>
+</li>
+<li>
+<p>Then, create a run with all the specific parameters describing the run. A unique run_id will be generated.
+Note that each run must be unique. This security allows more reproducible runs. If one run perform better than
+the others, you can run the code again with all the parameters in the result table and you should get the same
+results.</p>
+</li>
+<li>
+<p>If you simply want to test your code, you can create a debug run. It won't create a permanent entry in the
+table. You will still be able to see the logged scalars in the GUI with the run_id -1 that is reserved for
+debug runs. This run will be overwritten by the next debug run.</p>
+</li>
+<li>
+<p>Finally, you can interact with the table with the different available methods.</p>
+</li>
+</ul>
+<h2 id="method-get_config"><a class="header" href="#method-get_config">Method: <code>get_config()</code></a></h2>
+<pre><code class="language-python">get_config(self, run_id: int) -&gt; str
+</code></pre>
+<p><strong>Description:</strong> Load the configuration file of a given run id</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>run_id</code>: The run id</li>
+</ul>
+<p><strong>Return:</strong></p>
+<ul>
+<li>The path to the configuration file</li>
+</ul>
+<h2 id="method-get_experiment_raw"><a class="header" href="#method-get_experiment_raw">Method: <code>get_experiment_raw()</code></a></h2>
+<pre><code class="language-python">get_experiment_raw(self, run_id: int) -&gt; Dict[str, Any]
+</code></pre>
+<p><strong>Description:</strong> Load the row of an experiment. It will return a dictionary with the keys being the column names and the values
+the actual values. Note that this does not perform any other operations than fetch in the database. This means
+that it will also show columns that were hidden.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>run_id</code>: The run id to fetch</li>
+</ul>
+<p><strong>Return:</strong></p>
+<ul>
+<li>The raw row of an experiment</li>
+</ul>
+<h2 id="method-get_file_hash"><a class="header" href="#method-get_file_hash">Method: <code>get_file_hash()</code></a></h2>
+<pre><code class="language-python">get_file_hash(configfile: Union[str, IO[str]], hash_algo: str = 'sha256') -&gt; str
+</code></pre>
+<p><strong>Description:</strong> Returns the hash of the file at file_path using the specified hashing algorithm.</p>
+<h2 id="method-get_hidden_runs"><a class="header" href="#method-get_hidden_runs">Method: <code>get_hidden_runs()</code></a></h2>
+<pre><code class="language-python">get_hidden_runs(self) -&gt; List[int]
+</code></pre>
+<p><strong>Description:</strong> Get the list of all hidden run ids.</p>
+<p><strong>Return:</strong></p>
+<ul>
+<li>A list of run ids associated to hidden runs.</li>
+</ul>
+<h2 id="method-get_image_by_id"><a class="header" href="#method-get_image_by_id">Method: <code>get_image_by_id()</code></a></h2>
+<pre><code class="language-python">get_image_by_id(self, image_id: int) -&gt; Optional[PIL.Image.Image]
+</code></pre>
+<p><strong>Description:</strong> If the image_id is valid, it will return the image as a PIL Image object.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>image_id</code>: The id of the image to fetch.</li>
+</ul>
+<p><strong>Return:</strong></p>
+<ul>
+<li>The image as a PIL Image object or None if the image_id is not valid.</li>
+</ul>
+<h2 id="method-get_results"><a class="header" href="#method-get_results">Method: <code>get_results()</code></a></h2>
+<pre><code class="language-python">get_results(self, run_id: Optional[int] = None, show_hidden: bool = False) -&gt; deepboard.resultTable.resultTable.TableTuple
+</code></pre>
+<p><strong>Description:</strong> This function will build the result table and return it as a list. It will also return the column names and
+their unique id. It will not return the columns that were hidden and will format the table to respect the
+column order. By default, it does not include hidden runs, but they can be included by setting the show_hidden.
+You can also get a single row by passing a run_id to the method.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>run_id</code>: the run id. If none is specified, it fetches all results</li>
+<li><code>show_hidden</code>: Show hidden runs.</li>
+</ul>
+<p><strong>Return:</strong></p>
+<ul>
+<li>A list of columns names, a list of column ids, a list of whether they are hparam or not, and a list of rows</li>
+</ul>
+<h2 id="method-hide_column"><a class="header" href="#method-hide_column">Method: <code>hide_column()</code></a></h2>
+<pre><code class="language-python">hide_column(self, column: str)
+</code></pre>
+<p><strong>Description:</strong> Hide a column in the result table.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>column</code>: The column name to hide.</li>
+</ul>
+<h2 id="method-hide_run"><a class="header" href="#method-hide_run">Method: <code>hide_run()</code></a></h2>
+<pre><code class="language-python">hide_run(self, run_id: int)
+</code></pre>
+<p><strong>Description:</strong> Instead of deleting runs and lose information, you can hide it. It will not be visible in the default view of
+the result Table, however, it can be unhidden if it was a mistake.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>run_id</code>: The run id to hide</li>
+</ul>
+<h2 id="method-load_run"><a class="header" href="#method-load_run">Method: <code>load_run()</code></a></h2>
+<pre><code class="language-python">load_run(self, run_id) -&gt; deepboard.resultTable.logwritter.LogWriter
+</code></pre>
+<p><strong>Description:</strong> Load a specific run's LogWriter in read-only mode.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>run_id</code>: The run id</li>
+</ul>
+<p><strong>Return:</strong></p>
+<ul>
+<li>The logWriter bound to the run</li>
+</ul>
+<h2 id="method-new_debug_run"><a class="header" href="#method-new_debug_run">Method: <code>new_debug_run()</code></a></h2>
+<pre><code class="language-python">new_debug_run(self, experiment_name: str, configfile: Union[str, pathlib._local.PurePath, IO[str], NoneType] = None, cli: Optional[dict] = None, comment: Optional[str] = None, tag: str = '', flush_each: int = 10, keep_each: int = 1, auto_log_plt: bool = True, disable: bool = False) -&gt; deepboard.resultTable.logwritter.LogWriter
+</code></pre>
+<p><strong>Description:</strong> Create a new DEBUG socket to log the results. The results will be entered in the result table, but as the runID -1.
+This means that everytime you run the same code, it will overwrite the previous one. This is useful to avoid
+adding too many rows to the table when testing the code or debugging.</p>
+<p>Note:
+It will not log the git diff or git hash</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>experiment_name</code>: The name of the current experiment</li>
+<li><code>configfile</code>: The path to the configuration path</li>
+<li><code>cli</code>: The cli arguments</li>
+<li><code>comment</code>: The comment, if any</li>
+<li><code>tag</code>: The tag of the run</li>
+<li><code>flush_each</code>: Every how many logs does the logger save them to the database?</li>
+<li><code>keep_each</code>: If the training has a lot of steps, it might be preferable to not log every step to save space and speed up the process. This parameter controls every how many step we store the log. 1 means we save at every steps. 10 would mean that we drop 9 steps to save 1.</li>
+<li><code>auto_log_plt</code>: If True, automatically detect if matplotlib figures were generated and log them. Note that it checks only when a method on the socket is called. It is better to log them manually because you can set the appropriate step, epoch and split.</li>
+<li><code>disable</code>: If true, disable the logwriter, meaning that nothing will be written to the database.</li>
+</ul>
+<p><strong>Return:</strong></p>
+<ul>
+<li>The log writer</li>
+</ul>
+<h2 id="method-new_run"><a class="header" href="#method-new_run">Method: <code>new_run()</code></a></h2>
+<pre><code class="language-python">new_run(self, experiment_name: str, configfile: Union[str, pathlib._local.PurePath, IO[str], NoneType] = None, cli: Optional[dict] = None, comment: Optional[str] = None, tag: str = '', flush_each: int = 10, keep_each: int = 1, auto_log_plt: bool = True, disable: bool = False) -&gt; deepboard.resultTable.logwritter.LogWriter
+</code></pre>
+<p><strong>Description:</strong> Create a new logwritter object bound to a run entry in the table. Think of it as a socket.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>experiment_name</code>: The name of the current experiment</li>
+<li><code>configfile</code>: The path to the configuration path, or the file-like object containing the configuration</li>
+<li><code>cli</code>: The cli arguments</li>
+<li><code>comment</code>: The comment, if any</li>
+<li><code>tag</code>: The tag of the run</li>
+<li><code>flush_each</code>: Every how many logs does the logger save them to the database?</li>
+<li><code>keep_each</code>: If the training has a lot of steps, it might be preferable to not log every step to save space and speed up the process. This parameter controls every how many step we store the log. 1 means we save at every steps. 10 would mean that we drop 9 steps to save 1.</li>
+<li><code>auto_log_plt</code>: If True, automatically detect if matplotlib figures were generated and log them. Note that it checks only when a method on the socket is called. It is better to log them manually because you can set the appropriate step, epoch and split.</li>
+<li><code>disable</code>: If true, disable the logwriter, meaning that nothing will be written to the database.</li>
+</ul>
+<p><strong>Return:</strong></p>
+<ul>
+<li>The log writer</li>
+</ul>
+<h2 id="method-set_column_alias"><a class="header" href="#method-set_column_alias">Method: <code>set_column_alias()</code></a></h2>
+<pre><code class="language-python">set_column_alias(self, columns: Dict[str, str])
+</code></pre>
+<p><strong>Description:</strong> Set the alias of the column in the result table.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>columns</code>: A dict of column name and their alias. The alias is the name displayed in the table.</li>
+</ul>
+<h2 id="method-set_column_order"><a class="header" href="#method-set_column_order">Method: <code>set_column_order()</code></a></h2>
+<pre><code class="language-python">set_column_order(self, columns: Dict[str, Optional[int]])
+</code></pre>
+<p><strong>Description:</strong> Set the order of the column in the result table. If order is None, it will be set to NULL</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>columns</code>: A dict of column name and their order. The order is the index of the column in the table. If the order is None, it will be set to NULL and be hidden</li>
+</ul>
+<h2 id="method-show_column"><a class="header" href="#method-show_column">Method: <code>show_column()</code></a></h2>
+<pre><code class="language-python">show_column(self, column: str, order: int = -1)
+</code></pre>
+<p><strong>Description:</strong> Show a column in the result table.
+If order is -1, it will be set to the last column.</p>
+<h2 id="method-show_run"><a class="header" href="#method-show_run">Method: <code>show_run()</code></a></h2>
+<pre><code class="language-python">show_run(self, run_id: int)
+</code></pre>
+<p><strong>Description:</strong> This method unhide a run that has been hidden. It undo the operation performed by <code>hide_run</code>.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>run_id</code>: The run id to show</li>
+</ul>
+<h2 id="method-to_pd"><a class="header" href="#method-to_pd">Method: <code>to_pd()</code></a></h2>
+<pre><code class="language-python">to_pd(self, get_hidden: bool = False) -&gt; pandas.core.frame.DataFrame
+</code></pre>
+<p><strong>Description:</strong> Export the table to a pandas dataframe.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>get_hidden</code>: If True, it will include the hidden runs.</li>
+</ul>
+<p><strong>Return:</strong></p>
+<ul>
+<li>The table as a pandas dataframe.</li>
+</ul>
+<script type="text/markdown" class="md-content" style="display:none;"># Class: `ResultTable`
+
+**Description:** This class represents all the results. There are a lot of method to interact with the resultTable (the database).
+
+All actions performed by the GUI (DeepBoard) are available by public methods to get a programmatic access.
+
+How to use:
+
+- First, specify a path the result table. If the db was not created, it will be created automatically.
+
+- Then, create a run with all the specific parameters describing the run. A unique run_id will be generated.
+Note that each run must be unique. This security allows more reproducible runs. If one run perform better than
+the others, you can run the code again with all the parameters in the result table and you should get the same
+results.
+
+- If you simply want to test your code, you can create a debug run. It won't create a permanent entry in the
+table. You will still be able to see the logged scalars in the GUI with the run_id -1 that is reserved for
+debug runs. This run will be overwritten by the next debug run.
+
+- Finally, you can interact with the table with the different available methods.
+
+## Method: `get_config()`
+
+```python
+get_config(self, run_id: int) -> str
+```
+
+**Description:** Load the configuration file of a given run id
+
+**Parameters:**
+- `run_id`: The run id
+
+**Return:**
+- The path to the configuration file
+## Method: `get_experiment_raw()`
+
+```python
+get_experiment_raw(self, run_id: int) -> Dict[str, Any]
+```
+
+**Description:** Load the row of an experiment. It will return a dictionary with the keys being the column names and the values
+the actual values. Note that this does not perform any other operations than fetch in the database. This means
+that it will also show columns that were hidden.
+
+**Parameters:**
+- `run_id`: The run id to fetch
+
+**Return:**
+- The raw row of an experiment
+## Method: `get_file_hash()`
+
+```python
+get_file_hash(configfile: Union[str, IO[str]], hash_algo: str = 'sha256') -> str
+```
+
+**Description:** Returns the hash of the file at file_path using the specified hashing algorithm.
+
+## Method: `get_hidden_runs()`
+
+```python
+get_hidden_runs(self) -> List[int]
+```
+
+**Description:** Get the list of all hidden run ids.
+
+**Return:**
+- A list of run ids associated to hidden runs.
+## Method: `get_image_by_id()`
+
+```python
+get_image_by_id(self, image_id: int) -> Optional[PIL.Image.Image]
+```
+
+**Description:** If the image_id is valid, it will return the image as a PIL Image object.
+
+**Parameters:**
+- `image_id`: The id of the image to fetch.
+
+**Return:**
+- The image as a PIL Image object or None if the image_id is not valid.
+## Method: `get_results()`
+
+```python
+get_results(self, run_id: Optional[int] = None, show_hidden: bool = False) -> deepboard.resultTable.resultTable.TableTuple
+```
+
+**Description:** This function will build the result table and return it as a list. It will also return the column names and
+their unique id. It will not return the columns that were hidden and will format the table to respect the
+column order. By default, it does not include hidden runs, but they can be included by setting the show_hidden.
+You can also get a single row by passing a run_id to the method.
+
+**Parameters:**
+- `run_id`: the run id. If none is specified, it fetches all results
+- `show_hidden`: Show hidden runs.
+
+**Return:**
+- A list of columns names, a list of column ids, a list of whether they are hparam or not, and a list of rows
+## Method: `hide_column()`
+
+```python
+hide_column(self, column: str)
+```
+
+**Description:** Hide a column in the result table.
+
+**Parameters:**
+- `column`: The column name to hide.
+
+## Method: `hide_run()`
+
+```python
+hide_run(self, run_id: int)
+```
+
+**Description:** Instead of deleting runs and lose information, you can hide it. It will not be visible in the default view of
+the result Table, however, it can be unhidden if it was a mistake.
+
+**Parameters:**
+- `run_id`: The run id to hide
+
+## Method: `load_run()`
+
+```python
+load_run(self, run_id) -> deepboard.resultTable.logwritter.LogWriter
+```
+
+**Description:** Load a specific run's LogWriter in read-only mode.
+
+**Parameters:**
+- `run_id`: The run id
+
+**Return:**
+- The logWriter bound to the run
+## Method: `new_debug_run()`
+
+```python
+new_debug_run(self, experiment_name: str, configfile: Union[str, pathlib._local.PurePath, IO[str], NoneType] = None, cli: Optional[dict] = None, comment: Optional[str] = None, tag: str = '', flush_each: int = 10, keep_each: int = 1, auto_log_plt: bool = True, disable: bool = False) -> deepboard.resultTable.logwritter.LogWriter
+```
+
+**Description:** Create a new DEBUG socket to log the results. The results will be entered in the result table, but as the runID -1.
+This means that everytime you run the same code, it will overwrite the previous one. This is useful to avoid
+adding too many rows to the table when testing the code or debugging.
+
+Note:
+    It will not log the git diff or git hash
+
+**Parameters:**
+- `experiment_name`: The name of the current experiment
+- `configfile`: The path to the configuration path
+- `cli`: The cli arguments
+- `comment`: The comment, if any
+- `tag`: The tag of the run
+- `flush_each`: Every how many logs does the logger save them to the database?
+- `keep_each`: If the training has a lot of steps, it might be preferable to not log every step to save space and speed up the process. This parameter controls every how many step we store the log. 1 means we save at every steps. 10 would mean that we drop 9 steps to save 1.
+- `auto_log_plt`: If True, automatically detect if matplotlib figures were generated and log them. Note that it checks only when a method on the socket is called. It is better to log them manually because you can set the appropriate step, epoch and split.
+- `disable`: If true, disable the logwriter, meaning that nothing will be written to the database.
+
+**Return:**
+- The log writer
+## Method: `new_run()`
+
+```python
+new_run(self, experiment_name: str, configfile: Union[str, pathlib._local.PurePath, IO[str], NoneType] = None, cli: Optional[dict] = None, comment: Optional[str] = None, tag: str = '', flush_each: int = 10, keep_each: int = 1, auto_log_plt: bool = True, disable: bool = False) -> deepboard.resultTable.logwritter.LogWriter
+```
+
+**Description:** Create a new logwritter object bound to a run entry in the table. Think of it as a socket.
+
+**Parameters:**
+- `experiment_name`: The name of the current experiment
+- `configfile`: The path to the configuration path, or the file-like object containing the configuration
+- `cli`: The cli arguments
+- `comment`: The comment, if any
+- `tag`: The tag of the run
+- `flush_each`: Every how many logs does the logger save them to the database?
+- `keep_each`: If the training has a lot of steps, it might be preferable to not log every step to save space and speed up the process. This parameter controls every how many step we store the log. 1 means we save at every steps. 10 would mean that we drop 9 steps to save 1.
+- `auto_log_plt`: If True, automatically detect if matplotlib figures were generated and log them. Note that it checks only when a method on the socket is called. It is better to log them manually because you can set the appropriate step, epoch and split.
+- `disable`: If true, disable the logwriter, meaning that nothing will be written to the database.
+
+**Return:**
+- The log writer
+## Method: `set_column_alias()`
+
+```python
+set_column_alias(self, columns: Dict[str, str])
+```
+
+**Description:** Set the alias of the column in the result table.
+
+**Parameters:**
+- `columns`: A dict of column name and their alias. The alias is the name displayed in the table.
+
+## Method: `set_column_order()`
+
+```python
+set_column_order(self, columns: Dict[str, Optional[int]])
+```
+
+**Description:** Set the order of the column in the result table. If order is None, it will be set to NULL
+
+**Parameters:**
+- `columns`: A dict of column name and their order. The order is the index of the column in the table. If the order is None, it will be set to NULL and be hidden
+
+## Method: `show_column()`
+
+```python
+show_column(self, column: str, order: int = -1)
+```
+
+**Description:** Show a column in the result table.
+If order is -1, it will be set to the last column.
+
+## Method: `show_run()`
+
+```python
+show_run(self, run_id: int)
+```
+
+**Description:** This method unhide a run that has been hidden. It undo the operation performed by `hide_run`.
+
+**Parameters:**
+- `run_id`: The run id to show
+
+## Method: `to_pd()`
+
+```python
+to_pd(self, get_hidden: bool = False) -> pandas.core.frame.DataFrame
+```
+
+**Description:** Export the table to a pandas dataframe.
+
+**Parameters:**
+- `get_hidden`: If True, it will include the hidden runs.
+
+**Return:**
+- The table as a pandas dataframe.
+</script><div style="break-before: page; page-break-before: always;"></div><h1 id="class-logwriter"><a class="header" href="#class-logwriter">Class: <code>LogWriter</code></a></h1>
+<p><strong>Description:</strong> This class makes an object that is bound to a run row in the result table. This means that everything that is
+logged through this object is added into the result table and this object can be used to interact with a specific
+run. This object is single use. This means that once the final results are written, the object becomes read-only.</p>
+<p>You should not instantiate this class directly, but use the ResultTable class to create it instead.</p>
+<h2 id="method-add_fragment"><a class="header" href="#method-add_fragment">Method: <code>add_fragment()</code></a></h2>
+<pre><code class="language-python">add_fragment(self, content: str, step: Optional[int] = None, tag: Optional[str] = None, epoch: Optional[int] = None, flush: bool = False)
+</code></pre>
+<p><strong>Description:</strong> Add a html fragment to the resultTable</p>
+<p>scalar steps.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>content</code>: Must be a string containing valid HTML content.</li>
+<li><code>step</code>: The global step at which the image was generated. If None, the maximum step is taken from all global</li>
+<li><code>tag</code>: A tag describing the fragment.</li>
+<li><code>epoch</code>: The epoch at which the image was generated. If None, no epoch is saved.</li>
+<li><code>flush</code>: If True, flush all data in memory to the database.</li>
+</ul>
+<h2 id="method-add_hparams"><a class="header" href="#method-add_hparams">Method: <code>add_hparams()</code></a></h2>
+<pre><code class="language-python">add_hparams(self, param_dict: Optional[dict[str, Any]] = None, **kwargs)
+</code></pre>
+<p><strong>Description:</strong> Add hyperparameters to the result table</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>param_dict</code>: The hyperparameters to add as a dict.</li>
+<li><code>kwargs</code>: The hyperparameters to save</li>
+</ul>
+<h2 id="method-add_image"><a class="header" href="#method-add_image">Method: <code>add_image()</code></a></h2>
+<pre><code class="language-python">add_image(self, image: Union[bytes, PIL.Image.Image], step: Optional[int] = None, tag: Optional[str] = None, epoch: Optional[int] = None, flush: bool = False)
+</code></pre>
+<p><strong>Description:</strong> Add an image to the resultTable</p>
+<p>steps.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>image</code>: Must be png bytes or a PIL Image object.</li>
+<li><code>step</code>: The global step at which the image was generated. If None, the maximum step is taken from all global</li>
+<li><code>tag</code>: A tag describing the image.</li>
+<li><code>epoch</code>: The epoch at which the image was generated. If None, no epoch is saved.</li>
+<li><code>flush</code>: If True, flush all data in memory to the database.</li>
+</ul>
+<h2 id="method-add_scalar"><a class="header" href="#method-add_scalar">Method: <code>add_scalar()</code></a></h2>
+<pre><code class="language-python">add_scalar(self, tag: str, scalar_value: Union[float, int], step: Optional[int] = None, epoch: Optional[int] = None, walltime: Optional[float] = None, flush: bool = False)
+</code></pre>
+<p><strong>Description:</strong> Add a scalar to the resultTable</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>tag</code>: The tag, formatted as: 'split/name' or simply 'split'</li>
+<li><code>scalar_value</code>: The value</li>
+<li><code>step</code>: The global step. If none, the one calculated is used</li>
+<li><code>epoch</code>: The epoch. If None, none is saved</li>
+<li><code>walltime</code>: Override the wall time with this</li>
+<li><code>flush</code>: Force flush all the scalars in memory</li>
+</ul>
+<h2 id="method-add_text"><a class="header" href="#method-add_text">Method: <code>add_text()</code></a></h2>
+<pre><code class="language-python">add_text(self, text: str, step: Optional[int] = None, tag: Optional[str] = None, epoch: Optional[int] = None, flush: bool = False)
+</code></pre>
+<p><strong>Description:</strong> Add a text sample to the resultTable</p>
+<p>scalar steps.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>text</code>: Must be a string</li>
+<li><code>step</code>: The global step at which the image was generated. If None, the maximum step is taken from all global</li>
+<li><code>tag</code>: A tag describing the text.</li>
+<li><code>epoch</code>: The epoch at which the image was generated. If None, no epoch is saved.</li>
+<li><code>flush</code>: If True, flush all data in memory to the database.</li>
+</ul>
+<h2 id="method-detect_and_log_figures"><a class="header" href="#method-detect_and_log_figures">Method: <code>detect_and_log_figures()</code></a></h2>
+<pre><code class="language-python">detect_and_log_figures(self, step: Optional[int] = None, tag: Optional[str] = None, epoch: Optional[int] = None, flush: bool = False, close_figs: bool = False)
+</code></pre>
+<p><strong>Description:</strong> Detect matplotlib figures that are currently open and log them to the result table. (Save them as png).</p>
+<p>steps.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>step</code>: The global step at which the image was generated. If None, the maximum step is taken from all global</li>
+<li><code>tag</code>: A tag describing the figures.</li>
+<li><code>epoch</code>: The epoch at which the images were generated. If None, no epoch is saved.</li>
+<li><code>flush</code>: If True, flush all data in memory to the database.</li>
+<li><code>close_figs</code>: If True, close all figures after detection.</li>
+</ul>
+<h2 id="method-get_figures"><a class="header" href="#method-get_figures">Method: <code>get_figures()</code></a></h2>
+<pre><code class="language-python">get_figures(self, id: Optional[int] = None, step: Optional[int] = None, tag: Optional[str] = None, epoch: Optional[int] = None, repetition: Optional[int] = None)
+</code></pre>
+<p><strong>Description:</strong> Return all figures logged in the run with the given step, tag and/or epoch.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>id</code>: The id of the figure to read. If None, all figures are returned.</li>
+<li><code>step</code>: The step at which the figure was generated. If None, all figures are returned.</li>
+<li><code>tag</code>: The tag describing the figures. If None, all tags are returned.</li>
+<li><code>epoch</code>: The epoch at which the figures were generated. If None, all epochs are returned.</li>
+<li><code>repetition</code>: The repetition of the figures. If None, all figures are returned.</li>
+</ul>
+<h2 id="method-get_fragment"><a class="header" href="#method-get_fragment">Method: <code>get_fragment()</code></a></h2>
+<pre><code class="language-python">get_fragment(self, id: Optional[int] = None, step: Optional[int] = None, tag: Optional[str] = None, epoch: Optional[int] = None, repetition: Optional[int] = None)
+</code></pre>
+<p><strong>Description:</strong> Return all html fragments logged in the run with the given id, step, tag and/or epoch.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>id</code>: The id of the html fragment to read</li>
+<li><code>step</code>: The step at which the html fragment was generated. If None, all html fragment are returned.</li>
+<li><code>tag</code>: The tag describing the fragment. If None, all tags are returned.</li>
+<li><code>epoch</code>: The epoch at which the html fragments were generated. If None, all epochs are returned.</li>
+<li><code>repetition</code>: The repetition of the run. If None, all html fragment are returned.</li>
+</ul>
+<p><strong>Return:</strong></p>
+<ul>
+<li>A list of html fragment</li>
+</ul>
+<h2 id="method-get_hparams"><a class="header" href="#method-get_hparams">Method: <code>get_hparams()</code></a></h2>
+<pre><code class="language-python">get_hparams(self) -&gt; Dict[str, Any]
+</code></pre>
+<p><strong>Description:</strong> Get the hyperparameters of the current run</p>
+<p><strong>Return:</strong></p>
+<ul>
+<li>A dict of hyperparameters</li>
+</ul>
+<h2 id="method-get_images"><a class="header" href="#method-get_images">Method: <code>get_images()</code></a></h2>
+<pre><code class="language-python">get_images(self, id: Optional[int] = None, step: Optional[int] = None, tag: Optional[str] = None, epoch: Optional[int] = None, repetition: Optional[int] = None) -&gt; List[dict]
+</code></pre>
+<p><strong>Description:</strong> Return all images logged in the run with the given step, tag and/or epoch.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>id</code>: The id of the image to read</li>
+<li><code>step</code>: The step at which the image was generated. If None, all images are returned.</li>
+<li><code>tag</code>: The tag in which the images were generated. If None, all tags are returned.</li>
+<li><code>epoch</code>: The epoch at which the images were generated. If None, all epochs are returned.</li>
+<li><code>repetition</code>: The repetition of the images. If None, all images are returned.</li>
+</ul>
+<p><strong>Return:</strong></p>
+<ul>
+<li>A list of image bytes</li>
+</ul>
+<h2 id="method-get_repetitions"><a class="header" href="#method-get_repetitions">Method: <code>get_repetitions()</code></a></h2>
+<pre><code class="language-python">get_repetitions(self) -&gt; List[int]
+</code></pre>
+<p><strong>Description:</strong> Get the all the repetitions ids of the current run</p>
+<p><strong>Return:</strong></p>
+<ul>
+<li>A list of repetitions ids</li>
+</ul>
+<h2 id="method-get_scalar"><a class="header" href="#method-get_scalar">Method: <code>get_scalar()</code></a></h2>
+<pre><code class="language-python">get_scalar(self, tag) -&gt; List[deepboard.resultTable.scalar.Scalar]
+</code></pre>
+<p><strong>Description:</strong> Read a scalar from the resultTable with the given tag</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>tag</code>: The tag to read formatted as: 'split/name' or simply 'split'.</li>
+</ul>
+<p><strong>Return:</strong></p>
+<ul>
+<li>A list of Scalars items</li>
+</ul>
+<h2 id="method-get_text"><a class="header" href="#method-get_text">Method: <code>get_text()</code></a></h2>
+<pre><code class="language-python">get_text(self, id: Optional[int] = None, step: Optional[int] = None, tag: Optional[str] = None, epoch: Optional[int] = None, repetition: Optional[int] = None)
+</code></pre>
+<p><strong>Description:</strong> Return all text samples logged in the run with the given id, step, tag and/or epoch.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>id</code>: The id of the text sample to read</li>
+<li><code>step</code>: The step at which the text was generated. If None, all text samples are returned.</li>
+<li><code>tag</code>: The tag describing the text. If None, all tags are returned.</li>
+<li><code>epoch</code>: The epoch at which the texts were generated. If None, all epochs are returned.</li>
+<li><code>repetition</code>: The repetition of the run. If None, all text samples are returned.</li>
+</ul>
+<p><strong>Return:</strong></p>
+<ul>
+<li>A list of text samples</li>
+</ul>
+<h2 id="method-new_repetition"><a class="header" href="#method-new_repetition">Method: <code>new_repetition()</code></a></h2>
+<pre><code class="language-python">new_repetition(self)
+</code></pre>
+<p><strong>Description:</strong> Create a new repetition of the current run. This is useful if you want to log multiple repetitions of the same
+run. This is a mutating method, meaning that you can call it at the end of the training loop before the next
+full training loop is run again.</p>
+<h2 id="method-set_color"><a class="header" href="#method-set_color">Method: <code>set_color()</code></a></h2>
+<pre><code class="language-python">set_color(self, color: Optional[str] = None)
+</code></pre>
+<p><strong>Description:</strong> Set the color of the run</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>color</code>: The color to set (hex format without #, e.g. 'ff0000' for red)</li>
+</ul>
+<h2 id="method-set_note"><a class="header" href="#method-set_note">Method: <code>set_note()</code></a></h2>
+<pre><code class="language-python">set_note(self, note: str)
+</code></pre>
+<p><strong>Description:</strong> Update the note of the run</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>note</code>: The note to set (will overwrite the previous one)</li>
+</ul>
+<h2 id="method-set_status"><a class="header" href="#method-set_status">Method: <code>set_status()</code></a></h2>
+<pre><code class="language-python">set_status(self, status: Literal['running', 'finished', 'failed'])
+</code></pre>
+<p><strong>Description:</strong> Manually set the status of the run</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>status</code>: The status to set</li>
+</ul>
+<h2 id="method-set_tag"><a class="header" href="#method-set_tag">Method: <code>set_tag()</code></a></h2>
+<pre><code class="language-python">set_tag(self, tag: str)
+</code></pre>
+<p><strong>Description:</strong> Update the tag of the run</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>tag</code>: The tag to set (will overwrite the previous one)</li>
+</ul>
+<h2 id="method-write_result"><a class="header" href="#method-write_result">Method: <code>write_result()</code></a></h2>
+<pre><code class="language-python">write_result(self, **kwargs)
+</code></pre>
+<p><strong>Description:</strong> Log the results of the run to the table, then disable the logger. This means that the logger will be read-only
+after this operation. If you run multiple iterations, consider writing the results only once all the runs are
+finished. You can aggregate the different metrics before passing them.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>kwargs</code>: The metrics to save</li>
+</ul>
+<script type="text/markdown" class="md-content" style="display:none;"># Class: `LogWriter`
+
+**Description:** This class makes an object that is bound to a run row in the result table. This means that everything that is
+logged through this object is added into the result table and this object can be used to interact with a specific
+run. This object is single use. This means that once the final results are written, the object becomes read-only.
+
+You should not instantiate this class directly, but use the ResultTable class to create it instead.
+
+## Method: `add_fragment()`
+
+```python
+add_fragment(self, content: str, step: Optional[int] = None, tag: Optional[str] = None, epoch: Optional[int] = None, flush: bool = False)
+```
+
+**Description:** Add a html fragment to the resultTable
+
+
+scalar steps.
+
+**Parameters:**
+- `content`: Must be a string containing valid HTML content.
+- `step`: The global step at which the image was generated. If None, the maximum step is taken from all global
+- `tag`: A tag describing the fragment.
+- `epoch`: The epoch at which the image was generated. If None, no epoch is saved.
+- `flush`: If True, flush all data in memory to the database.
+
+## Method: `add_hparams()`
+
+```python
+add_hparams(self, param_dict: Optional[dict[str, Any]] = None, **kwargs)
+```
+
+**Description:** Add hyperparameters to the result table
+
+**Parameters:**
+- `param_dict`: The hyperparameters to add as a dict.
+- `kwargs`: The hyperparameters to save
+
+## Method: `add_image()`
+
+```python
+add_image(self, image: Union[bytes, PIL.Image.Image], step: Optional[int] = None, tag: Optional[str] = None, epoch: Optional[int] = None, flush: bool = False)
+```
+
+**Description:** Add an image to the resultTable
+
+
+steps.
+
+**Parameters:**
+- `image`: Must be png bytes or a PIL Image object.
+- `step`: The global step at which the image was generated. If None, the maximum step is taken from all global
+- `tag`: A tag describing the image.
+- `epoch`: The epoch at which the image was generated. If None, no epoch is saved.
+- `flush`: If True, flush all data in memory to the database.
+
+## Method: `add_scalar()`
+
+```python
+add_scalar(self, tag: str, scalar_value: Union[float, int], step: Optional[int] = None, epoch: Optional[int] = None, walltime: Optional[float] = None, flush: bool = False)
+```
+
+**Description:** Add a scalar to the resultTable
+
+**Parameters:**
+- `tag`: The tag, formatted as: 'split/name' or simply 'split'
+- `scalar_value`: The value
+- `step`: The global step. If none, the one calculated is used
+- `epoch`: The epoch. If None, none is saved
+- `walltime`: Override the wall time with this
+- `flush`: Force flush all the scalars in memory
+
+## Method: `add_text()`
+
+```python
+add_text(self, text: str, step: Optional[int] = None, tag: Optional[str] = None, epoch: Optional[int] = None, flush: bool = False)
+```
+
+**Description:** Add a text sample to the resultTable
+
+
+scalar steps.
+
+**Parameters:**
+- `text`: Must be a string
+- `step`: The global step at which the image was generated. If None, the maximum step is taken from all global
+- `tag`: A tag describing the text.
+- `epoch`: The epoch at which the image was generated. If None, no epoch is saved.
+- `flush`: If True, flush all data in memory to the database.
+
+## Method: `detect_and_log_figures()`
+
+```python
+detect_and_log_figures(self, step: Optional[int] = None, tag: Optional[str] = None, epoch: Optional[int] = None, flush: bool = False, close_figs: bool = False)
+```
+
+**Description:** Detect matplotlib figures that are currently open and log them to the result table. (Save them as png).
+
+steps.
+
+**Parameters:**
+- `step`: The global step at which the image was generated. If None, the maximum step is taken from all global
+- `tag`: A tag describing the figures.
+- `epoch`: The epoch at which the images were generated. If None, no epoch is saved.
+- `flush`: If True, flush all data in memory to the database.
+- `close_figs`: If True, close all figures after detection.
+
+## Method: `get_figures()`
+
+```python
+get_figures(self, id: Optional[int] = None, step: Optional[int] = None, tag: Optional[str] = None, epoch: Optional[int] = None, repetition: Optional[int] = None)
+```
+
+**Description:** Return all figures logged in the run with the given step, tag and/or epoch.
+
+**Parameters:**
+- `id`: The id of the figure to read. If None, all figures are returned.
+- `step`: The step at which the figure was generated. If None, all figures are returned.
+- `tag`: The tag describing the figures. If None, all tags are returned.
+- `epoch`: The epoch at which the figures were generated. If None, all epochs are returned.
+- `repetition`: The repetition of the figures. If None, all figures are returned.
+
+## Method: `get_fragment()`
+
+```python
+get_fragment(self, id: Optional[int] = None, step: Optional[int] = None, tag: Optional[str] = None, epoch: Optional[int] = None, repetition: Optional[int] = None)
+```
+
+**Description:** Return all html fragments logged in the run with the given id, step, tag and/or epoch.
+
+**Parameters:**
+- `id`: The id of the html fragment to read
+- `step`: The step at which the html fragment was generated. If None, all html fragment are returned.
+- `tag`: The tag describing the fragment. If None, all tags are returned.
+- `epoch`: The epoch at which the html fragments were generated. If None, all epochs are returned.
+- `repetition`: The repetition of the run. If None, all html fragment are returned.
+
+**Return:**
+- A list of html fragment
+## Method: `get_hparams()`
+
+```python
+get_hparams(self) -> Dict[str, Any]
+```
+
+**Description:** Get the hyperparameters of the current run
+
+**Return:**
+- A dict of hyperparameters
+## Method: `get_images()`
+
+```python
+get_images(self, id: Optional[int] = None, step: Optional[int] = None, tag: Optional[str] = None, epoch: Optional[int] = None, repetition: Optional[int] = None) -> List[dict]
+```
+
+**Description:** Return all images logged in the run with the given step, tag and/or epoch.
+
+**Parameters:**
+- `id`: The id of the image to read
+- `step`: The step at which the image was generated. If None, all images are returned.
+- `tag`: The tag in which the images were generated. If None, all tags are returned.
+- `epoch`: The epoch at which the images were generated. If None, all epochs are returned.
+- `repetition`: The repetition of the images. If None, all images are returned.
+
+**Return:**
+- A list of image bytes
+## Method: `get_repetitions()`
+
+```python
+get_repetitions(self) -> List[int]
+```
+
+**Description:** Get the all the repetitions ids of the current run
+
+**Return:**
+- A list of repetitions ids
+## Method: `get_scalar()`
+
+```python
+get_scalar(self, tag) -> List[deepboard.resultTable.scalar.Scalar]
+```
+
+**Description:** Read a scalar from the resultTable with the given tag
+
+**Parameters:**
+- `tag`: The tag to read formatted as: 'split/name' or simply 'split'.
+
+**Return:**
+- A list of Scalars items
+## Method: `get_text()`
+
+```python
+get_text(self, id: Optional[int] = None, step: Optional[int] = None, tag: Optional[str] = None, epoch: Optional[int] = None, repetition: Optional[int] = None)
+```
+
+**Description:** Return all text samples logged in the run with the given id, step, tag and/or epoch.
+
+**Parameters:**
+- `id`: The id of the text sample to read
+- `step`: The step at which the text was generated. If None, all text samples are returned.
+- `tag`: The tag describing the text. If None, all tags are returned.
+- `epoch`: The epoch at which the texts were generated. If None, all epochs are returned.
+- `repetition`: The repetition of the run. If None, all text samples are returned.
+
+**Return:**
+- A list of text samples
+## Method: `new_repetition()`
+
+```python
+new_repetition(self)
+```
+
+**Description:** Create a new repetition of the current run. This is useful if you want to log multiple repetitions of the same
+run. This is a mutating method, meaning that you can call it at the end of the training loop before the next
+full training loop is run again.
+
+## Method: `set_color()`
+
+```python
+set_color(self, color: Optional[str] = None)
+```
+
+**Description:** Set the color of the run
+
+**Parameters:**
+- `color`: The color to set (hex format without #, e.g. 'ff0000' for red)
+
+## Method: `set_note()`
+
+```python
+set_note(self, note: str)
+```
+
+**Description:** Update the note of the run
+
+**Parameters:**
+- `note`: The note to set (will overwrite the previous one)
+
+## Method: `set_status()`
+
+```python
+set_status(self, status: Literal['running', 'finished', 'failed'])
+```
+
+**Description:** Manually set the status of the run
+
+**Parameters:**
+- `status`: The status to set
+
+## Method: `set_tag()`
+
+```python
+set_tag(self, tag: str)
+```
+
+**Description:** Update the tag of the run
+
+**Parameters:**
+- `tag`: The tag to set (will overwrite the previous one)
+
+## Method: `write_result()`
+
+```python
+write_result(self, **kwargs)
+```
+
+**Description:** Log the results of the run to the table, then disable the logger. This means that the logger will be read-only
+after this operation. If you run multiple iterations, consider writing the results only once all the runs are
+finished. You can aggregate the different metrics before passing them.
+
+**Parameters:**
+- `kwargs`: The metrics to save
+
+</script><div style="break-before: page; page-break-before: always;"></div><h1 id="enum-nocommitaction"><a class="header" href="#enum-nocommitaction">Enum: <code>NoCommitAction</code></a></h1>
+<p><strong>Description:</strong> How to notify the user when there are changes that are not committed and a new run is started not in DEBUG mode</p>
+<ul>
+<li><code>NOP</code>: No action</li>
+<li><code>WARN</code>: Show a warning</li>
+<li><code>RAISE</code>: Raise an exception</li>
+</ul>
+<pre><code class="language-python">    NOP = NOP
+    WARN = WARN
+    RAISE = RAISE
+</code></pre>
+<script type="text/markdown" class="md-content" style="display:none;"># Enum: `NoCommitAction`
+
+**Description:** How to notify the user when there are changes that are not committed and a new run is started not in DEBUG mode
+- `NOP`: No action
+- `WARN`: Show a warning
+- `RAISE`: Raise an exception
+
+```python
+    NOP = NOP
+    WARN = WARN
+    RAISE = RAISE
+```
+
+</script>
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="theme/download-markdown.js"></script>
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+
+    </div>
+    </body>
+</html>
