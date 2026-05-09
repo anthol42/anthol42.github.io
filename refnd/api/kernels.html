@@ -11,7 +11,7 @@
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
-    <link rel="stylesheet" type="text/css" href="../_static/css/copy_markdown.css?v=922d770f" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/copy_markdown.css?v=6ae93540" />
     
     
 
@@ -295,6 +295,7 @@ by <code class="docutils literal notranslate"><span class="pre">identity_mode</s
 
 <span class="n">aligner</span> <span class="o">=</span> <span class="n">GlobalAligner</span><span class="p">(</span><span class="n">gap_open</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">gap_extend</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">score</span> <span class="o">=</span> <span class="n">aligner</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="s2">&quot;MKTAYIAK&quot;</span><span class="p">,</span> <span class="s2">&quot;MKTAYIAKQR&quot;</span><span class="p">)</span>
+<span class="n">score</span> <span class="o">=</span> <span class="n">aligner</span><span class="p">(</span><span class="s2">&quot;MKTAYIAK&quot;</span><span class="p">,</span> <span class="s2">&quot;MKTAYIAKQR&quot;</span><span class="p">)</span> <span class="c1"># Alternative</span>
 <span class="c1"># score in [0.0, 1.0]</span>
 </pre></div>
 </div>
@@ -347,6 +348,7 @@ receive a score of <code class="docutils literal notranslate"><span class="pre">
 
 <span class="n">aligner</span> <span class="o">=</span> <span class="n">LocalAligner</span><span class="p">(</span><span class="n">min_coverage</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">cov_mode</span><span class="o">=</span><span class="n">CoverageMode</span><span class="o">.</span><span class="n">Query</span><span class="p">)</span>
 <span class="n">score</span> <span class="o">=</span> <span class="n">aligner</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="s2">&quot;ACDEFGHIKLM&quot;</span><span class="p">,</span> <span class="s2">&quot;CDEFGHI&quot;</span><span class="p">)</span>
+<span class="n">score</span> <span class="o">=</span> <span class="n">aligner</span><span class="p">(</span><span class="s2">&quot;ACDEFGHIKLM&quot;</span><span class="p">,</span> <span class="s2">&quot;CDEFGHI&quot;</span><span class="p">)</span> <span class="c1"># Alternative</span>
 </pre></div>
 </div>
 <dl class="py method">
@@ -775,8 +777,7 @@ shows a bottleneck.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">Short</span></code> (8-bit), <code class="docutils literal notranslate"><span class="pre">Half</span></code> (16-bit), <code class="docutils literal notranslate"><span class="pre">Full</span></code> (32-bit), <code class="docutils literal notranslate"><span class="pre">Long</span></code> (64-bit):
 fixed-width integers — lower width is faster but can overflow on long sequences.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Sat</span></code> (default): 8-bit saturating arithmetic; silently clamps on overflow
-instead of wrapping. Safe for typical protein lengths and the recommended default.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Sat</span></code> (default): 8-bit saturating arithmetic; If it saturates, silently restart with 16-bit.</p></li>
 </ul>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="refnd.kernels.protein.sequence.DatatypeWidth.Full">
