@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Projects &middot; Anthony Lavertu</title>
+  <script>
+    (function () {
+      var stored = localStorage.getItem("theme");
+      if (stored === "light" || stored === "dark") {
+        document.documentElement.setAttribute("data-theme", stored);
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+  <nav class="site-nav">
+    <div class="container">
+      <a class="brand" href="/">Anthony Lavertu</a>
+      <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/tools.html">Tools</a>
+        <a href="/projects.html" class="active">Projects</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">🌙</button>
+      </div>
+    </div>
+  </nav>
+
+  <header class="page-header">
+    <div class="container">
+      <h1>Projects</h1>
+      <p>Research I work or worked on, with links to code and publications where available.</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="project-list">
+
+      <article class="project-card">
+        <div class="project-card-head">
+          <h3>Lab-in-the-Loop AMP Discovery</h3>
+          <span class="status-badge">Ongoing</span>
+        </div>
+        <p class="project-meta">Corbeil Lab, Université Laval &middot; Summer 2025 – Present</p>
+        <p>
+          ML lead on a closed-loop antimicrobial peptide discovery system paired with a wet-lab collaborator running
+          a 10K-sample high-throughput potency assay. A fine-tuned transformer with a custom regression head predicts
+          log-fold-change activity across an 870K-peptide database; top and most-uncertain predictions drive the next
+          testing batch (~25% hit rate expected on the first round, validation ongoing). Now exploring stronger
+          pretraining inductive bias and generative models (diffusion, GFlowNets) for direct candidate design.
+          Sponsored by NSERC and FRQNT.
+        </p>
+      </article>
+
+      <article class="project-card">
+        <div class="project-card-head">
+          <h3>QMAP Benchmark</h3>
+          <span class="status-badge">Published</span>
+        </div>
+        <p class="project-meta">Scientific Reports (Nature), 2026 &middot; First author</p>
+        <p>
+          Progress in computational AMP discovery has been hard to quantify because of inconsistent datasets and
+          evaluation protocols. QMAP is a domain-specific, homology-aware benchmark for predicting antimicrobial
+          potency (MIC) and hemolytic toxicity (HC50), with predefined test sets that enforce strict sequence-homology
+          constraints between training and test data so performance reflects true generalization rather than
+          overfitting. Reassessing existing MIC models and establishing new baselines on QMAP reveals limited real
+          progress in the field over six years, poor performance on high-potency MIC regression, and low
+          predictability for hemolytic activity.
+        </p>
+        <div class="project-links">
+          <a href="https://github.com/anthol42/QMAP" target="_blank" rel="noopener">GitHub →</a>
+          <a href="#">Publication →</a>
+        </div>
+      </article>
+
+      <article class="project-card">
+        <div class="project-card-head">
+          <h3>Refnd</h3>
+          <span class="status-badge">Under Review</span>
+        </div>
+        <p class="project-meta">Technical report, targeting ICLR 2027 &middot; First author</p>
+        <p>
+          Machine learning models trained on biochemical data are routinely evaluated using splits that fail to account 
+          for relational structure, causing information leakage and over-optimistic performance estimates. Existing 
+          splitting methods lack theoretical grounding and scale at best quadratically. We introduce the Relational 
+          Generative Process (RGP), a mathematical formalization explaining why relational structure arises in biochemical 
+          datasets, and Refnd, a splitting algorithm that leverages a proximity graph computed in loglinear time using Hierarchical 
+          Navigable Small World (HNSW). We validate on an antimicrobial peptide dataset, showing that Refnd splits yield lower but 
+          more realistic evaluation performance than traditional splits. Refnd is applicable to any dataset arising from an RGP 
+          such as protein sequences and structures, small molecules, and nucleotide sequences, and is openly available as a Rust 
+          accelerated Python package: <code>pip install refnd</code>.
+        </p>
+        <div class="project-links">
+          <a href="https://github.com/anthol42/refnd" target="_blank" rel="noopener">GitHub →</a>
+          <a href="/refnd/">Docs →</a>
+        </div>
+      </article>
+
+      <article class="project-card">
+        <div class="project-card-head">
+          <h3>MALDI Deconvolution</h3>
+          <span class="status-badge">Published</span>
+        </div>
+        <p class="project-meta">ASMS Conference, San Diego, CA, 2026 &middot; First author (poster)</p>
+        <p>
+          A maximum-likelihood decomposition (MLD) algorithm for identifying bacterial species in polymicrobial
+          MALDI-TOF mixtures, where standard identification workflows break
+          down. Reference profiles are built from Gaussian-fitted, DBSCAN-clustered peaks from pure-culture spectra,
+          and mixtures are decomposed by scoring how well each reference profile explains the observed spectrum via
+          a log-likelihood ratio. On synthetic mixtures the method correctly identifies all components (likelihood
+          ratios 1.5&ndash;1.7); experimental validation is ongoing, with mass-shift calibration (lock-mass)
+          identified as the next step to improve robustness.
+        </p>
+        <div class="project-links">
+          <a href="#">Poster / abstract →</a>
+        </div>
+      </article>
+
+      <article class="project-card">
+        <div class="project-card-head">
+          <h3>HDR-Robust Visual SLAM</h3>
+          <span class="status-badge">Ongoing</span>
+        </div>
+        <p class="project-meta">NORLAB, Université Laval &middot; Fall 2025 – Present (part-time)</p>
+        <p>
+          Visual SLAM robust to high-dynamic-range scenes where standard auto-exposure saturates and corrupts
+          position/map estimates. After a deep-learning exposure predictor proved unreliable, switched to capturing
+          multiple fixed-exposure images per frame and added custom factors so exposure changes no longer
+          destabilize the estimate. Grew from a course project into an ongoing collaboration with NORLAB.
+        </p>
+      </article>
+
+      <article class="project-card">
+        <div class="project-card-head">
+          <h3>Autonomous FPV Drone Laser Tag</h3>
+          <span class="status-badge">Ongoing</span>
+        </div>
+        <p class="project-meta">AI Club, Université Laval &middot; 2024 – Present &middot; Team Lead</p>
+        <p>
+          Leading a student team building autonomous FPV drones that compete in a laser tag game, covering
+          hardware, perception, control, and the autonomy stack.
+        </p>
+      </article>
+
+      <article class="project-card">
+        <div class="project-card-head">
+          <h3>AMP Potency Prediction (Early Work)</h3>
+          <span class="status-badge">Past</span>
+        </div>
+        <p class="project-meta">Corbeil Lab, Université Laval &middot; Summer 2024</p>
+        <p>
+          Research internship (NSERC/FRQNT-funded) building a deep learning AMP potency predictor &mdash; later
+          found to be affected by the data-leakage issue that motivated QMAP.
+        </p>
+        <div class="project-links">
+          <span>Superseded by QMAP</span>
+        </div>
+      </article>
+
+      <article class="project-card">
+        <div class="project-card-head">
+          <h3>Synapse Anomaly Detection</h3>
+          <span class="status-badge">Past</span>
+        </div>
+        <p class="project-meta">FLC Lab (Flavie Lavoie-Cardinal), Université Laval &middot; Summer 2023</p>
+        <p>
+          Applied active learning and anomaly detection to identify abnormal synapses in super-resolution
+          microscopy images as potential early precursors of Parkinson's disease.
+        </p>
+        <div class="project-links">
+        </div>
+      </article>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      &copy; 2026 Anthony Lavertu
+    </div>
+  </footer>
+
+  <script src="/assets/js/theme.js"></script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tools &middot; Anthony Lavertu</title>
+  <script>
+    (function () {
+      var stored = localStorage.getItem("theme");
+      if (stored === "light" || stored === "dark") {
+        document.documentElement.setAttribute("data-theme", stored);
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+  <nav class="site-nav">
+    <div class="container">
+      <a class="brand" href="/">Anthony Lavertu</a>
+      <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/tools.html" class="active">Tools</a>
+        <a href="/projects.html">Projects</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">🌙</button>
+      </div>
+    </div>
+  </nav>
+
+  <header class="page-header">
+    <div class="container">
+      <h1>Tools</h1>
+      <p>Open-source libraries and CLIs I build and maintain. Click a card for docs or the repo.</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="card-grid">
+      <a class="card" href="/deepboard/">
+        <div class="card-icon">📊</div>
+        <h3>deepboard</h3>
+        <p>A more flexible, modern alternative to TensorBoard for logging and browsing deep learning experiment results locally.</p>
+        <span class="card-footer">Read the docs →</span>
+      </a>
+
+      <a class="card" href="/refnd/">
+        <div class="card-icon">🧬</div>
+        <h3>Refnd</h3>
+        <p>A framework and O(n log n) algorithm for preventing data leakage when splitting non-i.i.d. relational/biochemical datasets.</p>
+        <span class="card-footer">Read the docs →</span>
+      </a>
+
+      <a class="card" href="/backtestpro/">
+        <div class="card-icon">📈</div>
+        <h3>BacktestPro</h3>
+        <p>A backtesting toolkit for evaluating trading strategies against historical market data.</p>
+        <span class="card-footer">Read the docs →</span>
+      </a>
+
+      <a class="card" href="/msp/">
+        <div class="card-icon">🔌</div>
+        <h3>MSP</h3>
+        <p>Protocol and tooling documentation, with commands, payloads, and examples.</p>
+        <span class="card-footer">Read the docs →</span>
+      </a>
+
+      <a class="card" href="https://github.com/anthol42/torchbuilder" target="_blank" rel="noopener">
+        <div class="card-icon">🛠️</div>
+        <h3>torchbuilder</h3>
+        <p>A CLI tool that scaffolds PyTorch project structure and boilerplate so you can start training, not configuring.</p>
+        <span class="card-footer">View on GitHub →</span>
+      </a>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      &copy; 2026 Anthony Lavertu
+    </div>
+  </footer>
+
+  <script src="/assets/js/theme.js"></script>
+</body>
+</html>

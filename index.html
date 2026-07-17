@@ -1,13 +1,115 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>Redirecting...</title>
-    <script>
-        window.location.href = '/deepboard';
-    </script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Anthony Lavertu</title>
+  <meta name="description" content="Anthony Lavertu — ML researcher in bioinformatics, Université Laval.">
+  <script>
+    (function () {
+      var stored = localStorage.getItem("theme");
+      if (stored === "light" || stored === "dark") {
+        document.documentElement.setAttribute("data-theme", stored);
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
-    If you are not redirected automatically, follow this <a href=/deepboard'>link</a>.
+  <nav class="site-nav">
+    <div class="container">
+      <a class="brand" href="/">Anthony Lavertu</a>
+      <div class="nav-links">
+        <a href="/" class="active">Home</a>
+        <a href="/tools.html">Tools</a>
+        <a href="/projects.html">Projects</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">🌙</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="layout">
+      <aside class="sidebar">
+        <img class="sidebar-avatar" src="/assets/img/profile.jpg" alt="Anthony Lavertu" onerror="this.src='/assets/img/photo_antho.jpg'">
+        <h1 class="sidebar-name">Anthony Lavertu</h1>
+        <p class="sidebar-role">AI for therapeutic design</p>
+        <p class="sidebar-tagline">ML Researcher &middot; Bioinformatics<br>Université Laval</p>
+        <p class="sidebar-location">
+          <svg class="icon" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M12 2C7.86 2 4.5 5.36 4.5 9.5c0 5.25 6.5 11.5 7.06 12.02a0.66.66 0 0 0 .88 0C13 21 19.5 14.75 19.5 9.5 19.5 5.36 16.14 2 12 2zm0 10.25a2.75 2.75 0 1 1 0-5.5 2.75 2.75 0 0 1 0 5.5z"/></svg>
+          Québec, QC, Canada
+        </p>
+
+        <ul class="sidebar-links">
+          <li>
+            <a href="mailto:anthony.lavertu.1@ulaval.ca">
+              <svg class="icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M2 5.5A1.5 1.5 0 0 1 3.5 4h17A1.5 1.5 0 0 1 22 5.5v13a1.5 1.5 0 0 1-1.5 1.5h-17A1.5 1.5 0 0 1 2 18.5v-13Zm2.2.5 7.8 6.1L19.8 6H4.2Zm-.2 1.4V18h16V7.4l-7.5 5.87a1 1 0 0 1-1.24 0L4 7.4Z"/></svg>
+              <span>Email</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/anthol42" target="_blank" rel="noopener">
+              <svg class="icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 2C6.48 2 2 6.58 2 12.19c0 4.49 2.87 8.3 6.84 9.65.5.1.68-.22.68-.49 0-.24-.01-1.04-.01-1.88-2.78.61-3.37-1.21-3.37-1.21-.46-1.19-1.11-1.5-1.11-1.5-.9-.63.07-.62.07-.62 1 .07 1.53 1.05 1.53 1.05.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.31.1-2.73 0 0 .84-.27 2.75 1.05a9.3 9.3 0 0 1 5 0c1.91-1.32 2.75-1.05 2.75-1.05.55 1.42.2 2.47.1 2.73.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.8-4.57 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.49A10.02 10.02 0 0 0 22 12.19C22 6.58 17.52 2 12 2Z"/></svg>
+              <span>GitHub</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://www.linkedin.com/in/anthony-lavertu-2a29a7179/" target="_blank" rel="noopener">
+              <svg class="icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M6.94 8.5H3.56V20.5h3.38V8.5ZM5.25 3a1.96 1.96 0 1 0 0 3.92 1.96 1.96 0 0 0 0-3.92ZM20.5 20.5h-3.37v-6.15c0-1.47-.03-3.35-2.04-3.35-2.05 0-2.36 1.6-2.36 3.25v6.25H9.36V8.5h3.24v1.64h.05c.45-.85 1.56-1.75 3.2-1.75 3.42 0 4.05 2.25 4.05 5.18v6.93Z"/></svg>
+              <span>LinkedIn</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://x.com/lebiffeur" target="_blank" rel="noopener">
+              <svg class="icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M18.9 2H22l-7.6 8.7L23 22h-7.1l-5.5-7.2L4 22H1l8.1-9.2L1.3 2h7.3l5 6.6L18.9 2Zm-1.2 18h1.7L7.4 4h-1.8l12.1 16Z"/></svg>
+              <span>X / Twitter</span>
+            </a>
+          </li>
+        </ul>
+        <a class="btn btn-primary sidebar-cv" href="/assets/cv/CV.pdf">Download CV</a>
+      </aside>
+
+      <main class="main-content">
+        <section class="section">
+          <h2>About Me</h2>
+          <p>
+            I'm a graduate researcher in computer science at Université Laval, working at the intersection of
+            machine learning and bioinformatics. I lead the ML side of a closed-loop antimicrobial peptide (AMP)
+            discovery system that pairs model-guided candidate selection with an high-throughput wet-lab assay. I also study
+            how data leakage and non-i.i.d. structure quietly break evaluation in biochemical ML &mdash; work that
+            led to the QMAP benchmark and, more generally, the Refnd framework for leakage-safe splitting.
+            Appart from BioAI, I am also interested in robotics. I am collaborate part-time with NORLAB on 
+            visual SLAM robust to high-dynamic-range scenes. Finally, I also lead a student team building autonomous 
+            FPV drones for a laser-tag competition.
+          </p>
+          <p>
+            My goal is to build ML systems that integrate tightly with wet-lab validation, creating a
+            self-reinforcing loop where the model learns from its own mistakes. I believe this synergy between
+            computation and experiment is key to accelerating therapeutic development. I'm interested in drug
+            design broadly &mdash; peptide-based drugs, gene therapies, antibody therapies, and RNA therapies alike,
+            with a particular pull toward gene therapies.
+          </p>
+        </section>
+
+        <section class="section">
+          <h2>Highlights</h2>
+          <ul class="highlights">
+            <li>Closed-loop ML/wet-lab AMP discovery system (ML lead) &mdash; ~25% anticipated hit rate.</li>
+            <li>3x first-author scientific contributions (Scientific Reports, ASMS poster, technical report targeting ICLR).</li>
+            <li>NSERC + FRQNT funded (twice).</li>
+            <li>4.33/4.33 (M.Sc.), 4.29/4.33 (B.Sc.), Université Laval.</li>
+          </ul>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container">
+      &copy; 2026 Anthony Lavertu
+    </div>
+  </footer>
+
+  <script src="/assets/js/theme.js"></script>
 </body>
 </html>
