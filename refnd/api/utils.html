@@ -274,6 +274,24 @@ but plain Python lists and numpy arrays are also accepted.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="refnd.utils.BitFingerprint.random">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">random</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">len</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#refnd.utils.BitFingerprint" title="refnd.utils.BitFingerprint"><span class="pre">BitFingerprint</span></a></span></span><a class="headerlink" href="#refnd.utils.BitFingerprint.random" title="Link to this definition">¶</a></dt>
+<dd><p>Create a fingerprint of <code class="docutils literal notranslate"><span class="pre">len</span></code> bits with exactly <code class="docutils literal notranslate"><span class="pre">count</span></code> bits set at random.</p>
+<p>Useful for randomized testing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>len</strong> – Total number of bits.</p></li>
+<li><p><strong>count</strong> – Number of bits to turn on. Must be <code class="docutils literal notranslate"><span class="pre">&lt;=</span> <span class="pre">len</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">count</span> <span class="pre">&gt;</span> <span class="pre">len</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="refnd.utils.BitFingerprint.to_list">
 <span class="sig-name descname"><span class="pre">to_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#refnd.utils.BitFingerprint.to_list" title="Link to this definition">¶</a></dt>
 <dd><p>Export as a list of booleans.</p>
@@ -290,6 +308,16 @@ but plain Python lists and numpy arrays are also accepted.</p>
 <span class="sig-name descname"><span class="pre">to_rdkit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ExplicitBitVect</span></span></span><a class="headerlink" href="#refnd.utils.BitFingerprint.to_rdkit" title="Link to this definition">¶</a></dt>
 <dd><p>Export as an RDKit <code class="docutils literal notranslate"><span class="pre">ExplicitBitVect</span></code>.</p>
 </dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="refnd.utils.BitFingerprint.fp">
+<span class="sig-name descname"><span class="pre">fp</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ExplicitBitVect</span></span><a class="headerlink" href="#refnd.utils.BitFingerprint.fp" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="refnd.utils.BitFingerprint.return">
+<span class="sig-name descname"><span class="pre">return</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#refnd.utils.BitFingerprint" title="refnd.utils.BitFingerprint"><span class="pre">BitFingerprint</span></a></span><a class="headerlink" href="#refnd.utils.BitFingerprint.return" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -348,6 +376,40 @@ but plain Python lists and numpy arrays are also accepted.</p>
 <dd><p>Export as an RDKit <code class="docutils literal notranslate"><span class="pre">UIntSparseIntVect</span></code>, compatible with <code class="docutils literal notranslate"><span class="pre">GetCountFingerprint</span></code>.
 Only non-zero elements are stored; the length equals <code class="docutils literal notranslate"><span class="pre">len(self)</span></code>.</p>
 </dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="refnd.utils.RealFingerprint.fp">
+<span class="sig-name descname"><span class="pre">fp</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">UIntSparseIntVect</span></span><a class="headerlink" href="#refnd.utils.RealFingerprint.fp" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="refnd.utils.RealFingerprint.return">
+<span class="sig-name descname"><span class="pre">return</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#refnd.utils.RealFingerprint" title="refnd.utils.RealFingerprint"><span class="pre">RealFingerprint</span></a></span><a class="headerlink" href="#refnd.utils.RealFingerprint.return" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="refnd.utils.PdbStructure">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">refnd.utils.</span></span><span class="sig-name descname"><span class="pre">PdbStructure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#refnd.utils.PdbStructure" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A protein structure loaded from a PDB file and held in memory.</p>
+<p>The structure is parsed once on construction and the coordinate arrays are
+kept alive for the lifetime of the object. Cloning is cheap (reference-counted).</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">refnd.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">PdbStructure</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">PdbStructure</span><span class="p">(</span><span class="s2">&quot;1abc.pdb&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="refnd.utils.PdbStructure.path">
+<span class="sig-name descname"><span class="pre">path</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#refnd.utils.PdbStructure.path" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="refnd.utils.PdbStructure.return">
+<span class="sig-name descname"><span class="pre">return</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#refnd.utils.PdbStructure" title="refnd.utils.PdbStructure"><span class="pre">PdbStructure</span></a></span><a class="headerlink" href="#refnd.utils.PdbStructure.return" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -459,9 +521,12 @@ most populous label.</p>
 <li><a class="reference internal" href="#refnd.utils.BitFingerprint.count"><code class="docutils literal notranslate"><span class="pre">BitFingerprint.count()</span></code></a></li>
 <li><a class="reference internal" href="#refnd.utils.BitFingerprint.from_list"><code class="docutils literal notranslate"><span class="pre">BitFingerprint.from_list()</span></code></a></li>
 <li><a class="reference internal" href="#refnd.utils.BitFingerprint.from_np"><code class="docutils literal notranslate"><span class="pre">BitFingerprint.from_np()</span></code></a></li>
+<li><a class="reference internal" href="#refnd.utils.BitFingerprint.random"><code class="docutils literal notranslate"><span class="pre">BitFingerprint.random()</span></code></a></li>
 <li><a class="reference internal" href="#refnd.utils.BitFingerprint.to_list"><code class="docutils literal notranslate"><span class="pre">BitFingerprint.to_list()</span></code></a></li>
 <li><a class="reference internal" href="#refnd.utils.BitFingerprint.to_np"><code class="docutils literal notranslate"><span class="pre">BitFingerprint.to_np()</span></code></a></li>
 <li><a class="reference internal" href="#refnd.utils.BitFingerprint.to_rdkit"><code class="docutils literal notranslate"><span class="pre">BitFingerprint.to_rdkit()</span></code></a></li>
+<li><a class="reference internal" href="#refnd.utils.BitFingerprint.fp"><code class="docutils literal notranslate"><span class="pre">BitFingerprint.fp</span></code></a></li>
+<li><a class="reference internal" href="#refnd.utils.BitFingerprint.return"><code class="docutils literal notranslate"><span class="pre">BitFingerprint.return</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#refnd.utils.RealFingerprint"><code class="docutils literal notranslate"><span class="pre">RealFingerprint</span></code></a><ul>
@@ -471,6 +536,13 @@ most populous label.</p>
 <li><a class="reference internal" href="#refnd.utils.RealFingerprint.to_list"><code class="docutils literal notranslate"><span class="pre">RealFingerprint.to_list()</span></code></a></li>
 <li><a class="reference internal" href="#refnd.utils.RealFingerprint.to_np"><code class="docutils literal notranslate"><span class="pre">RealFingerprint.to_np()</span></code></a></li>
 <li><a class="reference internal" href="#refnd.utils.RealFingerprint.to_rdkit"><code class="docutils literal notranslate"><span class="pre">RealFingerprint.to_rdkit()</span></code></a></li>
+<li><a class="reference internal" href="#refnd.utils.RealFingerprint.fp"><code class="docutils literal notranslate"><span class="pre">RealFingerprint.fp</span></code></a></li>
+<li><a class="reference internal" href="#refnd.utils.RealFingerprint.return"><code class="docutils literal notranslate"><span class="pre">RealFingerprint.return</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#refnd.utils.PdbStructure"><code class="docutils literal notranslate"><span class="pre">PdbStructure</span></code></a><ul>
+<li><a class="reference internal" href="#refnd.utils.PdbStructure.path"><code class="docutils literal notranslate"><span class="pre">PdbStructure.path</span></code></a></li>
+<li><a class="reference internal" href="#refnd.utils.PdbStructure.return"><code class="docutils literal notranslate"><span class="pre">PdbStructure.return</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#refnd.utils.read_fasta"><code class="docutils literal notranslate"><span class="pre">read_fasta()</span></code></a></li>

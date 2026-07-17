@@ -243,13 +243,18 @@
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">refnd.kernels.</span></span><span class="sig-name descname"><span class="pre">KernelVariant</span></span><a class="headerlink" href="#refnd.kernels.KernelVariant" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.KernelVariant.ProteinGlobal">
-<span class="sig-name descname"><span class="pre">ProteinGlobal</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">KernelVariant.ProteinGlobal</span></span><a class="headerlink" href="#refnd.kernels.KernelVariant.ProteinGlobal" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.KernelVariant.AlignmentGlobal">
+<span class="sig-name descname"><span class="pre">AlignmentGlobal</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">KernelVariant.AlignmentGlobal</span></span><a class="headerlink" href="#refnd.kernels.KernelVariant.AlignmentGlobal" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.KernelVariant.ProteinLocal">
-<span class="sig-name descname"><span class="pre">ProteinLocal</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">KernelVariant.ProteinLocal</span></span><a class="headerlink" href="#refnd.kernels.KernelVariant.ProteinLocal" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.KernelVariant.AlignmentLocal">
+<span class="sig-name descname"><span class="pre">AlignmentLocal</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">KernelVariant.AlignmentLocal</span></span><a class="headerlink" href="#refnd.kernels.KernelVariant.AlignmentLocal" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="refnd.kernels.KernelVariant.Structure">
+<span class="sig-name descname"><span class="pre">Structure</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">KernelVariant.Structure</span></span><a class="headerlink" href="#refnd.kernels.KernelVariant.Structure" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -264,20 +269,56 @@
 
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="refnd.kernels.zip_kernel">
+<span class="sig-prename descclassname"><span class="pre">refnd.kernels.</span></span><span class="sig-name descname"><span class="pre">zip_kernel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variant</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#refnd.kernels.KernelVariant" title="refnd.kernels.KernelVariant"><span class="pre">KernelVariant</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">data1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_threads</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#refnd.kernels.zip_kernel" title="Link to this definition">¶</a></dt>
+<dd><p>Compute pairwise kernel scores between two equal-length sequences of data items in parallel.</p>
+<p>Evaluates <code class="docutils literal notranslate"><span class="pre">kernel(data1[i],</span> <span class="pre">data2[i])</span></code> for each index <code class="docutils literal notranslate"><span class="pre">i</span></code> and returns the scores
+as a flat <code class="docutils literal notranslate"><span class="pre">list[float]</span></code> of length <code class="docutils literal notranslate"><span class="pre">len(data1)</span></code>.</p>
+<p>Extra positional and keyword arguments are forwarded to the kernel constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>variant</strong> – Which kernel to use.</p></li>
+<li><p><strong>data1</strong> – First sequence of items.</p></li>
+<li><p><strong>data2</strong> – Second sequence of items. Must have the same length as <code class="docutils literal notranslate"><span class="pre">data1</span></code>.</p></li>
+<li><p><strong>n_threads</strong> – Number of parallel threads. <code class="docutils literal notranslate"><span class="pre">0</span></code> uses all available cores.</p></li>
+<li><p><strong>progress</strong> – Show a progress bar. Defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A <code class="docutils literal notranslate"><span class="pre">list[float]</span></code> of length <code class="docutils literal notranslate"><span class="pre">len(data1)</span></code> where <code class="docutils literal notranslate"><span class="pre">result[i]</span> <span class="pre">=</span> <span class="pre">kernel(data1[i],</span> <span class="pre">data2[i])</span></code>.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">data1</span></code> and <code class="docutils literal notranslate"><span class="pre">data2</span></code> have different lengths.</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">refnd</span><span class="w"> </span><span class="kn">import</span> <span class="n">KernelVariant</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">refnd.kernels</span><span class="w"> </span><span class="kn">import</span> <span class="n">zip_kernel</span>
+
+<span class="n">seqs1</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;MKTAYIAK&quot;</span><span class="p">,</span> <span class="s2">&quot;ACDEFGHIKLM&quot;</span><span class="p">]</span>
+<span class="n">seqs2</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;MKTAYIAKQR&quot;</span><span class="p">,</span> <span class="s2">&quot;ACDEF&quot;</span><span class="p">]</span>
+<span class="n">scores</span> <span class="o">=</span> <span class="n">zip_kernel</span><span class="p">(</span><span class="n">KernelVariant</span><span class="o">.</span><span class="n">AlignmentGlobal</span><span class="p">,</span> <span class="n">seqs1</span><span class="p">,</span> <span class="n">seqs2</span><span class="p">)</span>
+<span class="c1"># scores[i] == kernel(seqs1[i], seqs2[i])</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </section>
-<section id="refnd-kernels-protein-sequence">
-<h2>refnd.kernels.protein.sequence<a class="headerlink" href="#refnd-kernels-protein-sequence" title="Link to this heading">¶</a></h2>
-<p>Protein sequence aligners and their configuration enums.</p>
-<dl class="py class" id="module-refnd.kernels.protein.sequence">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.GlobalAligner">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">refnd.kernels.protein.sequence.</span></span><span class="sig-name descname"><span class="pre">GlobalAligner</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gap_open</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">11</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gap_extend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix" title="refnd.kernels.protein.sequence.ScoringMatrix"><span class="pre">ScoringMatrix</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">ScoringMatrix.Blosum62</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">identity_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#refnd.kernels.protein.sequence.GlobalIdentityMode" title="refnd.kernels.protein.sequence.GlobalIdentityMode"><span class="pre">GlobalIdentityMode</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">GlobalIdentityMode.MaxLength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vectorization</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#refnd.kernels.protein.sequence.VectorizationStrategy" title="refnd.kernels.protein.sequence.VectorizationStrategy"><span class="pre">VectorizationStrategy</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">VectorizationStrategy.Scan</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#refnd.kernels.protein.sequence.DatatypeWidth" title="refnd.kernels.protein.sequence.DatatypeWidth"><span class="pre">DatatypeWidth</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">DatatypeWidth.Sat</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#refnd.kernels.protein.sequence.GlobalAligner" title="Link to this definition">¶</a></dt>
+<section id="refnd-kernels-alignments">
+<h2>refnd.kernels.alignments<a class="headerlink" href="#refnd-kernels-alignments" title="Link to this heading">¶</a></h2>
+<p>Protein or Nucleotide sequence aligners and their configuration enums.</p>
+<dl class="py class" id="module-refnd.kernels.alignments">
+<dt class="sig sig-object py" id="refnd.kernels.alignments.GlobalAligner">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">refnd.kernels.alignments.</span></span><span class="sig-name descname"><span class="pre">GlobalAligner</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gap_open</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">11</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gap_extend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix" title="refnd.kernels.alignments.ScoringMatrix"><span class="pre">ScoringMatrix</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">ScoringMatrix.Blosum62</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">identity_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#refnd.kernels.alignments.GlobalIdentityMode" title="refnd.kernels.alignments.GlobalIdentityMode"><span class="pre">GlobalIdentityMode</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">GlobalIdentityMode.MaxLength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vectorization</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#refnd.kernels.alignments.VectorizationStrategy" title="refnd.kernels.alignments.VectorizationStrategy"><span class="pre">VectorizationStrategy</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">VectorizationStrategy.Scan</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#refnd.kernels.alignments.DatatypeWidth" title="refnd.kernels.alignments.DatatypeWidth"><span class="pre">DatatypeWidth</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">DatatypeWidth.Sat</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#refnd.kernels.alignments.GlobalAligner" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Needleman–Wunsch global sequence aligner returning a normalised identity score.</p>
 <p>Wraps the parasail SIMD alignment library. The identity score is computed as
 the number of identical aligned positions divided by the denominator selected
 by <code class="docutils literal notranslate"><span class="pre">identity_mode</span></code>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">GlobalAligner</span></code> is used as a kernel in <code class="docutils literal notranslate"><span class="pre">HNSWState</span></code>, <code class="docutils literal notranslate"><span class="pre">exact_edges</span></code>, and
-<code class="docutils literal notranslate"><span class="pre">exact_nearest_neighbors</span></code> via <code class="docutils literal notranslate"><span class="pre">KernelVariant.ProteinGlobal</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">exact_nearest_neighbors</span></code> via <code class="docutils literal notranslate"><span class="pre">KernelVariant.AlignmentGlobal</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -291,7 +332,7 @@ by <code class="docutils literal notranslate"><span class="pre">identity_mode</s
 </dd>
 </dl>
 <p>Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">refnd.kernels.protein.sequence</span><span class="w"> </span><span class="kn">import</span> <span class="n">GlobalAligner</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">refnd.kernels.alignments</span><span class="w"> </span><span class="kn">import</span> <span class="n">GlobalAligner</span>
 
 <span class="n">aligner</span> <span class="o">=</span> <span class="n">GlobalAligner</span><span class="p">(</span><span class="n">gap_open</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">gap_extend</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">score</span> <span class="o">=</span> <span class="n">aligner</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="s2">&quot;MKTAYIAK&quot;</span><span class="p">,</span> <span class="s2">&quot;MKTAYIAKQR&quot;</span><span class="p">)</span>
@@ -300,14 +341,14 @@ by <code class="docutils literal notranslate"><span class="pre">identity_mode</s
 </pre></div>
 </div>
 <dl class="py method">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.GlobalAligner.call">
-<span class="sig-name descname"><span class="pre">call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref_sample</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.GlobalAligner.call" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.GlobalAligner.call">
+<span class="sig-name descname"><span class="pre">call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref_sample</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#refnd.kernels.alignments.GlobalAligner.call" title="Link to this definition">¶</a></dt>
 <dd><p>Compute the global alignment identity between two sequences.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ref_sample</strong> – Reference protein sequence (single-letter amino acid codes).</p></li>
-<li><p><strong>query</strong> – Query protein sequence.</p></li>
+<li><p><strong>ref_sample</strong> – Reference sequence (single-letter amino acid codes or nucleotides).</p></li>
+<li><p><strong>query</strong> – Query sequence.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -319,14 +360,14 @@ by <code class="docutils literal notranslate"><span class="pre">identity_mode</s
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.LocalAligner">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">refnd.kernels.protein.sequence.</span></span><span class="sig-name descname"><span class="pre">LocalAligner</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gap_open</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">11</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gap_extend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_coverage</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.800000011920929</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cov_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#refnd.kernels.protein.sequence.CoverageMode" title="refnd.kernels.protein.sequence.CoverageMode"><span class="pre">CoverageMode</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">CoverageMode.BothQueryTarget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix" title="refnd.kernels.protein.sequence.ScoringMatrix"><span class="pre">ScoringMatrix</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">ScoringMatrix.Blosum62</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">identity_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#refnd.kernels.protein.sequence.LocalIdentityMode" title="refnd.kernels.protein.sequence.LocalIdentityMode"><span class="pre">LocalIdentityMode</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">LocalIdentityMode.AlignmentLength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vectorization</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#refnd.kernels.protein.sequence.VectorizationStrategy" title="refnd.kernels.protein.sequence.VectorizationStrategy"><span class="pre">VectorizationStrategy</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">VectorizationStrategy.Striped</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#refnd.kernels.protein.sequence.DatatypeWidth" title="refnd.kernels.protein.sequence.DatatypeWidth"><span class="pre">DatatypeWidth</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">DatatypeWidth.Sat</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#refnd.kernels.protein.sequence.LocalAligner" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.LocalAligner">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">refnd.kernels.alignments.</span></span><span class="sig-name descname"><span class="pre">LocalAligner</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gap_open</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">11</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gap_extend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_coverage</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.800000011920929</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cov_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#refnd.kernels.alignments.CoverageMode" title="refnd.kernels.alignments.CoverageMode"><span class="pre">CoverageMode</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">CoverageMode.BothQueryTarget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix" title="refnd.kernels.alignments.ScoringMatrix"><span class="pre">ScoringMatrix</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">ScoringMatrix.Blosum62</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">identity_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#refnd.kernels.alignments.LocalIdentityMode" title="refnd.kernels.alignments.LocalIdentityMode"><span class="pre">LocalIdentityMode</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">LocalIdentityMode.AlignmentLength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vectorization</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#refnd.kernels.alignments.VectorizationStrategy" title="refnd.kernels.alignments.VectorizationStrategy"><span class="pre">VectorizationStrategy</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">VectorizationStrategy.Striped</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#refnd.kernels.alignments.DatatypeWidth" title="refnd.kernels.alignments.DatatypeWidth"><span class="pre">DatatypeWidth</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">DatatypeWidth.Sat</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#refnd.kernels.alignments.LocalAligner" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Smith–Waterman local sequence aligner returning a normalised identity score.</p>
 <p>Like <code class="docutils literal notranslate"><span class="pre">GlobalAligner</span></code> but aligns only the most similar sub-region of each
 sequence. Pairs that do not meet the <code class="docutils literal notranslate"><span class="pre">min_coverage</span></code> criterion after alignment
 receive a score of <code class="docutils literal notranslate"><span class="pre">0.0</span></code>.</p>
-<p><code class="docutils literal notranslate"><span class="pre">LocalAligner</span></code> is used as a kernel via <code class="docutils literal notranslate"><span class="pre">KernelVariant.ProteinLocal</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">LocalAligner</span></code> is used as a kernel via <code class="docutils literal notranslate"><span class="pre">KernelVariant.AlignmentLocal</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -344,7 +385,7 @@ receive a score of <code class="docutils literal notranslate"><span class="pre">
 </dd>
 </dl>
 <p>Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">refnd.kernels.protein.sequence</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalAligner</span><span class="p">,</span> <span class="n">CoverageMode</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">refnd.kernels.alignments</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalAligner</span><span class="p">,</span> <span class="n">CoverageMode</span>
 
 <span class="n">aligner</span> <span class="o">=</span> <span class="n">LocalAligner</span><span class="p">(</span><span class="n">min_coverage</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">cov_mode</span><span class="o">=</span><span class="n">CoverageMode</span><span class="o">.</span><span class="n">Query</span><span class="p">)</span>
 <span class="n">score</span> <span class="o">=</span> <span class="n">aligner</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="s2">&quot;ACDEFGHIKLM&quot;</span><span class="p">,</span> <span class="s2">&quot;CDEFGHI&quot;</span><span class="p">)</span>
@@ -352,18 +393,18 @@ receive a score of <code class="docutils literal notranslate"><span class="pre">
 </pre></div>
 </div>
 <dl class="py method">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.LocalAligner.call">
-<span class="sig-name descname"><span class="pre">call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref_sample</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.LocalAligner.call" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.LocalAligner.call">
+<span class="sig-name descname"><span class="pre">call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref_sample</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#refnd.kernels.alignments.LocalAligner.call" title="Link to this definition">¶</a></dt>
 <dd><p>Compute the local alignment identity between two sequences.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ref_sample</strong> – Reference protein sequence (single-letter amino acid codes).</p></li>
-<li><p><strong>query</strong> – Query protein sequence.</p></li>
+<li><p><strong>ref_sample</strong> – Reference alignments sequence (single-letter amino acid codes).</p></li>
+<li><p><strong>query</strong> – Query alignments sequence.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Identity score in <code class="docutils literal notranslate"><span class="pre">[0.0,</span> <span class="pre">1.0]</span></code>, or <code class="docutils literal notranslate"><span class="pre">0.0</span></code> if the coverage filter fails.</p>
+<dd class="field-even"><p>Identity score in <code class="docutils literal notranslate"><span class="pre">[0.0,</span> <span class="pre">1.0]</span></code>, or <code class="docutils literal notranslate"><span class="pre">1.0</span></code> if the coverage filter fails.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -371,346 +412,361 @@ receive a score of <code class="docutils literal notranslate"><span class="pre">
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">refnd.kernels.protein.sequence.</span></span><span class="sig-name descname"><span class="pre">ScoringMatrix</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">refnd.kernels.alignments.</span></span><span class="sig-name descname"><span class="pre">ScoringMatrix</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Blosum100">
-<span class="sig-name descname"><span class="pre">Blosum100</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Blosum100</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Blosum100" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Blosum100">
+<span class="sig-name descname"><span class="pre">Blosum100</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Blosum100</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Blosum100" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Blosum30">
-<span class="sig-name descname"><span class="pre">Blosum30</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Blosum30</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Blosum30" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Blosum30">
+<span class="sig-name descname"><span class="pre">Blosum30</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Blosum30</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Blosum30" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Blosum35">
-<span class="sig-name descname"><span class="pre">Blosum35</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Blosum35</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Blosum35" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Blosum35">
+<span class="sig-name descname"><span class="pre">Blosum35</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Blosum35</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Blosum35" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Blosum40">
-<span class="sig-name descname"><span class="pre">Blosum40</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Blosum40</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Blosum40" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Blosum40">
+<span class="sig-name descname"><span class="pre">Blosum40</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Blosum40</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Blosum40" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Blosum45">
-<span class="sig-name descname"><span class="pre">Blosum45</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Blosum45</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Blosum45" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Blosum45">
+<span class="sig-name descname"><span class="pre">Blosum45</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Blosum45</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Blosum45" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Blosum50">
-<span class="sig-name descname"><span class="pre">Blosum50</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Blosum50</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Blosum50" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Blosum50">
+<span class="sig-name descname"><span class="pre">Blosum50</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Blosum50</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Blosum50" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Blosum55">
-<span class="sig-name descname"><span class="pre">Blosum55</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Blosum55</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Blosum55" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Blosum55">
+<span class="sig-name descname"><span class="pre">Blosum55</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Blosum55</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Blosum55" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Blosum60">
-<span class="sig-name descname"><span class="pre">Blosum60</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Blosum60</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Blosum60" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Blosum60">
+<span class="sig-name descname"><span class="pre">Blosum60</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Blosum60</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Blosum60" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Blosum62">
-<span class="sig-name descname"><span class="pre">Blosum62</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Blosum62</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Blosum62" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Blosum62">
+<span class="sig-name descname"><span class="pre">Blosum62</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Blosum62</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Blosum62" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Blosum65">
-<span class="sig-name descname"><span class="pre">Blosum65</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Blosum65</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Blosum65" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Blosum65">
+<span class="sig-name descname"><span class="pre">Blosum65</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Blosum65</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Blosum65" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Blosum70">
-<span class="sig-name descname"><span class="pre">Blosum70</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Blosum70</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Blosum70" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Blosum70">
+<span class="sig-name descname"><span class="pre">Blosum70</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Blosum70</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Blosum70" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Blosum75">
-<span class="sig-name descname"><span class="pre">Blosum75</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Blosum75</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Blosum75" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Blosum75">
+<span class="sig-name descname"><span class="pre">Blosum75</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Blosum75</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Blosum75" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Blosum80">
-<span class="sig-name descname"><span class="pre">Blosum80</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Blosum80</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Blosum80" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Blosum80">
+<span class="sig-name descname"><span class="pre">Blosum80</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Blosum80</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Blosum80" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Blosum85">
-<span class="sig-name descname"><span class="pre">Blosum85</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Blosum85</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Blosum85" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Blosum85">
+<span class="sig-name descname"><span class="pre">Blosum85</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Blosum85</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Blosum85" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Blosum90">
-<span class="sig-name descname"><span class="pre">Blosum90</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Blosum90</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Blosum90" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Blosum90">
+<span class="sig-name descname"><span class="pre">Blosum90</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Blosum90</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Blosum90" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Blosum95">
-<span class="sig-name descname"><span class="pre">Blosum95</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Blosum95</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Blosum95" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Blosum95">
+<span class="sig-name descname"><span class="pre">Blosum95</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Blosum95</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Blosum95" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam10">
-<span class="sig-name descname"><span class="pre">Pam10</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam10</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam10" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Dnafull">
+<span class="sig-name descname"><span class="pre">Dnafull</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Dnafull</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Dnafull" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam100">
-<span class="sig-name descname"><span class="pre">Pam100</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam100</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam100" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Identity">
+<span class="sig-name descname"><span class="pre">Identity</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Identity</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Identity" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam110">
-<span class="sig-name descname"><span class="pre">Pam110</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam110</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam110" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Nuc44">
+<span class="sig-name descname"><span class="pre">Nuc44</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Nuc44</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Nuc44" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam120">
-<span class="sig-name descname"><span class="pre">Pam120</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam120</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam120" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam10">
+<span class="sig-name descname"><span class="pre">Pam10</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam10</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam10" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam130">
-<span class="sig-name descname"><span class="pre">Pam130</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam130</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam130" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam100">
+<span class="sig-name descname"><span class="pre">Pam100</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam100</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam100" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam140">
-<span class="sig-name descname"><span class="pre">Pam140</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam140</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam140" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam110">
+<span class="sig-name descname"><span class="pre">Pam110</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam110</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam110" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam150">
-<span class="sig-name descname"><span class="pre">Pam150</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam150</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam150" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam120">
+<span class="sig-name descname"><span class="pre">Pam120</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam120</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam120" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam160">
-<span class="sig-name descname"><span class="pre">Pam160</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam160</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam160" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam130">
+<span class="sig-name descname"><span class="pre">Pam130</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam130</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam130" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam170">
-<span class="sig-name descname"><span class="pre">Pam170</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam170</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam170" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam140">
+<span class="sig-name descname"><span class="pre">Pam140</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam140</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam140" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam180">
-<span class="sig-name descname"><span class="pre">Pam180</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam180</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam180" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam150">
+<span class="sig-name descname"><span class="pre">Pam150</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam150</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam150" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam190">
-<span class="sig-name descname"><span class="pre">Pam190</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam190</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam190" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam160">
+<span class="sig-name descname"><span class="pre">Pam160</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam160</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam160" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam20">
-<span class="sig-name descname"><span class="pre">Pam20</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam20</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam20" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam170">
+<span class="sig-name descname"><span class="pre">Pam170</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam170</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam170" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam200">
-<span class="sig-name descname"><span class="pre">Pam200</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam200</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam200" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam180">
+<span class="sig-name descname"><span class="pre">Pam180</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam180</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam180" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam210">
-<span class="sig-name descname"><span class="pre">Pam210</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam210</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam210" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam190">
+<span class="sig-name descname"><span class="pre">Pam190</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam190</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam190" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam220">
-<span class="sig-name descname"><span class="pre">Pam220</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam220</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam220" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam20">
+<span class="sig-name descname"><span class="pre">Pam20</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam20</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam20" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam230">
-<span class="sig-name descname"><span class="pre">Pam230</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam230</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam230" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam200">
+<span class="sig-name descname"><span class="pre">Pam200</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam200</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam200" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam240">
-<span class="sig-name descname"><span class="pre">Pam240</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam240</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam240" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam210">
+<span class="sig-name descname"><span class="pre">Pam210</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam210</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam210" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam250">
-<span class="sig-name descname"><span class="pre">Pam250</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam250</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam250" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam220">
+<span class="sig-name descname"><span class="pre">Pam220</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam220</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam220" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam260">
-<span class="sig-name descname"><span class="pre">Pam260</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam260</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam260" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam230">
+<span class="sig-name descname"><span class="pre">Pam230</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam230</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam230" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam270">
-<span class="sig-name descname"><span class="pre">Pam270</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam270</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam270" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam240">
+<span class="sig-name descname"><span class="pre">Pam240</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam240</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam240" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam280">
-<span class="sig-name descname"><span class="pre">Pam280</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam280</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam280" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam250">
+<span class="sig-name descname"><span class="pre">Pam250</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam250</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam250" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam290">
-<span class="sig-name descname"><span class="pre">Pam290</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam290</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam290" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam260">
+<span class="sig-name descname"><span class="pre">Pam260</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam260</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam260" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam30">
-<span class="sig-name descname"><span class="pre">Pam30</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam30</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam30" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam270">
+<span class="sig-name descname"><span class="pre">Pam270</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam270</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam270" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam300">
-<span class="sig-name descname"><span class="pre">Pam300</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam300</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam300" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam280">
+<span class="sig-name descname"><span class="pre">Pam280</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam280</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam280" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam310">
-<span class="sig-name descname"><span class="pre">Pam310</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam310</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam310" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam290">
+<span class="sig-name descname"><span class="pre">Pam290</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam290</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam290" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam320">
-<span class="sig-name descname"><span class="pre">Pam320</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam320</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam320" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam30">
+<span class="sig-name descname"><span class="pre">Pam30</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam30</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam30" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam330">
-<span class="sig-name descname"><span class="pre">Pam330</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam330</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam330" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam300">
+<span class="sig-name descname"><span class="pre">Pam300</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam300</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam300" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam340">
-<span class="sig-name descname"><span class="pre">Pam340</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam340</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam340" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam310">
+<span class="sig-name descname"><span class="pre">Pam310</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam310</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam310" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam350">
-<span class="sig-name descname"><span class="pre">Pam350</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam350</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam350" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam320">
+<span class="sig-name descname"><span class="pre">Pam320</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam320</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam320" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam360">
-<span class="sig-name descname"><span class="pre">Pam360</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam360</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam360" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam330">
+<span class="sig-name descname"><span class="pre">Pam330</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam330</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam330" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam370">
-<span class="sig-name descname"><span class="pre">Pam370</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam370</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam370" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam340">
+<span class="sig-name descname"><span class="pre">Pam340</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam340</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam340" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam380">
-<span class="sig-name descname"><span class="pre">Pam380</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam380</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam380" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam350">
+<span class="sig-name descname"><span class="pre">Pam350</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam350</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam350" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam390">
-<span class="sig-name descname"><span class="pre">Pam390</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam390</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam390" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam360">
+<span class="sig-name descname"><span class="pre">Pam360</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam360</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam360" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam40">
-<span class="sig-name descname"><span class="pre">Pam40</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam40</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam40" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam370">
+<span class="sig-name descname"><span class="pre">Pam370</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam370</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam370" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam400">
-<span class="sig-name descname"><span class="pre">Pam400</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam400</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam400" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam380">
+<span class="sig-name descname"><span class="pre">Pam380</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam380</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam380" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam410">
-<span class="sig-name descname"><span class="pre">Pam410</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam410</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam410" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam390">
+<span class="sig-name descname"><span class="pre">Pam390</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam390</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam390" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam420">
-<span class="sig-name descname"><span class="pre">Pam420</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam420</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam420" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam40">
+<span class="sig-name descname"><span class="pre">Pam40</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam40</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam40" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam430">
-<span class="sig-name descname"><span class="pre">Pam430</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam430</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam430" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam400">
+<span class="sig-name descname"><span class="pre">Pam400</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam400</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam400" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam440">
-<span class="sig-name descname"><span class="pre">Pam440</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam440</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam440" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam410">
+<span class="sig-name descname"><span class="pre">Pam410</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam410</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam410" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam450">
-<span class="sig-name descname"><span class="pre">Pam450</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam450</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam450" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam420">
+<span class="sig-name descname"><span class="pre">Pam420</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam420</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam420" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam460">
-<span class="sig-name descname"><span class="pre">Pam460</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam460</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam460" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam430">
+<span class="sig-name descname"><span class="pre">Pam430</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam430</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam430" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam470">
-<span class="sig-name descname"><span class="pre">Pam470</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam470</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam470" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam440">
+<span class="sig-name descname"><span class="pre">Pam440</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam440</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam440" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam480">
-<span class="sig-name descname"><span class="pre">Pam480</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam480</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam480" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam450">
+<span class="sig-name descname"><span class="pre">Pam450</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam450</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam450" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam490">
-<span class="sig-name descname"><span class="pre">Pam490</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam490</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam490" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam460">
+<span class="sig-name descname"><span class="pre">Pam460</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam460</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam460" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam50">
-<span class="sig-name descname"><span class="pre">Pam50</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam50</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam50" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam470">
+<span class="sig-name descname"><span class="pre">Pam470</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam470</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam470" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam500">
-<span class="sig-name descname"><span class="pre">Pam500</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam500</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam500" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam480">
+<span class="sig-name descname"><span class="pre">Pam480</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam480</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam480" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam60">
-<span class="sig-name descname"><span class="pre">Pam60</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam60</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam60" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam490">
+<span class="sig-name descname"><span class="pre">Pam490</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam490</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam490" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam70">
-<span class="sig-name descname"><span class="pre">Pam70</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam70</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam70" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam50">
+<span class="sig-name descname"><span class="pre">Pam50</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam50</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam50" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam80">
-<span class="sig-name descname"><span class="pre">Pam80</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam80</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam80" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam500">
+<span class="sig-name descname"><span class="pre">Pam500</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam500</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam500" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.ScoringMatrix.Pam90">
-<span class="sig-name descname"><span class="pre">Pam90</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam90</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam90" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam60">
+<span class="sig-name descname"><span class="pre">Pam60</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam60</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam60" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam70">
+<span class="sig-name descname"><span class="pre">Pam70</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam70</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam70" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam80">
+<span class="sig-name descname"><span class="pre">Pam80</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam80</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam80" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="refnd.kernels.alignments.ScoringMatrix.Pam90">
+<span class="sig-name descname"><span class="pre">Pam90</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ScoringMatrix.Pam90</span></span><a class="headerlink" href="#refnd.kernels.alignments.ScoringMatrix.Pam90" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.GlobalIdentityMode">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">refnd.kernels.protein.sequence.</span></span><span class="sig-name descname"><span class="pre">GlobalIdentityMode</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.GlobalIdentityMode" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.GlobalIdentityMode">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">refnd.kernels.alignments.</span></span><span class="sig-name descname"><span class="pre">GlobalIdentityMode</span></span><a class="headerlink" href="#refnd.kernels.alignments.GlobalIdentityMode" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Denominator used to normalise a global-alignment identity score.</p>
+<p>Denominator used to normalise a global-alignments identity score.</p>
 <p>After counting identical aligned positions the raw count is divided by:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">AlignmentLength</span></code>: the total length of the alignment (including gaps).</p></li>
@@ -719,30 +775,30 @@ receive a score of <code class="docutils literal notranslate"><span class="pre">
 <li><p><code class="docutils literal notranslate"><span class="pre">MaxLength</span></code> (default): same as <code class="docutils literal notranslate"><span class="pre">MaxSeqLength</span></code> — recommended for RGP datasets.</p></li>
 </ul>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.GlobalIdentityMode.AlignmentLength">
-<span class="sig-name descname"><span class="pre">AlignmentLength</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">GlobalIdentityMode.AlignmentLength</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.GlobalIdentityMode.AlignmentLength" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.GlobalIdentityMode.AlignmentLength">
+<span class="sig-name descname"><span class="pre">AlignmentLength</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">GlobalIdentityMode.AlignmentLength</span></span><a class="headerlink" href="#refnd.kernels.alignments.GlobalIdentityMode.AlignmentLength" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.GlobalIdentityMode.MaxLength">
-<span class="sig-name descname"><span class="pre">MaxLength</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">GlobalIdentityMode.MaxLength</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.GlobalIdentityMode.MaxLength" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.GlobalIdentityMode.MaxLength">
+<span class="sig-name descname"><span class="pre">MaxLength</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">GlobalIdentityMode.MaxLength</span></span><a class="headerlink" href="#refnd.kernels.alignments.GlobalIdentityMode.MaxLength" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.GlobalIdentityMode.MaxSeqLength">
-<span class="sig-name descname"><span class="pre">MaxSeqLength</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">GlobalIdentityMode.MaxSeqLength</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.GlobalIdentityMode.MaxSeqLength" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.GlobalIdentityMode.MaxSeqLength">
+<span class="sig-name descname"><span class="pre">MaxSeqLength</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">GlobalIdentityMode.MaxSeqLength</span></span><a class="headerlink" href="#refnd.kernels.alignments.GlobalIdentityMode.MaxSeqLength" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.GlobalIdentityMode.MinSeqLength">
-<span class="sig-name descname"><span class="pre">MinSeqLength</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">GlobalIdentityMode.MinSeqLength</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.GlobalIdentityMode.MinSeqLength" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.GlobalIdentityMode.MinSeqLength">
+<span class="sig-name descname"><span class="pre">MinSeqLength</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">GlobalIdentityMode.MinSeqLength</span></span><a class="headerlink" href="#refnd.kernels.alignments.GlobalIdentityMode.MinSeqLength" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.VectorizationStrategy">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">refnd.kernels.protein.sequence.</span></span><span class="sig-name descname"><span class="pre">VectorizationStrategy</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.VectorizationStrategy" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.VectorizationStrategy">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">refnd.kernels.alignments.</span></span><span class="sig-name descname"><span class="pre">VectorizationStrategy</span></span><a class="headerlink" href="#refnd.kernels.alignments.VectorizationStrategy" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>SIMD vectorization layout used by the parasail alignment engine.</p>
 <ul class="simple">
@@ -753,25 +809,25 @@ receive a score of <code class="docutils literal notranslate"><span class="pre">
 <p>In practice the default per-aligner is a good choice; change only if profiling
 shows a bottleneck.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.VectorizationStrategy.Diag">
-<span class="sig-name descname"><span class="pre">Diag</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">VectorizationStrategy.Diag</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.VectorizationStrategy.Diag" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.VectorizationStrategy.Diag">
+<span class="sig-name descname"><span class="pre">Diag</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">VectorizationStrategy.Diag</span></span><a class="headerlink" href="#refnd.kernels.alignments.VectorizationStrategy.Diag" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.VectorizationStrategy.Scan">
-<span class="sig-name descname"><span class="pre">Scan</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">VectorizationStrategy.Scan</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.VectorizationStrategy.Scan" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.VectorizationStrategy.Scan">
+<span class="sig-name descname"><span class="pre">Scan</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">VectorizationStrategy.Scan</span></span><a class="headerlink" href="#refnd.kernels.alignments.VectorizationStrategy.Scan" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.VectorizationStrategy.Striped">
-<span class="sig-name descname"><span class="pre">Striped</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">VectorizationStrategy.Striped</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.VectorizationStrategy.Striped" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.VectorizationStrategy.Striped">
+<span class="sig-name descname"><span class="pre">Striped</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">VectorizationStrategy.Striped</span></span><a class="headerlink" href="#refnd.kernels.alignments.VectorizationStrategy.Striped" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.DatatypeWidth">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">refnd.kernels.protein.sequence.</span></span><span class="sig-name descname"><span class="pre">DatatypeWidth</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.DatatypeWidth" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.DatatypeWidth">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">refnd.kernels.alignments.</span></span><span class="sig-name descname"><span class="pre">DatatypeWidth</span></span><a class="headerlink" href="#refnd.kernels.alignments.DatatypeWidth" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Integer precision used for alignment score accumulation.</p>
 <ul class="simple">
@@ -780,35 +836,35 @@ fixed-width integers — lower width is faster but can overflow on long sequence
 <li><p><code class="docutils literal notranslate"><span class="pre">Sat</span></code> (default): 8-bit saturating arithmetic; If it saturates, silently restart with 16-bit.</p></li>
 </ul>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.DatatypeWidth.Full">
-<span class="sig-name descname"><span class="pre">Full</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">DatatypeWidth.Full</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.DatatypeWidth.Full" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.DatatypeWidth.Full">
+<span class="sig-name descname"><span class="pre">Full</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">DatatypeWidth.Full</span></span><a class="headerlink" href="#refnd.kernels.alignments.DatatypeWidth.Full" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.DatatypeWidth.Half">
-<span class="sig-name descname"><span class="pre">Half</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">DatatypeWidth.Half</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.DatatypeWidth.Half" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.DatatypeWidth.Half">
+<span class="sig-name descname"><span class="pre">Half</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">DatatypeWidth.Half</span></span><a class="headerlink" href="#refnd.kernels.alignments.DatatypeWidth.Half" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.DatatypeWidth.Long">
-<span class="sig-name descname"><span class="pre">Long</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">DatatypeWidth.Long</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.DatatypeWidth.Long" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.DatatypeWidth.Long">
+<span class="sig-name descname"><span class="pre">Long</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">DatatypeWidth.Long</span></span><a class="headerlink" href="#refnd.kernels.alignments.DatatypeWidth.Long" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.DatatypeWidth.Sat">
-<span class="sig-name descname"><span class="pre">Sat</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">DatatypeWidth.Sat</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.DatatypeWidth.Sat" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.DatatypeWidth.Sat">
+<span class="sig-name descname"><span class="pre">Sat</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">DatatypeWidth.Sat</span></span><a class="headerlink" href="#refnd.kernels.alignments.DatatypeWidth.Sat" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.DatatypeWidth.Short">
-<span class="sig-name descname"><span class="pre">Short</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">DatatypeWidth.Short</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.DatatypeWidth.Short" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.DatatypeWidth.Short">
+<span class="sig-name descname"><span class="pre">Short</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">DatatypeWidth.Short</span></span><a class="headerlink" href="#refnd.kernels.alignments.DatatypeWidth.Short" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.CoverageMode">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">refnd.kernels.protein.sequence.</span></span><span class="sig-name descname"><span class="pre">CoverageMode</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.CoverageMode" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.CoverageMode">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">refnd.kernels.alignments.</span></span><span class="sig-name descname"><span class="pre">CoverageMode</span></span><a class="headerlink" href="#refnd.kernels.alignments.CoverageMode" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Coverage filter applied before accepting a local alignment as valid.</p>
 <p>A pair is scored only when the alignment covers enough of the sequences
@@ -821,35 +877,35 @@ as specified by the mode and <code class="docutils literal notranslate"><span cl
 <li><p><code class="docutils literal notranslate"><span class="pre">ShorterSeq</span></code>: coverage computed relative to the shorter sequence.</p></li>
 </ul>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.CoverageMode.BothQueryTarget">
-<span class="sig-name descname"><span class="pre">BothQueryTarget</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">CoverageMode.BothQueryTarget</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.CoverageMode.BothQueryTarget" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.CoverageMode.BothQueryTarget">
+<span class="sig-name descname"><span class="pre">BothQueryTarget</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">CoverageMode.BothQueryTarget</span></span><a class="headerlink" href="#refnd.kernels.alignments.CoverageMode.BothQueryTarget" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.CoverageMode.LengthRatio">
-<span class="sig-name descname"><span class="pre">LengthRatio</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">CoverageMode.LengthRatio</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.CoverageMode.LengthRatio" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.CoverageMode.LengthRatio">
+<span class="sig-name descname"><span class="pre">LengthRatio</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">CoverageMode.LengthRatio</span></span><a class="headerlink" href="#refnd.kernels.alignments.CoverageMode.LengthRatio" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.CoverageMode.Query">
-<span class="sig-name descname"><span class="pre">Query</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">CoverageMode.Query</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.CoverageMode.Query" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.CoverageMode.Query">
+<span class="sig-name descname"><span class="pre">Query</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">CoverageMode.Query</span></span><a class="headerlink" href="#refnd.kernels.alignments.CoverageMode.Query" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.CoverageMode.ShorterSeq">
-<span class="sig-name descname"><span class="pre">ShorterSeq</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">CoverageMode.ShorterSeq</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.CoverageMode.ShorterSeq" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.CoverageMode.ShorterSeq">
+<span class="sig-name descname"><span class="pre">ShorterSeq</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">CoverageMode.ShorterSeq</span></span><a class="headerlink" href="#refnd.kernels.alignments.CoverageMode.ShorterSeq" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.CoverageMode.Target">
-<span class="sig-name descname"><span class="pre">Target</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">CoverageMode.Target</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.CoverageMode.Target" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.CoverageMode.Target">
+<span class="sig-name descname"><span class="pre">Target</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">CoverageMode.Target</span></span><a class="headerlink" href="#refnd.kernels.alignments.CoverageMode.Target" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.LocalIdentityMode">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">refnd.kernels.protein.sequence.</span></span><span class="sig-name descname"><span class="pre">LocalIdentityMode</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.LocalIdentityMode" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.LocalIdentityMode">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">refnd.kernels.alignments.</span></span><span class="sig-name descname"><span class="pre">LocalIdentityMode</span></span><a class="headerlink" href="#refnd.kernels.alignments.LocalIdentityMode" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Denominator used to normalise a local-alignment identity score.</p>
 <ul class="simple">
@@ -857,13 +913,13 @@ as specified by the mode and <code class="docutils literal notranslate"><span cl
 <li><p><code class="docutils literal notranslate"><span class="pre">MinSeqLength</span></code>: divide by the shorter sequence length.</p></li>
 </ul>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.LocalIdentityMode.AlignmentLength">
-<span class="sig-name descname"><span class="pre">AlignmentLength</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">LocalIdentityMode.AlignmentLength</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.LocalIdentityMode.AlignmentLength" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.LocalIdentityMode.AlignmentLength">
+<span class="sig-name descname"><span class="pre">AlignmentLength</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">LocalIdentityMode.AlignmentLength</span></span><a class="headerlink" href="#refnd.kernels.alignments.LocalIdentityMode.AlignmentLength" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="refnd.kernels.protein.sequence.LocalIdentityMode.MinSeqLength">
-<span class="sig-name descname"><span class="pre">MinSeqLength</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">LocalIdentityMode.MinSeqLength</span></span><a class="headerlink" href="#refnd.kernels.protein.sequence.LocalIdentityMode.MinSeqLength" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="refnd.kernels.alignments.LocalIdentityMode.MinSeqLength">
+<span class="sig-name descname"><span class="pre">MinSeqLength</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">LocalIdentityMode.MinSeqLength</span></span><a class="headerlink" href="#refnd.kernels.alignments.LocalIdentityMode.MinSeqLength" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -885,7 +941,8 @@ fingerprints are identical; 1 means they share no features at all.</p>
 fingerprints such as Morgan, RDKit, or MACCS keys.</p>
 <p>Example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rdkit.Chem</span><span class="w"> </span><span class="kn">import</span> <span class="n">MolFromSmiles</span><span class="p">,</span> <span class="n">rdFingerprintGenerator</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">refnd.kernels.molecules</span><span class="w"> </span><span class="kn">import</span> <span class="n">BitFingerprint</span><span class="p">,</span> <span class="n">TanimotoBit</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">refnd.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">BitFingerprint</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">refnd.kernels.molecules</span><span class="w"> </span><span class="kn">import</span> <span class="n">TanimotoBit</span>
 
 <span class="n">mfpgen</span> <span class="o">=</span> <span class="n">rdFingerprintGenerator</span><span class="o">.</span><span class="n">GetMorganGenerator</span><span class="p">(</span><span class="n">fpSize</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">benzene</span>    <span class="o">=</span> <span class="n">BitFingerprint</span><span class="p">(</span><span class="n">mfpgen</span><span class="o">.</span><span class="n">GetFingerprint</span><span class="p">(</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="s2">&quot;c1ccccc1&quot;</span><span class="p">)))</span>
@@ -914,7 +971,10 @@ fingerprints such as Morgan, RDKit, or MACCS keys.</p>
 </dd>
 </dl>
 <p>Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fp1</span> <span class="o">=</span> <span class="n">BitFingerprint</span><span class="o">.</span><span class="n">from_list</span><span class="p">([</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">])</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">refnd.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">BitFingerprint</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">refnd.kernels.molecules</span><span class="w"> </span><span class="kn">import</span> <span class="n">TanimotoBit</span>
+
+<span class="n">fp1</span> <span class="o">=</span> <span class="n">BitFingerprint</span><span class="o">.</span><span class="n">from_list</span><span class="p">([</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">])</span>
 <span class="n">fp2</span> <span class="o">=</span> <span class="n">BitFingerprint</span><span class="o">.</span><span class="n">from_list</span><span class="p">([</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span>  <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">])</span>
 <span class="n">k</span> <span class="o">=</span> <span class="n">TanimotoBit</span><span class="p">()</span>
 <span class="k">assert</span> <span class="n">k</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">fp1</span><span class="p">,</span> <span class="n">fp2</span><span class="p">)</span> <span class="o">==</span> <span class="n">k</span><span class="p">(</span><span class="n">fp1</span><span class="p">,</span> <span class="n">fp2</span><span class="p">)</span>  <span class="c1"># both forms are equivalent</span>
@@ -938,7 +998,8 @@ proportional; values approach 1 as the vectors become orthogonal.</p>
 such as those returned by <code class="docutils literal notranslate"><span class="pre">GetCountFingerprint</span></code> (Morgan counts, etc.).</p>
 <p>Example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rdkit.Chem</span><span class="w"> </span><span class="kn">import</span> <span class="n">MolFromSmiles</span><span class="p">,</span> <span class="n">rdFingerprintGenerator</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">refnd.kernels.molecules</span><span class="w"> </span><span class="kn">import</span> <span class="n">RealFingerprint</span><span class="p">,</span> <span class="n">TanimotoReal</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">refnd.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">RealFingerprint</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">refnd.kernels.molecules</span><span class="w"> </span><span class="kn">import</span> <span class="n">TanimotoReal</span>
 
 <span class="n">mfpgen</span> <span class="o">=</span> <span class="n">rdFingerprintGenerator</span><span class="o">.</span><span class="n">GetMorganGenerator</span><span class="p">(</span><span class="n">fpSize</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">benzene</span>     <span class="o">=</span> <span class="n">RealFingerprint</span><span class="p">(</span><span class="n">mfpgen</span><span class="o">.</span><span class="n">GetCountFingerprint</span><span class="p">(</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="s2">&quot;c1ccccc1&quot;</span><span class="p">)))</span>
@@ -967,7 +1028,10 @@ feature vectors, <code class="docutils literal notranslate"><span class="pre">1.
 </dd>
 </dl>
 <p>Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fp1</span> <span class="o">=</span> <span class="n">RealFingerprint</span><span class="o">.</span><span class="n">from_list</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">refnd.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">RealFingerprint</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">refnd.kernels.molecules</span><span class="w"> </span><span class="kn">import</span> <span class="n">TanimotoReal</span>
+
+<span class="n">fp1</span> <span class="o">=</span> <span class="n">RealFingerprint</span><span class="o">.</span><span class="n">from_list</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
 <span class="n">fp2</span> <span class="o">=</span> <span class="n">RealFingerprint</span><span class="o">.</span><span class="n">from_list</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
 <span class="n">k</span> <span class="o">=</span> <span class="n">TanimotoReal</span><span class="p">()</span>
 <span class="k">assert</span> <span class="n">k</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">fp1</span><span class="p">,</span> <span class="n">fp2</span><span class="p">)</span> <span class="o">==</span> <span class="n">k</span><span class="p">(</span><span class="n">fp1</span><span class="p">,</span> <span class="n">fp2</span><span class="p">)</span>  <span class="c1"># both forms are equivalent</span>
@@ -975,6 +1039,78 @@ feature vectors, <code class="docutils literal notranslate"><span class="pre">1.
 </pre></div>
 </div>
 </dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="refnd-kernels-structures">
+<h2>refnd.kernels.structures<a class="headerlink" href="#refnd-kernels-structures" title="Link to this heading">¶</a></h2>
+<p>Protein structure kernels (USalign TM-score).</p>
+<dl class="py class" id="module-refnd.kernels.structures">
+<dt class="sig sig-object py" id="refnd.kernels.structures.USAlignKernel">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">refnd.kernels.structures.</span></span><span class="sig-name descname"><span class="pre">USAlignKernel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">norm_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#refnd.kernels.structures.NormMode" title="refnd.kernels.structures.NormMode"><span class="pre">NormMode</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">NormMode.Min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fast</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#refnd.kernels.structures.USAlignKernel" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Protein structure comparison kernel using USalign TM-score.</p>
+<p>Operates on pre-loaded <code class="docutils literal notranslate"><span class="pre">PdbStructure</span></code> objects (from <code class="docutils literal notranslate"><span class="pre">refnd.utils</span></code>).
+Returns <code class="docutils literal notranslate"><span class="pre">1.0</span> <span class="pre">-</span> <span class="pre">TM-score</span></code> so that identical structures have distance 0
+and unrelated structures have distance approaching 1.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">refnd.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">PdbStructure</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">refnd.kernels.structures</span><span class="w"> </span><span class="kn">import</span> <span class="n">USAlignKernel</span><span class="p">,</span> <span class="n">NormMode</span>
+
+<span class="n">s1</span> <span class="o">=</span> <span class="n">PdbStructure</span><span class="p">(</span><span class="s2">&quot;1abc.pdb&quot;</span><span class="p">)</span>
+<span class="n">s2</span> <span class="o">=</span> <span class="n">PdbStructure</span><span class="p">(</span><span class="s2">&quot;1xyz.pdb&quot;</span><span class="p">)</span>
+<span class="n">k</span>  <span class="o">=</span> <span class="n">USAlignKernel</span><span class="p">()</span>                  <span class="c1"># default: NormMode.Min</span>
+<span class="n">d</span>  <span class="o">=</span> <span class="n">k</span><span class="p">(</span><span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">)</span>                         <span class="c1"># float in [0, 1]</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="refnd.kernels.structures.USAlignKernel.call">
+<span class="sig-name descname"><span class="pre">call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="utils.html#refnd.utils.PdbStructure" title="refnd.utils.PdbStructure"><span class="pre">utils.PdbStructure</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="utils.html#refnd.utils.PdbStructure" title="refnd.utils.PdbStructure"><span class="pre">utils.PdbStructure</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#refnd.kernels.structures.USAlignKernel.call" title="Link to this definition">¶</a></dt>
+<dd><p>Compute the structure distance between two <code class="docutils literal notranslate"><span class="pre">PdbStructure</span></code> objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> – First structure.</p></li>
+<li><p><strong>b</strong> – Second structure.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Distance in <code class="docutils literal notranslate"><span class="pre">[0.0,</span> <span class="pre">1.0]</span></code>. <code class="docutils literal notranslate"><span class="pre">0.0</span></code> means structurally identical,
+values near <code class="docutils literal notranslate"><span class="pre">1.0</span></code> indicate unrelated folds.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="refnd.kernels.structures.NormMode">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">refnd.kernels.structures.</span></span><span class="sig-name descname"><span class="pre">NormMode</span></span><a class="headerlink" href="#refnd.kernels.structures.NormMode" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>TM-score normalization strategy.</p>
+<p>USalign returns two scores per alignment:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TM1</span></code>: normalized by the length of the first structure (query).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TM2</span></code>: normalized by the length of the second structure (target).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Min</span></code> (default): <code class="docutils literal notranslate"><span class="pre">min(TM1,</span> <span class="pre">TM2)</span></code> — conservative, symmetric.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Query</span></code>: use <code class="docutils literal notranslate"><span class="pre">TM1</span></code> only.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Target</span></code>: use <code class="docutils literal notranslate"><span class="pre">TM2</span></code> only.</p></li>
+</ul>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="refnd.kernels.structures.NormMode.Min">
+<span class="sig-name descname"><span class="pre">Min</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">NormMode.Min</span></span><a class="headerlink" href="#refnd.kernels.structures.NormMode.Min" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="refnd.kernels.structures.NormMode.Query">
+<span class="sig-name descname"><span class="pre">Query</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">NormMode.Query</span></span><a class="headerlink" href="#refnd.kernels.structures.NormMode.Query" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="refnd.kernels.structures.NormMode.Target">
+<span class="sig-name descname"><span class="pre">Target</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">NormMode.Target</span></span><a class="headerlink" href="#refnd.kernels.structures.NormMode.Target" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -1039,124 +1175,129 @@ feature vectors, <code class="docutils literal notranslate"><span class="pre">1.
 <li><a class="reference internal" href="#">refnd.kernels</a><ul>
 <li><a class="reference internal" href="#module-refnd.kernels">Kernel variant selector</a><ul>
 <li><a class="reference internal" href="#refnd.kernels.KernelVariant"><code class="docutils literal notranslate"><span class="pre">KernelVariant</span></code></a><ul>
-<li><a class="reference internal" href="#refnd.kernels.KernelVariant.ProteinGlobal"><code class="docutils literal notranslate"><span class="pre">KernelVariant.ProteinGlobal</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.KernelVariant.ProteinLocal"><code class="docutils literal notranslate"><span class="pre">KernelVariant.ProteinLocal</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.KernelVariant.AlignmentGlobal"><code class="docutils literal notranslate"><span class="pre">KernelVariant.AlignmentGlobal</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.KernelVariant.AlignmentLocal"><code class="docutils literal notranslate"><span class="pre">KernelVariant.AlignmentLocal</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.KernelVariant.Structure"><code class="docutils literal notranslate"><span class="pre">KernelVariant.Structure</span></code></a></li>
 <li><a class="reference internal" href="#refnd.kernels.KernelVariant.TanimotoBit"><code class="docutils literal notranslate"><span class="pre">KernelVariant.TanimotoBit</span></code></a></li>
 <li><a class="reference internal" href="#refnd.kernels.KernelVariant.TanimotoReal"><code class="docutils literal notranslate"><span class="pre">KernelVariant.TanimotoReal</span></code></a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#refnd.kernels.zip_kernel"><code class="docutils literal notranslate"><span class="pre">zip_kernel()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#refnd-kernels-protein-sequence">refnd.kernels.protein.sequence</a><ul>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.GlobalAligner"><code class="docutils literal notranslate"><span class="pre">GlobalAligner</span></code></a><ul>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.GlobalAligner.call"><code class="docutils literal notranslate"><span class="pre">GlobalAligner.call()</span></code></a></li>
+<li><a class="reference internal" href="#refnd-kernels-alignments">refnd.kernels.alignments</a><ul>
+<li><a class="reference internal" href="#refnd.kernels.alignments.GlobalAligner"><code class="docutils literal notranslate"><span class="pre">GlobalAligner</span></code></a><ul>
+<li><a class="reference internal" href="#refnd.kernels.alignments.GlobalAligner.call"><code class="docutils literal notranslate"><span class="pre">GlobalAligner.call()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.LocalAligner"><code class="docutils literal notranslate"><span class="pre">LocalAligner</span></code></a><ul>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.LocalAligner.call"><code class="docutils literal notranslate"><span class="pre">LocalAligner.call()</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.LocalAligner"><code class="docutils literal notranslate"><span class="pre">LocalAligner</span></code></a><ul>
+<li><a class="reference internal" href="#refnd.kernels.alignments.LocalAligner.call"><code class="docutils literal notranslate"><span class="pre">LocalAligner.call()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix</span></code></a><ul>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Blosum100"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Blosum100</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Blosum30"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Blosum30</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Blosum35"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Blosum35</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Blosum40"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Blosum40</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Blosum45"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Blosum45</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Blosum50"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Blosum50</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Blosum55"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Blosum55</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Blosum60"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Blosum60</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Blosum62"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Blosum62</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Blosum65"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Blosum65</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Blosum70"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Blosum70</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Blosum75"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Blosum75</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Blosum80"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Blosum80</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Blosum85"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Blosum85</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Blosum90"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Blosum90</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Blosum95"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Blosum95</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam10"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam10</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam100"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam100</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam110"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam110</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam120"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam120</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam130"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam130</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam140"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam140</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam150"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam150</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam160"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam160</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam170"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam170</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam180"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam180</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam190"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam190</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam20"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam20</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam200"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam200</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam210"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam210</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam220"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam220</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam230"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam230</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam240"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam240</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam250"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam250</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam260"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam260</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam270"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam270</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam280"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam280</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam290"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam290</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam30"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam30</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam300"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam300</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam310"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam310</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam320"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam320</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam330"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam330</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam340"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam340</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam350"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam350</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam360"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam360</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam370"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam370</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam380"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam380</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam390"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam390</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam40"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam40</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam400"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam400</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam410"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam410</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam420"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam420</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam430"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam430</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam440"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam440</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam450"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam450</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam460"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam460</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam470"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam470</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam480"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam480</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam490"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam490</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam50"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam50</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam500"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam500</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam60"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam60</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam70"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam70</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam80"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam80</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.ScoringMatrix.Pam90"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam90</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix</span></code></a><ul>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Blosum100"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Blosum100</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Blosum30"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Blosum30</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Blosum35"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Blosum35</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Blosum40"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Blosum40</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Blosum45"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Blosum45</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Blosum50"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Blosum50</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Blosum55"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Blosum55</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Blosum60"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Blosum60</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Blosum62"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Blosum62</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Blosum65"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Blosum65</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Blosum70"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Blosum70</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Blosum75"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Blosum75</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Blosum80"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Blosum80</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Blosum85"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Blosum85</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Blosum90"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Blosum90</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Blosum95"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Blosum95</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Dnafull"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Dnafull</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Identity"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Identity</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Nuc44"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Nuc44</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam10"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam10</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam100"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam100</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam110"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam110</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam120"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam120</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam130"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam130</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam140"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam140</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam150"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam150</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam160"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam160</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam170"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam170</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam180"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam180</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam190"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam190</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam20"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam20</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam200"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam200</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam210"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam210</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam220"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam220</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam230"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam230</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam240"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam240</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam250"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam250</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam260"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam260</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam270"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam270</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam280"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam280</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam290"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam290</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam30"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam30</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam300"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam300</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam310"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam310</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam320"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam320</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam330"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam330</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam340"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam340</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam350"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam350</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam360"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam360</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam370"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam370</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam380"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam380</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam390"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam390</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam40"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam40</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam400"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam400</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam410"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam410</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam420"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam420</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam430"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam430</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam440"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam440</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam450"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam450</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam460"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam460</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam470"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam470</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam480"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam480</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam490"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam490</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam50"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam50</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam500"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam500</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam60"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam60</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam70"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam70</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam80"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam80</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.ScoringMatrix.Pam90"><code class="docutils literal notranslate"><span class="pre">ScoringMatrix.Pam90</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.GlobalIdentityMode"><code class="docutils literal notranslate"><span class="pre">GlobalIdentityMode</span></code></a><ul>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.GlobalIdentityMode.AlignmentLength"><code class="docutils literal notranslate"><span class="pre">GlobalIdentityMode.AlignmentLength</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.GlobalIdentityMode.MaxLength"><code class="docutils literal notranslate"><span class="pre">GlobalIdentityMode.MaxLength</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.GlobalIdentityMode.MaxSeqLength"><code class="docutils literal notranslate"><span class="pre">GlobalIdentityMode.MaxSeqLength</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.GlobalIdentityMode.MinSeqLength"><code class="docutils literal notranslate"><span class="pre">GlobalIdentityMode.MinSeqLength</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.GlobalIdentityMode"><code class="docutils literal notranslate"><span class="pre">GlobalIdentityMode</span></code></a><ul>
+<li><a class="reference internal" href="#refnd.kernels.alignments.GlobalIdentityMode.AlignmentLength"><code class="docutils literal notranslate"><span class="pre">GlobalIdentityMode.AlignmentLength</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.GlobalIdentityMode.MaxLength"><code class="docutils literal notranslate"><span class="pre">GlobalIdentityMode.MaxLength</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.GlobalIdentityMode.MaxSeqLength"><code class="docutils literal notranslate"><span class="pre">GlobalIdentityMode.MaxSeqLength</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.GlobalIdentityMode.MinSeqLength"><code class="docutils literal notranslate"><span class="pre">GlobalIdentityMode.MinSeqLength</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.VectorizationStrategy"><code class="docutils literal notranslate"><span class="pre">VectorizationStrategy</span></code></a><ul>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.VectorizationStrategy.Diag"><code class="docutils literal notranslate"><span class="pre">VectorizationStrategy.Diag</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.VectorizationStrategy.Scan"><code class="docutils literal notranslate"><span class="pre">VectorizationStrategy.Scan</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.VectorizationStrategy.Striped"><code class="docutils literal notranslate"><span class="pre">VectorizationStrategy.Striped</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.VectorizationStrategy"><code class="docutils literal notranslate"><span class="pre">VectorizationStrategy</span></code></a><ul>
+<li><a class="reference internal" href="#refnd.kernels.alignments.VectorizationStrategy.Diag"><code class="docutils literal notranslate"><span class="pre">VectorizationStrategy.Diag</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.VectorizationStrategy.Scan"><code class="docutils literal notranslate"><span class="pre">VectorizationStrategy.Scan</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.VectorizationStrategy.Striped"><code class="docutils literal notranslate"><span class="pre">VectorizationStrategy.Striped</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.DatatypeWidth"><code class="docutils literal notranslate"><span class="pre">DatatypeWidth</span></code></a><ul>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.DatatypeWidth.Full"><code class="docutils literal notranslate"><span class="pre">DatatypeWidth.Full</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.DatatypeWidth.Half"><code class="docutils literal notranslate"><span class="pre">DatatypeWidth.Half</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.DatatypeWidth.Long"><code class="docutils literal notranslate"><span class="pre">DatatypeWidth.Long</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.DatatypeWidth.Sat"><code class="docutils literal notranslate"><span class="pre">DatatypeWidth.Sat</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.DatatypeWidth.Short"><code class="docutils literal notranslate"><span class="pre">DatatypeWidth.Short</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.DatatypeWidth"><code class="docutils literal notranslate"><span class="pre">DatatypeWidth</span></code></a><ul>
+<li><a class="reference internal" href="#refnd.kernels.alignments.DatatypeWidth.Full"><code class="docutils literal notranslate"><span class="pre">DatatypeWidth.Full</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.DatatypeWidth.Half"><code class="docutils literal notranslate"><span class="pre">DatatypeWidth.Half</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.DatatypeWidth.Long"><code class="docutils literal notranslate"><span class="pre">DatatypeWidth.Long</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.DatatypeWidth.Sat"><code class="docutils literal notranslate"><span class="pre">DatatypeWidth.Sat</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.DatatypeWidth.Short"><code class="docutils literal notranslate"><span class="pre">DatatypeWidth.Short</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.CoverageMode"><code class="docutils literal notranslate"><span class="pre">CoverageMode</span></code></a><ul>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.CoverageMode.BothQueryTarget"><code class="docutils literal notranslate"><span class="pre">CoverageMode.BothQueryTarget</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.CoverageMode.LengthRatio"><code class="docutils literal notranslate"><span class="pre">CoverageMode.LengthRatio</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.CoverageMode.Query"><code class="docutils literal notranslate"><span class="pre">CoverageMode.Query</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.CoverageMode.ShorterSeq"><code class="docutils literal notranslate"><span class="pre">CoverageMode.ShorterSeq</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.CoverageMode.Target"><code class="docutils literal notranslate"><span class="pre">CoverageMode.Target</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.CoverageMode"><code class="docutils literal notranslate"><span class="pre">CoverageMode</span></code></a><ul>
+<li><a class="reference internal" href="#refnd.kernels.alignments.CoverageMode.BothQueryTarget"><code class="docutils literal notranslate"><span class="pre">CoverageMode.BothQueryTarget</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.CoverageMode.LengthRatio"><code class="docutils literal notranslate"><span class="pre">CoverageMode.LengthRatio</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.CoverageMode.Query"><code class="docutils literal notranslate"><span class="pre">CoverageMode.Query</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.CoverageMode.ShorterSeq"><code class="docutils literal notranslate"><span class="pre">CoverageMode.ShorterSeq</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.CoverageMode.Target"><code class="docutils literal notranslate"><span class="pre">CoverageMode.Target</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.LocalIdentityMode"><code class="docutils literal notranslate"><span class="pre">LocalIdentityMode</span></code></a><ul>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.LocalIdentityMode.AlignmentLength"><code class="docutils literal notranslate"><span class="pre">LocalIdentityMode.AlignmentLength</span></code></a></li>
-<li><a class="reference internal" href="#refnd.kernels.protein.sequence.LocalIdentityMode.MinSeqLength"><code class="docutils literal notranslate"><span class="pre">LocalIdentityMode.MinSeqLength</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.LocalIdentityMode"><code class="docutils literal notranslate"><span class="pre">LocalIdentityMode</span></code></a><ul>
+<li><a class="reference internal" href="#refnd.kernels.alignments.LocalIdentityMode.AlignmentLength"><code class="docutils literal notranslate"><span class="pre">LocalIdentityMode.AlignmentLength</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.alignments.LocalIdentityMode.MinSeqLength"><code class="docutils literal notranslate"><span class="pre">LocalIdentityMode.MinSeqLength</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -1168,6 +1309,19 @@ feature vectors, <code class="docutils literal notranslate"><span class="pre">1.
 </li>
 <li><a class="reference internal" href="#refnd.kernels.molecules.TanimotoReal"><code class="docutils literal notranslate"><span class="pre">TanimotoReal</span></code></a><ul>
 <li><a class="reference internal" href="#refnd.kernels.molecules.TanimotoReal.call"><code class="docutils literal notranslate"><span class="pre">TanimotoReal.call()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#refnd-kernels-structures">refnd.kernels.structures</a><ul>
+<li><a class="reference internal" href="#refnd.kernels.structures.USAlignKernel"><code class="docutils literal notranslate"><span class="pre">USAlignKernel</span></code></a><ul>
+<li><a class="reference internal" href="#refnd.kernels.structures.USAlignKernel.call"><code class="docutils literal notranslate"><span class="pre">USAlignKernel.call()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#refnd.kernels.structures.NormMode"><code class="docutils literal notranslate"><span class="pre">NormMode</span></code></a><ul>
+<li><a class="reference internal" href="#refnd.kernels.structures.NormMode.Min"><code class="docutils literal notranslate"><span class="pre">NormMode.Min</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.structures.NormMode.Query"><code class="docutils literal notranslate"><span class="pre">NormMode.Query</span></code></a></li>
+<li><a class="reference internal" href="#refnd.kernels.structures.NormMode.Target"><code class="docutils literal notranslate"><span class="pre">NormMode.Target</span></code></a></li>
 </ul>
 </li>
 </ul>
